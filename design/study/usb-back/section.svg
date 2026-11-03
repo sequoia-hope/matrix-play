@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 340" font-family="system-ui,sans-serif" font-size="13" fill="#d8dde3">
+<rect width="700" height="340" fill="#0b0d10"/>
+<rect x="40.0" y="55.0" width="615.0" height="15.0" fill="#2f6b4f" />
+<rect x="40.0" y="49.0" width="615.0" height="6.0" fill="#ff6b8a" />
+<rect x="44.5" y="119.5" width="526.5" height="81.8" fill="#7dff9a" fill-opacity=".35" stroke="#7dff9a"/>
+<rect x="55.0" y="70.0" width="51.0" height="49.5" fill="#6b7480" />
+<rect x="580.9" y="70.0" width="47.4" height="157.5" fill="#2fb7ff" fill-opacity=".55" stroke="#2fb7ff"/>
+<rect x="555.8" y="227.5" width="97.5" height="102.0" fill="#a8b1bd" fill-opacity=".35" stroke="#a8b1bd" stroke-dasharray="5 4"/>
+<line x1="40.0" y1="216.25" x2="663.0" y2="216.25" stroke="#ffb020" stroke-dasharray="7 5"/>
+<text x="40.0" y="43.0">LEDs 0.4, board 1.0</text>
+<text x="145.0" y="164.5" fill="#07140c">cell 5.45 thick, back at 8.75 mm</text>
+<text x="145.0" y="98.5">parts: tallest is the 3.3 mm button</text>
+<text x="40.0" y="234.25" fill="#ffb020">housing back, about 1 mm wall at 9.75 mm</text>
+<text x="395.8025664494454" y="280">plug overmould, typical</text>
+<text x="634.5525664494454" y="145" fill="#8fd8ff">J1 10.5</text>
+</svg>

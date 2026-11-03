@@ -1,0 +1,9 @@
+name	timeout	threads	bin	open	plane_open	new_errors	vias	extra
+p420	420	2	pin	79	3	50	933	--prefanout-mode inner
+pv06	420	2	pin	82	4	69	973	--prefanout-mode inner --plane-via-reach 0.6
+neg100	420	2	pin	78	3	58	934	--prefanout-mode inner --negotiate-rounds 100 --negotiate-patience 15
+cell04	420	2	pin	72	4	64	952	--prefanout-mode inner --cell 0.04
+cell025	420	2	pin	49	3	61	874	--prefanout-mode inner --cell 0.025
+via3	420	2	pin	77	3	57	914	--prefanout-mode inner --via-cost 3
+via03	420	2	pin	76	4	96	982	--prefanout-mode inner --via-cost 0.3
+fan-same	420	2	pin	81	5	98	934	--prefanout-mode same

@@ -1,0 +1,180 @@
+reserve: waiting for 4 cores — 10 in line; running: ultraroute 8 (boxed: build+test+eval19+smoke), bluebuzz 2 (bluebuzz ring2 adopt), waffle-iron 6 (agy n106 rewrite tier); ahead: ultraroute 12 (speed: ab focus final), round-pendant 4 (round-pendant crunch: map c-map-34 1200s), round-pendant 4 (round-pendant crunch: layers 8r1 plane reach), round-pendant 4 (round-pendant crunch: layers 8s1 layer steering), sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s), round-pendant 2 (round-pendant crunch: router 8L via3), round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s), round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: waiting for 4 cores — 9 in line; running: bluebuzz 2 (bluebuzz ring2 adopt), waffle-iron 6 (agy n106 rewrite tier), ultraroute 12 (speed: ab focus final); ahead: round-pendant 4 (round-pendant crunch: map c-map-34 1200s), round-pendant 4 (round-pendant crunch: layers 8r1 plane reach), round-pendant 4 (round-pendant crunch: layers 8s1 layer steering), sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s), round-pendant 2 (round-pendant crunch: router 8L via3), round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s), round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: waiting for 4 cores — 6 in line; running: bluebuzz 2 (bluebuzz ring2 adopt), waffle-iron 6 (agy n106 rewrite tier), round-pendant 4 (round-pendant crunch: map c-map-34 1200s), round-pendant 4 (round-pendant crunch: layers 8r1 plane reach), round-pendant 4 (round-pendant crunch: layers 8s1 layer steering); ahead: sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s), round-pendant 2 (round-pendant crunch: router 8L via3), round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s), round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: waiting for 4 cores — 4 in line; running: bluebuzz 2 (bluebuzz ring2 adopt), round-pendant 4 (round-pendant crunch: map c-map-34 1200s), round-pendant 4 (round-pendant crunch: layers 8r1 plane reach), round-pendant 4 (round-pendant crunch: layers 8s1 layer steering), sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s); ahead: round-pendant 2 (round-pendant crunch: router 8L via3), round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s), round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: waiting for 4 cores — 3 in line; running: bluebuzz 2 (bluebuzz ring2 adopt), round-pendant 4 (round-pendant crunch: layers 8r1 plane reach), round-pendant 4 (round-pendant crunch: layers 8s1 layer steering), sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s), round-pendant 2 (round-pendant crunch: router 8L via3); ahead: round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s), round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: waiting for 4 cores — 2 in line; running: bluebuzz 2 (bluebuzz ring2 adopt), round-pendant 4 (round-pendant crunch: layers 8s1 layer steering), sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s), round-pendant 2 (round-pendant crunch: router 8L via3), round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s); ahead: round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: waiting for 4 cores — 1 in line; running: bluebuzz 2 (bluebuzz ring2 adopt), sensored-driver 4 (sd-b route), round-pendant 4 (round-pendant crunch: map c-map-36 1200s), round-pendant 2 (round-pendant crunch: router 8L via3), round-pendant 4 (round-pendant crunch: placement c-placement-y1 1200s), round-pendant 4 (round-pendant crunch: placement c-placement-y2 1200s)
+reserve: granted 4 cores
+autoroute: round-pendant.kicad_pcb: ultraroute a3ba419; planes ['In2.Cu', 'In5.Cu'] (nets ['+3V3', 'GND', 'VSYS']); 4 thread(s), nice 15, 600 s per run
+  seed 0: 72 signal open, 18 plane open, 82 new errors, 710 vias (memory: peak 981 MB)
+    open: Pad 23 [+1V1] of U3 on B.Cu / Track [+1V1] on In3.Cu, length 4.7982 mm
+    open: Track [+1V1] on B.Cu, length 0.8281 mm / Pad 50 [+1V1] of U3 on B.Cu
+    open: Pad 2 [/Driver 1 and matrix/CS1_8] of D20 on F.Cu / Pad 33 [/Driver 1 and matrix/CS1_8] of U1 on B.Cu
+    open: Track [/Driver 1 and matrix/CS1_10] on In4.Cu, length 1.1281 mm / Pad 4 [/Driver 1 and matrix/CS1_10] of D36 on F.Cu
+    open: Pad 37 [/Driver 1 and matrix/CS1_11] of U1 on B.Cu / Track [/Driver 1 and matrix/CS1_11] on F.Cu, length 0.6753 mm
+    open: Pad 38 [/Driver 1 and matrix/CS1_12] of U1 on B.Cu / Track [/Driver 1 and matrix/CS1_12] on F.Cu, length 1.0583 mm
+    open: Pad 1 [/Driver 1 and matrix/CS1_12] of D36 on F.Cu / Pad 1 [/Driver 1 and matrix/CS1_12] of D35 on F.Cu
+    open: Track [/Driver 1 and matrix/CS1_18] on F.Cu, length 2.6259 mm / Pad 44 [/Driver 1 and matrix/CS1_18] of U1 on B.Cu
+    open: Track [/Driver 1 and matrix/CS1_19] on In3.Cu, length 1.4841 mm / Pad 4 [/Driver 1 and matrix/CS1_19] of D57 on F.Cu
+    open: Track [/Driver 1 and matrix/CS1_19] on F.Cu, length 0.7642 mm / Track [/Driver 1 and matrix/CS1_19] on In3.Cu, length 0.8139 mm
+    open: Track [/Driver 1 and matrix/CS1_20] on F.Cu, length 0.7394 mm / Pad 2 [/Driver 1 and matrix/CS1_20] of D57 on F.Cu
+    open: Pad 46 [/Driver 1 and matrix/CS1_20] of U1 on B.Cu / Pad 2 [/Driver 1 and matrix/CS1_20] of D59 on F.Cu
+    open: Pad 4 [/Driver 1 and matrix/CS1_22] of D68 on F.Cu / Pad 4 [/Driver 1 and matrix/CS1_22] of D67 on F.Cu
+    open: Pad 4 [/Driver 1 and matrix/CS1_22] of D69 on F.Cu / Pad 4 [/Driver 1 and matrix/CS1_22] of D68 on F.Cu
+    open: Pad 4 [/Driver 1 and matrix/CS1_22] of D69 on F.Cu / Pad 48 [/Driver 1 and matrix/CS1_22] of U1 on B.Cu
+    open: Track [/Driver 1 and matrix/CS1_22] on F.Cu, length 0.2633 mm / Pad 4 [/Driver 1 and matrix/CS1_22] of D69 on F.Cu
+    open: Pad 1 [/Driver 1 and matrix/CS1_24] of D67 on F.Cu / Pad 1 [/Driver 1 and matrix/CS1_24] of D66 on F.Cu
+    open: Track [/Driver 1 and matrix/CS1_24] on F.Cu, length 0.6562 mm / Pad 1 [/Driver 1 and matrix/CS1_24] of D67 on F.Cu
+    open: Track [/Driver 1 and matrix/CS1_25] on F.Cu, length 0.5149 mm / Pad 4 [/Driver 1 and matrix/CS1_25] of D76 on F.Cu
+    open: Pad 51 [/Driver 1 and matrix/CS1_25] of U1 on B.Cu / Track [/Driver 1 and matrix/CS1_25] on In4.Cu, length 2.2627 mm
+    open: Pad 2 [/Driver 1 and matrix/CS1_26] of D74 on F.Cu / Pad 2 [/Driver 1 and matrix/CS1_26] of D73 on F.Cu
+    open: Pad 52 [/Driver 1 and matrix/CS1_26] of U1 on B.Cu / Track [/Driver 1 and matrix/CS1_26] on F.Cu, length 0.2884 mm
+    open: Pad 52 [/Driver 1 and matrix/CS1_26] of U1 on B.Cu / Pad 2 [/Driver 1 and matrix/CS1_26] of D74 on F.Cu
+    open: Pad 1 [/Driver 1 and matrix/CS1_27] of D74 on F.Cu / Track [/Driver 1 and matrix/CS1_27] on In3.Cu, length 1.6363 mm
+    open: Track [/Driver 1 and matrix/CS1_30] on B.Cu, length 0.6500 mm / Pad 1 [/Driver 1 and matrix/CS1_30] of D84 on F.Cu
+    open: Track [/Driver 1 and matrix/CS1_35] on F.Cu, length 0.7099 mm / Pad 2 [/Driver 1 and matrix/CS1_35] of U1 on B.Cu
+    open: Pad 21 [/Driver 1 and matrix/SW1_6] of U1 on B.Cu / Track [/Driver 1 and matrix/SW1_6] on In1.Cu, length 0.8444 mm
+    open: Pad 29 [/Driver 2 and matrix/CS2_4] of U2 on B.Cu / Track [/Driver 2 and matrix/CS2_4] on F.Cu, length 0.6403 mm
+    open: Pad 4 [/Driver 2 and matrix/CS2_10] of D147 on F.Cu / Track [/Driver 2 and matrix/CS2_10] on F.Cu, length 0.6479 mm
+    open: Track [/Driver 2 and matrix/CS2_10] on In4.Cu, length 7.1586 mm / Pad 4 [/Driver 2 and matrix/CS2_10] of D146 on F.Cu
+    open: Pad 37 [/Driver 2 and matrix/CS2_11] of U2 on B.Cu / Track [/Driver 2 and matrix/CS2_11] on F.Cu, length 0.5657 mm
+    open: Track [/Driver 2 and matrix/CS2_12] on F.Cu, length 1.1610 mm / Pad 1 [/Driver 2 and matrix/CS2_12] of D148 on F.Cu
+    open: Track [/Driver 2 and matrix/CS2_13] on F.Cu, length 1.2074 mm / Pad 39 [/Driver 2 and matrix/CS2_13] of U2 on B.Cu
+    open: Pad 4 [/Driver 2 and matrix/CS2_13] of D157 on F.Cu / Track [/Driver 2 and matrix/CS2_13] on F.Cu, length 0.6737 mm
+    open: Track [/Driver 2 and matrix/CS2_14] on F.Cu, length 0.8410 mm / Pad 2 [/Driver 2 and matrix/CS2_14] of D156 on F.Cu
+    open: Track [/Driver 2 and matrix/CS2_15] on F.Cu, length 1.2955 mm / Track [/Driver 2 and matrix/CS2_15] on In6.Cu, length 0.9899 mm
+    open: Pad 1 [/Driver 2 and matrix/CS2_15] of D158 on F.Cu / Track [/Driver 2 and matrix/CS2_15] on In6.Cu, length 1.0512 mm
+    open: Track [/Driver 2 and matrix/CS2_15] on In4.Cu, length 1.6808 mm / Pad 1 [/Driver 2 and matrix/CS2_15] of D157 on F.Cu
+    open: Pad 43 [/Driver 2 and matrix/CS2_17] of U2 on B.Cu / Track [/Driver 2 and matrix/CS2_17] on F.Cu, length 0.6451 mm
+    open: Track [/Driver 2 and matrix/CS2_18] on In3.Cu, length 0.8559 mm / Pad 1 [/Driver 2 and matrix/CS2_18] of D166 on F.Cu
+    open: Track [/Driver 2 and matrix/CS2_18] on In3.Cu, length 2.0006 mm / Pad 1 [/Driver 2 and matrix/CS2_18] of D165 on F.Cu
+    open: Pad 1 [/Driver 2 and matrix/CS2_21] of D174 on F.Cu / Pad 1 [/Driver 2 and matrix/CS2_21] of D175 on F.Cu
+    open: Track [/Driver 2 and matrix/CS2_21] on In4.Cu, length 7.0000 mm / Pad 1 [/Driver 2 and matrix/CS2_21] of D174 on F.Cu
+    open: Track [/Driver 2 and matrix/CS2_26] on F.Cu, length 0.6200 mm / Pad 52 [/Driver 2 and matrix/CS2_26] of U2 on B.Cu
+    open: Track [/Driver 2 and matrix/CS2_32] on In4.Cu, length 1.0689 mm / Pad 59 [/Driver 2 and matrix/CS2_32] of U2 on B.Cu
+    open: Pad 1 [/Driver 2 and matrix/CS2_34] of U2 on B.Cu / Track [/Driver 2 and matrix/CS2_34] on In3.Cu, length 2.3710 mm
+    open: Pad 2 [/Driver 2 and matrix/CS2_35] of U2 on B.Cu / Track [/Driver 2 and matrix/CS2_35] on F.Cu, length 1.2553 mm
+    open: Pad 6 [/Driver 2 and matrix/CS2_39] of U2 on B.Cu / Track [/Driver 2 and matrix/CS2_39] on F.Cu, length 1.6984 mm
+    open: Track [/Driver 2 and matrix/SW2_5] on In1.Cu, length 1.7750 mm / Pad 20 [/Driver 2 and matrix/SW2_5] of U2 on B.Cu
+    open: Track [/Driver 2 and matrix/SW2_6] on In4.Cu, length 2.5420 mm / Pad 21 [/Driver 2 and matrix/SW2_6] of U2 on B.Cu
+    open: Pad 15 [/MCU/BTN] of U3 on B.Cu / Pad 1 [/MCU/BTN] of R18 on B.Cu
+    open: Pad 5 [/MCU/QSPI_SD0] of U4 on B.Cu / Pad 57 [/MCU/QSPI_SD0] of U3 on B.Cu
+    open: Pad 3 [/MCU/QSPI_SD2] of U4 on B.Cu / Pad 58 [/MCU/QSPI_SD2] of U3 on B.Cu
+    open: Pad 1 [/MCU/RUN] of TP5 on B.Cu / Pad 26 [/MCU/RUN] of U3 on B.Cu
+    open: Pad 24 [/MCU/SWCLK] of U3 on B.Cu / Pad 1 [/MCU/SWCLK] of TP6 on B.Cu
+    open: Pad 25 [/MCU/SWDIO] of U3 on B.Cu / Pad 1 [/MCU/SWDIO] of TP7 on B.Cu
+    open: Track [/MCU/VREG_AVDD] on B.Cu, length 0.8600 mm / Pad 46 [/MCU/VREG_AVDD] of U3 on B.Cu
+    open: Pad 9 [CHG] of U5 on B.Cu / Track [CHG] on In3.Cu, length 4.6406 mm
+    open: Track [I2C_SCL] on In6.Cu, length 1.2500 mm / Pad 8 [I2C_SCL] of U3 on B.Cu
+    open: Pad 7 [INTB1] of U1 on B.Cu / Track [INTB1] on In4.Cu, length 0.3041 mm
+    open: Track [Net-(C24-Pad1)] on B.Cu, length 1.0817 mm / Pad 1 [Net-(C24-Pad1)] of R17 on B.Cu
+    open: Pad 2 [Net-(D235-G)] of D235 on F.Cu / Pad 2 [Net-(D235-G)] of R41 on B.Cu
+    open: Pad 1 [Net-(D235-R)] of D235 on F.Cu / Pad 2 [Net-(D235-R)] of R40 on B.Cu
+    open: Pad 1 [Net-(U1-ISET)] of R32 on B.Cu / Pad 13 [Net-(U1-ISET)] of U1 on B.Cu
+    open: Pad 13 [Net-(U2-ISET)] of U2 on B.Cu / Pad 1 [Net-(U2-ISET)] of R35 on B.Cu
+    open: Pad 1 [Net-(U3-XIN)] of Y1 on B.Cu / Pad 21 [Net-(U3-XIN)] of U3 on B.Cu
+    open: Pad 2 [Net-(U3-XOUT)] of R17 on B.Cu / Pad 22 [Net-(U3-XOUT)] of U3 on B.Cu
+    open: Track [SDB1] on B.Cu, length 0.7566 mm / Pad 11 [SDB1] of U1 on B.Cu
+    open: Track [SDB2] on B.Cu, length 1.3901 mm / Pad 10 [SDB2] of U3 on B.Cu
+    open: Pad 1 [USB_DM] of R14 on B.Cu / Pad 6 [USB_DM] of U7 on B.Cu
+    open: Pad 1 [USB_DP] of R15 on B.Cu / Pad 4 [USB_DP] of U7 on B.Cu
+    open: Pad 18 [VBAT_EN] of U3 on B.Cu / Track [VBAT_EN] on B.Cu, length 2.5622 mm
+    plane open: Pad 11 [+3V3] of U3 on B.Cu / Pad 20 [+3V3] of U3 on B.Cu
+    plane open: Pad 20 [+3V3] of U3 on B.Cu / Track [+3V3] on B.Cu, length 1.1601 mm
+    plane open: Pad 61 [GND] of U1 on B.Cu / Pad 8 [GND] of U1 on B.Cu
+    plane open: Pad 36 [GND] of U1 on B.Cu / Pad 61 [GND] of U1 on B.Cu
+    plane open: Track [GND] on B.Cu, length 0.7742 mm / Pad 2 [GND] of C3 on B.Cu
+    plane open: Pad 47 [GND] of U3 on B.Cu / Track [GND] on In1.Cu, length 0.7906 mm
+    plane open: Pad 2 [GND] of C21 on B.Cu / Pad 2 [GND] of C12 on B.Cu
+    plane open: Pad 61 [GND] of U2 on B.Cu / Pad 36 [GND] of U2 on B.Cu
+    plane open: Via [GND] on F.Cu - B.Cu / Pad 55 [GND] of U2 on B.Cu
+    plane open: Pad 12 [GND] of U2 on B.Cu / Pad 61 [GND] of U2 on B.Cu
+    plane open: Pad 12 [GND] of U2 on B.Cu / Pad 2 [GND] of C45 on B.Cu
+    plane open: Pad 2 [GND] of C45 on B.Cu / Pad 2 [GND] of R35 on B.Cu
+    plane open: Pad 1 [VSYS] of C35 on B.Cu / Track [VSYS] on B.Cu, length 0.4000 mm
+    plane open: Pad 25 [VSYS] of U1 on B.Cu / Via [VSYS] on F.Cu - B.Cu
+    plane open: Pad 1 [VSYS] of C43 on B.Cu / Track [VSYS] on B.Cu, length 0.4582 mm
+    plane open: Pad 25 [VSYS] of U2 on B.Cu / Track [VSYS] on B.Cu, length 0.4582 mm
+    plane open: Track [VSYS] on B.Cu, length 0.2904 mm / Pad 8 [VSYS] of U2 on B.Cu
+    plane open: Pad 15 [VSYS] of U2 on B.Cu / Track [VSYS] on B.Cu, length 0.5601 mm
+    error: Pad 1 [/MCU/QSPI_SS] of R16 on B.Cu | Pad 1 [/MCU/QSPI_SS] of U4 on B.Cu (length_out_of_range)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.8485 mm (track_width)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.6034 mm (track_width)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.0500 mm (track_width)
+    error: Track [/Power/BAT_N] on In3.Cu, length 0.8515 mm (track_width)
+    error: Track [/Power/BAT_N] on In3.Cu, length 1.2777 mm (track_width)
+    error: Track [/Power/BAT_N] on In3.Cu, length 2.1119 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.3730 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.3284 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.4472 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.4717 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 2.8040 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.9909 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 2.7500 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.3124 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.1011 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 3.3110 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.5008 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 6.8966 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 3.7134 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.8812 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.6519 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.1118 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.1307 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.4717 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.7778 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 2.4749 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 2.5715 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.8485 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.2728 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.8200 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 1.4214 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.4610 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 0.6576 mm (track_width)
+    error: Track [VBAT] on In4.Cu, length 3.2882 mm (track_width)
+    error: Track [VBUS] on B.Cu, length 0.4325 mm (track_width)
+    error: Track [VBUS] on In3.Cu, length 0.3536 mm (track_width)
+    error: Track [VBUS] on In3.Cu, length 1.7000 mm (track_width)
+    error: Track [VBUS] on In3.Cu, length 0.8515 mm (track_width)
+    error: Track [VBUS] on In3.Cu, length 0.6869 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 1.7889 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 0.1118 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 0.2828 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 0.6265 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 1.0800 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 0.5099 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 2.1633 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 2.0506 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 0.3536 mm (track_width)
+    error: Track [VBUS] on In4.Cu, length 1.6008 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 1.2000 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.3262 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.4000 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.4031 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.0707 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.3536 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 1.0749 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.4582 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.7778 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.7810 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.1061 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.1414 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 1.1019 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.0500 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.1500 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.1118 mm (track_width)
+    error: Track [VSYS] on In1.Cu, length 1.9780 mm (track_width)
+    error: Track [VSYS] on In1.Cu, length 0.3425 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 2.1593 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 2.8380 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 0.3536 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 0.1414 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 0.5099 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 2.2344 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 1.7507 mm (track_width)
+    error: Track [VSYS] on In3.Cu, length 3.5672 mm (track_width)
+    error: Track [/Driver 1 and matrix/CS1_34] on F.Cu, length 0.1020 mm (track_dangling)
+    error: Track [/Driver 2 and matrix/CS2_13] on In4.Cu, length 0.0250 mm (track_dangling)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.0500 mm (track_dangling)
+  kept seed 0: 72 signal open, 18 plane open, 82 new errors, 710 vias; zones refilled

@@ -1,0 +1,144 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "f372766e-8116-4116-97f0-181bf5edc660")
+	(paper "A4")
+	(title_block
+		(title "round-pendant: top")
+		(date "2026-11-02")
+		(rev "A")
+		(company "CERN-OHL-P-2.0")
+		(comment 1 "234 RGB LEDs on a 38 mm round board")
+		(comment 2 "Drawn by scripts/schematic.py")
+	)
+	(lib_symbols)
+	(text "Rails: VBUS -> VSYS 3.0-4.5 V (LED SW lines) -> +3V3 -> +1V1 at the RP2350.\nNets between sheets are global labels; rails are power symbols.\nRequirements: design/intent.md. Parts: design/parts/. Decisions: design/decisions.md."
+		(exclude_from_sim no)
+		(at 25.4 135 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "09d9bb92-3d05-48d7-88cd-a05e62e9c3ba")
+	)
+	(sheet
+		(at 25.4 55.88)
+		(size 50.8 50.8)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "f5077b7b-b1b1-4e59-8529-500543360b15")
+		(property "Sheetname" "Power"
+			(at 25.4 55.18 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 25.4 108.48 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/f372766e-8116-4116-97f0-181bf5edc660"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 96.52 55.88)
+		(size 50.8 50.8)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "25741a7f-96b4-4892-b0f6-3f1ec52ba5f8")
+		(property "Sheetname" "MCU"
+			(at 96.52 55.18 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 96.52 108.48 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/f372766e-8116-4116-97f0-181bf5edc660"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 167.64 40.64)
+		(size 63.5 35.56)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "fe427fc3-4ebc-4777-9d14-77204035b352")
+		(property "Sheetname" "Driver 1 and matrix"
+			(at 167.64 39.94 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix1.kicad_sch"
+			(at 167.64 78 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/f372766e-8116-4116-97f0-181bf5edc660"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 167.64 88.9)
+		(size 63.5 35.56)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "aae6c42b-940f-46e1-ac0e-1f3721df3149")
+		(property "Sheetname" "Driver 2 and matrix"
+			(at 167.64 88.2 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix2.kicad_sch"
+			(at 167.64 126.26 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/f372766e-8116-4116-97f0-181bf5edc660"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

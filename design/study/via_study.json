@@ -1,0 +1,63 @@
+{
+ "IS31FL3741A | via in pad, centred": {
+  "on_pads": 3,
+  "in_exposed_pad": 9,
+  "in_ring": 0,
+  "centre_mod_2mm": [
+   0.0,
+   0.2
+  ]
+ },
+ "IS31FL3741A | via in pad, up to 0.075 off centre": {
+  "on_pads": 0,
+  "in_exposed_pad": 9,
+  "in_ring": 0,
+  "centre_mod_2mm": [
+   0.0,
+   0.0
+  ]
+ },
+ "IS31FL3741A | via on a stub up to 0.5 mm off the pad": {
+  "on_pads": 0,
+  "in_exposed_pad": 4,
+  "in_ring": 5,
+  "centre_mod_2mm": [
+   0.95,
+   0.95
+  ]
+ },
+ "RP2350A | via in pad, centred": {
+  "on_pads": 6,
+  "in_exposed_pad": 4,
+  "in_ring": 5,
+  "centre_mod_2mm": [
+   0.1,
+   0.1
+  ]
+ },
+ "RP2350A | via in pad, up to 0.075 off centre": {
+  "on_pads": 3,
+  "in_exposed_pad": 2,
+  "in_ring": 7,
+  "centre_mod_2mm": [
+   0.0,
+   0.2
+  ]
+ },
+ "RP2350A | via on a stub up to 0.5 mm off the pad": {
+  "on_pads": 0,
+  "in_exposed_pad": 1,
+  "in_ring": 8,
+  "centre_mod_2mm": [
+   0.0,
+   0.0
+  ]
+ },
+ "usb": {
+  "min_sites": 5,
+  "offset": [
+   0.25,
+   1.0
+  ]
+ }
+}

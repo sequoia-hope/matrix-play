@@ -1,0 +1,59 @@
+[
+ {
+  "name": "no-holes-1",
+  "title": "No holes, smallest centre gap",
+  "holes": 0,
+  "centre_clear": 1.1,
+  "count": 234,
+  "gap": 0.359,
+  "pitch": 1.9,
+  "mean": 1.95,
+  "edge": 0.37
+ },
+ {
+  "name": "no-holes-4",
+  "title": "No holes, wider pad gaps, larger centre gap",
+  "holes": 0,
+  "centre_clear": 3.1,
+  "count": 234,
+  "gap": 0.455,
+  "pitch": 1.91,
+  "mean": 1.94,
+  "edge": 0.37
+ },
+ {
+  "name": "dodge-skrt",
+  "title": "Current buttons, pegs between the LEDs",
+  "holes": 4,
+  "peg": 0.18,
+  "centre_clear": 1.1,
+  "count": 234,
+  "gap": 0.359,
+  "pitch": 1.9,
+  "mean": 1.95,
+  "edge": 0.37
+ },
+ {
+  "name": "dodge-evq",
+  "title": "EVQP7C01P, pegs between the LEDs",
+  "holes": 4,
+  "peg": 0.21,
+  "centre_clear": 1.1,
+  "count": 234,
+  "gap": 0.359,
+  "pitch": 1.9,
+  "mean": 1.95,
+  "edge": 0.37
+ },
+ {
+  "name": "button-pegs",
+  "title": "Current buttons, LEDs kept 0.6 mm from pegs",
+  "holes": 4,
+  "centre_clear": 1.0,
+  "count": 234,
+  "gap": 0.336,
+  "pitch": 1.88,
+  "mean": 1.93,
+  "edge": 0.37
+ }
+]

@@ -1,0 +1,103 @@
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: rule "SW scan width" (line 32): '=' in "A.NetName == '/Driver 1 and matrix/SW1_1' || A.NetName =~ '*/SW?_?'"; not applied
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SCLK length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD0 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD1 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD2 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD3 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SS length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "USB_DM no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b/route/p1/round-pendant.kicad_dru: custom rule "USB_DP no vias": via_count checked after routing, not routed to
+warning: stackup thickness 0.980000 mm differs from general thickness 1.000000 mm; using the stackup
+memory: 534 MB estimated (3456486 nodes at 0.05 mm, 1 classes, 1 searching the whole board), 12288 MB allowed by its cgroup's memory.max
+prefanout: 7 parts, 23 inward, 38 of 77 escaped (39 failed), 34 vias, skipped 96 no-net 0 pth 13 exposed 184 escaped, 11.8 s
+planes: 37 of 118 pads off their planes joined, 14.2 s
+pairs: 3 pairs, 3 of 3 runs coupled, 20.4 mm, 38.3 s
+negotiated 112 of 169 connections in 5 rounds, 45 vias, 41.7 s
+rip-up: 110 tries, 1 kept, 4 ripped; lost 96 with no way through, 0 to copper it may not rip, 13 no better; 79.9 s
+shove pass 1: 12 trapped tried, 11 routed out, 10 kept, 53 -> 48 open, 267.5 s
+pairs: 7 pieces of pair copper unlocked round 48 open connections
+shove pass 1: 0 trapped tried, 0 routed out, 0 kept, 48 -> 48 open, 269.2 s
+vias: 10 of 52 dropped, 10 of 150 tries kept, 270.5 s
+pulled tight: 2004 -> 700 segments, 879 -> 768 mm, 270.5 s
+dropped 1 doubled, pruned 120 dangling, open 48 -> 47, 270.6 s
+refinished 5 more (0 on a finer grid), open 47 -> 42, 273.0 s
+tune: /Power/USB_DP_C//Power/USB_DM_C skew 2.26 -> 0.00 mm
+routed 0 more, 73 failed, 42 open, 273.0 s
+mended 7 joints where round ends only overlapped
+mended 9 pad joints where a track's end only reached the pad's edge
+bridged 89 places where a track only grazed its net's copper
+split 34 tracks where others end on them
+pruned 42 dangling after the split
+rules: length: Net-(C24-Pad1) is 17.15 mm, over rule "Net-(C24-Pad1) length"'s 6.00 mm
+neck: VSYS 0.2 mm wide for 0.10 mm into C36-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0 mm wide for 0.79 mm into U1-25, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.95 mm into U6-4, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.65 mm into C43-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: +3V3 0 mm wide for 0.83 mm into U3-20, under the 0.2 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.57 mm into C3-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.64 mm into C33-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0 mm wide for 0.75 mm into U2-25, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: +3V3 0 mm wide for 0.83 mm into U3-11, under the 0.2 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.40 mm into U6-3, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.16 mm into U6-4, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 1.06 mm into C34-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 1.11 mm into C30-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.75 mm into C44-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 2.26 mm into C2-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.97 mm into U2-15, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.53 mm into C42-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.70 mm into U5-11, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 1.41 mm into BT1-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.51 mm into R10-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.50 mm into U5-3, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 2.01 mm into R8-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.77 mm into TP3-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBUS 0.2 mm wide for 0.46 mm into U7-5, under the 0.25 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.13 mm into C46-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.15 mm into C46-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.10 mm into C36-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.11 mm into C36-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 1.32 mm into C35-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.68 mm into C32-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.65 mm into C44-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.75 mm into C44-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: KiCad allows +3V3's necks into U3 with this rule after the net's own: (rule "+3V3 neck into U3" (condition "A.NetName == '+3V3' && A.intersectsCourtyard('U3')") (constraint track_width (min 0mm)))
+neck: KiCad allows VBAT's necks into BT1 with this rule after the net's own: (rule "VBAT neck into BT1" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('BT1')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into R10 with this rule after the net's own: (rule "VBAT neck into R10" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('R10')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into R8 with this rule after the net's own: (rule "VBAT neck into R8" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('R8')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into TP3 with this rule after the net's own: (rule "VBAT neck into TP3" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('TP3')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into U5 with this rule after the net's own: (rule "VBAT neck into U5" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('U5')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBUS's necks into U7 with this rule after the net's own: (rule "VBUS neck into U7" (condition "A.NetName == 'VBUS' && A.intersectsCourtyard('U7')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C2 with this rule after the net's own: (rule "VSYS neck into C2" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C2')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C3 with this rule after the net's own: (rule "VSYS neck into C3" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C3')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C30 with this rule after the net's own: (rule "VSYS neck into C30" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C30')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C32 with this rule after the net's own: (rule "VSYS neck into C32" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C32')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C33 with this rule after the net's own: (rule "VSYS neck into C33" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C33')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C34 with this rule after the net's own: (rule "VSYS neck into C34" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C34')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C35 with this rule after the net's own: (rule "VSYS neck into C35" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C35')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C36 with this rule after the net's own: (rule "VSYS neck into C36" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C36')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C42 with this rule after the net's own: (rule "VSYS neck into C42" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C42')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C43 with this rule after the net's own: (rule "VSYS neck into C43" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C43')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C44 with this rule after the net's own: (rule "VSYS neck into C44" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C44')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C46 with this rule after the net's own: (rule "VSYS neck into C46" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C46')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into U1 with this rule after the net's own: (rule "VSYS neck into U1" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('U1')") (constraint track_width (min 0mm)))
+neck: KiCad allows VSYS's necks into U2 with this rule after the net's own: (rule "VSYS neck into U2" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('U2')") (constraint track_width (min 0mm)))
+neck: KiCad allows VSYS's necks into U5 with this rule after the net's own: (rule "VSYS neck into U5" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('U5')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into U6 with this rule after the net's own: (rule "VSYS neck into U6" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('U6')") (constraint track_width (min 0.2mm)))
+narrow pad joint: /Power/BAT_N on B.Cu at (105.450, 112.170) mm, 0.274 mm wide where its track is 0.300 mm (under the net's width rule, 0.300 mm): the track ends outside U8-4
+narrow pad joint: Net-(R16-Pad2) on B.Cu at (84.580, 95.226) mm, 0.113 mm wide where its track is 0.200 mm (within the net's width rule, 0.000 mm): the track ends outside SW2-1
+narrow pad joint: VSYS on B.Cu at (93.380, 100.676) mm, 0.127 mm wide where its track is 0.200 mm (under the net's width rule, 0.300 mm): the track ends outside U6-3
+narrow pad joint: VSYS on B.Cu at (93.380, 100.126) mm, 0.105 mm wide where its track is 0.200 mm (under the net's width rule, 0.300 mm): the track ends outside U6-4
+narrow pad joint: Net-(R16-Pad2) on B.Cu at (85.430, 93.126) mm, 0.109 mm wide where its track is 0.200 mm (within the net's width rule, 0.000 mm): the track ends outside SW2-1
+narrow pad joint: Net-(R18-Pad2) on B.Cu at (115.030, 91.476) mm, 0.183 mm wide where its track is 0.200 mm (within the net's width rule, 0.000 mm): the track ends outside SW1-1
+narrow pad joint: Net-(R18-Pad2) on B.Cu at (115.480, 95.176) mm, 0.134 mm wide where its track is 0.200 mm (within the net's width rule, 0.000 mm): the track ends outside SW1-1
+narrow pad joint: GND on B.Cu at (94.212, 100.873) mm, 0.108 mm wide where its track is 0.200 mm (within the net's width rule, 0.000 mm): the track ends outside U6-2
+dropped 16 pour fills new copper cuts; KiCad refills them
+deadline: time ran out in shove
+memory: peak 507 MB

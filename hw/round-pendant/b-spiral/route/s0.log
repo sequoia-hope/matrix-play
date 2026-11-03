@@ -1,0 +1,536 @@
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: rule "SW scan width" (line 32): '=' in "A.NetName == '/Driver 1 and matrix/SW1_1' || A.NetName =~ '*/SW?_?'"; not applied
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SCLK length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD0 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD1 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD2 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD3 length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SS length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) length": length checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "USB_DM no vias": via_count checked after routing, not routed to
+warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-spiral/round-pendant.kicad_dru: custom rule "USB_DP no vias": via_count checked after routing, not routed to
+warning: stackup thickness 0.980000 mm differs from general thickness 1.000000 mm; using the stackup
+memory: 687 MB estimated (3456486 nodes at 0.05 mm, 8 classes, 1 searching the whole board), 12288 MB allowed by its cgroup's memory.max
+prefanout: 7 parts, 17 inward, 169 of 179 escaped (10 failed), 126 vias, skipped 0 no-net 0 pth 13 exposed 180 escaped, 24.9 s
+planes: 97 of 109 pads off their planes joined, 26.2 s
+pairs: 3 pairs, 3 of 3 runs coupled, 18.5 mm, 44.0 s
+negotiated 818 of 1029 connections in 30 rounds, 512 vias, 347.3 s
+finishing: 31 connections laid on a finer grid round them
+rip-up: 130 tries, 11 kept, 109 ripped; lost 40 with no way through, 4 to copper it may not rip, 75 no better; 1056.1 s
+shove pass 1: 0 trapped tried, 0 routed out, 0 kept, 166 -> 166 open, 1056.6 s
+pairs: 18 pieces of pair copper unlocked round 166 open connections
+shove pass 1: 0 trapped tried, 0 routed out, 0 kept, 166 -> 166 open, 1057.1 s
+vias: 116 of 631 dropped, 105 of 2383 tries kept, 1111.0 s
+pulled tight: 12724 -> 3876 segments, 3745 -> 3521 mm, 1111.1 s
+dropped 12 doubled, pruned 252 dangling, open 166 -> 164, 1111.2 s
+refinished 15 more (6 on a finer grid), open 164 -> 149, 1120.0 s
+tune: /MCU/USB_DP_MCU//MCU/USB_DM_MCU skew 0.05 -> 0.05 mm
+tune: /Power/USB_DP_C//Power/USB_DM_C skew 2.42 -> 0.00 mm
+routed 32 more, 235 failed, 149 open, 1120.0 s
+mended 8 joints where round ends only overlapped
+mended 484 pad joints where a track's end only reached the pad's edge
+bridged 231 places where a track only grazed its net's copper
+split 107 tracks where others end on them
+pruned 534 dangling after the split
+rules: length: /MCU/QSPI_SS is 25.17 mm, over rule "/MCU/QSPI_SS length"'s 25.00 mm
+neck: VBAT 0.2 mm wide for 1.34 mm into BT1-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: /Power/BAT_N 0.2 mm wide for 0.82 mm into U8-5, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: /Power/BAT_N 0.2 mm wide for 0.48 mm into C6-2, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: /Power/BAT_N 0.2 mm wide for 1.05 mm into BT1-2, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: /Power/BAT_N 0.2 mm wide for 0.32 mm into U8-4, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.93 mm into C5-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 1.94 mm into R8-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 1.37 mm into C5-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 1.98 mm into TP3-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VSYS 0.2 mm wide for 0.68 mm into C35-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.35 mm into U5-3, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.50 mm into U5-2, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: VBUS 0.2 mm wide for 0.92 mm into U7-5, under the 0.25 mm its width rule asks: no wider leg reaches the pin
+neck: VBUS 0.2 mm wide for 4.53 mm into C1-1, under the 0.25 mm its width rule asks: no wider leg reaches the pin
+neck: VBUS 0.2 mm wide for 0.75 mm into J1-5, under the 0.25 mm its width rule asks: no wider leg reaches the pin
+neck: VBAT 0.2 mm wide for 0.51 mm into R8-1, under the 0.3 mm its width rule asks: no wider leg reaches the pin
+neck: KiCad allows /Power/BAT_N's necks into BT1 with this rule after the net's own: (rule "/Power/BAT_N neck into BT1" (condition "A.NetName == '/Power/BAT_N' && A.intersectsCourtyard('BT1')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows /Power/BAT_N's necks into C6 with this rule after the net's own: (rule "/Power/BAT_N neck into C6" (condition "A.NetName == '/Power/BAT_N' && A.intersectsCourtyard('C6')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows /Power/BAT_N's necks into U8 with this rule after the net's own: (rule "/Power/BAT_N neck into U8" (condition "A.NetName == '/Power/BAT_N' && A.intersectsCourtyard('U8')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into BT1 with this rule after the net's own: (rule "VBAT neck into BT1" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('BT1')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into C5 with this rule after the net's own: (rule "VBAT neck into C5" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('C5')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into R8 with this rule after the net's own: (rule "VBAT neck into R8" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('R8')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into TP3 with this rule after the net's own: (rule "VBAT neck into TP3" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('TP3')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBAT's necks into U5 with this rule after the net's own: (rule "VBAT neck into U5" (condition "A.NetName == 'VBAT' && A.intersectsCourtyard('U5')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBUS's necks into C1 with this rule after the net's own: (rule "VBUS neck into C1" (condition "A.NetName == 'VBUS' && A.intersectsCourtyard('C1')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBUS's necks into J1 with this rule after the net's own: (rule "VBUS neck into J1" (condition "A.NetName == 'VBUS' && A.intersectsCourtyard('J1')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VBUS's necks into U7 with this rule after the net's own: (rule "VBUS neck into U7" (condition "A.NetName == 'VBUS' && A.intersectsCourtyard('U7')") (constraint track_width (min 0.2mm)))
+neck: KiCad allows VSYS's necks into C35 with this rule after the net's own: (rule "VSYS neck into C35" (condition "A.NetName == 'VSYS' && A.intersectsCourtyard('C35')") (constraint track_width (min 0.2mm)))
+narrow pad joint: VSYS on B.Cu at (93.570, 100.725) mm, 0.263 mm wide where its track is 0.300 mm (under the net's width rule, 0.300 mm): the track ends outside U6-3
+narrow pad joint: VSYS on B.Cu at (93.570, 100.075) mm, 0.263 mm wide where its track is 0.300 mm (under the net's width rule, 0.300 mm): the track ends outside U6-4
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (93.030, 90.176) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D27-4
+narrow pad joint: /Driver 1 and matrix/CS1_18 on F.Cu at (99.630, 97.176) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D51-1
+narrow pad joint: /Driver 1 and matrix/CS1_10 on F.Cu at (95.630, 86.126) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D30-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (89.380, 109.376) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D70-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (88.680, 110.076) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D66-4
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (90.830, 111.976) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D88-2
+narrow pad joint: /Driver 1 and matrix/CS1_30 on F.Cu at (90.430, 112.826) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D84-1
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (99.530, 94.926) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D54-4
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (96.430, 95.376) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D53-4
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (116.530, 98.776) mm, 0.078 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D224-4
+narrow pad joint: /Driver 1 and matrix/CS1_21 on F.Cu at (96.930, 115.076) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D61-1
+narrow pad joint: /Driver 2 and matrix/CS2_32 on F.Cu at (114.380, 101.126) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D210-2
+narrow pad joint: /Driver 1 and matrix/CS1_21 on F.Cu at (99.630, 111.976) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D59-1
+narrow pad joint: /Driver 1 and matrix/CS1_32 on F.Cu at (84.580, 103.426) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D93-2
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (102.630, 86.026) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D178-4
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (90.580, 93.776) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D17-4
+narrow pad joint: /Driver 1 and matrix/CS1_15 on F.Cu at (94.880, 96.426) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D42-1
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (90.580, 91.876) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D18-4
+narrow pad joint: /Driver 2 and matrix/CS2_35 on F.Cu at (117.230, 97.876) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D224-2
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (90.980, 108.776) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D72-4
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (91.030, 109.976) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D72-2
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (104.630, 110.026) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D156-2
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (103.780, 111.426) mm, 0.072 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D157-2
+narrow pad joint: /Driver 2 and matrix/CS2_21 on F.Cu at (100.430, 87.676) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D180-1
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (90.730, 110.776) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D88-4
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (96.930, 111.076) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D85-4
+narrow pad joint: /Driver 2 and matrix/CS2_13 on F.Cu at (101.430, 112.326) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D159-4
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (88.530, 91.726) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D3-4
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (84.030, 97.826) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D102-2
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (89.030, 89.676) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D2-4
+narrow pad joint: /Driver 1 and matrix/CS1_30 on F.Cu at (87.280, 111.426) mm, 0.075 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D82-1
+narrow pad joint: /Driver 2 and matrix/CS2_8 on F.Cu at (110.330, 112.376) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D139-2
+narrow pad joint: /Driver 2 and matrix/CS2_8 on F.Cu at (110.780, 110.626) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D138-2
+narrow pad joint: /Driver 2 and matrix/CS2_13 on F.Cu at (99.830, 113.476) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D161-4
+narrow pad joint: /Driver 1 and matrix/CS1_6 on F.Cu at (91.730, 96.876) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D13-1
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (86.580, 91.976) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D110-4
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (102.880, 86.326) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D178-4
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (114.080, 98.326) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D202-4
+narrow pad joint: /Driver 1 and matrix/CS1_30 on F.Cu at (91.580, 111.476) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D88-1
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (109.980, 110.676) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D138-4
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (96.780, 95.826) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D53-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (92.930, 108.926) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D71-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (94.630, 109.576) mm, 0.083 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D69-4
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (96.580, 111.276) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D85-4
+narrow pad joint: /Driver 2 and matrix/CS2_10 on F.Cu at (101.130, 115.026) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D150-4
+narrow pad joint: /Driver 2 and matrix/CS2_10 on F.Cu at (102.680, 114.126) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D148-4
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (86.780, 90.626) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D109-1
+narrow pad joint: Net-(R16-Pad2) on B.Cu at (85.430, 93.126) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside SW2-1
+narrow pad joint: Net-(R16-Pad2) on B.Cu at (84.580, 95.226) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside SW2-1
+narrow pad joint: /Driver 1 and matrix/CS1_13 on F.Cu at (97.980, 90.026) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D43-4
+narrow pad joint: /Driver 1 and matrix/CS1_13 on F.Cu at (97.080, 92.076) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D45-4
+narrow pad joint: /Driver 2 and matrix/CS2_21 on F.Cu at (101.480, 85.876) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D178-1
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (115.330, 96.826) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D222-4
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (110.830, 89.676) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D192-1
+narrow pad joint: /Driver 1 and matrix/CS1_17 on F.Cu at (97.930, 99.526) mm, 0.082 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D50-2
+narrow pad joint: /Driver 2 and matrix/CS2_11 on F.Cu at (106.230, 110.526) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D146-2
+narrow pad joint: /Driver 2 and matrix/CS2_6 on F.Cu at (109.230, 109.476) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D128-1
+narrow pad joint: /Driver 2 and matrix/CS2_6 on F.Cu at (108.380, 111.876) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D129-1
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (91.730, 90.876) mm, 0.083 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D27-1
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (93.130, 110.126) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D71-2
+narrow pad joint: /Driver 2 and matrix/CS2_26 on F.Cu at (115.180, 92.176) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D195-2
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (85.830, 89.526) mm, 0.085 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D109-4
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (86.080, 95.276) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D111-1
+narrow pad joint: /Driver 2 and matrix/CS2_2 on F.Cu at (112.280, 112.476) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D123-2
+narrow pad joint: /Driver 2 and matrix/CS2_21 on F.Cu at (100.430, 84.226) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D176-1
+narrow pad joint: /Driver 1 and matrix/CS1_12 on F.Cu at (98.080, 83.776) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D29-1
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (107.230, 111.676) mm, 0.100 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D129-2
+narrow pad joint: /Driver 2 and matrix/CS2_29 on F.Cu at (115.130, 99.626) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D204-2
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (111.680, 86.926) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D186-4
+narrow pad joint: /Driver 1 and matrix/CS1_8 on F.Cu at (92.230, 90.076) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D27-2
+narrow pad joint: /Driver 1 and matrix/CS1_11 on F.Cu at (94.080, 86.776) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D34-2
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (87.130, 87.176) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D1-4
+narrow pad joint: /Driver 2 and matrix/CS2_33 on F.Cu at (111.530, 96.976) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D208-1
+narrow pad joint: /Driver 1 and matrix/CS1_32 on F.Cu at (83.130, 97.976) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D91-2
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (107.230, 89.976) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D190-4
+narrow pad joint: /Driver 1 and matrix/CS1_21 on F.Cu at (96.730, 117.026) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D57-1
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (99.980, 109.176) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D68-2
+narrow pad joint: /Driver 1 and matrix/CS1_15 on F.Cu at (96.630, 86.576) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D38-1
+narrow pad joint: /Driver 1 and matrix/CS1_33 on F.Cu at (83.580, 100.526) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D92-1
+narrow pad joint: /Driver 1 and matrix/CS1_10 on F.Cu at (100.230, 82.826) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D28-4
+narrow pad joint: /Driver 1 and matrix/CS1_31 on F.Cu at (98.730, 104.776) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D95-4
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (93.680, 107.876) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D76-2
+narrow pad joint: /Driver 1 and matrix/CS1_32 on F.Cu at (99.230, 105.376) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D95-2
+narrow pad joint: /Driver 1 and matrix/CS1_36 on F.Cu at (84.330, 96.026) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D101-1
+narrow pad joint: /Driver 1 and matrix/CS1_36 on F.Cu at (83.930, 92.826) mm, 0.090 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D100-1
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (104.530, 107.126) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D155-2
+narrow pad joint: /Driver 2 and matrix/CS2_17 on F.Cu at (101.580, 108.576) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D168-2
+narrow pad joint: /Driver 2 and matrix/CS2_17 on F.Cu at (100.630, 111.226) mm, 0.095 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D170-2
+narrow pad joint: /Driver 2 and matrix/SW2_6 on F.Cu at (106.030, 83.276) mm, 0.116 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D177-3
+narrow pad joint: /Driver 1 and matrix/CS1_27 on F.Cu at (83.580, 104.176) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D74-1
+narrow pad joint: /Driver 2 and matrix/CS2_2 on F.Cu at (103.280, 96.226) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D126-2
+narrow pad joint: /Driver 2 and matrix/CS2_8 on F.Cu at (109.880, 112.726) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D139-2
+narrow pad joint: /Driver 2 and matrix/CS2_26 on F.Cu at (116.730, 95.326) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D197-2
+narrow pad joint: /Driver 1 and matrix/CS1_18 on F.Cu at (98.030, 91.926) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D47-1
+narrow pad joint: /Driver 2 and matrix/CS2_11 on F.Cu at (106.730, 110.226) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D146-2
+narrow pad joint: /Driver 1 and matrix/CS1_25 on F.Cu at (91.280, 107.876) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D78-4
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (95.080, 105.326) mm, 0.078 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D103-2
+narrow pad joint: /Driver 1 and matrix/CS1_34 on F.Cu at (95.080, 104.126) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D103-4
+narrow pad joint: /Driver 1 and matrix/CS1_34 on F.Cu at (96.780, 104.926) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D104-4
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (97.780, 103.826) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D5-4
+narrow pad joint: /Driver 2 and matrix/CS2_9 on F.Cu at (109.980, 111.526) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D139-1
+narrow pad joint: /Driver 1 and matrix/CS1_12 on F.Cu at (95.480, 99.176) mm, 0.095 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D32-1
+narrow pad joint: /Driver 2 and matrix/CS2_10 on F.Cu at (106.830, 109.026) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D145-4
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (102.280, 87.726) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D187-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (103.180, 101.576) mm, 0.094 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D169-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (102.680, 103.576) mm, 0.075 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D167-4
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (101.530, 97.626) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D144-4
+narrow pad joint: /Driver 1 and matrix/CS1_18 on F.Cu at (96.280, 98.326) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D49-1
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (93.180, 98.226) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D22-4
+narrow pad joint: /Driver 2 and matrix/CS2_2 on F.Cu at (113.530, 107.476) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D120-2
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (99.730, 102.776) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D23-4
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (84.480, 104.226) mm, 0.072 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D74-2
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (106.430, 95.826) mm, 0.082 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D234-2
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (89.930, 102.276) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D114-1
+narrow pad joint: /Driver 1 and matrix/CS1_10 on F.Cu at (94.030, 92.376) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D33-4
+narrow pad joint: /Driver 1 and matrix/CS1_38 on F.Cu at (88.980, 98.826) mm, 0.092 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D116-2
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (113.525, 103.821) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D227-2
+narrow pad joint: /Driver 2 and matrix/CS2_3 on F.Cu at (110.167, 101.706) mm, 0.083 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D122-1
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (91.883, 100.966) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D6-4
+narrow pad joint: /Driver 2 and matrix/CS2_39 on F.Cu at (110.562, 100.089) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D230-1
+narrow pad joint: /Driver 1 and matrix/CS1_31 on F.Cu at (87.771, 102.851) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D99-4
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (90.426, 102.972) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D112-4
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (89.501, 101.497) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D114-4
+narrow pad joint: /Driver 2 and matrix/CS2_15 on F.Cu at (103.836, 105.045) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D154-1
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (92.090, 107.509) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D78-2
+narrow pad joint: /Driver 1 and matrix/CS1_25 on F.Cu at (97.601, 106.834) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D77-4
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (97.392, 97.676) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D49-4
+narrow pad joint: /Driver 1 and matrix/CS1_14 on F.Cu at (98.617, 88.614) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D39-2
+narrow pad joint: /Driver 1 and matrix/CS1_13 on F.Cu at (97.530, 86.676) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D38-4
+narrow pad joint: /Driver 2 and matrix/CS2_9 on F.Cu at (106.880, 99.126) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D140-1
+narrow pad joint: /Driver 1 and matrix/CS1_18 on F.Cu at (97.830, 100.076) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D50-1
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (103.180, 90.076) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D194-4
+narrow pad joint: /Driver 2 and matrix/SW2_5 on F.Cu at (108.230, 105.626) mm, 0.103 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D131-3
+narrow pad joint: /Driver 2 and matrix/SW2_9 on F.Cu at (101.180, 95.626) mm, 0.114 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D207-3
+narrow pad joint: /Driver 1 and matrix/SW1_8 on F.Cu at (92.730, 93.226) mm, 0.116 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D26-3
+narrow pad joint: /Driver 2 and matrix/CS2_33 on F.Cu at (113.830, 99.976) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D210-1
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (89.480, 108.176) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D70-2
+narrow pad joint: /Driver 1 and matrix/CS1_10 on F.Cu at (95.580, 87.426) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D36-4
+narrow pad joint: /Driver 2 and matrix/CS2_18 on F.Cu at (101.380, 105.976) mm, 0.081 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D165-1
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (91.930, 93.276) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D26-1
+narrow pad joint: /Driver 1 and matrix/CS1_12 on F.Cu at (98.380, 84.026) mm, 0.081 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D29-1
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (115.080, 99.076) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D204-4
+narrow pad joint: /Driver 1 and matrix/SW1_5 on F.Cu at (94.830, 100.276) mm, 0.157 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D32-3
+narrow pad joint: /Driver 2 and matrix/CS2_11 on F.Cu at (106.930, 108.226) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D145-2
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (101.830, 84.576) mm, 0.092 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D176-4
+narrow pad joint: /Driver 2 and matrix/CS2_20 on F.Cu at (105.680, 84.376) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D177-2
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (103.580, 88.326) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D187-1
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (107.630, 89.876) mm, 0.093 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D190-4
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (98.480, 98.026) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D51-4
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (98.380, 98.776) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D50-4
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (97.180, 116.226) mm, 0.085 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D57-2
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (96.430, 115.826) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D61-2
+narrow pad joint: /Driver 1 and matrix/CS1_34 on F.Cu at (86.380, 100.776) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D108-4
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (104.430, 88.376) mm, 0.081 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D181-1
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (109.080, 112.626) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D139-4
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (108.830, 113.476) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D141-4
+narrow pad joint: /Driver 2 and matrix/CS2_15 on F.Cu at (104.330, 107.926) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D155-1
+narrow pad joint: /Driver 2 and matrix/CS2_15 on F.Cu at (104.630, 108.776) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D156-1
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (102.580, 82.726) mm, 0.085 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D174-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (101.780, 103.226) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D163-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (102.680, 103.176) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D167-4
+narrow pad joint: /Driver 2 and matrix/CS2_18 on F.Cu at (101.380, 110.376) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D170-1
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (112.780, 101.826) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D226-2
+narrow pad joint: /Driver 1 and matrix/CS1_30 on F.Cu at (89.430, 112.376) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D83-1
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (93.230, 84.876) mm, 0.090 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D20-4
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (90.630, 109.576) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D72-2
+narrow pad joint: /Driver 2 and matrix/SW2_9 on F.Cu at (105.180, 96.026) mm, 0.105 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D234-3
+narrow pad joint: /Driver 1 and matrix/CS1_5 on F.Cu at (89.030, 88.376) mm, 0.078 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D11-2
+narrow pad joint: /Driver 1 and matrix/CS1_5 on F.Cu at (89.830, 89.476) mm, 0.089 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D16-2
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (91.580, 112.576) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D84-2
+narrow pad joint: /Driver 1 and matrix/CS1_38 on F.Cu at (85.680, 91.826) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D110-2
+narrow pad joint: /Driver 1 and matrix/CS1_38 on F.Cu at (85.980, 90.726) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D109-2
+narrow pad joint: /Driver 2 and matrix/CS2_9 on F.Cu at (106.280, 99.176) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D140-1
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (96.030, 94.226) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D48-4
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (93.530, 115.826) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D56-2
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (92.330, 115.576) mm, 0.085 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D55-2
+narrow pad joint: /Driver 1 and matrix/CS1_21 on F.Cu at (100.230, 115.926) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D62-1
+narrow pad joint: /Driver 2 and matrix/CS2_32 on F.Cu at (115.330, 101.676) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D213-2
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (115.680, 97.026) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D222-4
+narrow pad joint: /Power/BAT_N on B.Cu at (106.180, 112.276) mm, 0.130 mm wide where its track is 0.200 mm (under the net's width rule, 0.300 mm): the track ends outside U8-4
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (92.080, 86.776) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D21-1
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (92.630, 88.126) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D25-1
+narrow pad joint: /Driver 2 and matrix/CS2_31 on F.Cu at (109.680, 97.176) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D212-4
+narrow pad joint: /Driver 2 and matrix/CS2_12 on F.Cu at (106.080, 108.526) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D145-1
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (90.880, 95.226) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D15-4
+narrow pad joint: /Driver 2 and matrix/CS2_11 on F.Cu at (102.030, 115.726) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D150-2
+narrow pad joint: /Driver 2 and matrix/CS2_18 on F.Cu at (100.480, 103.876) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D163-1
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (90.480, 93.376) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D17-4
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (104.780, 88.226) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D181-1
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (97.730, 113.476) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D58-2
+narrow pad joint: /Driver 2 and matrix/CS2_29 on F.Cu at (113.330, 95.676) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D201-2
+narrow pad joint: /Driver 2 and matrix/CS2_35 on F.Cu at (116.130, 96.326) mm, 0.090 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D222-2
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (91.730, 91.276) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D27-1
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (91.530, 92.876) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D26-1
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (92.530, 109.026) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D71-4
+narrow pad joint: /Driver 2 and matrix/CS2_18 on F.Cu at (100.330, 103.326) mm, 0.074 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D163-1
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (101.530, 84.876) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D176-4
+narrow pad joint: /Driver 2 and matrix/CS2_21 on F.Cu at (101.430, 86.426) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D178-1
+narrow pad joint: /Driver 2 and matrix/CS2_21 on F.Cu at (101.430, 82.626) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D174-1
+narrow pad joint: /Driver 2 and matrix/CS2_36 on F.Cu at (110.730, 91.626) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D218-1
+narrow pad joint: /Driver 2 and matrix/SW2_5 on F.Cu at (109.280, 101.826) mm, 0.120 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D122-3
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (88.430, 93.776) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D7-4
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (88.580, 95.376) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D9-4
+narrow pad joint: /Driver 1 and matrix/CS1_6 on F.Cu at (89.630, 94.876) mm, 0.075 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D17-1
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (92.380, 111.126) mm, 0.087 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D89-4
+narrow pad joint: /Driver 2 and matrix/CS2_13 on F.Cu at (102.580, 111.276) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D157-4
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (106.830, 86.776) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D182-4
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (106.780, 88.076) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D182-1
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (108.380, 87.576) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D183-1
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (88.330, 93.426) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D7-4
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (87.530, 93.676) mm, 0.099 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D7-2
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (87.330, 91.976) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D3-2
+narrow pad joint: /Driver 1 and matrix/CS1_15 on F.Cu at (99.080, 88.026) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D39-1
+narrow pad joint: /Driver 1 and matrix/CS1_19 on F.Cu at (97.080, 112.476) mm, 0.074 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D58-4
+narrow pad joint: /Driver 1 and matrix/CS1_19 on F.Cu at (98.530, 111.876) mm, 0.076 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D59-4
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (92.780, 111.076) mm, 0.090 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D89-4
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (94.330, 111.076) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D87-4
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (85.080, 99.176) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D106-2
+narrow pad joint: /Driver 2 and matrix/CS2_26 on F.Cu at (111.630, 90.126) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D192-2
+narrow pad joint: /Driver 2 and matrix/CS2_26 on F.Cu at (113.280, 90.776) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D193-2
+narrow pad joint: /Driver 2 and matrix/CS2_30 on F.Cu at (115.680, 100.176) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D204-1
+narrow pad joint: /Driver 2 and matrix/CS2_30 on F.Cu at (117.380, 99.926) mm, 0.083 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D206-1
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (88.430, 91.376) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D3-4
+narrow pad joint: /Driver 1 and matrix/CS1_30 on F.Cu at (89.030, 112.026) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D83-1
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (92.930, 105.776) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D105-2
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (94.680, 105.326) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D103-2
+narrow pad joint: /Driver 2 and matrix/CS2_13 on F.Cu at (101.230, 112.626) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D159-4
+narrow pad joint: /Driver 2 and matrix/CS2_23 on F.Cu at (113.580, 88.826) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D188-2
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (105.180, 91.676) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D223-4
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (106.830, 92.176) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D221-4
+narrow pad joint: /Driver 1 and matrix/CS1_3 on F.Cu at (87.830, 90.126) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D2-1
+narrow pad joint: /Driver 1 and matrix/CS1_3 on F.Cu at (87.580, 88.376) mm, 0.093 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D1-1
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (91.830, 88.026) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D12-4
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (91.030, 89.526) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D16-4
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (83.580, 95.526) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D101-2
+narrow pad joint: /Driver 2 and matrix/CS2_33 on F.Cu at (111.230, 96.776) mm, 0.086 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D208-1
+narrow pad joint: /Driver 2 and matrix/CS2_33 on F.Cu at (109.780, 95.876) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D212-1
+narrow pad joint: /Driver 2 and matrix/CS2_35 on F.Cu at (115.980, 95.776) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D222-2
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (94.030, 116.026) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D56-2
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (86.330, 93.826) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D111-4
+narrow pad joint: /Driver 1 and matrix/CS1_38 on F.Cu at (85.630, 94.176) mm, 0.076 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D111-2
+narrow pad joint: /Driver 1 and matrix/CS1_38 on F.Cu at (85.430, 92.326) mm, 0.074 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D110-2
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (104.580, 86.126) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D172-4
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (113.130, 96.976) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D201-4
+narrow pad joint: /Driver 1 and matrix/CS1_6 on F.Cu at (89.780, 90.676) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D16-1
+narrow pad joint: /Driver 1 and matrix/CS1_6 on F.Cu at (89.430, 92.426) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D18-1
+narrow pad joint: /Driver 2 and matrix/CS2_32 on F.Cu at (114.380, 100.576) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D210-2
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (109.130, 112.226) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D139-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (101.530, 100.676) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D171-4
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (104.930, 85.926) mm, 0.078 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D172-4
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (106.780, 85.976) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D175-4
+narrow pad joint: /Driver 2 and matrix/CS2_30 on F.Cu at (109.780, 93.526) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D199-1
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (108.830, 94.126) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D199-4
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (112.730, 93.876) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D219-4
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (113.930, 95.126) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D220-4
+narrow pad joint: /Driver 1 and matrix/CS1_28 on F.Cu at (94.730, 110.926) mm, 0.072 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D87-4
+narrow pad joint: /Driver 1 and matrix/CS1_34 on F.Cu at (84.630, 94.976) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D101-4
+narrow pad joint: /Driver 1 and matrix/CS1_34 on F.Cu at (84.730, 96.826) mm, 0.074 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D102-4
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (109.680, 88.176) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D183-4
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (113.430, 90.026) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D188-4
+narrow pad joint: /Driver 2 and matrix/CS2_36 on F.Cu at (112.280, 92.526) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D219-1
+narrow pad joint: /Driver 2 and matrix/CS2_36 on F.Cu at (113.680, 93.726) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D220-1
+narrow pad joint: Net-(R18-Pad2) on B.Cu at (114.630, 93.076) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside SW1-1
+narrow pad joint: Net-(R18-Pad2) on B.Cu at (115.480, 95.176) mm, 0.087 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside SW1-1
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (95.530, 102.176) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D4-2
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (97.630, 102.626) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D5-2
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (89.080, 113.226) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D83-2
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (87.230, 112.226) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D82-2
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (114.280, 95.276) mm, 0.072 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D220-4
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (110.580, 87.726) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D184-1
+narrow pad joint: /Driver 2 and matrix/CS2_1 on F.Cu at (109.780, 114.476) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D125-4
+narrow pad joint: /Driver 1 and matrix/CS1_17 on F.Cu at (99.180, 98.326) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D51-2
+narrow pad joint: /Driver 2 and matrix/CS2_6 on F.Cu at (105.730, 115.126) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D132-1
+narrow pad joint: /Driver 2 and matrix/CS2_6 on F.Cu at (104.080, 116.276) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D134-1
+narrow pad joint: /Driver 2 and matrix/CS2_17 on F.Cu at (101.080, 102.826) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D163-2
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (86.480, 94.226) mm, 0.091 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D111-4
+narrow pad joint: /Driver 2 and matrix/CS2_35 on F.Cu at (104.280, 91.476) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D223-2
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (92.530, 88.476) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D25-1
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (95.480, 109.676) mm, 0.094 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D69-2
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (97.480, 111.226) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D85-2
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (86.030, 92.976) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D110-1
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (108.780, 90.276) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D191-4
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (111.180, 90.876) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D192-4
+narrow pad joint: /Driver 1 and matrix/CS1_24 on F.Cu at (84.580, 108.726) mm, 0.075 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D64-1
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (108.780, 110.276) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D128-2
+narrow pad joint: /Driver 2 and matrix/CS2_8 on F.Cu at (107.980, 113.726) mm, 0.086 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D141-2
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (103.630, 116.926) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D134-2
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (106.580, 88.876) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D190-1
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (109.080, 89.026) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D191-1
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (92.880, 113.926) mm, 0.074 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D90-2
+narrow pad joint: /Driver 1 and matrix/CS1_5 on F.Cu at (89.330, 93.676) mm, 0.086 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D17-2
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (115.630, 99.076) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D204-4
+narrow pad joint: /Driver 2 and matrix/CS2_23 on F.Cu at (111.630, 86.126) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D186-2
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (93.380, 84.476) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D20-4
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (93.080, 86.226) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D21-4
+narrow pad joint: /Driver 1 and matrix/CS1_23 on F.Cu at (88.680, 111.276) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D66-2
+narrow pad joint: /Driver 2 and matrix/CS2_6 on F.Cu at (106.280, 113.876) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D130-1
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (88.580, 89.276) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D2-4
+narrow pad joint: /Driver 1 and matrix/CS1_21 on F.Cu at (94.630, 115.326) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D56-1
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (113.530, 91.626) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D193-4
+narrow pad joint: /Driver 2 and matrix/CS2_4 on F.Cu at (102.730, 116.826) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D134-4
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (102.230, 95.026) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D207-4
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (106.180, 113.026) mm, 0.083 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D130-2
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (105.030, 115.676) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D132-2
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (109.130, 113.976) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D141-4
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (106.480, 116.276) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D143-4
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (83.730, 94.976) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D101-2
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (84.680, 92.576) mm, 0.076 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D100-2
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (102.580, 109.276) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D168-4
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (106.280, 89.376) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D190-1
+narrow pad joint: /Driver 2 and matrix/CS2_30 on F.Cu at (115.430, 100.476) mm, 0.086 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D204-1
+narrow pad joint: /Driver 2 and matrix/CS2_1 on F.Cu at (111.480, 112.876) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D123-4
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (114.530, 106.876) mm, 0.081 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D231-2
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (98.030, 107.526) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D77-2
+narrow pad joint: /Driver 2 and matrix/CS2_31 on F.Cu at (107.880, 96.576) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D214-4
+narrow pad joint: /Driver 2 and matrix/CS2_31 on F.Cu at (104.180, 94.526) mm, 0.078 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D216-4
+narrow pad joint: /Driver 2 and matrix/CS2_39 on F.Cu at (113.830, 109.676) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D233-1
+narrow pad joint: /Driver 2 and matrix/CS2_3 on F.Cu at (111.080, 113.876) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D125-1
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (104.230, 109.926) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D156-2
+narrow pad joint: /Driver 1 and matrix/CS1_27 on F.Cu at (82.330, 102.076) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D73-1
+narrow pad joint: /Driver 2 and matrix/CS2_9 on F.Cu at (105.780, 98.226) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D142-1
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (109.330, 85.776) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D179-4
+narrow pad joint: /Driver 1 and matrix/CS1_5 on F.Cu at (91.980, 98.126) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D13-2
+narrow pad joint: /Driver 2 and matrix/SW2_6 on F.Cu at (110.480, 86.626) mm, 0.137 mm wide where its track is 0.200 mm (within the net's width rule, 0.090 mm): the track ends outside D186-3
+narrow pad joint: /Driver 2 and matrix/CS2_17 on F.Cu at (103.230, 107.276) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D166-2
+narrow pad joint: /Driver 1 and matrix/CS1_27 on F.Cu at (85.530, 107.026) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D75-1
+narrow pad joint: /Driver 2 and matrix/CS2_13 on F.Cu at (103.480, 109.626) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D156-4
+narrow pad joint: /Driver 2 and matrix/CS2_26 on F.Cu at (115.430, 92.676) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D195-2
+narrow pad joint: /Driver 2 and matrix/CS2_19 on F.Cu at (104.780, 83.426) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D177-4
+narrow pad joint: /Driver 1 and matrix/CS1_6 on F.Cu at (89.480, 92.826) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D18-1
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (107.230, 86.676) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D182-4
+narrow pad joint: /Driver 1 and matrix/CS1_30 on F.Cu at (90.480, 113.226) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D84-1
+narrow pad joint: /Driver 1 and matrix/CS1_29 on F.Cu at (89.480, 113.226) mm, 0.085 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D83-2
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (105.880, 103.076) mm, 0.075 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D158-2
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (87.680, 107.226) mm, 0.090 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D79-2
+narrow pad joint: /Driver 2 and matrix/CS2_30 on F.Cu at (110.030, 94.026) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D199-1
+narrow pad joint: /Driver 1 and matrix/CS1_14 on F.Cu at (97.430, 86.126) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D38-2
+narrow pad joint: /Driver 2 and matrix/CS2_15 on F.Cu at (105.430, 100.376) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D160-1
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (100.330, 92.326) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D198-1
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (100.680, 91.376) mm, 0.083 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D196-1
+narrow pad joint: /Driver 2 and matrix/CS2_23 on F.Cu at (101.280, 89.676) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D189-2
+narrow pad joint: /Driver 2 and matrix/CS2_12 on F.Cu at (106.530, 104.326) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D151-1
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (102.430, 113.026) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D159-2
+narrow pad joint: /Driver 1 and matrix/CS1_34 on F.Cu at (93.080, 104.576) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D105-4
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (92.680, 92.026) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D26-4
+narrow pad joint: /Driver 2 and matrix/CS2_12 on F.Cu at (105.330, 111.926) mm, 0.084 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D147-1
+narrow pad joint: /Driver 2 and matrix/CS2_12 on F.Cu at (105.480, 110.326) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D146-1
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (97.030, 105.676) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D104-2
+narrow pad joint: /Driver 1 and matrix/CS1_1 on F.Cu at (96.230, 102.776) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D4-4
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (109.080, 94.626) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D199-4
+narrow pad joint: /Driver 2 and matrix/CS2_28 on F.Cu at (111.230, 95.526) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D200-4
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (102.130, 91.326) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D196-4
+narrow pad joint: /Driver 2 and matrix/CS2_25 on F.Cu at (103.030, 89.726) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D194-4
+narrow pad joint: /Driver 2 and matrix/CS2_34 on F.Cu at (112.330, 93.776) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D219-4
+narrow pad joint: /Driver 2 and matrix/CS2_15 on F.Cu at (104.880, 100.276) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D160-1
+narrow pad joint: /Driver 2 and matrix/CS2_22 on F.Cu at (104.630, 86.926) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D181-4
+narrow pad joint: /Driver 2 and matrix/CS2_31 on F.Cu at (116.530, 101.276) mm, 0.081 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D213-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (96.480, 107.926) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D67-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (99.130, 108.326) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D68-4
+narrow pad joint: /Driver 1 and matrix/CS1_15 on F.Cu at (94.280, 97.626) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D40-1
+narrow pad joint: /Driver 2 and matrix/CS2_35 on F.Cu at (102.130, 92.676) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D225-2
+narrow pad joint: /Driver 2 and matrix/CS2_27 on F.Cu at (114.280, 92.326) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D195-1
+narrow pad joint: /Driver 1 and matrix/CS1_18 on F.Cu at (99.730, 96.576) mm, 0.090 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D54-1
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (91.280, 98.526) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D13-4
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (113.680, 105.626) mm, 0.070 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D228-2
+narrow pad joint: /Driver 1 and matrix/CS1_14 on F.Cu at (94.530, 94.426) mm, 0.091 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D44-2
+narrow pad joint: /Driver 2 and matrix/CS2_1 on F.Cu at (113.080, 109.426) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D121-4
+narrow pad joint: /Driver 2 and matrix/CS2_7 on F.Cu at (108.130, 101.276) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D136-4
+narrow pad joint: /Driver 1 and matrix/CS1_33 on F.Cu at (86.980, 105.126) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D97-1
+narrow pad joint: /Driver 2 and matrix/CS2_9 on F.Cu at (110.380, 107.876) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D137-1
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (86.180, 109.776) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D65-4
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (85.530, 108.176) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D64-4
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (86.980, 96.626) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D115-1
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (87.330, 94.176) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D7-2
+narrow pad joint: /Driver 2 and matrix/CS2_4 on F.Cu at (108.380, 106.426) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D131-4
+narrow pad joint: /Driver 1 and matrix/CS1_25 on F.Cu at (87.680, 105.576) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D81-4
+narrow pad joint: /Driver 1 and matrix/CS1_25 on F.Cu at (85.580, 105.726) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D75-4
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (92.480, 100.926) mm, 0.080 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D6-2
+narrow pad joint: /Driver 1 and matrix/CS1_2 on F.Cu at (95.017, 102.514) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D4-2
+narrow pad joint: /Driver 1 and matrix/CS1_10 on F.Cu at (95.430, 100.876) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D32-4
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (109.417, 99.064) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D232-2
+narrow pad joint: /Driver 1 and matrix/CS1_27 on F.Cu at (86.780, 107.426) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D79-1
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (87.680, 98.476) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D117-1
+narrow pad joint: /Driver 1 and matrix/CS1_36 on F.Cu at (86.780, 102.076) mm, 0.092 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D108-1
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (85.680, 99.176) mm, 0.060 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D106-2
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (87.880, 99.876) mm, 0.088 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D107-2
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (91.730, 102.276) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D112-1
+narrow pad joint: /Driver 1 and matrix/CS1_3 on F.Cu at (89.730, 99.226) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D8-1
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (83.230, 102.226) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D73-2
+narrow pad joint: /Driver 1 and matrix/CS1_31 on F.Cu at (84.230, 101.626) mm, 0.097 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D92-4
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (109.130, 106.226) mm, 0.099 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D131-2
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (109.130, 107.026) mm, 0.079 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D127-2
+narrow pad joint: /Driver 2 and matrix/CS2_37 on F.Cu at (112.580, 106.026) mm, 0.091 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D228-4
+narrow pad joint: /Driver 2 and matrix/CS2_37 on F.Cu at (112.430, 104.376) mm, 0.094 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D227-4
+narrow pad joint: /Driver 2 and matrix/CS2_2 on F.Cu at (111.780, 106.276) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D119-2
+narrow pad joint: /Driver 1 and matrix/CS1_38 on F.Cu at (88.930, 101.576) mm, 0.061 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D114-2
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (89.580, 98.376) mm, 0.075 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D116-1
+narrow pad joint: /Driver 1 and matrix/CS1_3 on F.Cu at (88.380, 96.826) mm, 0.074 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D9-1
+narrow pad joint: /Driver 2 and matrix/CS2_33 on F.Cu at (116.780, 104.726) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D215-1
+narrow pad joint: /Driver 1 and matrix/CS1_31 on F.Cu at (83.630, 99.176) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D91-4
+narrow pad joint: /Driver 1 and matrix/CS1_13 on F.Cu at (95.580, 95.176) mm, 0.076 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D42-4
+narrow pad joint: /Driver 2 and matrix/CS2_37 on F.Cu at (115.006, 104.789) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D229-4
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (87.943, 106.079) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D81-2
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (108.192, 103.224) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D133-2
+narrow pad joint: /Driver 2 and matrix/CS2_5 on F.Cu at (106.792, 102.149) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D135-2
+narrow pad joint: /Driver 2 and matrix/CS2_8 on F.Cu at (108.692, 100.789) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D136-2
+narrow pad joint: /Driver 2 and matrix/CS2_8 on F.Cu at (107.467, 99.689) mm, 0.073 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D140-2
+narrow pad joint: /Driver 2 and matrix/CS2_4 on F.Cu at (109.167, 107.839) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D127-4
+narrow pad joint: /Driver 1 and matrix/CS1_39 on F.Cu at (89.367, 98.039) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D116-1
+narrow pad joint: /Driver 2 and matrix/CS2_38 on F.Cu at (114.475, 104.571) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D229-2
+narrow pad joint: /Driver 2 and matrix/CS2_14 on F.Cu at (104.642, 105.115) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D154-2
+narrow pad joint: /Driver 1 and matrix/CS1_33 on F.Cu at (89.542, 104.514) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D98-1
+narrow pad joint: /Driver 1 and matrix/CS1_17 on F.Cu at (99.617, 90.163) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D46-2
+narrow pad joint: /Driver 1 and matrix/CS1_35 on F.Cu at (86.204, 101.614) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D108-2
+narrow pad joint: /Driver 1 and matrix/CS1_12 on F.Cu at (95.267, 85.030) mm, 0.054 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D30-1
+narrow pad joint: /Driver 1 and matrix/CS1_31 on F.Cu at (86.621, 104.026) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D97-4
+narrow pad joint: /Driver 2 and matrix/CS2_4 on F.Cu at (108.645, 104.377) mm, 0.099 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D133-4
+narrow pad joint: /Driver 2 and matrix/CS2_4 on F.Cu at (108.695, 105.927) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D131-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (100.564, 106.407) mm, 0.081 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D165-4
+narrow pad joint: /Driver 2 and matrix/CS2_15 on F.Cu at (104.011, 107.420) mm, 0.063 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D155-1
+narrow pad joint: /Driver 1 and matrix/CS1_26 on F.Cu at (89.765, 107.009) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D80-2
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (92.177, 94.809) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D24-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (102.784, 104.748) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D164-4
+narrow pad joint: /Driver 1 and matrix/CS1_25 on F.Cu at (93.601, 106.659) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D76-4
+narrow pad joint: /Driver 1 and matrix/CS1_32 on F.Cu at (84.230, 103.176) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D93-2
+narrow pad joint: /Driver 2 and matrix/CS2_10 on F.Cu at (102.880, 113.776) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D148-4
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (98.067, 97.901) mm, 0.066 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D51-4
+narrow pad joint: /Driver 1 and matrix/CS1_13 on F.Cu at (98.080, 88.676) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D39-4
+narrow pad joint: /Driver 1 and matrix/CS1_10 on F.Cu at (95.930, 87.626) mm, 0.062 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D36-4
+narrow pad joint: /Driver 1 and matrix/CS1_8 on F.Cu at (93.417, 88.289) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D25-2
+narrow pad joint: /Driver 2 and matrix/CS2_9 on F.Cu at (108.530, 99.926) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D136-1
+narrow pad joint: /Driver 1 and matrix/CS1_14 on F.Cu at (94.817, 97.839) mm, 0.064 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D40-2
+narrow pad joint: /Driver 1 and matrix/CS1_16 on F.Cu at (100.180, 90.676) mm, 0.076 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D46-4
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (96.330, 83.526) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D19-1
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (90.130, 91.526) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D18-4
+narrow pad joint: /Driver 2 and matrix/CS2_12 on F.Cu at (105.580, 112.476) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D147-1
+narrow pad joint: /Driver 1 and matrix/CS1_19 on F.Cu at (96.930, 113.026) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D58-4
+narrow pad joint: /Driver 2 and matrix/CS2_20 on F.Cu at (102.030, 82.126) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D174-2
+narrow pad joint: /Driver 2 and matrix/CS2_13 on F.Cu at (104.980, 106.826) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D155-4
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (95.280, 114.226) mm, 0.065 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D63-2
+narrow pad joint: /Driver 1 and matrix/CS1_22 on F.Cu at (86.530, 110.226) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D65-4
+narrow pad joint: /Driver 1 and matrix/CS1_7 on F.Cu at (95.530, 82.576) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D19-4
+narrow pad joint: /Driver 1 and matrix/CS1_33 on F.Cu at (91.930, 104.526) mm, 0.100 mm wide where its track is 0.100 mm (within the net's width rule, 0.090 mm): the track ends outside D96-1
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (102.480, 108.726) mm, 0.087 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D168-4
+narrow pad joint: /Driver 1 and matrix/CS1_9 on F.Cu at (91.780, 86.276) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D21-1
+narrow pad joint: /Driver 1 and matrix/CS1_12 on F.Cu at (93.580, 87.026) mm, 0.059 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D34-1
+narrow pad joint: /Driver 1 and matrix/CS1_20 on F.Cu at (99.930, 116.776) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D62-2
+narrow pad joint: /Driver 1 and matrix/CS1_4 on F.Cu at (91.480, 87.576) mm, 0.050 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D12-4
+narrow pad joint: /Driver 2 and matrix/CS2_32 on F.Cu at (115.780, 103.926) mm, 0.051 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D215-2
+narrow pad joint: /Driver 1 and matrix/CS1_5 on F.Cu at (90.730, 87.426) mm, 0.082 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D12-2
+narrow pad joint: /Driver 1 and matrix/CS1_5 on F.Cu at (90.230, 86.326) mm, 0.069 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D10-2
+narrow pad joint: /Driver 1 and matrix/CS1_27 on F.Cu at (92.530, 106.726) mm, 0.071 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D78-1
+narrow pad joint: /Driver 1 and matrix/CS1_19 on F.Cu at (97.880, 114.876) mm, 0.058 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D60-4
+narrow pad joint: /Driver 2 and matrix/CS2_21 on F.Cu at (104.030, 84.126) mm, 0.076 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D173-1
+narrow pad joint: /Driver 1 and matrix/CS1_19 on F.Cu at (94.930, 113.476) mm, 0.056 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D63-4
+narrow pad joint: /Driver 1 and matrix/CS1_17 on F.Cu at (98.568, 91.864) mm, 0.068 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D47-2
+narrow pad joint: /Driver 2 and matrix/CS2_39 on F.Cu at (109.980, 99.026) mm, 0.072 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D232-1
+narrow pad joint: /Driver 2 and matrix/CS2_39 on F.Cu at (110.280, 99.776) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D230-1
+narrow pad joint: /Driver 2 and matrix/CS2_24 on F.Cu at (103.390, 87.975) mm, 0.055 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D187-1
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (92.723, 102.772) mm, 0.067 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D113-4
+narrow pad joint: /Driver 1 and matrix/CS1_37 on F.Cu at (90.998, 102.797) mm, 0.053 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D112-4
+narrow pad joint: /MCU/ACC_SDA on B.Cu at (109.203, 90.312) mm, 0.077 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside U9-4
+narrow pad joint: /Driver 2 and matrix/CS2_16 on F.Cu at (102.689, 107.432) mm, 0.057 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D166-4
+narrow pad joint: /Driver 1 and matrix/CS1_6 on F.Cu at (91.380, 97.076) mm, 0.052 mm wide where its track is 0.100 mm (under the net's width rule, 0.090 mm): the track ends outside D13-1
+dropped 16 pour fills new copper cuts; KiCad refills them
+deadline: time ran out in rip-up, shove
+memory: peak 609 MB

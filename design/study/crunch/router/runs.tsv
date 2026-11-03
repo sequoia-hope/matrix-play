@@ -1,0 +1,10 @@
+name	timeout	threads	bin	open	plane_open	new_errors	vias	extra
+base[v1]	1200	4	pin	118	72	64	891	--prefanout-mode inner --blame
+p420[v1]	420	2	pin	133	75	43	871	--prefanout-mode inner
+v2p420	420	2	pin	149	5	58	890	--prefanout-mode inner
+m420	420	2	router	112	3	72	933	--prefanout-mode inner
+v3p420	420	2	pin	112	3	72	933	--prefanout-mode inner
+cv1	420	2	pin	120	10	63	1188	--prefanout-mode inner
+via3	420	2	pin	118	3	50	899	--prefanout-mode inner --via-cost 3
+via5	420	2	pin	FAIL rc=143				--prefanout-mode inner --via-cost 5
+v3base	1200	2	pin	107	3	63	946	--prefanout-mode inner --blame

@@ -1,0 +1,169 @@
+{
+ "version": 1,
+ "regions": [
+  {
+   "name": "SW off outer",
+   "polygon": [
+    [
+     75,
+     75
+    ],
+    [
+     125,
+     75
+    ],
+    [
+     125,
+     125
+    ],
+    [
+     75,
+     125
+    ]
+   ],
+   "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In6.Cu",
+    "B.Cu"
+   ],
+   "rules": [
+    {
+     "nets": [
+      "/Driver 1 and matrix/SW1_1",
+      "/Driver 1 and matrix/SW1_2",
+      "/Driver 1 and matrix/SW1_3",
+      "/Driver 1 and matrix/SW1_4",
+      "/Driver 1 and matrix/SW1_5",
+      "/Driver 1 and matrix/SW1_6",
+      "/Driver 1 and matrix/SW1_7",
+      "/Driver 1 and matrix/SW1_8",
+      "/Driver 1 and matrix/SW1_9",
+      "/Driver 2 and matrix/SW2_1",
+      "/Driver 2 and matrix/SW2_2",
+      "/Driver 2 and matrix/SW2_3",
+      "/Driver 2 and matrix/SW2_4",
+      "/Driver 2 and matrix/SW2_5",
+      "/Driver 2 and matrix/SW2_6",
+      "/Driver 2 and matrix/SW2_7",
+      "/Driver 2 and matrix/SW2_8",
+      "/Driver 2 and matrix/SW2_9"
+     ],
+     "kind": "avoid",
+     "weight": 0.5
+    }
+   ]
+  },
+  {
+   "name": "CS off middle",
+   "polygon": [
+    [
+     75,
+     75
+    ],
+    [
+     125,
+     75
+    ],
+    [
+     125,
+     125
+    ],
+    [
+     75,
+     125
+    ]
+   ],
+   "layers": [
+    "In3.Cu",
+    "In4.Cu"
+   ],
+   "rules": [
+    {
+     "nets": [
+      "/Driver 1 and matrix/CS1_1",
+      "/Driver 1 and matrix/CS1_10",
+      "/Driver 1 and matrix/CS1_11",
+      "/Driver 1 and matrix/CS1_12",
+      "/Driver 1 and matrix/CS1_13",
+      "/Driver 1 and matrix/CS1_14",
+      "/Driver 1 and matrix/CS1_15",
+      "/Driver 1 and matrix/CS1_16",
+      "/Driver 1 and matrix/CS1_17",
+      "/Driver 1 and matrix/CS1_18",
+      "/Driver 1 and matrix/CS1_19",
+      "/Driver 1 and matrix/CS1_2",
+      "/Driver 1 and matrix/CS1_20",
+      "/Driver 1 and matrix/CS1_21",
+      "/Driver 1 and matrix/CS1_22",
+      "/Driver 1 and matrix/CS1_23",
+      "/Driver 1 and matrix/CS1_24",
+      "/Driver 1 and matrix/CS1_25",
+      "/Driver 1 and matrix/CS1_26",
+      "/Driver 1 and matrix/CS1_27",
+      "/Driver 1 and matrix/CS1_28",
+      "/Driver 1 and matrix/CS1_29",
+      "/Driver 1 and matrix/CS1_3",
+      "/Driver 1 and matrix/CS1_30",
+      "/Driver 1 and matrix/CS1_31",
+      "/Driver 1 and matrix/CS1_32",
+      "/Driver 1 and matrix/CS1_33",
+      "/Driver 1 and matrix/CS1_34",
+      "/Driver 1 and matrix/CS1_35",
+      "/Driver 1 and matrix/CS1_36",
+      "/Driver 1 and matrix/CS1_37",
+      "/Driver 1 and matrix/CS1_38",
+      "/Driver 1 and matrix/CS1_39",
+      "/Driver 1 and matrix/CS1_4",
+      "/Driver 1 and matrix/CS1_5",
+      "/Driver 1 and matrix/CS1_6",
+      "/Driver 1 and matrix/CS1_7",
+      "/Driver 1 and matrix/CS1_8",
+      "/Driver 1 and matrix/CS1_9",
+      "/Driver 2 and matrix/CS2_1",
+      "/Driver 2 and matrix/CS2_10",
+      "/Driver 2 and matrix/CS2_11",
+      "/Driver 2 and matrix/CS2_12",
+      "/Driver 2 and matrix/CS2_13",
+      "/Driver 2 and matrix/CS2_14",
+      "/Driver 2 and matrix/CS2_15",
+      "/Driver 2 and matrix/CS2_16",
+      "/Driver 2 and matrix/CS2_17",
+      "/Driver 2 and matrix/CS2_18",
+      "/Driver 2 and matrix/CS2_19",
+      "/Driver 2 and matrix/CS2_2",
+      "/Driver 2 and matrix/CS2_20",
+      "/Driver 2 and matrix/CS2_21",
+      "/Driver 2 and matrix/CS2_22",
+      "/Driver 2 and matrix/CS2_23",
+      "/Driver 2 and matrix/CS2_24",
+      "/Driver 2 and matrix/CS2_25",
+      "/Driver 2 and matrix/CS2_26",
+      "/Driver 2 and matrix/CS2_27",
+      "/Driver 2 and matrix/CS2_28",
+      "/Driver 2 and matrix/CS2_29",
+      "/Driver 2 and matrix/CS2_3",
+      "/Driver 2 and matrix/CS2_30",
+      "/Driver 2 and matrix/CS2_31",
+      "/Driver 2 and matrix/CS2_32",
+      "/Driver 2 and matrix/CS2_33",
+      "/Driver 2 and matrix/CS2_34",
+      "/Driver 2 and matrix/CS2_35",
+      "/Driver 2 and matrix/CS2_36",
+      "/Driver 2 and matrix/CS2_37",
+      "/Driver 2 and matrix/CS2_38",
+      "/Driver 2 and matrix/CS2_39",
+      "/Driver 2 and matrix/CS2_4",
+      "/Driver 2 and matrix/CS2_5",
+      "/Driver 2 and matrix/CS2_6",
+      "/Driver 2 and matrix/CS2_7",
+      "/Driver 2 and matrix/CS2_8",
+      "/Driver 2 and matrix/CS2_9"
+     ],
+     "kind": "avoid",
+     "weight": 0.5
+    }
+   ]
+  }
+ ]
+}

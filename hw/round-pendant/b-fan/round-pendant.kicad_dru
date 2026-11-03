@@ -1,0 +1,76 @@
+(version 1)
+
+# Derived from design/nets.csv and design/brief.md. Each rule cites its source.
+
+# 0.5 A, nets.csv; IPC-2221 outer 1 oz, 10 C rise
+(rule "VBUS current width"
+  (condition "A.NetName == 'VBUS'")
+  (constraint track_width (min 0.25mm)))
+
+# 0.34 A avg, 1 A scan peak, nets.csv
+(rule "VSYS current width"
+  (condition "A.NetName == 'VSYS'")
+  (constraint track_width (min 0.3mm)))
+
+# 0.34 A avg, 1 A scan peak, nets.csv
+(rule "VBAT current width"
+  (condition "A.NetName == 'VBAT'")
+  (constraint track_width (min 0.3mm)))
+
+# same as VBAT, cell minus
+(rule "/Power/BAT_N current width"
+  (condition "A.NetName == '/Power/BAT_N'")
+  (constraint track_width (min 0.3mm)))
+
+# 150 mA max, intent.md
+(rule "+3V3 current width"
+  (condition "A.NetName == '+3V3'")
+  (constraint track_width (min 0.2mm)))
+
+# SW scan lines: 494 mA peak for 32 us, 55 mA average (nets.csv). 0.1 mm on 0.5 oz inner carries the average with room; DRC holds it.
+(rule "SW scan width"
+  (condition "A.NetName == '/Driver 1 and matrix/SW1_1' || A.NetName =~ '*/SW?_?'")
+  (constraint track_width (min 0.1mm)))
+
+(rule "/MCU/QSPI_SCLK length"
+  (condition "A.NetName == '/MCU/QSPI_SCLK'")
+  (constraint length (max 25mm)))
+(rule "/MCU/QSPI_SD0 length"
+  (condition "A.NetName == '/MCU/QSPI_SD0'")
+  (constraint length (max 25mm)))
+(rule "/MCU/QSPI_SD1 length"
+  (condition "A.NetName == '/MCU/QSPI_SD1'")
+  (constraint length (max 25mm)))
+(rule "/MCU/QSPI_SD2 length"
+  (condition "A.NetName == '/MCU/QSPI_SD2'")
+  (constraint length (max 25mm)))
+(rule "/MCU/QSPI_SD3 length"
+  (condition "A.NetName == '/MCU/QSPI_SD3'")
+  (constraint length (max 25mm)))
+(rule "/MCU/QSPI_SS length"
+  (condition "A.NetName == '/MCU/QSPI_SS'")
+  (constraint length (max 25mm)))
+(rule "Net-(C24-Pad1) length"
+  (condition "A.NetName == 'Net-(C24-Pad1)'")
+  (constraint length (max 6mm)))
+(rule "Net-(C24-Pad1) no vias"
+  (condition "A.NetName == 'Net-(C24-Pad1)'")
+  (constraint via_count (max 0)))
+(rule "Net-(U3-XIN) length"
+  (condition "A.NetName == 'Net-(U3-XIN)'")
+  (constraint length (max 6mm)))
+(rule "Net-(U3-XIN) no vias"
+  (condition "A.NetName == 'Net-(U3-XIN)'")
+  (constraint via_count (max 0)))
+(rule "Net-(U3-XOUT) length"
+  (condition "A.NetName == 'Net-(U3-XOUT)'")
+  (constraint length (max 6mm)))
+(rule "Net-(U3-XOUT) no vias"
+  (condition "A.NetName == 'Net-(U3-XOUT)'")
+  (constraint via_count (max 0)))
+(rule "USB_DM no vias"
+  (condition "A.NetName == 'USB_DM'")
+  (constraint via_count (max 0)))
+(rule "USB_DP no vias"
+  (condition "A.NetName == 'USB_DP'")
+  (constraint via_count (max 0)))

@@ -1,0 +1,725 @@
+{
+"summary": {
+"total": 27,
+"signal": {
+"pad-wall": 7,
+"led-pad": 2,
+"via-wall": 3,
+"chip-fanout": 8,
+"free-path": 1,
+"track-wall": 1
+},
+"plane": {
+"free-path": 1,
+"chip-fanout": 3,
+"track-wall": 1
+},
+"free_frac": {
+"F.Cu": 0.28,
+"In1.Cu": 0.571,
+"In3.Cu": 0.601,
+"In4.Cu": 0.619,
+"In6.Cu": 0.613,
+"B.Cu": 0.384
+},
+"via_site_frac": 0.0623
+},
+"rows": [
+{
+"via_area_a": 0.0,
+"via_area_b": 0.0,
+"net": "+1V1",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Zone 'DVDD finger 39' [+1V1] on B.Cu, priority 2",
+"b": "Zone 'FB finger' [+1V1] on B.Cu, priority 8",
+"axy": [
+100.699999,
+93.7
+],
+"bxy": [
+99.699999,
+96.75
+],
+"len": 3.21,
+"area_a": 4.0,
+"area_b": 6.6,
+"track": 0.19,
+"via": 0.29,
+"pad": 0.36,
+"zone": 0.16,
+"blocked_mm": 0.1,
+"nets_crossed": 1,
+"layers_used": 4,
+"illegal_via_hops": 2
+},
+{
+"via_area_a": 29.438,
+"via_area_b": 29.438,
+"net": "+3V3",
+"group": "plane",
+"cls": "free-path",
+"a": "Zone 'RP2350 band' [+3V3] on B.Cu, priority 1",
+"b": "Pad 1 [+3V3] of C9 on B.Cu",
+"axy": [
+95.1,
+89.9
+],
+"bxy": [
+93.58,
+92.4
+],
+"len": 2.93,
+"area_a": 156.98,
+"area_b": 156.98,
+"blocked_mm": 0.2,
+"nets_crossed": 2,
+"layers_used": 4,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 70.146,
+"net": "+3V3",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 6 [+3V3] of U5 on B.Cu",
+"b": "Via [+3V3] on F.Cu - B.Cu",
+"axy": [
+103.15,
+104.5375
+],
+"bxy": [
+103.835706,
+101.004981
+],
+"len": 3.6,
+"area_a": 0.15,
+"area_b": 2080.21,
+"blocked_mm": 0.3,
+"nets_crossed": 1,
+"layers_used": 6,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 68.862,
+"via_area_b": 0.0,
+"net": "/Driver 1 and matrix/CS1_11",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 1 and matrix/CS1_11] on In1.Cu, length 0.5152",
+"b": "Pad 37 [/Driver 1 and matrix/CS1_11] of U1 on B.Cu",
+"axy": [
+89.792495,
+98.988749
+],
+"bxy": [
+91.995,
+100.6
+],
+"len": 2.73,
+"area_a": 1955.08,
+"area_b": 1.54,
+"track": 0.27,
+"via": 0.32,
+"pad": 0.4,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 68.896,
+"via_area_b": 0.0,
+"net": "/Driver 1 and matrix/CS1_12",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_12] of D35 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_12] of D36 on F.Cu",
+"axy": [
+98.071513,
+92.228312
+],
+"bxy": [
+99.06284,
+90.437232
+],
+"len": 2.05,
+"area_a": 1967.44,
+"area_b": 1.37,
+"track": 0.15,
+"via": 0.27,
+"pad": 0.58,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 68.924,
+"net": "/Driver 1 and matrix/CS1_15",
+"group": "signal",
+"cls": "led-pad",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_15] of D42 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_15] of D43 on F.Cu",
+"axy": [
+97.303128,
+96.499326
+],
+"bxy": [
+96.524191,
+98.469805
+],
+"len": 2.12,
+"area_a": 0.15,
+"area_b": 1970.49,
+"blocked_mm": 0.5,
+"nets_crossed": 3,
+"layers_used": 2,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.0,
+"net": "/Driver 1 and matrix/CS1_15",
+"group": "signal",
+"cls": "led-pad",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_15] of D44 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_15] of D42 on F.Cu",
+"axy": [
+99.354101,
+97.300045
+],
+"bxy": [
+97.303128,
+96.499326
+],
+"len": 2.2,
+"area_a": 1.57,
+"area_b": 0.15,
+"blocked_mm": 0.7,
+"nets_crossed": 2,
+"layers_used": 1,
+"illegal_via_hops": 0
+},
+{
+"via_area_a": 69.426,
+"via_area_b": 39.788,
+"net": "/Driver 1 and matrix/CS1_24",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_24] of D64 on F.Cu",
+"b": "Pad 50 [/Driver 1 and matrix/CS1_24] of U1 on B.Cu",
+"axy": [
+91.741529,
+104.704401
+],
+"bxy": [
+89.8,
+104.395
+],
+"len": 1.97,
+"area_a": 1946.78,
+"area_b": 160.6,
+"track": 0.22,
+"via": 0.49,
+"pad": 0.29,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6,
+"illegal_via_hops": 0
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 69.737,
+"net": "/Driver 1 and matrix/CS1_26",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 52 [/Driver 1 and matrix/CS1_26] of U1 on B.Cu",
+"b": "Pad 2 [/Driver 1 and matrix/CS1_26] of D73 on F.Cu",
+"axy": [
+89.0,
+104.395
+],
+"bxy": [
+89.656555,
+104.790076
+],
+"len": 0.77,
+"area_a": 0.05,
+"area_b": 1942.6,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 71.137,
+"via_area_b": 71.137,
+"net": "/Driver 1 and matrix/CS1_32",
+"group": "signal",
+"cls": "free-path",
+"a": "Pad 2 [/Driver 1 and matrix/CS1_32] of D94 on F.Cu",
+"b": "Pad 2 [/Driver 1 and matrix/CS1_32] of D91 on F.Cu",
+"axy": [
+84.525204,
+103.124357
+],
+"bxy": [
+85.891654,
+101.651993
+],
+"len": 2.01,
+"area_a": 1942.52,
+"area_b": 1942.52,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 69.762,
+"net": "/Driver 1 and matrix/CS1_36",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 3 [/Driver 1 and matrix/CS1_36] of U1 on B.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_36] of D100 on F.Cu",
+"axy": [
+85.205,
+103.0
+],
+"bxy": [
+86.903822,
+96.884043
+],
+"len": 6.35,
+"area_a": 0.08,
+"area_b": 1951.1,
+"blocked_mm": 0.1,
+"nets_crossed": 2,
+"layers_used": 6,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 71.209,
+"net": "/Driver 1 and matrix/CS1_37",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 4 [/Driver 1 and matrix/CS1_37] of U1 on B.Cu",
+"b": "Pad 4 [/Driver 1 and matrix/CS1_37] of D110 on F.Cu",
+"axy": [
+85.205,
+102.6
+],
+"bxy": [
+83.950316,
+101.619273
+],
+"len": 1.59,
+"area_a": 0.11,
+"area_b": 1949.37,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 75.761,
+"net": "/Driver 1 and matrix/SW1_9",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 24 [/Driver 1 and matrix/SW1_9] of U1 on B.Cu",
+"b": "Track [/Driver 1 and matrix/SW1_9] on In3.Cu, length 0.5649 ",
+"axy": [
+89.0,
+97.605
+],
+"bxy": [
+84.292495,
+93.013749
+],
+"len": 6.58,
+"area_a": 0.2,
+"area_b": 1982.39,
+"blocked_mm": 0.1,
+"nets_crossed": 1,
+"layers_used": 4,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 68.899,
+"via_area_b": 0.0,
+"net": "/Driver 2 and matrix/CS2_16",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 2 and matrix/CS2_16] on F.Cu, length 1.8951 m",
+"b": "Track [/Driver 2 and matrix/CS2_16] on F.Cu, length 0.9664 m",
+"axy": [
+103.667495,
+96.213749
+],
+"bxy": [
+101.290743,
+97.500422
+],
+"len": 2.7,
+"area_a": 1946.36,
+"area_b": 2.15,
+"track": 0.18,
+"via": 0.41,
+"pad": 0.42,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 69.363,
+"net": "/Driver 2 and matrix/CS2_30",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 57 [/Driver 2 and matrix/CS2_30] of U2 on B.Cu",
+"b": "Track [/Driver 2 and matrix/CS2_30] on In3.Cu, length 0.1250",
+"axy": [
+112.2,
+97.605
+],
+"bxy": [
+110.767495,
+95.838749
+],
+"len": 2.27,
+"area_a": 0.05,
+"area_b": 1944.89,
+"blocked_mm": 0.3,
+"nets_crossed": 1,
+"layers_used": 4,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.0,
+"net": "GND",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 36 [GND] of U2 on B.Cu",
+"b": "Pad 61 [GND] of U2 on B.Cu",
+"axy": [
+107.205,
+101.8
+],
+"bxy": [
+107.975,
+101.75
+],
+"len": 0.77,
+"area_a": 0.07,
+"area_b": 0.0,
+"blocked_mm": 0.2,
+"nets_crossed": 1,
+"layers_used": 1,
+"illegal_via_hops": 0
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.0,
+"net": "GND",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 61 [GND] of U2 on B.Cu",
+"b": "Pad 55 [GND] of U2 on B.Cu",
+"axy": [
+111.875,
+98.675
+],
+"bxy": [
+111.4,
+97.605
+],
+"len": 1.17,
+"area_a": 0.0,
+"area_b": 0.91,
+"blocked_mm": 0.2,
+"nets_crossed": 1,
+"layers_used": 1,
+"illegal_via_hops": 0
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 73.503,
+"net": "GND",
+"group": "plane",
+"cls": "track-wall",
+"a": "Pad 2 [GND] of R35 on B.Cu",
+"b": "Pad 2 [GND] of C45 on B.Cu",
+"axy": [
+115.59,
+100.0
+],
+"bxy": [
+115.62,
+102.0
+],
+"len": 2.0,
+"area_a": 1.07,
+"area_b": 319.53,
+"track": 0.47,
+"via": 0.32,
+"pad": 0.2,
+"zone": 0.0,
+"blocked_mm": 0.5,
+"nets_crossed": 1,
+"layers_used": 1,
+"illegal_via_hops": 0
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.0,
+"net": "I2C_SCL",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 8 [I2C_SCL] of U3 on B.Cu",
+"b": "Pad 10 [I2C_SCL] of U1 on B.Cu",
+"axy": [
+95.1625,
+93.4
+],
+"bxy": [
+85.205,
+100.2
+],
+"len": 12.06,
+"area_a": 1.34,
+"area_b": 0.07,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4,
+"illegal_via_hops": 3
+},
+{
+"via_area_a": 23.252,
+"via_area_b": 0.0,
+"net": "I2C_SDA",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [I2C_SDA] on B.Cu, length 0.5000 mm",
+"b": "Pad 9 [I2C_SDA] of U1 on B.Cu",
+"axy": [
+90.142495,
+92.663749
+],
+"bxy": [
+85.205,
+100.6
+],
+"len": 9.35,
+"area_a": 96.73,
+"area_b": 0.07,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3,
+"illegal_via_hops": 2
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.001,
+"net": "INTB2",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 7 [INTB2] of U2 on B.Cu",
+"b": "Pad 2 [INTB2] of R33 on B.Cu",
+"axy": [
+113.995,
+100.6
+],
+"bxy": [
+115.59,
+98.0
+],
+"len": 3.05,
+"area_a": 0.95,
+"area_b": 1.54,
+"track": 0.23,
+"via": 0.28,
+"pad": 0.48,
+"zone": 0.0,
+"blocked_mm": 0.4,
+"nets_crossed": 1,
+"layers_used": 1,
+"illegal_via_hops": 0
+},
+{
+"via_area_a": 23.1,
+"via_area_b": 0.0,
+"net": "Net-(C24-Pad1)",
+"group": "signal",
+"cls": "track-wall",
+"a": "Pad 1 [Net-(C24-Pad1)] of C24 on B.Cu",
+"b": "Pad 1 [Net-(C24-Pad1)] of R17 on B.Cu",
+"axy": [
+94.4,
+85.68
+],
+"bxy": [
+97.6,
+88.41
+],
+"len": 4.21,
+"area_a": 87.85,
+"area_b": 1.09,
+"track": 0.46,
+"via": 0.22,
+"pad": 0.32,
+"zone": 0.0,
+"blocked_mm": 0.2,
+"nets_crossed": 3,
+"layers_used": 2,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.013,
+"net": "Net-(D235-B)",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 4 [Net-(D235-B)] of D235 on F.Cu",
+"b": "Pad 2 [Net-(D235-B)] of R42 on B.Cu",
+"axy": [
+99.725536,
+99.813382
+],
+"bxy": [
+104.31,
+91.4
+],
+"len": 9.58,
+"area_a": 0.27,
+"area_b": 16.99,
+"track": 0.34,
+"via": 0.4,
+"pad": 0.26,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6,
+"illegal_via_hops": 2
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.013,
+"net": "Net-(D235-R)",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [Net-(D235-R)] of D235 on F.Cu",
+"b": "Pad 2 [Net-(D235-R)] of R40 on B.Cu",
+"axy": [
+100.374464,
+98.886618
+],
+"bxy": [
+104.31,
+89.4
+],
+"len": 10.27,
+"area_a": 1.61,
+"area_b": 16.99,
+"track": 0.23,
+"via": 0.35,
+"pad": 0.42,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6,
+"illegal_via_hops": 2
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 23.088,
+"net": "Net-(U3-XIN)",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 21 [Net-(U3-XIN)] of U3 on B.Cu",
+"b": "Track [Net-(U3-XIN)] on B.Cu, length 0.4257 mm",
+"axy": [
+97.8,
+89.9625
+],
+"bxy": [
+99.092495,
+86.363749
+],
+"len": 3.82,
+"area_a": 0.93,
+"area_b": 88.7,
+"track": 0.28,
+"via": 0.08,
+"pad": 0.56,
+"zone": 0.07,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 68.776,
+"via_area_b": 0.0,
+"net": "SDB1",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [SDB1] on In6.Cu, length 0.4776 mm",
+"b": "Pad 11 [SDB1] of U1 on B.Cu",
+"axy": [
+89.892495,
+100.388749
+],
+"bxy": [
+85.205,
+99.8
+],
+"len": 4.72,
+"area_a": 535.76,
+"area_b": 0.05,
+"blocked_mm": 0.3,
+"nets_crossed": 1,
+"layers_used": 2,
+"illegal_via_hops": 1
+},
+{
+"via_area_a": 0.0,
+"via_area_b": 0.011,
+"net": "USB_DM",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 1 [USB_DM] of R14 on B.Cu",
+"b": "Pad 6 [USB_DM] of U7 on B.Cu",
+"axy": [
+97.5,
+100.11
+],
+"bxy": [
+101.45,
+108.8625
+],
+"len": 9.6,
+"area_a": 3.37,
+"area_b": 7.36,
+"track": 0.29,
+"via": 0.42,
+"pad": 0.3,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4,
+"illegal_via_hops": 1
+}
+]
+}
