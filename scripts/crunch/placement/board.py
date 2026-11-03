@@ -227,7 +227,9 @@ def anodes():
         m = max(abs(x-ux), abs(y-uy))
         if 1.7 - VIA_R - CL < m < 2.2 + VIA_R + CL:
             return False                                 # 1V1 ring
-        if abs(x-lx) < 1.0 + VIA_R + CL and abs(y-ly) < .8 + VIA_R + CL:
+        if abs(x-lx) < K.get("l1_keep", [1.0, .8])[0] + VIA_R + CL and abs(y-ly) < K.get("l1_keep", [1.0, .8])[1] + VIA_R + CL:
+            return False
+        if K.get("u3_core") and m < K["u3_core"]:
             return False                                 # under L1
         if 100 + 1.2 < x < 100 + 3.0 and 100 - 2.9 < y < 100 + 1.5:
             return False                                 # the LX corridor from pin 48 to L1
@@ -444,7 +446,9 @@ def anodes_b():
         m = max(abs(x-ux), abs(y-uy))
         if 1.7 - VIA_R - CL < m < 2.2 + VIA_R + CL:
             return False
-        if abs(x-lx) < 1.0 + VIA_R + CL and abs(y-ly) < .8 + VIA_R + CL:
+        if abs(x-lx) < K.get("l1_keep", [1.0, .8])[0] + VIA_R + CL and abs(y-ly) < K.get("l1_keep", [1.0, .8])[1] + VIA_R + CL:
+            return False
+        if K.get("u3_core") and m < K["u3_core"]:
             return False
         rb = K["reg_box"]
         if rb and OX + rb[0] < x < OX + rb[2] and OY + rb[1] < y < OY + rb[3]:

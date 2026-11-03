@@ -37,8 +37,15 @@ note = "Earlier route with 2 +3V3 joins open. Front silk drawn as a web between 
 
 [[boards]]
 id = "round-pendant-c-web3"
-embed = "index.html"
-name = "round-pendant, 235 LEDs, fully connected, seed web silk"
+name = "round-pendant, y30 route, no back silk"
 pcb = "hw/round-pendant/c-web3/round-pendant.kicad_pcb"
 sch = "hw/round-pendant/c-web3/round-pendant.kicad_sch"
-note = "Work in progress: 8 layers, through vias, every connection joined, not signed off. Route y30 with the front silk drawn as a web between the LEDs. Back silk removed for now."
+note = "Route y30 with the seed web on the front and no silk on the back."
+
+[[boards]]
+id = "round-pendant-c-web4"
+embed = "index.html"
+name = "round-pendant, 235 LEDs, fully connected, seed web and tidy designators"
+pcb = "hw/round-pendant/c-web4/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/c-web4/round-pendant.kicad_sch"
+note = "Work in progress: 8 layers, through vias, every connection joined, not signed off. Route y30, seed web on the front, 52 tidy designators on the back at 0.8 mm."

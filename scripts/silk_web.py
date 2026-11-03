@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""silk_web.py IN.kicad_pcb OUT.kicad_pcb [--width W] [--clear C] [--no-back-strip] -- the sunflower "seed" web on F.SilkS, and no silk on the back.
+"""silk_web.py IN.kicad_pcb OUT.kicad_pcb [--width W] [--clear C] [--keep-back] -- the sunflower "seed" web on F.SilkS, and no silk on the back.
 
 The web is the Voronoi diagram of the LED centres, so each LED sits in its own seed-shaped cell, with a ring round the outside. It is clipped back from exposed front copper and holes
 by the clearance, so it never prints on a pad. Tented vias are left under it: clipping round every one would chop the seeds up, and the fab prints over them. All footprint silk moves
@@ -11,7 +11,7 @@ from shapely.geometry import MultiPoint, LineString, Point, box
 from shapely.ops import voronoi_diagram, unary_union, linemerge
 ap = argparse.ArgumentParser(); ap.add_argument("src"); ap.add_argument("out")
 ap.add_argument("--width", type=float, default=.1); ap.add_argument("--clear", type=float, default=.1); ap.add_argument("--ring", type=float, default=18.75)
-ap.add_argument("--no-write", action="store_true")
+ap.add_argument("--no-write", action="store_true"); ap.add_argument("--keep-back", action="store_true", help="leave B.SilkS alone")
 A = ap.parse_args()
 b = pcbnew.LoadBoard(A.src); C = 100.0
 mm = lambda v: v/1e6
@@ -57,10 +57,10 @@ if not A.no_write:
     n = 0
     for f in b.GetFootprints():
         for g in list(f.GraphicalItems()):
-            if g.GetLayer() in (pcbnew.F_SilkS, pcbnew.B_SilkS):
+            if g.GetLayer() == pcbnew.F_SilkS or (g.GetLayer() == pcbnew.B_SilkS and not A.keep_back):
                 g.SetLayer(pcbnew.B_Fab if g.GetLayer() == pcbnew.B_SilkS else pcbnew.F_Fab); n += 1
         for t in [f.Reference(), f.Value()] + [x for x in f.GetFields()]:
-            if t.GetLayer() in (pcbnew.F_SilkS, pcbnew.B_SilkS):
+            if t.GetLayer() == pcbnew.F_SilkS or (t.GetLayer() == pcbnew.B_SilkS and not A.keep_back):
                 t.SetVisible(False); t.SetLayer(pcbnew.B_Fab if t.GetLayer() == pcbnew.B_SilkS else pcbnew.F_Fab)
     print("footprint silk items moved to Fab", n)
     def seg(p, q):

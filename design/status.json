@@ -2,7 +2,7 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 6,
-  "doing": "All 235 LEDs and every other connection now joined on 8 layers (y30, 861 vias). Front silk is the sunflower seed web; back silk off for now and being tidied separately. Not signed off, not ready to order: RP2350 decisions, JLC questions and thermal review remain.",
+  "doing": "All 235 LEDs and every other connection now joined on 8 layers (y30, 861 vias). Front silk is the sunflower seed web; back has 52 tidy designators. Not signed off, not ready to order: RP2350 decisions, necks, light sensor, thermal review and JLC questions remain.",
   "needs_user": [
     {
       "id": "rp2350-relaxations",
@@ -21,6 +21,18 @@
       "kind": "question",
       "gate": 10,
       "text": "JLC needs checking from its quote tool or support: the 8-layer 1.0 mm stackup, and whether 0.2/0.1 mm filled via-in-pad is allowed (its listed range is 0.15-0.55 mm drill; 8 such vias on the board). Not blocking routing."
+    },
+    {
+      "id": "sensor-part",
+      "kind": "question",
+      "gate": 1,
+      "text": "Light sensor stock: ALS-PT19 C146233 shows 0 at JLC. Same-size option reported: Tonyu DYWH-ALS-PT19-315C/4T, C47416518, stock 41. Use the Tonyu part, or pre-order the Everlight? Footprint is the same either way."
+    },
+    {
+      "id": "cell-403535",
+      "kind": "question",
+      "gate": 1,
+      "text": "403535 cell: send its spec sheet or listing if you have one, to confirm capacity and that its maximum charge rate is at least 1C. Charging stays at about 297 mA by your choice."
     }
   ],
   "checks": {

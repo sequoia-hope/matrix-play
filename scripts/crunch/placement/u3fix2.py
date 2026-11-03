@@ -32,6 +32,10 @@ keepclear = [(um(q.GetLeft())-OX, um(q.GetTop())-OY, um(q.GetRight())-OX, um(q.G
 _free = free
 def free(x, y, net, R=.275, sep=.41):
     return _free(x, y, net, R, sep) and all(math.hypot(max(a-x, 0, x-g), max(e-y, 0, y-h)) >= .32 for a, e, g, h in keepclear)
+u = [f for f in b.GetFootprints() if f.GetReference() == "U3"][0].GetPosition(); ux3, uy3 = um(u.x)-OX, um(u.y)-OY
+_free2 = free
+def free(x, y, net, R=.275, sep=.41):
+    return max(abs(x-ux3), abs(y-uy3)) >= 2.3+.1+.03 and _free2(x, y, net, R, sep)   # outside the ring's no-foreign-via square
 def via(x, y, net, w=.25, d=.15):
     v = pcbnew.PCB_VIA(b); v.SetPosition(pcbnew.VECTOR2I(mm(OX+x), mm(OY+y))); v.SetWidth(mm(w)); v.SetDrill(mm(d)); v.SetLayerPair(lid["F.Cu"], B); v.SetNetCode(net); v.SetLocked(True); b.Add(v)
 # Band pieces with no plane via get one, 0.2/0.1 like U3's other band vias.

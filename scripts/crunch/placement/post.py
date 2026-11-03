@@ -118,8 +118,6 @@ def extra(net, near, w_tr, want, inner=False, vw=.3):
         print(f"  extra {net} via at ({q[0]-100:.2f}, {q[1]-100:.2f}), {d:.2f} mm stub from ({src[0]-100:.2f}, {src[1]-100:.2f})")
     return got
 u5 = {p.GetNumber(): P(p.GetPosition()) for f in b.GetFootprints() if f.GetReference() == "U5" for p in f.Pads()}
-print("VSYS extra at U5:", extra("VSYS", [u5["11"], u5["10"]], .2, 2, vw=.25))
-print("VBAT extra at U5:", extra("VBAT", [u5["2"], u5["3"]], .3, 2, inner=True, vw=.25))
 print("via sites free for these nets", sites)
 # Step 3: corner necks.
 def neck(a, c, w, poly):
@@ -155,33 +153,40 @@ for ref, num, p, L, poly in padgeo:
         if k < .075: stat["found_under_075"] += 1
         endp = a if da <= dc else c; other = c if da <= dc else a
         # something else ending here? Only move if it stays inside this pad, or nothing else is there.
-        blocked = False
+        partners = []
         for u in ends[n]:
             if u is t or u.GetLayerName() != L: continue
-            for e in (P(u.GetStart()), P(u.GetEnd())):
-                if math.dist(e, endp) < .01 and not poly.contains(Point(e)): blocked = True
-        if any(math.dist(v, endp) < .01 for v in via_at[n]): blocked = True
-        if blocked: stat["junction"] += 1; continue
+            ua, uc = P(u.GetStart()), P(u.GetEnd())
+            if math.dist(ua, endp) < .01: partners.append((u, True, uc))
+            elif math.dist(uc, endp) < .01: partners.append((u, False, ua))
+        if any(math.dist(v, endp) < .01 for v in via_at[n]): stat["junction_via"] += 1; bys["unfixed"].append((f"{ref}.{num}", round(k, 3), n.split("/")[-1])); continue
         cx, cy = poly.centroid.x, poly.centroid.y; opts = []
-        for i in range(-12, 13):
-            for j in range(-12, 13):
-                q = (cx+i*.02, cy+j*.02)
+        for i in range(-25, 26):
+            for j in range(-25, 26):
+                q = (cx+i*.01, cy+j*.01)
                 if poly.buffer(-w/2+.005).contains(Point(q)): opts.append((math.dist(q, endp), q))
         opts.sort(); done = False; moved_best = None; G.dead.add(("t", id(t)))
+        for u, _, _ in partners: G.dead.add(("t", id(u)))
         for d, q in opts:
             g = seg(other, q, w)
             kk = neck(other, q, w, poly)
             if kk is None or kk < .09-1e-4: continue
-            if G.clear(L, g, n) and G.hole_ok(g, n):
+            if G.clear(L, g, n) and G.hole_ok(g, n) and all(G.clear(L, seg(far, q, um(u.GetWidth())), n) and G.hole_ok(seg(far, q, um(u.GetWidth())), n) for u, _, far in partners):
                 done = True; moved_best = (q, g, kk); break
         if done:
             q, g, kk = moved_best
             if da <= dc: t.SetStart(pcbnew.VECTOR2I(fm(q[0]), fm(q[1])))
             else: t.SetEnd(pcbnew.VECTOR2I(fm(q[0]), fm(q[1])))
+            for u, st, far in partners:
+                if st: u.SetStart(pcbnew.VECTOR2I(fm(q[0]), fm(q[1])))
+                else: u.SetEnd(pcbnew.VECTOR2I(fm(q[0]), fm(q[1])))
+                G.put(L, seg(far, q, um(u.GetWidth())), n, ("t2u", id(u), stat["fixed"]))
             G.put(L, g, n, ("t2", id(t), stat["fixed"])); stat["fixed"] += 1
             if len(bys["sample"]) < 6: bys["sample"].append((f"{ref}.{num}", round(k, 3), round(kk, 3), round(math.dist(q, endp), 3)))
         else:
-            G.dead.discard(("t", id(t))); stat["no_room"] += 1; bys["unfixed"].append((f"{ref}.{num}", round(k, 3), n.split("/")[-1]))
+            G.dead.discard(("t", id(t)))
+            for u, _, _ in partners: G.dead.discard(("t", id(u)))
+            stat["no_room"] += 1; bys["unfixed"].append((f"{ref}.{num}", round(k, 3), n.split("/")[-1]))
 print("necks:", dict(stat), "sample (pad, before, after, moved mm)", bys["sample"])
 print("  unfixed under 0.075:", [u for u in bys["unfixed"] if u[1] < .075][:30])
 # Step 4: SW widen, inner layers, only where free.
