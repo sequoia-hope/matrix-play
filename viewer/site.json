@@ -1,6 +1,6 @@
 {
  "title": "round-pendant",
- "built": "2026-11-03T11:05:11",
+ "built": "2026-11-03T11:59:16",
  "config": "pcbview.toml",
  "boards": [
   {
@@ -49,13 +49,24 @@
   },
   {
    "id": "round-pendant-c-web3",
-   "name": "round-pendant, 235 LEDs, fully connected, seed web silk",
+   "name": "round-pendant, y30 route, no back silk",
    "page": "round-pendant-c-web3.html",
-   "embed": "index.html",
+   "embed": null,
    "source": {
     "kind": "file",
     "pcb": "hw/round-pendant/c-web3/round-pendant.kicad_pcb",
     "sch": "hw/round-pendant/c-web3/round-pendant.kicad_sch"
+   }
+  },
+  {
+   "id": "round-pendant-c-web4",
+   "name": "round-pendant, 235 LEDs, fully connected, seed web and tidy designators",
+   "page": "round-pendant-c-web4.html",
+   "embed": "index.html",
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/c-web4/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/c-web4/round-pendant.kicad_sch"
    }
   }
  ]
