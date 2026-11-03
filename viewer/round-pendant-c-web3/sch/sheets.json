@@ -1,0 +1,76 @@
+{
+ "schematic": "round-pendant.kicad_sch",
+ "pdf": "round-pendant.pdf",
+ "sheets": [
+  {
+   "sheet": "root",
+   "title": "round-pendant: top",
+   "desc": "234 RGB LEDs on a 38 mm round board \u00b7 0 symbols",
+   "file": "round-pendant.svg",
+   "source": "round-pendant.kicad_sch",
+   "paper": "A4",
+   "page": "1",
+   "symbols": 0,
+   "size_mm": [
+    297.0022,
+    210.0072
+   ]
+  },
+  {
+   "sheet": "Power",
+   "title": "Power",
+   "desc": "USB-C, charger, protection, LDO, VBAT sense \u00b7 30 symbols",
+   "file": "round-pendant-Power.svg",
+   "source": "power.kicad_sch",
+   "paper": "A3",
+   "page": "2",
+   "symbols": 30,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "MCU",
+   "title": "MCU",
+   "desc": "RP2350A, flash, crystal, accelerometer, buttons \u00b7 45 symbols",
+   "file": "round-pendant-MCU.svg",
+   "source": "mcu.kicad_sch",
+   "paper": "A3",
+   "page": "3",
+   "symbols": 45,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 1 and matrix",
+   "title": "Driver 1 and matrix",
+   "desc": "IS31FL3741A, 13 x 9 RGB. LED references are cell order only \u00b7 129 symbols",
+   "file": "round-pendant-Driver 1 and matrix.svg",
+   "source": "matrix1.kicad_sch",
+   "paper": "A3",
+   "page": "4",
+   "symbols": 129,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 2 and matrix",
+   "title": "Driver 2 and matrix",
+   "desc": "IS31FL3741A, 13 x 9 RGB. LED references are cell order only \u00b7 129 symbols",
+   "file": "round-pendant-Driver 2 and matrix.svg",
+   "source": "matrix2.kicad_sch",
+   "paper": "A3",
+   "page": "5",
+   "symbols": 129,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  }
+ ]
+}

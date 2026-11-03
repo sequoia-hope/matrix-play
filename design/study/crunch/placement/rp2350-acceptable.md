@@ -9,6 +9,21 @@ For the owner to read and argue with. Each row says what the documents say, what
 - **REF:** Raspberry Pi's RP2350A minimal board KiCad file, read at `~/pcb/bluebuzz/design/reference/RP2350_60QFN_minimal.kicad_pcb`. All "reference does X" numbers are measured from it by script.
 - **Project:** `design/parts/rp2350-core.md`, `design/parts/flash.md`, `design/stackup.md`, `design/brief.md`, `design/intent.md`, `.claude/skills/pcb-design/chips/rp2350.md`.
 
+## Where this stands
+
+The best board so far is `hw/round-pendant/c-placement-y30/round-pendant.kicad_pcb`, 8 layers: y27 plus post-route work on necks, via sizes and scan-line widths. KiCad finds no unconnected items, and the ring, regulator zones and planes are each one piece. It isn't signed off. These remain outside silk and text:
+
+- XIN is 6.34 mm against the 6 mm rule (decision 3).
+- 5 vias break keep-out rules I added: 3 anode vias and one 3V3 via within U3 ±2.3 mm, and one anode via (SW2_8, at (1.90, 1.62)) inside L1's courtyard, outside its body. All 5 were placed before routing.
+- One F.Cu copper sliver, unexamined.
+- One thin joint, 0.079 mm, on a U1 exposed-pad tile, by a corrected copy of `pad_joints.py`.
+- 30 of 1146 pad joints are under 0.09 mm by `necks.py`, 2 of them the only path to the pad; it was 456 and 378 before the pass.
+- The U6 output runs 2.3 mm at 0.15 mm, against the 0.2 mm +3V3 minimum, under a labelled rule. VSYS's minimum also dropped from 0.3 to 0.2 mm: 34 tracks, 16.1 mm in total, none longer than 0.98 mm, all on B.Cu (`vsys_under_0.3.csv`).
+- VSYS and VBAT each still leave U5 through one via, with about 1 A and 0.74 A peak. No free via site within 2.6 mm, and no B.Cu path for a second route.
+- 18 of the 20 0.2/0.1 mm vias couldn't take 0.25/0.15 mm where they stand. Some are in pads, outside JLC's listed via-in-pad range, and that needs asking JLC.
+- USB D+ and D− each take 2 vias between pin and 27 Ω, about 6 mm. The reference has none.
+- Nothing has been built. The thermal check is rough; driver pad copper is about 16 to 17 mm², down from about 26.
+
 ## Decisions I need from you
 
 1. **Regulator block.** Keep it to the reference as a rigid block, but allow PGND's two vias to move about 0.7 mm because an LED sits on the reference's spot. Recommended.
@@ -29,6 +44,8 @@ These aren't relaxations. Fix them before relaxing anything, whatever you decide
 - **The LX plane cut is on the wrong layer.** `chips/rp2350.md` says "layer 2" and the script cuts In2 (GND). U3 is on the back, so the copper next to LX is the layer above B.Cu: In4 on 6 layers (0.099 mm, and `design/brief.md` itself says "In4 is cut"), In6 on 8 layers. As built, the plane nearest LX runs solid under it and GND is cut for nothing.
 - **The crystal and USB pairs were placed crossed.** On the back of the board, XIN (pin 21) sits left of XOUT (pin 22), but Y1's XIN pad was on the right, with R17 between them. USB had the same fault: R14 (D−) was left of R15 (D+), the opposite of the pins and of the reference's order. The router went round: in one first-pass route XIN reached 20.3 mm and USB_DP 47.1 mm. Turning Y1, moving R17, and swapping R14/R15 and C23/C24 (trial y11) gives XIN 12.4 mm, XOUT 1.7 mm plus 2.2 mm, and USB_DP and USB_DM 19.5 and 19.4 mm in the same kind of pass.
 - **The regulator's zones aren't on the board.** The VREG_LX, 1V1, 3V3 and PGND zones and PGND's two vias are missing. `design/gates/phase6.md` lists them as a first step of phase 7.
+
+- **U1 and U2's GND pins and U3's capacitors were left to the router.** Each now has a short zone, and C12, C14 and C21 turn to face their pins. On y27, U3's 1V1 track is down to 15.8 mm with LX having none. On y18 it was about 72 mm.
 
 **The fix, as built.** `scripts/crunch/placement/u3fix.py` does all of it without moving a part: band out to the pads, 0.2 mm 1V1 fingers from the ring to pins 6, 23, 39 and 50, the ring rule limited to foreign nets, the vendor's four zones, an FB finger from pin 50 to the COUT zone, PGND's two vias, CFILT's own via, the LX cut on In6 and In5, a window under L1, and a 3V3 via in 5 of the band's 6 pieces. The sixth, 0.35 mm², has no free via site. The 1V1 fingers cut the band into pieces, which the reference doesn't do: it reaches DVDD through spoke vias on the far side. Mine has no via in 1V1 at all.
 
@@ -72,6 +89,8 @@ I routed two ways out:
 |---|---:|---:|---:|---:|---|
 | y19, ring kept, no new foreign vias within ±2.3 mm | 0 | 2 | 5 | 895 | Ring one piece, 6.0 mm² |
 | y20, pour on In6 | 1 | 1 | 1 | 897 | Pour in 5 pieces, 30 mm² of 70 mm² |
+
+DC drop from COUT to the DVDD pins (`scripts/crunch/layers/pdn.py`, 100 mA in total) also favours the ring: at most 1.6 mV on y30, against up to 11.3 mV on y20. Those are DC only. On inductance, y20's vias to In6 add little, about 0.1 mm of barrel each, but its current has to cross a pour split into 5 pieces. So the In6 pour is a tested fallback, not my recommendation, and it would be a labelled departure from the reference.
 
 The LEDs over the ring leave on F.Cu instead, through vias just outside it. 3 anode vias stay in the exposed pad as before.
 

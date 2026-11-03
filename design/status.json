@@ -2,7 +2,7 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 6,
-  "doing": "Routing on 8 layers is nearly done, 235 LEDs with 0 signal connections open. Front silk is the sunflower seed web. Back silk removed for now and being tidied separately. Not signed off, not ready to order.",
+  "doing": "All 235 LEDs and every other connection now joined on 8 layers (y30, 861 vias). Front silk is the sunflower seed web; back silk off for now and being tidied separately. Not signed off, not ready to order: RP2350 decisions, JLC questions and thermal review remain.",
   "needs_user": [
     {
       "id": "rp2350-relaxations",
