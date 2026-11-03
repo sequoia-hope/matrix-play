@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "board": "round-pendant",
+  "phase": 6,
+  "doing": "Routing on 8 layers is nearly done, 235 LEDs with 0 signal connections open. Front silk is the sunflower seed web. Back silk removed for now and being tidied separately. Not signed off, not ready to order.",
+  "needs_user": [
+    {
+      "id": "rp2350-relaxations",
+      "kind": "question",
+      "gate": 7,
+      "text": "Seven RP2350 layout decisions are listed at the top of \"RP2350 layout: what can relax\". Not blocking the crunch: routing continues in the meantime."
+    },
+    {
+      "id": "inductor-preorder",
+      "kind": "question",
+      "gate": 1,
+      "text": "Before ordering: the RP2350 core inductor AOTA-B201610S3R3-101-T (C42411119) has 1 at JLC and 5 are needed. Pre-order or global sourcing required. Not blocking design work."
+    },
+    {
+      "id": "jlc-8l-quote",
+      "kind": "question",
+      "gate": 10,
+      "text": "JLC needs checking from its quote tool or support: the 8-layer 1.0 mm stackup, and whether 0.2/0.1 mm filled via-in-pad is allowed (its listed range is 0.15-0.55 mm drill; 8 such vias on the board). Not blocking routing."
+    }
+  ],
+  "checks": {
+    "doctor": {
+      "result": "required tools ok; ngspice missing",
+      "ok": true,
+      "gate": 0
+    },
+    "sourcing": {
+      "result": "All chosen parts normal; AOTA inductor stock 1, needs pre-order",
+      "ok": false,
+      "gate": 1
+    },
+    "ERC": {
+      "result": "0 violations (kicad-cli 9.0.8)",
+      "ok": true,
+      "gate": 2
+    },
+    "nets": {
+      "result": "nets_check PASS, 149 nets classified; KiCad net classes set in phase 5",
+      "ok": true,
+      "gate": 3
+    },
+    "style": {
+      "result": "Only the matrix grid rule fails, waived in decisions.md",
+      "ok": true,
+      "gate": 2
+    },
+    "placement": {
+      "result": "placement_check PASS; DRC no courtyard, clearance or short errors; silk open for phase 9",
+      "ok": true,
+      "gate": 6
+    },
+    "sync": {
+      "result": "sync_check PASS",
+      "ok": true,
+      "gate": 6
+    }
+  },
+  "gates": {
+    "0": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "1": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "2": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "3": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "4": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "5": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "6": {
+      "state": "awaiting_signoff",
+      "stale_because": null
+    }
+  },
+  "links": [
+    {
+      "label": "RP2350 layout: what can relax (your call)",
+      "href": "design/study/crunch/placement/rp2350-acceptable.md"
+    },
+    {
+      "label": "Routing crunch brief",
+      "href": "design/study/crunch/README.md"
+    },
+    {
+      "label": "Gemini routing plan (unverified)",
+      "href": "design/study/crunch/gemini/implementation_plan.md"
+    },
+    {
+      "label": "Symmetric centre comparison",
+      "href": "design/study/center/index.html"
+    },
+    {
+      "label": "Sunflower plus 1 or 2 LEDs",
+      "href": "design/study/center-plus2/index.html"
+    },
+    {
+      "label": "Variant B, trial 5 views",
+      "href": "design/renders/b/index.html"
+    },
+    {
+      "label": "Off-board USB-C study",
+      "href": "design/study/usb-offboard/index.html"
+    },
+    {
+      "label": "LED pattern study",
+      "href": "design/study/patterns/index.html"
+    },
+    {
+      "label": "Board viewer",
+      "href": "viewer/index.html"
+    },
+    {
+      "label": "Floorplan drawing",
+      "href": "design/study/floorplan.svg"
+    },
+    {
+      "label": "Brief",
+      "href": "design/brief.md"
+    },
+    {
+      "label": "Schematic PDF",
+      "href": "design/renders/schematic/round-pendant.pdf"
+    },
+    {
+      "label": "Design intent",
+      "href": "design/intent.md"
+    },
+    {
+      "label": "Decisions",
+      "href": "design/decisions.md"
+    },
+    {
+      "label": "Gates",
+      "href": "design/gates/"
+    }
+  ],
+  "apps": {},
+  "updated": "2026-11-03T03:45:08-08:00"
+}

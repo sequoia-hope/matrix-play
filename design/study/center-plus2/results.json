@@ -1,0 +1,58 @@
+[
+ {
+  "name": "now",
+  "title": "Now: plain sunflower, 234 LEDs",
+  "count": 234,
+  "gap": 0.359,
+  "moved": 0,
+  "worst": 0.0
+ },
+ {
+  "name": "one",
+  "title": "Plus 1, nothing else moved",
+  "count": 235,
+  "gap": 0.359,
+  "moved": 0,
+  "worst": 0.0
+ },
+ {
+  "name": "fixed",
+  "title": "Plus 2, nothing else moved",
+  "count": 236,
+  "gap": 0.179,
+  "moved": 0,
+  "worst": 0.0
+ },
+ {
+  "name": "eased",
+  "title": "Plus 2, neighbours eased",
+  "count": 236,
+  "gap": 0.36,
+  "moved": 2,
+  "worst": 0.25
+ },
+ {
+  "name": "slide-a",
+  "title": "Slide 0.3 mm, lower LED parallel to upper",
+  "count": 236,
+  "gap": 0.356,
+  "moved": 6,
+  "worst": 0.77
+ },
+ {
+  "name": "slide-b",
+  "title": "Slide 0.5 mm, lower LED parallel to upper",
+  "count": 236,
+  "gap": 0.357,
+  "moved": 5,
+  "worst": 0.91
+ },
+ {
+  "name": "slide-c",
+  "title": "Slide 0.3 mm, lower LED at 60 degrees",
+  "count": 236,
+  "gap": 0.358,
+  "moved": 3,
+  "worst": 0.53
+ }
+]

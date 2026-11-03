@@ -1,0 +1,1558 @@
+{
+"summary": {
+"total": 65,
+"signal": {
+"pad-wall": 23,
+"via-wall": 9,
+"free-path": 4,
+"chip-fanout": 12,
+"track-wall": 6,
+"led-pad": 2
+},
+"plane": {
+"pad-wall": 2,
+"chip-fanout": 6,
+"via-wall": 1
+},
+"free_frac": {
+"F.Cu": 0.284,
+"In1.Cu": 0.525,
+"In3.Cu": 0.558,
+"In4.Cu": 0.556,
+"In6.Cu": 0.562,
+"B.Cu": 0.35
+},
+"via_site_frac": 0.0375
+},
+"rows": [
+{
+"net": "+3V3",
+"group": "plane",
+"cls": "pad-wall",
+"a": "Pad 53 [+3V3] of U3 on B.Cu",
+"b": "Pad 49 [+3V3] of U3 on B.Cu",
+"axy": [
+98.6,
+96.8375
+],
+"bxy": [
+100.2,
+96.8375
+],
+"len": 1.6,
+"area_a": 1.44,
+"area_b": 0.45,
+"track": 0.18,
+"via": 0.28,
+"pad": 0.54,
+"zone": 0.0,
+"blocked_mm": 0.3,
+"nets_crossed": 2,
+"layers_used": 1
+},
+{
+"net": "+3V3",
+"group": "plane",
+"cls": "pad-wall",
+"a": "Track [+3V3] on B.Cu, length 1.1682 mm",
+"b": "Track [+3V3] on F.Cu, length 0.5500 mm",
+"axy": [
+100.2,
+96.8375
+],
+"bxy": [
+99.586618,
+99.025536
+],
+"len": 2.27,
+"area_a": 0.45,
+"area_b": 1855.54,
+"track": 0.18,
+"via": 0.28,
+"pad": 0.54,
+"zone": 0.0,
+"blocked_mm": 0.2,
+"nets_crossed": 1,
+"layers_used": 6
+},
+{
+"net": "+3V3",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 6 [+3V3] of U5 on B.Cu",
+"b": "Via [+3V3] on F.Cu - B.Cu",
+"axy": [
+103.15,
+104.5375
+],
+"bxy": [
+103.835706,
+101.004981
+],
+"len": 3.6,
+"area_a": 0.15,
+"area_b": 1855.54,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_10",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 4 [/Driver 1 and matrix/CS1_10] of D28 on F.Cu",
+"b": "Track [/Driver 1 and matrix/CS1_10] on In6.Cu, length 3.1036",
+"axy": [
+89.463903,
+101.209346
+],
+"bxy": [
+92.079995,
+100.626249
+],
+"len": 2.68,
+"area_a": 2.36,
+"area_b": 22.15,
+"track": 0.34,
+"via": 0.09,
+"pad": 0.58,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "/Driver 1 and matrix/CS1_12",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_12] of D28 on F.Cu",
+"b": "Pad 38 [/Driver 1 and matrix/CS1_12] of U1 on B.Cu",
+"axy": [
+89.652697,
+102.324854
+],
+"bxy": [
+91.995,
+103.4
+],
+"len": 2.58,
+"area_a": 5.69,
+"area_b": 5.27,
+"track": 0.19,
+"via": 0.5,
+"pad": 0.31,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_12",
+"group": "signal",
+"cls": "free-path",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_12] of D30 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_12] of D31 on F.Cu",
+"axy": [
+99.06284,
+90.437232
+],
+"bxy": [
+99.140119,
+88.284572
+],
+"len": 2.15,
+"area_a": 1636.99,
+"area_b": 1636.99,
+"blocked_mm": 0.6,
+"nets_crossed": 2,
+"layers_used": 1
+},
+{
+"net": "/Driver 1 and matrix/CS1_15",
+"group": "signal",
+"cls": "via-wall",
+"a": "Track [/Driver 1 and matrix/CS1_15] on In6.Cu, length 2.7226",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_15] of D43 on F.Cu",
+"axy": [
+95.529995,
+98.726249
+],
+"bxy": [
+97.303128,
+96.499326
+],
+"len": 2.85,
+"area_a": 32.91,
+"area_b": 1754.31,
+"track": 0.38,
+"via": 0.62,
+"pad": 0.0,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "/Driver 1 and matrix/CS1_16",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 4 [/Driver 1 and matrix/CS1_16] of D46 on F.Cu",
+"b": "Track [/Driver 1 and matrix/CS1_16] on F.Cu, length 1.4379 m",
+"axy": [
+90.710615,
+102.887728
+],
+"bxy": [
+92.991339,
+102.634231
+],
+"len": 2.29,
+"area_a": 5.71,
+"area_b": 1696.16,
+"track": 0.16,
+"via": 0.31,
+"pad": 0.53,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "/Driver 1 and matrix/CS1_17",
+"group": "signal",
+"cls": "via-wall",
+"a": "Track [/Driver 1 and matrix/CS1_17] on F.Cu, length 1.3042 m",
+"b": "Pad 2 [/Driver 1 and matrix/CS1_17] of D50 on F.Cu",
+"axy": [
+91.418728,
+103.259985
+],
+"bxy": [
+93.408194,
+101.465355
+],
+"len": 2.68,
+"area_a": 6.74,
+"area_b": 1.45,
+"track": 0.19,
+"via": 0.55,
+"pad": 0.27,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "/Driver 1 and matrix/CS1_17",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 2 [/Driver 1 and matrix/CS1_17] of D50 on F.Cu",
+"b": "Pad 2 [/Driver 1 and matrix/CS1_17] of D53 on F.Cu",
+"axy": [
+93.408194,
+101.465355
+],
+"bxy": [
+95.274367,
+102.35011
+],
+"len": 2.07,
+"area_a": 1.45,
+"area_b": 1692.69,
+"track": 0.19,
+"via": 0.55,
+"pad": 0.27,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "/Driver 1 and matrix/CS1_18",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 44 [/Driver 1 and matrix/CS1_18] of U1 on B.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_18] of D47 on F.Cu",
+"axy": [
+91.995,
+105.8
+],
+"bxy": [
+93.46826,
+103.660168
+],
+"len": 2.6,
+"area_a": 0.08,
+"area_b": 1658.9,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_18",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_18] of D47 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_18] of D46 on F.Cu",
+"axy": [
+93.46826,
+103.660168
+],
+"bxy": [
+91.790985,
+102.551872
+],
+"len": 2.01,
+"area_a": 1658.9,
+"area_b": 0.82,
+"track": 0.16,
+"via": 0.59,
+"pad": 0.25,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "/Driver 1 and matrix/CS1_18",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_18] of D48 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_18] of D52 on F.Cu",
+"axy": [
+98.08922,
+100.163472
+],
+"bxy": [
+95.435977,
+99.444916
+],
+"len": 2.75,
+"area_a": 1658.9,
+"area_b": 2.11,
+"track": 0.12,
+"via": 0.28,
+"pad": 0.6,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "/Driver 1 and matrix/CS1_22",
+"group": "signal",
+"cls": "track-wall",
+"a": "Track [/Driver 1 and matrix/CS1_22] on B.Cu, length 1.2878 m",
+"b": "Pad 4 [/Driver 1 and matrix/CS1_22] of D64 on F.Cu",
+"axy": [
+90.6,
+106.795
+],
+"bxy": [
+89.232645,
+103.741124
+],
+"len": 3.35,
+"area_a": 0.77,
+"area_b": 5.78,
+"track": 0.4,
+"via": 0.24,
+"pad": 0.36,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_23",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 2 [/Driver 1 and matrix/CS1_23] of D64 on F.Cu",
+"b": "Track [/Driver 1 and matrix/CS1_23] on B.Cu, length 1.0961 m",
+"axy": [
+88.920124,
+104.477555
+],
+"bxy": [
+90.2,
+106.795
+],
+"len": 2.65,
+"area_a": 5.77,
+"area_b": 0.41,
+"track": 0.18,
+"via": 0.29,
+"pad": 0.53,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_24",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_24] of D64 on F.Cu",
+"b": "Pad 50 [/Driver 1 and matrix/CS1_24] of U1 on B.Cu",
+"axy": [
+89.656555,
+104.790076
+],
+"bxy": [
+89.8,
+106.795
+],
+"len": 2.01,
+"area_a": 5.79,
+"area_b": 0.26,
+"track": 0.21,
+"via": 0.13,
+"pad": 0.65,
+"zone": 0.0,
+"blocked_mm": 0.2,
+"nets_crossed": 1,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_24",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 50 [/Driver 1 and matrix/CS1_24] of U1 on B.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_24] of D65 on F.Cu",
+"axy": [
+89.8,
+106.795
+],
+"bxy": [
+94.276922,
+107.630654
+],
+"len": 4.55,
+"area_a": 0.26,
+"area_b": 1630.71,
+"track": 0.21,
+"via": 0.13,
+"pad": 0.65,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "/Driver 1 and matrix/CS1_28",
+"group": "signal",
+"cls": "track-wall",
+"a": "Track [/Driver 1 and matrix/CS1_28] on B.Cu, length 0.4476 m",
+"b": "Pad 4 [/Driver 1 and matrix/CS1_28] of D83 on F.Cu",
+"axy": [
+88.2,
+106.795
+],
+"bxy": [
+89.674374,
+106.385468
+],
+"len": 1.53,
+"area_a": 130.92,
+"area_b": 0.39,
+"track": 0.63,
+"via": 0.0,
+"pad": 0.37,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_29",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 2 [/Driver 1 and matrix/CS1_29] of D82 on F.Cu",
+"b": "Pad 56 [/Driver 1 and matrix/CS1_29] of U1 on B.Cu",
+"axy": [
+87.671415,
+106.211535
+],
+"bxy": [
+87.4,
+106.795
+],
+"len": 0.64,
+"area_a": 1636.91,
+"area_b": 1.26,
+"track": 0.28,
+"via": 0.1,
+"pad": 0.62,
+"zone": 0.0,
+"blocked_mm": 0.2,
+"nets_crossed": 2,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_30",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 1 and matrix/CS1_30] on F.Cu, length 0.4825 m",
+"b": "Pad 57 [/Driver 1 and matrix/CS1_30] of U1 on B.Cu",
+"axy": [
+88.431134,
+106.462185
+],
+"bxy": [
+87.0,
+106.795
+],
+"len": 1.47,
+"area_a": 1633.85,
+"area_b": 1.26,
+"track": 0.28,
+"via": 0.1,
+"pad": 0.62,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_36",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_36] of D100 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_36] of D101 on F.Cu",
+"axy": [
+87.59424,
+100.42078
+],
+"bxy": [
+87.644368,
+98.76229
+],
+"len": 1.66,
+"area_a": 2.27,
+"area_b": 1640.26,
+"track": 0.35,
+"via": 0.08,
+"pad": 0.58,
+"zone": 0.0,
+"blocked_mm": 0.5,
+"nets_crossed": 1,
+"layers_used": 1
+},
+{
+"net": "/Driver 1 and matrix/CS1_37",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 1 and matrix/CS1_37] on In3.Cu, length 1.9925",
+"b": "Track [/Driver 1 and matrix/CS1_37] on F.Cu, length 0.7638 m",
+"axy": [
+84.629995,
+97.376249
+],
+"bxy": [
+85.931202,
+99.758214
+],
+"len": 2.71,
+"area_a": 1634.61,
+"area_b": 8.03,
+"track": 0.19,
+"via": 0.31,
+"pad": 0.51,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "/Driver 1 and matrix/CS1_39",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_39] of D110 on F.Cu",
+"b": "Pad 6 [/Driver 1 and matrix/CS1_39] of U1 on B.Cu",
+"axy": [
+86.519293,
+102.148046
+],
+"bxy": [
+85.205,
+104.2
+],
+"len": 2.44,
+"area_a": 1646.71,
+"area_b": 0.14,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_39",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 1 and matrix/CS1_39] of D109 on F.Cu",
+"b": "Pad 1 [/Driver 1 and matrix/CS1_39] of D110 on F.Cu",
+"axy": [
+87.969126,
+103.659856
+],
+"bxy": [
+86.519293,
+102.148046
+],
+"len": 2.09,
+"area_a": 5.76,
+"area_b": 1646.71,
+"track": 0.16,
+"via": 0.31,
+"pad": 0.53,
+"zone": 0.0,
+"blocked_mm": 0.6,
+"nets_crossed": 3,
+"layers_used": 1
+},
+{
+"net": "/Driver 1 and matrix/CS1_7",
+"group": "signal",
+"cls": "free-path",
+"a": "Pad 4 [/Driver 1 and matrix/CS1_7] of D23 on F.Cu",
+"b": "Pad 4 [/Driver 1 and matrix/CS1_7] of D20 on F.Cu",
+"axy": [
+93.88103,
+92.151595
+],
+"bxy": [
+91.37085,
+98.242914
+],
+"len": 6.59,
+"area_a": 1714.63,
+"area_b": 1714.63,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "/Driver 1 and matrix/CS1_8",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [/Driver 1 and matrix/CS1_8] on F.Cu, length 0.7762 mm",
+"b": "Pad 33 [/Driver 1 and matrix/CS1_8] of U1 on B.Cu",
+"axy": [
+91.979995,
+98.126249
+],
+"bxy": [
+91.995,
+101.4
+],
+"len": 3.27,
+"area_a": 1706.85,
+"area_b": 0.09,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 1 and matrix/CS1_8",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 1 and matrix/CS1_8] on F.Cu, length 1.2473 mm",
+"b": "Pad 2 [/Driver 1 and matrix/CS1_8] of D23 on F.Cu",
+"axy": [
+94.624808,
+89.45966
+],
+"bxy": [
+94.668095,
+92.29487
+],
+"len": 2.84,
+"area_a": 1706.85,
+"area_b": 1.77,
+"track": 0.12,
+"via": 0.42,
+"pad": 0.46,
+"zone": 0.0,
+"blocked_mm": 0.3,
+"nets_crossed": 1,
+"layers_used": 2
+},
+{
+"net": "/Driver 1 and matrix/SW1_6",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [/Driver 1 and matrix/SW1_6] on In3.Cu, length 0.1641 ",
+"b": "Pad 21 [/Driver 1 and matrix/SW1_6] of U1 on B.Cu",
+"axy": [
+86.379995,
+96.076249
+],
+"bxy": [
+87.8,
+100.005
+],
+"len": 4.18,
+"area_a": 1717.98,
+"area_b": 0.12,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "/Driver 1 and matrix/SW1_8",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [/Driver 1 and matrix/SW1_8] on In4.Cu, length 0.4123 ",
+"b": "Pad 23 [/Driver 1 and matrix/SW1_8] of U1 on B.Cu",
+"axy": [
+89.279995,
+99.276249
+],
+"bxy": [
+88.6,
+100.005
+],
+"len": 1.0,
+"area_a": 1762.05,
+"area_b": 0.08,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "/Driver 2 and matrix/CS2_1",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 4 [/Driver 2 and matrix/CS2_1] of D118 on F.Cu",
+"b": "Pad 26 [/Driver 2 and matrix/CS2_1] of U2 on B.Cu",
+"axy": [
+110.411204,
+104.493903
+],
+"bxy": [
+109.4,
+106.795
+],
+"len": 2.51,
+"area_a": 6.45,
+"area_b": 0.29,
+"track": 0.27,
+"via": 0.14,
+"pad": 0.59,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_1",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 4 [/Driver 2 and matrix/CS2_1] of D121 on F.Cu",
+"b": "Pad 26 [/Driver 2 and matrix/CS2_1] of U2 on B.Cu",
+"axy": [
+111.478926,
+108.283014
+],
+"bxy": [
+109.4,
+106.795
+],
+"len": 2.56,
+"area_a": 1634.15,
+"area_b": 0.29,
+"track": 0.27,
+"via": 0.14,
+"pad": 0.59,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_10",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 35 [/Driver 2 and matrix/CS2_10] of U2 on B.Cu",
+"b": "Pad 4 [/Driver 2 and matrix/CS2_10] of D145 on F.Cu",
+"axy": [
+107.205,
+104.6
+],
+"bxy": [
+108.733747,
+104.114172
+],
+"len": 1.6,
+"area_a": 2.23,
+"area_b": 1667.5,
+"track": 0.25,
+"via": 0.29,
+"pad": 0.46,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_13",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 2 and matrix/CS2_13] on In3.Cu, length 0.3536",
+"b": "Pad 4 [/Driver 2 and matrix/CS2_13] of D154 on F.Cu",
+"axy": [
+106.779995,
+101.976249
+],
+"bxy": [
+107.202379,
+101.685978
+],
+"len": 0.51,
+"area_a": 1674.66,
+"area_b": 6.28,
+"track": 0.16,
+"via": 0.35,
+"pad": 0.49,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "/Driver 2 and matrix/CS2_16",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 42 [/Driver 2 and matrix/CS2_16] of U2 on B.Cu",
+"b": "Track [/Driver 2 and matrix/CS2_16] on F.Cu, length 1.5653 m",
+"axy": [
+107.205,
+101.8
+],
+"bxy": [
+106.625294,
+100.276746
+],
+"len": 1.63,
+"area_a": 0.08,
+"area_b": 1682.75,
+"blocked_mm": 0.1,
+"nets_crossed": 1,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_19",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 2 and matrix/CS2_19] on In6.Cu, length 1.7614",
+"b": "Pad 4 [/Driver 2 and matrix/CS2_19] of D172 on F.Cu",
+"axy": [
+107.479995,
+99.426249
+],
+"bxy": [
+109.628033,
+102.771973
+],
+"len": 3.98,
+"area_a": 52.76,
+"area_b": 9.0,
+"track": 0.15,
+"via": 0.35,
+"pad": 0.5,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "/Driver 2 and matrix/CS2_2",
+"group": "signal",
+"cls": "track-wall",
+"a": "Track [/Driver 2 and matrix/CS2_2] on In6.Cu, length 0.3202 ",
+"b": "Pad 2 [/Driver 2 and matrix/CS2_2] of D118 on F.Cu",
+"axy": [
+110.529995,
+106.826249
+],
+"bxy": [
+111.139103,
+104.161996
+],
+"len": 2.73,
+"area_a": 4.65,
+"area_b": 1641.76,
+"track": 0.58,
+"via": 0.42,
+"pad": 0.0,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "/Driver 2 and matrix/CS2_20",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 46 [/Driver 2 and matrix/CS2_20] of U2 on B.Cu",
+"b": "Pad 2 [/Driver 2 and matrix/CS2_20] of D172 on F.Cu",
+"axy": [
+107.8,
+100.005
+],
+"bxy": [
+110.305173,
+102.345967
+],
+"len": 3.43,
+"area_a": 2.59,
+"area_b": 2.88,
+"track": 0.33,
+"via": 0.49,
+"pad": 0.18,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_21",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 47 [/Driver 2 and matrix/CS2_21] of U2 on B.Cu",
+"b": "Pad 1 [/Driver 2 and matrix/CS2_21] of D172 on F.Cu",
+"axy": [
+108.2,
+100.005
+],
+"bxy": [
+109.879167,
+101.668827
+],
+"len": 2.36,
+"area_a": 0.11,
+"area_b": 2.93,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_3",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 2 and matrix/CS2_3] of D118 on F.Cu",
+"b": "Track [/Driver 2 and matrix/CS2_3] on In6.Cu, length 0.2828 ",
+"axy": [
+110.807196,
+103.434097
+],
+"bxy": [
+110.429995,
+106.326249
+],
+"len": 2.92,
+"area_a": 3.01,
+"area_b": 239.94,
+"track": 0.12,
+"via": 0.34,
+"pad": 0.55,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "/Driver 2 and matrix/CS2_30",
+"group": "signal",
+"cls": "track-wall",
+"a": "Pad 57 [/Driver 2 and matrix/CS2_30] of U2 on B.Cu",
+"b": "Pad 1 [/Driver 2 and matrix/CS2_30] of D199 on F.Cu",
+"axy": [
+112.2,
+100.005
+],
+"bxy": [
+110.27483,
+100.076304
+],
+"len": 1.93,
+"area_a": 1.18,
+"area_b": 2.92,
+"track": 0.35,
+"via": 0.32,
+"pad": 0.33,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_35",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Track [/Driver 2 and matrix/CS2_35] on B.Cu, length 0.4906 m",
+"b": "Pad 2 [/Driver 2 and matrix/CS2_35] of D217 on F.Cu",
+"axy": [
+114.479995,
+100.926249
+],
+"bxy": [
+112.511757,
+101.778098
+],
+"len": 2.14,
+"area_a": 129.44,
+"area_b": 7.06,
+"track": 0.16,
+"via": 0.36,
+"pad": 0.48,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_36",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 1 [/Driver 2 and matrix/CS2_36] of D220 on F.Cu",
+"b": "Track [/Driver 2 and matrix/CS2_36] on In3.Cu, length 0.4243",
+"axy": [
+114.653993,
+102.276238
+],
+"bxy": [
+114.429995,
+101.426249
+],
+"len": 0.88,
+"area_a": 1.22,
+"area_b": 1640.14,
+"track": 0.23,
+"via": 0.42,
+"pad": 0.36,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "/Driver 2 and matrix/CS2_37",
+"group": "signal",
+"cls": "free-path",
+"a": "Pad 4 [/Driver 2 and matrix/CS2_37] of D228 on F.Cu",
+"b": "Pad 4 [/Driver 2 and matrix/CS2_37] of D230 on F.Cu",
+"axy": [
+112.822003,
+106.168902
+],
+"bxy": [
+113.48329,
+108.126409
+],
+"len": 2.07,
+"area_a": 1639.77,
+"area_b": 1639.77,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "/Driver 2 and matrix/CS2_39",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 2 and matrix/CS2_39] of D229 on F.Cu",
+"b": "Pad 1 [/Driver 2 and matrix/CS2_39] of D228 on F.Cu",
+"axy": [
+111.296189,
+105.402831
+],
+"bxy": [
+113.271597,
+105.130698
+],
+"len": 1.99,
+"area_a": 7.32,
+"area_b": 1633.88,
+"track": 0.17,
+"via": 0.37,
+"pad": 0.46,
+"zone": 0.0,
+"blocked_mm": 0.1,
+"nets_crossed": 2,
+"layers_used": 3
+},
+{
+"net": "/Driver 2 and matrix/CS2_39",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 1 [/Driver 2 and matrix/CS2_39] of D226 on F.Cu",
+"b": "Track [/Driver 2 and matrix/CS2_39] on B.Cu, length 0.5005 m",
+"axy": [
+112.846769,
+103.035758
+],
+"bxy": [
+113.995,
+102.6
+],
+"len": 1.23,
+"area_a": 7.32,
+"area_b": 0.72,
+"track": 0.27,
+"via": 0.3,
+"pad": 0.43,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_6",
+"group": "signal",
+"cls": "led-pad",
+"a": "Pad 1 [/Driver 2 and matrix/CS2_6] of D127 on F.Cu",
+"b": "Pad 31 [/Driver 2 and matrix/CS2_6] of U2 on B.Cu",
+"axy": [
+108.52897,
+107.297241
+],
+"bxy": [
+107.205,
+106.2
+],
+"len": 1.72,
+"area_a": 0.12,
+"area_b": 5.01,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/CS2_8",
+"group": "signal",
+"cls": "led-pad",
+"a": "Pad 2 [/Driver 2 and matrix/CS2_8] of D136 on F.Cu",
+"b": "Via [/Driver 2 and matrix/CS2_8] on F.Cu - B.Cu",
+"axy": [
+109.31463,
+106.022858
+],
+"bxy": [
+107.58,
+105.38
+],
+"len": 1.85,
+"area_a": 0.22,
+"area_b": 1666.46,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "/Driver 2 and matrix/CS2_9",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 34 [/Driver 2 and matrix/CS2_9] of U2 on B.Cu",
+"b": "Track [/Driver 2 and matrix/CS2_9] on F.Cu, length 0.9925 mm",
+"axy": [
+107.205,
+105.0
+],
+"bxy": [
+107.379995,
+107.076249
+],
+"len": 2.08,
+"area_a": 1.54,
+"area_b": 1652.28,
+"track": 0.28,
+"via": 0.21,
+"pad": 0.52,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 6
+},
+{
+"net": "/Driver 2 and matrix/SW2_8",
+"group": "signal",
+"cls": "track-wall",
+"a": "Track [/Driver 2 and matrix/SW2_8] on In4.Cu, length 9.0384 ",
+"b": "Pad 23 [/Driver 2 and matrix/SW2_8] of U2 on B.Cu",
+"axy": [
+106.661326,
+115.294965
+],
+"bxy": [
+110.6,
+106.795
+],
+"len": 9.37,
+"area_a": 1745.88,
+"area_b": 1.45,
+"track": 0.38,
+"via": 0.31,
+"pad": 0.31,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "/MCU/CLED_G",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 36 [/MCU/CLED_G] of U3 on B.Cu",
+"b": "Pad 1 [/MCU/CLED_G] of R41 on B.Cu",
+"axy": [
+102.0375,
+92.6
+],
+"bxy": [
+103.29,
+90.4
+],
+"len": 2.53,
+"area_a": 0.18,
+"area_b": 16.36,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "/MCU/QSPI_SD1",
+"group": "signal",
+"cls": "track-wall",
+"a": "Pad 59 [/MCU/QSPI_SD1] of U3 on B.Cu",
+"b": "Pad 2 [/MCU/QSPI_SD1] of U4 on B.Cu",
+"axy": [
+96.2,
+96.8375
+],
+"bxy": [
+97.835,
+108.1
+],
+"len": 11.38,
+"area_a": 0.82,
+"area_b": 134.91,
+"track": 0.4,
+"via": 0.35,
+"pad": 0.25,
+"zone": 0.0,
+"blocked_mm": 0.3,
+"nets_crossed": 1,
+"layers_used": 3
+},
+{
+"net": "/MCU/QSPI_SD3",
+"group": "signal",
+"cls": "pad-wall",
+"a": "Pad 55 [/MCU/QSPI_SD3] of U3 on B.Cu",
+"b": "Pad 7 [/MCU/QSPI_SD3] of U4 on B.Cu",
+"axy": [
+97.8,
+96.8375
+],
+"bxy": [
+97.835,
+102.7
+],
+"len": 5.86,
+"area_a": 1.27,
+"area_b": 6.48,
+"track": 0.3,
+"via": 0.14,
+"pad": 0.5,
+"zone": 0.05,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "GND",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 61 [GND] of U1 on B.Cu",
+"b": "Pad 12 [GND] of U1 on B.Cu",
+"axy": [
+86.125,
+101.825
+],
+"bxy": [
+85.205,
+101.8
+],
+"len": 0.92,
+"area_a": 0.0,
+"area_b": 0.28,
+"blocked_mm": 0.2,
+"nets_crossed": 1,
+"layers_used": 1
+},
+{
+"net": "GND",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 61 [GND] of U1 on B.Cu",
+"b": "Pad 8 [GND] of U1 on B.Cu",
+"axy": [
+86.575,
+103.4
+],
+"bxy": [
+85.205,
+103.4
+],
+"len": 1.37,
+"area_a": 0.0,
+"area_b": 0.07,
+"blocked_mm": 0.2,
+"nets_crossed": 0,
+"layers_used": 1
+},
+{
+"net": "GND",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 55 [GND] of U1 on B.Cu",
+"b": "Pad 61 [GND] of U1 on B.Cu",
+"axy": [
+87.8,
+106.795
+],
+"bxy": [
+88.375,
+106.024999
+],
+"len": 0.96,
+"area_a": 1.5,
+"area_b": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "GND",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 61 [GND] of U2 on B.Cu",
+"b": "Pad 55 [GND] of U2 on B.Cu",
+"axy": [
+111.35,
+101.0
+],
+"bxy": [
+111.4,
+100.005
+],
+"len": 1.0,
+"area_a": 0.0,
+"area_b": 0.08,
+"blocked_mm": 0.2,
+"nets_crossed": 1,
+"layers_used": 1
+},
+{
+"net": "I2C_SCL",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 8 [I2C_SCL] of U3 on B.Cu",
+"b": "Pad 10 [I2C_SCL] of U1 on B.Cu",
+"axy": [
+95.1625,
+93.4
+],
+"bxy": [
+85.205,
+102.6
+],
+"len": 13.56,
+"area_a": 1.82,
+"area_b": 0.05,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "INTB1",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [INTB1] on B.Cu, length 0.3041 mm",
+"b": "Pad 7 [INTB1] of U1 on B.Cu",
+"axy": [
+82.979995,
+103.476249
+],
+"bxy": [
+85.205,
+103.8
+],
+"len": 2.25,
+"area_a": 238.21,
+"area_b": 0.17,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "INTB2",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 7 [INTB2] of U2 on B.Cu",
+"b": "Track [INTB2] on In3.Cu, length 1.4807 mm",
+"axy": [
+113.995,
+103.0
+],
+"bxy": [
+115.179995,
+99.076249
+],
+"len": 4.1,
+"area_a": 0.5,
+"area_b": 1634.12,
+"track": 0.21,
+"via": 0.4,
+"pad": 0.39,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 4
+},
+{
+"net": "Net-(C24-Pad1)",
+"group": "signal",
+"cls": "free-path",
+"a": "Pad 1 [Net-(C24-Pad1)] of R17 on B.Cu",
+"b": "Track [Net-(C24-Pad1)] on B.Cu, length 0.5228 mm",
+"axy": [
+97.6,
+88.41
+],
+"bxy": [
+93.879995,
+85.626249
+],
+"len": 4.65,
+"area_a": 8.64,
+"area_b": 8.64,
+"blocked_mm": 0.3,
+"nets_crossed": 1,
+"layers_used": 1
+},
+{
+"net": "Net-(U3-XIN)",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Pad 1 [Net-(U3-XIN)] of Y1 on B.Cu",
+"b": "Pad 21 [Net-(U3-XIN)] of U3 on B.Cu",
+"axy": [
+98.4,
+86.05
+],
+"bxy": [
+97.8,
+89.9625
+],
+"len": 3.96,
+"area_a": 78.14,
+"area_b": 0.23,
+"blocked_mm": 0.3,
+"nets_crossed": 2,
+"layers_used": 4
+},
+{
+"net": "SDB1",
+"group": "signal",
+"cls": "chip-fanout",
+"a": "Track [SDB1] on In1.Cu, length 1.1448 mm",
+"b": "Pad 9 [SDB1] of U3 on B.Cu",
+"axy": [
+84.429995,
+101.776249
+],
+"bxy": [
+95.1625,
+93.0
+],
+"len": 13.86,
+"area_a": 1623.87,
+"area_b": 0.07,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+},
+{
+"net": "USB_DP",
+"group": "signal",
+"cls": "via-wall",
+"a": "Pad 1 [USB_DP] of R15 on B.Cu",
+"b": "Pad 4 [USB_DP] of U7 on B.Cu",
+"axy": [
+98.5,
+100.11
+],
+"bxy": [
+101.45,
+109.9375
+],
+"len": 10.26,
+"area_a": 5.74,
+"area_b": 128.58,
+"track": 0.25,
+"via": 0.47,
+"pad": 0.29,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 2
+},
+{
+"net": "VSYS",
+"group": "plane",
+"cls": "chip-fanout",
+"a": "Pad 1 [VSYS] of C34 on B.Cu",
+"b": "Pad 25 [VSYS] of U1 on B.Cu",
+"axy": [
+90.0,
+98.28
+],
+"bxy": [
+89.4,
+100.005
+],
+"len": 1.83,
+"area_a": 11.19,
+"area_b": 0.12,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 3
+},
+{
+"net": "VSYS",
+"group": "plane",
+"cls": "via-wall",
+"a": "Pad 1 [VSYS] of C34 on B.Cu",
+"b": "Track [VSYS] on B.Cu, length 0.5601 mm",
+"axy": [
+90.0,
+98.28
+],
+"bxy": [
+92.0,
+98.28
+],
+"len": 2.0,
+"area_a": 11.19,
+"area_b": 6.29,
+"track": 0.14,
+"via": 0.55,
+"pad": 0.31,
+"zone": 0.0,
+"blocked_mm": 0.0,
+"nets_crossed": 0,
+"layers_used": 5
+}
+]
+}

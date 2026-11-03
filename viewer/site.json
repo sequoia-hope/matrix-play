@@ -1,0 +1,51 @@
+{
+ "title": "round-pendant",
+ "built": "2026-11-03T10:51:27",
+ "config": "pcbview.toml",
+ "boards": [
+  {
+   "id": "round-pendant-c",
+   "name": "round-pendant, variant C",
+   "page": "round-pendant-c.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/c/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/c/round-pendant.kicad_sch"
+   }
+  },
+  {
+   "id": "round-pendant-a",
+   "name": "round-pendant, variant A",
+   "page": "round-pendant-a.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/a/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/a/round-pendant.kicad_sch"
+   }
+  },
+  {
+   "id": "round-pendant-b",
+   "name": "round-pendant, variant B",
+   "page": "round-pendant-b.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/b/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/b/round-pendant.kicad_sch"
+   }
+  },
+  {
+   "id": "round-pendant-c-web",
+   "name": "round-pendant, 235 LEDs, seed web silk",
+   "page": "round-pendant-c-web.html",
+   "embed": "index.html",
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/c-web/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/c-web/round-pendant.kicad_sch"
+   }
+  }
+ ]
+}

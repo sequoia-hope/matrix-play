@@ -1,0 +1,156 @@
+net,class,v_max,i_cont,i_peak,impedance,length_limit,reason
++1V1,POWER,1.1,0.05,0.1,,,RP2350 core; reference zones per chips/rp2350.md
++3V3,POWER,3.4,0.04,0.15,,,"Logic rail; 150 mA max, intent power table"
+/Driver 1 and matrix/CS1_1,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_10,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_11,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_12,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_13,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_14,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_15,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_16,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_17,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_18,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_19,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_2,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_20,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_21,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_22,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_23,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_24,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_25,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_26,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_27,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_28,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_29,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_3,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_30,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_31,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_32,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_33,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_34,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_35,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_36,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_37,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_38,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_39,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_4,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_5,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_6,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_7,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_8,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/CS1_9,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 1 and matrix/SW1_1,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_2,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_3,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_4,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_5,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_6,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_7,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_8,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 1 and matrix/SW1_9,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/CS2_1,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_10,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_11,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_12,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_13,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_14,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_15,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_16,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_17,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_18,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_19,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_2,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_20,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_21,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_22,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_23,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_24,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_25,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_26,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_27,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_28,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_29,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_3,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_30,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_31,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_32,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_33,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_34,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_35,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_36,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_37,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_38,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_39,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_4,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_5,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_6,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_7,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_8,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/CS2_9,SIGNAL,4.5,0.011,0.0127,,,LED sink: 12.7 mA peak; 9 LEDs of one colour; drivers.md
+/Driver 2 and matrix/SW2_1,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_2,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_3,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_4,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_5,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_6,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_7,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_8,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/Driver 2 and matrix/SW2_9,SW_SCAN,4.5,0.055,0.494,,,"LED scan line: 494 mA peak for 32 us, 1/9 duty; drivers.md"
+/MCU/ACC_INT,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/ACC_SCL,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/ACC_SDA,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/BTN,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/QSPI_SCLK,SE_HS,3.4,,,,25,"Flash at up to 75 MHz; keep under 25 mm, chips and flash.md"
+/MCU/QSPI_SD0,SE_HS,3.4,,,,25,"Flash at up to 75 MHz; keep under 25 mm, chips and flash.md"
+/MCU/QSPI_SD1,SE_HS,3.4,,,,25,"Flash at up to 75 MHz; keep under 25 mm, chips and flash.md"
+/MCU/QSPI_SD2,SE_HS,3.4,,,,25,"Flash at up to 75 MHz; keep under 25 mm, chips and flash.md"
+/MCU/QSPI_SD3,SE_HS,3.4,,,,25,"Flash at up to 75 MHz; keep under 25 mm, chips and flash.md"
+/MCU/QSPI_SS,SE_HS,3.4,,,,25,"Flash at up to 75 MHz; keep under 25 mm, chips and flash.md"
+/MCU/RUN,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/SWCLK,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/SWDIO,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/USB_DM_MCU,DIFF_HS,3.6,,,90 diff,,"USB FS, 27 R to pin, very short"
+/MCU/USB_DP_MCU,DIFF_HS,3.6,,,90 diff,,"USB FS, 27 R to pin, very short"
+/MCU/VREG_AVDD,ANALOG,3.4,0.001,0.001,,,"Regulator analog filter, RFILT and CFILT"
+/MCU/VREG_LX,SWITCH,3.4,0.1,0.2,,,Core regulator switch node; keep minimal; reference zone
+/Power/BAT_N,POWER,4.3,0.34,1.0,,,"Cell minus, XB9901A GND pins; never joined to board GND; protection.md"
+/Power/CC1,SIGNAL,3.4,,,,,"Control or status, low current"
+/Power/CC2,SIGNAL,3.4,,,,,"Control or status, low current"
+/Power/USB_DM_C,DIFF_HS,5.5,,,90 diff,,"USB FS, connector to ESD; both D- rows join here"
+/Power/USB_DP_C,DIFF_HS,5.5,,,90 diff,,"USB FS, connector to ESD; both D+ rows join here"
+CHG,SIGNAL,3.4,,,,,"Control or status, low current"
+GND,POWER,0,1.0,2.0,,,"Return for everything; 1 A LED scan peak, plane"
+I2C_SCL,SIGNAL,3.4,0.0033,0.0033,,,"Driver bus at 1 MHz, 1 k pull-up; keep bus capacitance under 100 pF"
+I2C_SDA,SIGNAL,3.4,0.0033,0.0033,,,"Driver bus at 1 MHz, 1 k pull-up; keep bus capacitance under 100 pF"
+INTB1,SIGNAL,3.4,,,,,"Control or status, low current"
+INTB2,SIGNAL,3.4,,,,,"Control or status, low current"
+Net-(C24-Pad1),CLOCK,3.4,,,,6,"12 MHz crystal; very short, no vias; rp2350-core.md"
+Net-(Q1A-D),SIGNAL,4.5,,,,,"Control or status, low current"
+Net-(Q1B-D),SIGNAL,4.5,,,,,"Control or status, low current"
+Net-(R16-Pad2),SIGNAL,3.4,,,,,"Control or status, low current"
+Net-(R18-Pad2),SIGNAL,3.4,,,,,"Control or status, low current"
+Net-(U3-XIN),CLOCK,3.4,,,,6,"12 MHz crystal; very short, no vias; rp2350-core.md"
+Net-(U3-XOUT),CLOCK,3.4,,,,6,"12 MHz crystal; very short, no vias; rp2350-core.md"
+Net-(U5-ILIM),ANALOG,4.5,,,,,"Current-setting resistor node; resistor close, return to chip ground; datasheet layout"
+Net-(U5-ISET),ANALOG,4.5,,,,,"Current-setting resistor node; resistor close, return to chip ground; datasheet layout"
+Net-(U5-TS),ANALOG,4.5,,,,,"Current-setting resistor node; resistor close, return to chip ground; datasheet layout"
+Net-(U8-VDD),SIGNAL,4.5,,,,,"Control or status, low current"
+PGOOD,SIGNAL,3.4,,,,,"Control or status, low current"
+SDB1,SIGNAL,3.4,,,,,"Control or status, low current"
+SDB2,SIGNAL,3.4,,,,,"Control or status, low current"
+USB_DM,DIFF_HS,3.6,,,90 diff,,"USB FS, between ESD and 27 R; pair with USB_DP. no vias"
+USB_DP,DIFF_HS,3.6,,,90 diff,,"USB FS, between ESD and 27 R; pair with USB_DM. no vias"
+VBAT,POWER,4.3,0.34,1.0,,,"Protected cell rail; same load through BQ24073 BAT-OUT, charge 300 mA"
+VBAT_EN,SIGNAL,3.4,,,,,"Control or status, low current"
+VBAT_SENSE,ANALOG,3.4,,,,,ADC0 from switched divider; away from LX and SW lines
+VBUS,POWER,5.5,0.5,0.5,,,"USB input, 500 mA limit, charger.md"
+VSYS,POWER,4.5,0.34,1.0,,,System rail: R19 300 mA LEDs + 40 mA logic; 988 mA scan peak; drivers.md
+Net-(U1-ISET),ANALOG,4.5,,,,,"Current-setting resistor node; resistor close, return to chip ground; datasheet p.19"
+Net-(U2-ISET),ANALOG,4.5,,,,,"Current-setting resistor node; resistor close, return to chip ground; datasheet p.19"
+CLED_R,SIGNAL,3.3,0.002,0.002,,,Centre LED cathode to GPIO; about 1.5 mA; variant c only
+CLED_G,SIGNAL,3.3,0.002,0.002,,,Centre LED cathode to GPIO; about 1.6 mA; variant c only
+CLED_B,SIGNAL,3.3,0.002,0.002,,,Centre LED cathode to GPIO; about 1.6 mA; variant c only
+Net-(D235-R),SIGNAL,3.3,0.002,0.002,,,Centre LED cathode to its resistor; variant c only
+Net-(D235-G),SIGNAL,3.3,0.002,0.002,,,Centre LED cathode to its resistor; variant c only
+Net-(D235-B),SIGNAL,3.3,0.002,0.002,,,Centre LED cathode to its resistor; variant c only

@@ -1,0 +1,121 @@
+{
+ "plans": [
+  {
+   "name": "v38-60",
+   "title": "38 mm, smaller cell, 0.6 mm hole margin",
+   "dia": 38.0,
+   "margin": 0.6,
+   "rotation": 110,
+   "j_y": 15.62,
+   "over_signal": 2,
+   "cell": "GRP6530027",
+   "count": 234,
+   "land_gap": 0.285,
+   "usb_hole_gap": 0.61,
+   "edge": 0.37,
+   "spacing_min": 1.83,
+   "spacing_mean": 1.88,
+   "leds_over_chips": 45
+  },
+  {
+   "name": "v38-100",
+   "title": "38 mm, smaller cell, 1.0 mm hole margin",
+   "dia": 38.0,
+   "margin": 1.0,
+   "rotation": 135,
+   "j_y": 15.62,
+   "over_signal": 0,
+   "cell": "GRP6530027",
+   "count": 234,
+   "land_gap": 0.261,
+   "usb_hole_gap": 1.04,
+   "edge": 0.37,
+   "spacing_min": 1.8,
+   "spacing_mean": 1.85,
+   "leds_over_chips": 50
+  },
+  {
+   "name": "v41-60",
+   "title": "41 mm, keeps the chosen cell, 0.6 mm hole margin",
+   "dia": 41.0,
+   "margin": 0.6,
+   "rotation": 35,
+   "j_y": 17.14,
+   "over_signal": 1,
+   "cell": "5435035",
+   "count": 234,
+   "land_gap": 0.45,
+   "usb_hole_gap": 0.6,
+   "edge": 0.37,
+   "spacing_min": 2.0,
+   "spacing_mean": 2.06,
+   "leds_over_chips": 38
+  },
+  {
+   "name": "v41-100",
+   "title": "41 mm, keeps the chosen cell, 1.0 mm hole margin",
+   "dia": 41.0,
+   "margin": 1.0,
+   "rotation": 45,
+   "j_y": 17.14,
+   "over_signal": 0,
+   "cell": "5435035",
+   "count": 234,
+   "land_gap": 0.434,
+   "usb_hole_gap": 1.03,
+   "edge": 0.37,
+   "spacing_min": 1.98,
+   "spacing_mean": 2.03,
+   "leds_over_chips": 41
+  }
+ ],
+ "fit": {
+  "j_y_38": 15.62,
+  "cell_limit_38": 13.54,
+  "max_round_38": 32.2,
+  "cells": [
+   {
+    "name": "Grepow 5435035 (chosen)",
+    "w": 35.0,
+    "d": 35.1,
+    "t": 5.45,
+    "cap": "610 mAh listed",
+    "board_dia": 40.9,
+    "back": 8.75
+   },
+   {
+    "name": "Grepow GRP4435035",
+    "w": 35.0,
+    "d": 33.5,
+    "t": 4.4,
+    "cap": "465 mAh, 4.2 V",
+    "board_dia": 39.3,
+    "back": 7.7
+   },
+   {
+    "name": "Grepow GRP7535035",
+    "w": 35.0,
+    "d": 33.5,
+    "t": 7.15,
+    "cap": "845 mAh, 4.4 V",
+    "board_dia": 39.3,
+    "back": 10.45
+   },
+   {
+    "name": "Grepow GRP6530027",
+    "w": 30.0,
+    "d": 27.7,
+    "t": 6.35,
+    "cap": "430 mAh, 4.35 V",
+    "board_dia": 38.0,
+    "back": 9.65
+   }
+  ],
+  "rect_38": [
+   698.4,
+   25.8,
+   27.1
+  ],
+  "round_area": 962
+ }
+}
