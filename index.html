@@ -121,7 +121,7 @@ footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
     <!-- pcbview:begin -->
 <!-- written by pcbview (python3 -m pcbview build pcbview.toml): change the config, not this -->
 <link rel="stylesheet" href="viewer/assets/viewer.css">
-<section class="vw" data-pv-embed aria-label="round-pendant, 235 LEDs, seed web silk: schematic, PCB and 3D">
+<section class="vw" data-pv-embed aria-label="round-pendant, 235 LEDs, fully connected, seed web silk: schematic, PCB and 3D">
   <div class="vw-bar">
     <div class="vw-left"><button data-vw="layers" aria-pressed="true"
       title="show or hide the side panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 14.2 5 8 8.2 1.8 5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M1.8 8 8 11.2 14.2 8M1.8 11 8 14.2 14.2 11" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span>Panel</span></button></div>
@@ -132,7 +132,7 @@ footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
     </div>
   </div>
   
-  <div class="vw-panel" id="schematic" data-dir="viewer/round-pendant-c-web/sch/" role="tabpanel" hidden>
+  <div class="vw-panel" id="schematic" data-dir="viewer/round-pendant-c-web3/sch/" role="tabpanel" hidden>
     <div class="cu sch">
       <div class="cu-panel">
         <p class="cu-head">Sheets</p>
@@ -157,7 +157,7 @@ footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
     </div>
   </div>
   
-  <div class="vw-panel" id="copper" data-dir="viewer/round-pendant-c-web/layers/" data-parts="viewer/round-pendant-c-web/3d/parts.json" role="tabpanel">
+  <div class="vw-panel" id="copper" data-dir="viewer/round-pendant-c-web3/layers/" data-parts="viewer/round-pendant-c-web3/3d/parts.json" role="tabpanel">
     <div class="cu">
       <div class="cu-panel">
         <div id="cu-layers"></div>
@@ -203,7 +203,7 @@ footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
     </div>
   </div>
   
-  <div class="vw-panel" id="board3d" data-dir="viewer/round-pendant-c-web/3d/" role="tabpanel" hidden>
+  <div class="vw-panel" id="board3d" data-dir="viewer/round-pendant-c-web3/3d/" role="tabpanel" hidden>
     <div class="b3">
       <div class="b3-bar">
         <div class="cu-row" role="group" aria-label="view">
@@ -234,10 +234,10 @@ footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
   
   <div class="vw-panel pv-over" id="overview" role="tabpanel" hidden>
     <div class="pv-card">
-      <h1>round-pendant, 235 LEDs, seed web silk</h1>
-      <p class="pv-lede">Work in progress: 8 layers, through vias, not signed off. Route y21 with the front silk drawn as a web between the LEDs, so each sits in its own sunflower seed. Back silk removed for now.</p>
-      <dl class="pv-facts"><dt>Source</dt><dd><code>hw/round-pendant/c-web/round-pendant.kicad_pcb</code><br><code>hw/round-pendant/c-web/round-pendant.kicad_sch</code></dd><dt>Board</dt><dd>&Oslash;38 mm<small>8 copper layers, 1 mm thick</small></dd><dt>Parts</dt><dd>332 footprints<small>235 on the front, 97 on the back</small></dd><dt>Copper</dt><dd>171 nets, 4,882 track segments, 893 vias<small>4,203 mm of routed track</small></dd><dt>Schematic</dt><dd>5 sheets<small>A4, A3, A3, A3, A3</small></dd><dt>3D</dt><dd>322 of 332 parts drawn from a model<small>2 through an older KiCad&rsquo;s library variable (<code>${KICAD6_3DMODEL_DIR}</code> and so on), read as KiCad 9&rsquo;s library</small><small>10 name no model (BT1, J1, TP1&ndash;TP8)</small></dd></dl>
-      <p class="cu-hint">Built 2026-11-03 10:51 by pcbview from the KiCad files above:
+      <h1>round-pendant, 235 LEDs, fully connected, seed web silk</h1>
+      <p class="pv-lede">Work in progress: 8 layers, through vias, every connection joined, not signed off. Route y30 with the front silk drawn as a web between the LEDs. Back silk removed for now.</p>
+      <dl class="pv-facts"><dt>Source</dt><dd><code>hw/round-pendant/c-web3/round-pendant.kicad_pcb</code><br><code>hw/round-pendant/c-web3/round-pendant.kicad_sch</code></dd><dt>Board</dt><dd>&Oslash;38 mm<small>8 copper layers, 1 mm thick</small></dd><dt>Parts</dt><dd>332 footprints<small>235 on the front, 97 on the back</small></dd><dt>Copper</dt><dd>171 nets, 4,647 track segments, 861 vias<small>4,125 mm of routed track</small></dd><dt>Schematic</dt><dd>5 sheets<small>A4, A3, A3, A3, A3</small></dd><dt>3D</dt><dd>322 of 332 parts drawn from a model<small>2 through an older KiCad&rsquo;s library variable (<code>${KICAD6_3DMODEL_DIR}</code> and so on), read as KiCad 9&rsquo;s library</small><small>10 name no model (BT1, J1, TP1&ndash;TP8)</small></dd></dl>
+      <p class="cu-hint">Built 2026-11-03 11:05 by pcbview from the KiCad files above:
       <code>python3 -m pcbview build pcbview.toml</code>. Nothing here is drawn by hand &mdash; the layer plots, the model and the
       sheets are KiCad&rsquo;s own exports.</p>
     </div>

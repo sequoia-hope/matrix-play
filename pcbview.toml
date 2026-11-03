@@ -30,8 +30,15 @@ note = "From variant A: sunflower LEDs, USB-C off the board through six pads, EV
 
 [[boards]]
 id = "round-pendant-c-web"
-embed = "index.html"
-name = "round-pendant, 235 LEDs, seed web silk"
+name = "round-pendant, y21 route with seed web silk"
 pcb = "hw/round-pendant/c-web/round-pendant.kicad_pcb"
 sch = "hw/round-pendant/c-web/round-pendant.kicad_sch"
-note = "Work in progress: 8 layers, through vias, not signed off. Route y21 with the front silk drawn as a web between the LEDs, so each sits in its own sunflower seed. Back silk removed for now."
+note = "Earlier route with 2 +3V3 joins open. Front silk drawn as a web between the LEDs. Back silk removed."
+
+[[boards]]
+id = "round-pendant-c-web3"
+embed = "index.html"
+name = "round-pendant, 235 LEDs, fully connected, seed web silk"
+pcb = "hw/round-pendant/c-web3/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/c-web3/round-pendant.kicad_sch"
+note = "Work in progress: 8 layers, through vias, every connection joined, not signed off. Route y30 with the front silk drawn as a web between the LEDs. Back silk removed for now."

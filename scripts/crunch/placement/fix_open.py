@@ -6,7 +6,7 @@ import numpy as np, pcbnew, shapely
 from shapely.geometry import LineString, Polygon, Point, box
 from shapely.ops import unary_union
 ap = argparse.ArgumentParser(); ap.add_argument("inp"); ap.add_argument("out"); ap.add_argument("net"); ap.add_argument("pad")
-ap.add_argument("--grid", type=float, default=.02); ap.add_argument("--win", type=float, default=5); ap.add_argument("--width", type=float, default=.1); ap.add_argument("--clear", type=float, default=.09); ap.add_argument("--allow", default="", help="rule area this net is exempt from"); ap.add_argument("--plane", default="", help="also finish at a through via anywhere on this net's zone on this layer")
+ap.add_argument("--grid", type=float, default=.02); ap.add_argument("--win", type=float, default=5); ap.add_argument("--width", type=float, default=.1); ap.add_argument("--clear", type=float, default=.09); ap.add_argument("--to", default="", help="second path: join REF.PAD to this REF.PAD though they're already joined"); ap.add_argument("--only", default="", help="route on this layer only"); ap.add_argument("--allow", default="", help="rule area this net is exempt from"); ap.add_argument("--plane", default="", help="also finish at a through via anywhere on this net's zone on this layer")
 a = ap.parse_args()
 b = pcbnew.LoadBoard(a.inp); um = pcbnew.ToMM; mm = pcbnew.FromMM
 pcbnew.ZONE_FILLER(b).Fill(b.Zones())
@@ -73,6 +73,8 @@ for i in range(len(items)):
         if set(items[i][2]) & set(items[j][2]) and items[i][1].distance(items[j][1]) < 1e-4: par[fd(i)] = fd(j)
 start = next(i for i, it in enumerate(items) if it[3] == a.pad)
 src = fd(start); tgt = [it for i, it in enumerate(items) if fd(i) != src]; srcs = [it for i, it in enumerate(items) if fd(i) == src]
+if a.to:
+    tgt = [it for it in items if it[3] == a.to]; srcs = [it for it in items if it[3] == a.pad]
 print("own items", len(items), "source island", len(srcs), "targets", len(tgt), [t[3] for t in tgt if t[0] == "pad"][:8])
 if not tgt: sys.exit("nothing to join in this window; widen --win")
 n = int(2*a.win/a.grid)+1; xs = np.linspace(sx-a.win, sx+a.win, n); ys = np.linspace(sy-a.win, sy+a.win, n); X, Y = np.meshgrid(xs, ys, indexing="ij")
@@ -82,10 +84,15 @@ for L in LAY:
     gg = unary_union(foreign[L]) if foreign[L] else None
     m = shapely.contains_xy(gg.buffer(TR), X, Y) if gg is not None else np.zeros_like(X, bool)
     if nokeep[L]: m |= shapely.contains_xy(unary_union(nokeep[L]).buffer(TR), X, Y)
+    if holes: m |= shapely.contains_xy(unary_union(holes).buffer(.2+a.width/2+.003), X, Y)
     block[L] = m
     if gg is not None: viaBad |= shapely.contains_xy(gg.buffer(VR), X, Y)
 if holes: viaBad |= shapely.contains_xy(unary_union(holes).buffer(.075+.2+.05+.002+.1), X, Y)
 if novia: viaBad |= shapely.contains_xy(unary_union(novia).buffer(.14), X, Y)
+if a.only:
+    for L in LAY:
+        if L != a.only: block[L] = np.ones_like(X, bool)
+    viaBad = np.ones_like(X, bool)
 # Own-net copper of other islands may be touched; a via must clear the source's other-net neighbours as above.
 goal = {L: shapely.contains_xy(unary_union([t[1] for t in tgt if L in t[2]]), X, Y) if [t for t in tgt if L in t[2]] else np.zeros_like(X, bool) for L in LAY}
 srcm = {L: shapely.contains_xy(unary_union([t[1] for t in srcs if L in t[2]]), X, Y) if [t for t in srcs if L in t[2]] else np.zeros_like(X, bool) for L in LAY}
@@ -131,7 +138,7 @@ while path[-1] in prev: path.append(prev[path[-1]])
 path.reverse(); print("path length cost", round(dist[end], 2), "points", len(path))
 # Emit: straight runs merged, vias at layer changes.
 code = b.FindNet(netname).GetNetCode(); added = []
-def P2(u): return pcbnew.VECTOR2I(mm(100+xs[u[0]]), mm(100+ys[u[1]]))
+def P2(u): return pcbnew.VECTOR2I(mm(float(100+xs[u[0]])), mm(float(100+ys[u[1]])))
 run = path[0]; dirn = None; pts = [path[0]]
 for u in path[1:]:
     pts.append(u)

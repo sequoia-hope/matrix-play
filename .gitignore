@@ -29,6 +29,7 @@ design/datasheets/*.pdf
 # routing trials: thousands of files and over a gigabyte. c-web holds the best route; design/decisions.md has their scores.
 hw/round-pendant/c-*/
 !hw/round-pendant/c-web/
+!hw/round-pendant/c-web3/
 scripts/crunch/router/ur-main/
 scripts/crunch/router/tools/
 scripts/crunch/**/*.kicad_pcb
