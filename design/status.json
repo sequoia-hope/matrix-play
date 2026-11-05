@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "board": "round-pendant",
-  "phase": 6,
-  "doing": "All 235 LEDs and every other connection now joined on 8 layers (y30, 861 vias). Front silk is the sunflower seed web; back has 52 tidy designators. Not signed off, not ready to order: RP2350 decisions, necks, light sensor, thermal review and JLC questions remain.",
+  "phase": 9,
+  "doing": "Variant D (hw/round-pendant/d, 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers, solid GND exposed pads on U3 and U5 with 0 foreign vias) is completely routed and finished on 8 layers with through vias: KiCad DRC 0 violations and 0 unconnected items, 876 vias, 0 thin pad joints, front seed web and 58 tidy back designators. Ready for user review in viewer/round-pendant-d.html.",
   "needs_user": [
     {
-      "id": "rp2350-relaxations",
+      "id": "driver-wlcsp-sourcing",
       "kind": "question",
-      "gate": 7,
-      "text": "Seven RP2350 layout decisions are listed at the top of \"RP2350 layout: what can relax\". Not blocking the crunch: routing continues in the meantime."
+      "gate": 1,
+      "text": "Variant D uses 5x Lumissil IS31FL3745-CLS4-TR WLCSP-36 (C2678907, lifecycle normal, JLC stock 0): pre-order at JLC or global-source from DigiKey/Mouser alongside L1 before release."
     },
     {
       "id": "inductor-preorder",
@@ -42,34 +42,49 @@
       "gate": 0
     },
     "sourcing": {
-      "result": "All chosen parts normal; AOTA inductor stock 1, needs pre-order",
+      "result": "All chosen parts normal; IS31FL3745 WLCSP-36 (stock 0) and AOTA inductor (stock 1) need pre-order or DigiKey/Mouser",
       "ok": false,
       "gate": 1
     },
     "ERC": {
-      "result": "0 violations (kicad-cli 9.0.8)",
+      "result": "0 violations across 8 sheets (kicad-cli 9.0.8)",
       "ok": true,
       "gate": 2
     },
     "nets": {
-      "result": "nets_check PASS, 149 nets classified; KiCad net classes set in phase 5",
+      "result": "Variant D nets_check --routed PASS, 183 rows in nets-d.csv, 210 board nets matched",
       "ok": true,
       "gate": 3
     },
     "style": {
-      "result": "Only the matrix grid rule fails, waived in decisions.md",
+      "result": "Only the matrix1-5 grid rule fails, waived in decisions.md",
       "ok": true,
       "gate": 2
     },
     "placement": {
-      "result": "placement_check PASS; DRC no courtyard, clearance or short errors; silk open for phase 9",
+      "result": "Variant D placement_check PASS (0 errors); U3.61 & U5.17 solid exposed pads with 0 foreign vias",
       "ok": true,
       "gate": 6
     },
     "sync": {
-      "result": "sync_check PASS",
+      "result": "Variant D sync_check PASS (339 symbols <-> 339 footprints)",
       "ok": true,
       "gate": 6
+    },
+    "DRC": {
+      "result": "Variant D KiCad DRC: 0 violations, 0 unconnected items, 876 vias, 0 locked copper",
+      "ok": true,
+      "gate": 7
+    },
+    "pad_joints": {
+      "result": "Variant D pad_joints & pad_joints_fixed PASS: 0 thin joints across 1,400 SMD pads",
+      "ok": true,
+      "gate": 7
+    },
+    "silkscreen": {
+      "result": "Variant D front seed web (99% kept) + 5 WLCSP A1 pin-1 dots + 58/104 back designators (27/27 majors), 0 silk DRC errors",
+      "ok": true,
+      "gate": 9
     }
   },
   "gates": {
@@ -98,11 +113,27 @@
       "stale_because": null
     },
     "6": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "7": {
+      "state": "passed",
+      "stale_because": null
+    },
+    "9": {
       "state": "awaiting_signoff",
       "stale_because": null
     }
   },
   "links": [
+    {
+      "label": "Variant D (5x WLCSP-36 BGA) viewer",
+      "href": "viewer/round-pendant-d.html"
+    },
+    {
+      "label": "Variant D BGA driver datasheet audit",
+      "href": "design/parts/drivers-bga.md"
+    },
     {
       "label": "RP2350 layout: what can relax (your call)",
       "href": "design/study/crunch/placement/rp2350-acceptable.md"
@@ -165,5 +196,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-03T03:45:08-08:00"
+  "updated": "2026-11-04T22:35:00-08:00"
 }

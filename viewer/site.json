@@ -1,6 +1,7 @@
 {
  "title": "round-pendant",
- "built": "2026-11-03T11:59:16",
+ "built": "2026-11-04T23:13:51",
+ "pcbview": "0.1 (58db5b3)",
  "config": "pcbview.toml",
  "boards": [
   {
@@ -62,11 +63,22 @@
    "id": "round-pendant-c-web4",
    "name": "round-pendant, 235 LEDs, fully connected, seed web and tidy designators",
    "page": "round-pendant-c-web4.html",
-   "embed": "index.html",
+   "embed": null,
    "source": {
     "kind": "file",
     "pcb": "hw/round-pendant/c-web4/round-pendant.kicad_pcb",
     "sch": "hw/round-pendant/c-web4/round-pendant.kicad_sch"
+   }
+  },
+  {
+   "id": "round-pendant-d",
+   "name": "round-pendant, variant D (5x WLCSP-36 BGA drivers, solid exposed pads)",
+   "page": "round-pendant-d.html",
+   "embed": "index.html",
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/d/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/d/round-pendant.kicad_sch"
    }
   }
  ]
