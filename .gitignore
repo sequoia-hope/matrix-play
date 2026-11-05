@@ -31,6 +31,7 @@ hw/round-pendant/c-*/
 !hw/round-pendant/c-web/
 !hw/round-pendant/c-web3/
 !hw/round-pendant/c-web4/
+hw/round-pendant/d/route/
 scripts/crunch/router/ur-main/
 scripts/crunch/router/tools/
 scripts/crunch/**/*.kicad_pcb

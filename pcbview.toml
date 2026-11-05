@@ -44,8 +44,15 @@ note = "Route y30 with the seed web on the front and no silk on the back."
 
 [[boards]]
 id = "round-pendant-c-web4"
-embed = "index.html"
 name = "round-pendant, 235 LEDs, fully connected, seed web and tidy designators"
 pcb = "hw/round-pendant/c-web4/round-pendant.kicad_pcb"
 sch = "hw/round-pendant/c-web4/round-pendant.kicad_sch"
 note = "Work in progress: 8 layers, through vias, every connection joined, not signed off. Route y30, seed web on the front, 52 tidy designators on the back at 0.8 mm."
+
+[[boards]]
+id = "round-pendant-d"
+embed = "index.html"
+name = "round-pendant, variant D (5x WLCSP-36 BGA drivers, solid exposed pads)"
+pcb = "hw/round-pendant/d/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/d/round-pendant.kicad_sch"
+note = "Variant D: 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (zero driver exposed pads), solid GND exposed pads on U3 and U5 with zero foreign vias, 8 layers, through vias, 0 unconnected and 0 DRC errors, front seed web and 58 tidy back designators."

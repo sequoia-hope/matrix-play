@@ -1,0 +1,231 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "09cda17b-9951-4e69-91bf-0d0fc2648991")
+	(paper "A4")
+	(title_block
+		(title "round-pendant: top")
+		(date "2026-11-04")
+		(rev "D")
+		(company "CERN-OHL-P-2.0")
+		(comment 1 "235 RGB LEDs on a 38 mm round board (5x IS31FL3745 WLCSP-36)")
+		(comment 2 "Drawn by scripts/bga/schematic_d.py")
+	)
+	(lib_symbols)
+	(text "Rails: VBUS -> VSYS 3.0-4.5 V (LED SW lines) -> +3V3 -> +1V1 at the RP2350.\n5x IS31FL3745-CLS4-TR WLCSP-36 drivers (47 RGB LEDs each = 235 total, zero exposed ground pads).\nNets between sheets are global labels; rails are power symbols.\nRequirements: design/intent.md. Parts: design/parts/drivers-bga.md. Decisions: design/decisions.md."
+		(exclude_from_sim no)
+		(at 20.32 105 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "69862797-5b35-4b8d-a888-0b59d096ceee")
+	)
+	(sheet
+		(at 20.32 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "fbad83f2-27d2-4784-86e2-06f28b3ad832")
+		(property "Sheetname" "Power"
+			(at 20.32 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 20.32 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 83.82 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "ea04da44-270e-42d5-b91b-51c48139a31c")
+		(property "Sheetname" "MCU"
+			(at 83.82 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 83.82 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 25.4)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "0705223f-5a7d-489f-9723-3408c8ccec52")
+		(property "Sheetname" "Driver 1 and matrix"
+			(at 149.86 24.7 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix1.kicad_sch"
+			(at 149.86 47.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 53.34)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "5e1cd491-7939-446b-922c-e361ce204a14")
+		(property "Sheetname" "Driver 2 and matrix"
+			(at 149.86 52.64 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix2.kicad_sch"
+			(at 149.86 75.46 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 81.28)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "b4005168-f854-481c-a42c-e692cc4a8019")
+		(property "Sheetname" "Driver 3 and matrix"
+			(at 149.86 80.58 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix3.kicad_sch"
+			(at 149.86 103.4 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 109.22)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "622712bf-f99a-4bda-a5ca-3005322f29f8")
+		(property "Sheetname" "Driver 4 and matrix"
+			(at 149.86 108.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix4.kicad_sch"
+			(at 149.86 131.34 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 137.16)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "0bfe5c5f-a45f-424b-b6f4-2ae23887fae3")
+		(property "Sheetname" "Driver 5 and matrix"
+			(at 149.86 136.46 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix5.kicad_sch"
+			(at 149.86 159.28 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "round-pendant"
+				(path "/09cda17b-9951-4e69-91bf-0d0fc2648991"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
