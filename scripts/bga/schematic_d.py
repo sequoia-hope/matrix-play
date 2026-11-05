@@ -47,6 +47,7 @@ PARTS = {
     "4.7k": ("C25900", "0402WGF4701TCE", "UNI-ROYAL"),
     "5.1k": ("C25905", "0402WGF5101TCE", "UNI-ROYAL"),
     "10k": ("C25744", "0402WGF1002TCE", "UNI-ROYAL"),
+    "22k": ("C25768", "0402WGF2202TCE", "UNI-ROYAL"),
     "30k": ("C25776", "0402WGF3002TCE", "UNI-ROYAL"),
     "100k": ("C25741", "0402WGF1003TCE", "UNI-ROYAL"),
 }
@@ -73,8 +74,8 @@ class Sheet(Schematic):
         super().__init__(
             PROJECT,
             title="round-pendant: " + title,
-            rev="D",
-            date=DATE,
+            rev="E" if VARIANT == "e" else "D",
+            date="2026-11-05" if VARIANT == "e" else DATE,
             company="CERN-OHL-P-2.0",
             comments=[comment, "Drawn by scripts/bga/schematic_d.py"],
             paper=paper,
@@ -476,6 +477,9 @@ def mcu() -> Sheet:
         13: "PGOOD",
         14: "VBAT_EN",
     }
+    if VARIANT == "e":
+        used[1] = "LIGHT_PWR"
+        used[27] = "LIGHT"
     gl = {"I2C_SDA", "I2C_SCL", "LED_SDB", "CHG", "PGOOD", "VBAT_EN"}
     for i in range(30):
         nm = f"GPIO{i}" if i < 26 else f"GPIO{i}/ADC{i - 26}"
@@ -689,6 +693,36 @@ def mcu() -> Sheet:
             s.wire(p, (p[0], p[1] + 2.54))
             s.label(net, (p[0], p[1] + 2.54), rot=270)
     s.box((271.78, 200.66), (381.0, 228.6), "TEST PADS")
+
+    if VARIANT == "e":
+        qx, qy = 116.84, 243.84
+        q2 = s.symbol(
+            "round_pendant:ALS-PT19",
+            "Q2",
+            "ALS-PT19",
+            (qx, qy),
+            footprint="round_pendant:SENSOR_ALS-PT19",
+            fields={"LCSC": "C146233", "MPN": "ALS-PT19-315C/L177/TR8", "Manufacturer": "EVERLIGHT"},
+            ref_at=(qx - 5.08, qy - 7.62),
+            value_at=(qx - 5.08, qy + 7.62),
+        )
+        pc, pe = q2.pin("C"), q2.pin("E")
+        s.wire((pc[0] - 12.7, pc[1]), pc)
+        s.label("LIGHT_PWR", (pc[0] - 12.7, pc[1]), rot=180)
+        rx = pe[0] + 10.16
+        cx = pe[0] + 22.86
+        lx = pe[0] + 33.02
+        s.wire(pe, (lx, pe[1]))
+        s.res_v("R43", "22k", (rx, pe[1]), to_gnd=True)
+        s.cap("C70", "100n", (cx, pe[1]))
+        s.label("LIGHT", (lx, pe[1]))
+        s.text(
+            "GPIO1 powers collector (150 uA max, 0 uA in sleep).\n"
+            "22 k + 100 nF (tau = 2.2 ms): ~0.33 V at 100 lx, 2.9 V sat (light-sensor.md).",
+            (81.28, 261.62),
+        )
+        s.box((73.66, 223.52), (213.36, 271.78), "AMBIENT LIGHT SENSOR (TOP RIM)")
+
     return s
 
 

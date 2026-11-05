@@ -76,7 +76,7 @@ def main() -> int:
         str(pcb_path),
     ])
 
-    zpath = out_dir / "round-pendant-d-gerbers.zip"
+    zpath = out_dir / f"round-pendant-{args.project.name}-gerbers.zip"
     gerber_files = sorted(
         f for f in gdir.iterdir()
         if f.is_file() and not f.name.endswith("-drl_map.gbr")

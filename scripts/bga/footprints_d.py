@@ -89,9 +89,38 @@ def rp2350_solid_ep() -> str:
     return q[:i] + ep + q[i:]
 
 
+def als_pt19() -> str:
+    """Everlight ALS-PT19-315C/L177/TR8 ambient light sensor (als-pt19.pdf p. 2).
+    Body: 1.70 x 0.80 x 0.60 mm; Pad 1 Collector (-0.75, 0), Pad 2 Emitter (+0.75, 0), 0.80 x 0.80 mm SMD lands.
+    """
+    pads = (
+        '\t(pad "1" smd rect (at -0.75 0) (size 0.8 0.8) (layers "F.Cu" "F.Mask" "F.Paste"))\n'
+        '\t(pad "2" smd rect (at 0.75 0) (size 0.8 0.8) (layers "F.Cu" "F.Mask" "F.Paste"))\n'
+    )
+    fab_pts = [(-0.65, -0.40), (0.85, -0.40), (0.85, 0.40), (-0.85, 0.40), (-0.85, -0.20), (-0.65, -0.40)]
+    fab = "".join(line(a, b, "F.Fab", 0.05) for a, b in zip(fab_pts, fab_pts[1:]))
+    crt_pts = [(-1.25, -0.50), (1.25, -0.50), (1.25, 0.50), (-1.25, 0.50), (-1.25, -0.50)]
+    crtyd = "".join(line(a, b, "F.CrtYd", 0.05) for a, b in zip(crt_pts, crt_pts[1:]))
+    return (
+        '(footprint "SENSOR_ALS-PT19"\n'
+        '\t(version 20241229)\n'
+        '\t(generator "round_pendant_e")\n'
+        '\t(layer "F.Cu")\n'
+        '\t(descr "Everlight ALS-PT19-315C/L177/TR8 ambient light sensor, 1.7x0.8x0.6mm; datasheet p.2")\n'
+        '\t(attr smd)\n'
+        + text("Reference", "REF**", -0.9, "F.Fab", True)
+        + text("Value", "ALS-PT19", 0.9, "F.Fab", True)
+        + fab
+        + crtyd
+        + pads
+        + ")\n"
+    )
+
+
 def main():
     PRETTY.mkdir(parents=True, exist_ok=True)
     (PRETTY / "WLCSP-36_2.9x2.9mm_P0.5mm.kicad_mod").write_text(wlcsp36())
+    (PRETTY / "SENSOR_ALS-PT19.kicad_mod").write_text(als_pt19())
     (PRETTY / "SW_Panasonic_EVQP7C.kicad_mod").write_text(evqp7c())
     (PRETTY / "USB_Pads.kicad_mod").write_text(usb_pads())
     (PRETTY / "LED_XL-1010RGB.kicad_mod").write_text(led())

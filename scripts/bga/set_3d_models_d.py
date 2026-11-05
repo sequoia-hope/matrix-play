@@ -7,6 +7,7 @@ import pcbnew
 BASE = "${KIPRJMOD}/../../../3dmodels/"
 M = {
     "LED_XL-1010RGB": ("XL-1010RGB-YG.step", 0),
+    "SENSOR_ALS-PT19": ("SENSORS-SMD_L1.7-W0.8-H0.6.step", 0),
     "WLCSP-36_2.9x2.9mm_P0.5mm": ("WLCSP-36_2.9x2.9mm_P0.5mm.step", 0),
     "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias": ("QFN-60_L7.0-W7.0-P0.40-TL-EP3.4.step", 0),
     "L_pol_2016": ("IND-SMD_L2.0-W1.6_AOTA-B201610S3R3-101-T.step", 180),

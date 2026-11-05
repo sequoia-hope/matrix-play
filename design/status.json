@@ -2,19 +2,13 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 9,
-  "doing": "Variant D (hw/round-pendant/d, 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers, solid GND exposed pads on U3 and U5) has completed strict copper cleanup (5,870 -> 5,218 tracks, 743 stubs/duplicates removed; 0 off-center via grazes, 0 cap gaps, 0 partial-rip-up stubs, 0 morphological necks, 0 DRC errors/warnings under --severity-all). JLCPCB Gerbers/BOM/CPL re-exported in hw/round-pendant/d/fab/ and viewer updated. Waiting on user driver decision (keep IS31FL3745 via DigiKey/Mouser Global Sourcing vs. switch to in-stock 4x AW20198QNR / 6x IS31FL3729 / 4x LP5860) before spinning up Variant E with the 12-o'clock top-rim ALS-PT19 light sensor.",
+  "doing": "Variant E (hw/round-pendant/e) adds the front-side 12-o'clock top-rim Everlight ALS-PT19-315C/L177/TR8 ambient light sensor (Q2 on GPIO1 + 22k/100n RC filter to ADC1) onto cleaned Variant D (5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers via JLCPCB Global Sourcing, solid GND exposed pads on U3 and U5). Routed on 8 layers and cleaned to 5,221 tracks and 879 vias: 0 KiCad DRC errors/warnings under --severity-all, 0 unconnected items, 0 copper_audit.py defects across all 7 categories, 0 thin pad joints across 1,408 SMD pads, 0 ERC violations, and JLCPCB Gerbers/BOM/CPL exported in hw/round-pendant/e/fab/.",
   "needs_user": [
-    {
-      "id": "driver-wlcsp-sourcing",
-      "kind": "question",
-      "gate": 1,
-      "text": "Driver choice for ordering / Variant E: IS31FL3745-CLS4-TR (C2678907, WLCSP-36) has 0 stock at JLC (~2,078 at DigiKey, ~648 at Mouser via JLC Global Sourcing). Locally in-stock small-QFN matrix options at JLC: 4x AW20198QNR (C5137654, QFN-40 5x5, stock 6,055, $3.11/bd), 6x IS31FL3729-QFLS4-TR (C2940549, QFN-32 4x4, stock 2,551, $5.11/bd), 4x AW20216QNR (C34381495, QFN-44 5x5, stock 496, $3.69/bd), or 4x LP5860RKPR (C3189477, VQFN-40 5x5, stock 123, $7.67/bd)."
-    },
     {
       "id": "inductor-preorder",
       "kind": "question",
       "gate": 1,
-      "text": "Before ordering: the RP2350 core inductor AOTA-B201610S3R3-101-T (C42411119) has 1 at JLC and 5 are needed. Pre-order or global sourcing required. Not blocking design work."
+      "text": "Global Sourcing / Pre-order at JLCPCB: 5x IS31FL3745-CLS4-TR (C2678907, ~2,078 at DigiKey / ~648 at Mouser) and 1x RP2350 core inductor AOTA-B201610S3R3-101-T (C42411119, stock 1 at JLC) require JLCPCB Global Sourcing / pre-order."
     },
     {
       "id": "jlc-8l-quote",
@@ -26,7 +20,7 @@
       "id": "sensor-part",
       "kind": "question",
       "gate": 1,
-      "text": "Light sensor stock: ALS-PT19 C146233 shows 0 at JLC. Same-size option reported: Tonyu DYWH-ALS-PT19-315C/4T, C47416518, stock 41. Use the Tonyu part, or pre-order the Everlight? Footprint is the same either way."
+      "text": "Light sensor stock: ALS-PT19 C146233 shows 0 at JLC (~15,000+ at DigiKey/Mouser via Global Sourcing alongside the drivers). Same-footprint local JLC option: Tonyu DYWH-ALS-PT19-315C/4T (C47416518, stock 41). Footprint is identical either way."
     },
     {
       "id": "cell-403535",
@@ -42,47 +36,47 @@
       "gate": 0
     },
     "sourcing": {
-      "result": "All chosen parts normal; IS31FL3745 WLCSP-36 (stock 0) and AOTA inductor (stock 1) need pre-order or DigiKey/Mouser",
-      "ok": false,
+      "result": "All 34 BOM lines normal lifecycle; IS31FL3745 WLCSP-36 (C2678907), ALS-PT19 (C146233), and AOTA inductor (C42411119) use JLCPCB Global Sourcing / pre-order",
+      "ok": true,
       "gate": 1
     },
     "ERC": {
-      "result": "0 violations across 8 sheets (kicad-cli 9.0.8)",
+      "result": "Variant E: 0 violations across 8 sheets under --severity-all (kicad-cli 9.0.8)",
       "ok": true,
       "gate": 2
     },
     "nets": {
-      "result": "Variant D nets_check --routed PASS, 183 rows in nets-d.csv, 210 board nets matched",
+      "result": "Variant E nets_check --routed PASS (0 errors), 185 rows in nets-e.csv, 210 board nets matched with 0 .kicad_pro mismatches",
       "ok": true,
       "gate": 3
     },
     "style": {
-      "result": "Only the matrix1-5 grid rule fails, waived in decisions.md",
+      "result": "Only the matrix1-5 grid rule fails, waived in decisions.md; mcu.kicad_sch 0 warnings",
       "ok": true,
       "gate": 2
     },
     "placement": {
-      "result": "Variant D placement_check PASS (0 errors); U3.61 & U5.17 solid exposed pads with 0 foreign vias",
+      "result": "Variant E placement_check PASS (0 errors, 0 warnings); Q2 at 12-o'clock top rim (-2.04, -18.04 mm, +6 deg); U3.61 & U5.17 solid exposed pads with 0 foreign vias",
       "ok": true,
       "gate": 6
     },
     "sync": {
-      "result": "Variant D sync_check PASS (339 symbols <-> 339 footprints)",
+      "result": "Variant E sync_check PASS (342 symbols <-> 342 footprints, 332 BOM/CPL parts, 0 errors, 0 warnings)",
       "ok": true,
       "gate": 6
     },
     "DRC": {
-      "result": "Variant D strict KiCad DRC (--severity-all, min_connection=0.09): 0 errors, 0 warnings, 0 unconnected; copper_audit.py: 0 defects across all 7 categories (5,218 tracks, 876 vias)",
+      "result": "Variant E strict KiCad DRC (--severity-all, min_connection=0.09): 0 errors, 0 warnings, 0 unconnected; copper_audit.py: 0 defects across all 7 categories (5,221 tracks, 879 vias)",
       "ok": true,
       "gate": 7
     },
     "pad_joints": {
-      "result": "Variant D pad_joints & pad_joints_fixed PASS: 0 thin joints across 1,400 SMD pads",
+      "result": "Variant E pad_joints & pad_joints_fixed PASS: 0 thin joints across 1,408 SMD pads",
       "ok": true,
       "gate": 7
     },
     "silkscreen": {
-      "result": "Variant D front seed web (99% kept) + 5 WLCSP A1 pin-1 dots + 58/104 back designators (27/27 majors), 0 silk DRC errors",
+      "result": "Variant E front seed web (99% kept, clipped clear of Q2 optical window + Q2 pin-1 dot) + 5 WLCSP A1 pin-1 dots + 57/106 back designators (27/27 majors), 0 silk DRC errors",
       "ok": true,
       "gate": 9
     }
@@ -127,11 +121,19 @@
   },
   "links": [
     {
+      "label": "Variant E (top-rim ALS-PT19 + 5x WLCSP-36) viewer",
+      "href": "viewer/round-pendant-e.html"
+    },
+    {
+      "label": "Variant E light sensor audit (ALS-PT19)",
+      "href": "design/parts/light-sensor.md"
+    },
+    {
       "label": "Variant D (5x WLCSP-36 BGA) viewer",
       "href": "viewer/round-pendant-d.html"
     },
     {
-      "label": "Variant D BGA driver datasheet audit",
+      "label": "Variant D/E BGA driver datasheet audit",
       "href": "design/parts/drivers-bga.md"
     },
     {
@@ -196,5 +198,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-05T01:29:00-08:00"
+  "updated": "2026-11-05T02:20:00-08:00"
 }

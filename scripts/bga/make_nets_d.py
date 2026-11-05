@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 VARIANT = os.environ.get("PENDANT_VARIANT", "d")
 HW = ROOT / f"hw/round-pendant/{VARIANT}"
-NETS_CSV = ROOT / "design/nets-d.csv"
+NETS_CSV = ROOT / f"design/nets-{VARIANT}.csv"
 PRO = HW / "round-pendant.kicad_pro"
 DRU = HW / "round-pendant.kicad_dru"
 
@@ -87,6 +87,29 @@ CLASSES = {
 
 def build_rows():
     rows = list(BASE_ROWS)
+    if VARIANT == "e":
+        rows.extend([
+            (
+                "/MCU/LIGHT",
+                "ANALOG",
+                "3.4",
+                "0.00015",
+                "0.00015",
+                "",
+                "",
+                "ALS-PT19 emitter analog node (22 k || 100 nF to GND, ADC1); light-sensor.md",
+            ),
+            (
+                "/MCU/LIGHT_PWR",
+                "SIGNAL",
+                "3.4",
+                "0.00015",
+                "0.00015",
+                "",
+                "",
+                "GPIO1 switched 3.3 V collector supply for Q2 ALS-PT19 (0 uA in sleep); light-sensor.md",
+            ),
+        ])
     for idx, uref in DRIVER_REFS:
         for cs in range(1, 19):
             rows.append(
@@ -140,10 +163,13 @@ def write_rules(rows):
     ds = d["board"]["design_settings"]
     ds["rules"].update(
         min_clearance=0.09,
+        min_connection=0.09,
         min_copper_edge_clearance=0.2,
         min_hole_clearance=0.2,
         min_hole_to_hole=0.2,
         min_resolved_spokes=1,
+        min_text_height=0.8,
+        min_text_thickness=0.1,
         min_through_hole_diameter=0.1,
         min_track_width=0.09,
         min_via_annular_width=0.05,
@@ -156,10 +182,15 @@ def write_rules(rows):
     ]
     ds["track_widths"] = [0, 0.1, 0.15, 0.2, 0.3, 0.4]
     ds["rule_severities"].update(
+        connection_width="error",
+        copper_sliver="error",
+        hole_to_hole="error",
+        holes_co_located="error",
+        isolated_copper="error",
         silk_overlap="error",
         silk_over_copper="error",
         track_dangling="error",
-        via_dangling="warning",
+        via_dangling="error",
         net_conflict="error",
         duplicate_footprints="error",
         extra_footprint="error",

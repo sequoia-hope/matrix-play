@@ -51,8 +51,15 @@ note = "Work in progress: 8 layers, through vias, every connection joined, not s
 
 [[boards]]
 id = "round-pendant-d"
-embed = "index.html"
 name = "round-pendant, variant D (5x WLCSP-36 BGA drivers, solid exposed pads)"
 pcb = "hw/round-pendant/d/round-pendant.kicad_pcb"
 sch = "hw/round-pendant/d/round-pendant.kicad_sch"
-note = "Variant D: 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (zero driver exposed pads), solid GND exposed pads on U3 and U5 with zero foreign vias, 8 layers, through vias, 0 unconnected and 0 DRC errors, front seed web and 58 tidy back designators."
+note = "Variant D: 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (zero driver exposed pads), solid GND exposed pads on U3 and U5 with zero foreign vias, 8 layers, through vias, strict copper cleanup (0 DRC errors/warnings, 0 copper_audit defects), front seed web and 58 tidy back designators."
+
+[[boards]]
+id = "round-pendant-e"
+embed = "index.html"
+name = "round-pendant, variant E (top-rim ALS-PT19 light sensor + 5x WLCSP-36 BGA drivers)"
+pcb = "hw/round-pendant/e/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/e/round-pendant.kicad_sch"
+note = "Variant E: adds front-side 12-o'clock top-rim Everlight ALS-PT19-315C/L177/TR8 ambient light sensor (Q2, GPIO1 switched collector + 22 k / 100 nF RC filter to ADC1) onto cleaned Variant D (5x IS31FL3745-CLS4-TR WLCSP-36 drivers, solid U3/U5 exposed pads, 8 layers, 0 DRC errors/warnings, 0 copper_audit defects)."

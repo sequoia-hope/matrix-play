@@ -174,12 +174,22 @@ def main():
         width=10.16,
         ref="J",
     )
+    als = ic(
+        "ALS-PT19",
+        "Ambient light sensor phototransistor, 1.7 x 0.8 mm SMD",
+        "round_pendant:SENSOR_ALS-PT19",
+        left=[("passive", "1", "C")],
+        right=[("passive", "2", "E")],
+        width=10.16,
+        ref="Q",
+    )
     lib = [
         Sym("kicad_symbol_lib"),
         S("version", Sym("20241209")),
         S("generator", "round_pendant_symbols_d"),
         S("generator_version", "9.0"),
         usb,
+        als,
         driver,
         charger,
         ldo,
