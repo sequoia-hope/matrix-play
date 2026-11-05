@@ -2,13 +2,13 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 9,
-  "doing": "Variant D (hw/round-pendant/d, 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers, solid GND exposed pads on U3 and U5 with 0 foreign vias) is completely routed and finished on 8 layers with through vias: KiCad DRC 0 violations and 0 unconnected items, 876 vias, 0 thin pad joints, front seed web and 58 tidy back designators. Ready for user review in viewer/round-pendant-d.html.",
+  "doing": "Variant D (hw/round-pendant/d, 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers, solid GND exposed pads on U3 and U5) has completed strict copper cleanup (5,870 -> 5,218 tracks, 743 stubs/duplicates removed; 0 off-center via grazes, 0 cap gaps, 0 partial-rip-up stubs, 0 morphological necks, 0 DRC errors/warnings under --severity-all). JLCPCB Gerbers/BOM/CPL re-exported in hw/round-pendant/d/fab/ and viewer updated. Waiting on user driver decision (keep IS31FL3745 via DigiKey/Mouser Global Sourcing vs. switch to in-stock 4x AW20198QNR / 6x IS31FL3729 / 4x LP5860) before spinning up Variant E with the 12-o'clock top-rim ALS-PT19 light sensor.",
   "needs_user": [
     {
       "id": "driver-wlcsp-sourcing",
       "kind": "question",
       "gate": 1,
-      "text": "Variant D uses 5x Lumissil IS31FL3745-CLS4-TR WLCSP-36 (C2678907, lifecycle normal, JLC stock 0): pre-order at JLC or global-source from DigiKey/Mouser alongside L1 before release."
+      "text": "Driver choice for ordering / Variant E: IS31FL3745-CLS4-TR (C2678907, WLCSP-36) has 0 stock at JLC (~2,078 at DigiKey, ~648 at Mouser via JLC Global Sourcing). Locally in-stock small-QFN matrix options at JLC: 4x AW20198QNR (C5137654, QFN-40 5x5, stock 6,055, $3.11/bd), 6x IS31FL3729-QFLS4-TR (C2940549, QFN-32 4x4, stock 2,551, $5.11/bd), 4x AW20216QNR (C34381495, QFN-44 5x5, stock 496, $3.69/bd), or 4x LP5860RKPR (C3189477, VQFN-40 5x5, stock 123, $7.67/bd)."
     },
     {
       "id": "inductor-preorder",
@@ -72,7 +72,7 @@
       "gate": 6
     },
     "DRC": {
-      "result": "Variant D KiCad DRC: 0 violations, 0 unconnected items, 876 vias, 0 locked copper",
+      "result": "Variant D strict KiCad DRC (--severity-all, min_connection=0.09): 0 errors, 0 warnings, 0 unconnected; copper_audit.py: 0 defects across all 7 categories (5,218 tracks, 876 vias)",
       "ok": true,
       "gate": 7
     },
@@ -196,5 +196,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-04T22:35:00-08:00"
+  "updated": "2026-11-05T01:29:00-08:00"
 }
