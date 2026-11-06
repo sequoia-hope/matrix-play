@@ -1,6 +1,6 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-05T23:00:55",
+ "built": "2026-11-05T23:04:01",
  "pcbview": "0.1 (58db5b3)",
  "config": "pcbview.toml",
  "boards": [
@@ -27,17 +27,6 @@
    }
   },
   {
-   "id": "parallelogram-p3-162",
-   "name": "Parallelogram p3-162 (162 LEDs, 4L)",
-   "page": "parallelogram-p3-162.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/parallelogram/p3-162/parallelogram.kicad_pcb",
-    "sch": "hw/parallelogram/p3-162/parallelogram.kicad_sch"
-   }
-  },
-  {
    "id": "parallelogram-p3-198",
    "name": "Parallelogram p3-198 (198 LEDs, 4L)",
    "page": "parallelogram-p3-198.html",
@@ -61,7 +50,7 @@
   },
   {
    "id": "round-pendant-e",
-   "name": "Round Pendant E (235 LEDs, WLCSP + ALS)",
+   "name": "Round Pendant \u2014 Sunflower (WLCSP-36)",
    "page": "round-pendant-e.html",
    "embed": null,
    "source": {
@@ -71,19 +60,8 @@
    }
   },
   {
-   "id": "round-pendant-d",
-   "name": "Round Pendant D (235 LEDs, WLCSP-36)",
-   "page": "round-pendant-d.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/round-pendant/d/round-pendant.kicad_pcb",
-    "sch": "hw/round-pendant/d/round-pendant.kicad_sch"
-   }
-  },
-  {
    "id": "round-pendant-c-web4",
-   "name": "Round Pendant C-y30 (235 LEDs, QFN-60)",
+   "name": "Round Pendant \u2014 Sunflower (QFN-60)",
    "page": "round-pendant-c-web4.html",
    "embed": null,
    "source": {
@@ -93,52 +71,8 @@
    }
   },
   {
-   "id": "round-pendant-c-web3",
-   "name": "Round Pendant C-y30 (bare back silk)",
-   "page": "round-pendant-c-web3.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/round-pendant/c-web3/round-pendant.kicad_pcb",
-    "sch": "hw/round-pendant/c-web3/round-pendant.kicad_sch"
-   }
-  },
-  {
-   "id": "round-pendant-c-web",
-   "name": "Round Pendant C-y21 (seed-web silk)",
-   "page": "round-pendant-c-web.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/round-pendant/c-web/round-pendant.kicad_pcb",
-    "sch": "hw/round-pendant/c-web/round-pendant.kicad_sch"
-   }
-  },
-  {
-   "id": "round-pendant-c",
-   "name": "Round Pendant C (235 LEDs, pre-route)",
-   "page": "round-pendant-c.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/round-pendant/c/round-pendant.kicad_pcb",
-    "sch": "hw/round-pendant/c/round-pendant.kicad_sch"
-   }
-  },
-  {
-   "id": "round-pendant-b",
-   "name": "Round Pendant B (234 LEDs, off-board USB)",
-   "page": "round-pendant-b.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/round-pendant/b/round-pendant.kicad_pcb",
-    "sch": "hw/round-pendant/b/round-pendant.kicad_sch"
-   }
-  },
-  {
    "id": "round-pendant-a",
-   "name": "Round Pendant A (234 LEDs, rectangular grid)",
+   "name": "Round Pendant \u2014 Rectangular Grid",
    "page": "round-pendant-a.html",
    "embed": null,
    "source": {
