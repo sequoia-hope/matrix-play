@@ -27,6 +27,12 @@
       "kind": "question",
       "gate": 1,
       "text": "403535 cell: send its spec sheet or listing if you have one, to confirm capacity and that its maximum charge rate is at least 1C. Charging stays at about 297 mA by your choice."
+    },
+    {
+      "id": "sunflower-tier",
+      "kind": "question",
+      "gate": 4,
+      "text": "Sunflower 38 mm 4-layer family (design/study/sunflower/README.md): pick a tier to finish -- s1-66 ($10.61 BOM, 1 driver), s2-88 ($11.90, 2 drivers, also routes with no vias in pads), s2-110 ($12.25) or s2-132 ($12.60). All reach 0 opens on 4 layers with filled vias (POFV). Also: switch the MCU to RP2040 to save ~$0.56 and drop the inductor?"
     }
   ],
   "checks": {
@@ -238,5 +244,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-05T20:06:00-08:00"
+  "updated": "2026-11-06T04:33:25-08:00"
 }

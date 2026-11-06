@@ -1,0 +1,115 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "7d226cb3-0f59-4830-a1f5-81c751fad00e")
+	(paper "A4")
+	(title_block
+		(title "sunflower (s1-66): top")
+		(date "2026-11-05")
+		(rev "S1")
+		(company "CERN-OHL-P-2.0")
+		(comment 1 "66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB")
+		(comment 2 "Drawn by scripts/sunflower/sch_gen.py")
+	)
+	(lib_symbols)
+	(text "Sunflower 4-layer density study (s1-66): 66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB.\n38 mm round board, Vogel-spiral LED field, 35 mm round LiPo cell behind the board.\nSolid GND thermal pads on U3, U5, and all AW20198QNR QFN-40 drivers (0 via-in-pad)."
+		(exclude_from_sim no)
+		(at 20.32 105 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "90e62fdf-3eb8-493d-bd95-8f9b00c521a1")
+	)
+	(sheet
+		(at 20.32 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "542701e2-cb84-42c3-92b3-d4aa5d8fb65f")
+		(property "Sheetname" "Power"
+			(at 20.32 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 20.32 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "sunflower"
+				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 83.82 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "f33b5ad0-9e69-4374-9ff6-abd99c96e9a9")
+		(property "Sheetname" "MCU"
+			(at 83.82 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 83.82 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "sunflower"
+				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 25.4)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "5fd342ac-513c-4564-a304-dcae94e4afa5")
+		(property "Sheetname" "Driver 1 and matrix"
+			(at 149.86 24.7 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix1.kicad_sch"
+			(at 149.86 47.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "sunflower"
+				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

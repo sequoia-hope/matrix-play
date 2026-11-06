@@ -24,6 +24,50 @@ pcb = "hw/dense-square/s15-225/dense-square.kicad_pcb"
 sch = "hw/dense-square/s15-225/dense-square.kicad_sch"
 note = "100% routed & DRC-clean 15 x 15 = 225 MEIHUA MHPA0808RGBDT 0808 square matrix (1.36 mm pitch = 56.25 LEDs/cm^2, 0.46 mm dual-track F.Cu streets) in the north 20 x 20 mm window of the 25 x 50 mm 8-layer ENIG PCB, zero components under the LED array, south-bay 4x AW20198QNR + RP2350A ($20.27/bd BOM). 1,100/1,100 connections (0 open), 5,377 tracks, 998 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints."
 
+# ---- Sunflower 4-Layer Family (dia. 38 mm) ----
+
+[[boards]]
+id = "sunflower-s2-88"
+name = "Sunflower s2-88 (88 LEDs, 4L, no via-in-pad)"
+pcb = "hw/sunflower/s2-88/sunflower.kicad_pcb"
+sch = "hw/sunflower/s2-88/sunflower.kicad_sch"
+note = "38 mm round, 88 XL-1615RGBC-RF LEDs in a Vogel spiral (10.4 mm^2/LED, 3.0 mm nearest), 2x AW20198QNR QFN, 4 layers with no vias in SMD pads (no POFV). 0 open; router output, copper clean-up pending (4 dangling vias, 2 thin pad joints). $11.90 BOM @10."
+
+[[boards]]
+id = "sunflower-s1-66-pofv"
+name = "Sunflower s1-66 (66 LEDs, 4L)"
+pcb = "hw/sunflower/s1-66-pofv/sunflower.kicad_pcb"
+sch = "hw/sunflower/s1-66-pofv/sunflower.kicad_sch"
+note = "38 mm round, 66 XL-1615RGBC-RF LEDs in a sunflower (13.8 mm^2/LED), 1x AW20198QNR, light sensor at the centre, Variant D's RP2350 block. 0 open, 0 DRC errors/warnings, 0 pad-joint faults; 420 vias, 79 in SMD pads (order with POFV). $10.61 BOM @10, fab files in fab/."
+
+[[boards]]
+id = "sunflower-s2-88-pofv"
+name = "Sunflower s2-88 (88 LEDs, 4L, POFV)"
+pcb = "hw/sunflower/s2-88-pofv/sunflower.kicad_pcb"
+sch = "hw/sunflower/s2-88-pofv/sunflower.kicad_sch"
+note = "38 mm round, 88 LEDs, 2x AW20198QNR. 0 open, 0 DRC errors/warnings; 496 vias, 89 in SMD pads (order with POFV). $11.90 BOM @10, fab files in fab/."
+
+[[boards]]
+id = "sunflower-s2-110"
+name = "Sunflower s2-110 (110 LEDs, 4L)"
+pcb = "hw/sunflower/s2-110/sunflower.kicad_pcb"
+sch = "hw/sunflower/s2-110/sunflower.kicad_sch"
+note = "38 mm round, 110 LEDs (8.3 mm^2/LED, 2.69 mm nearest), 2x AW20198QNR. 0 open; 2 +3V3 track-width errors (0.10 mm under a 0.15 mm rule) beside U3 left by the router; 619 vias, 118 in pads. $12.25 BOM @10."
+
+[[boards]]
+id = "sunflower-s2-132"
+name = "Sunflower s2-132 (132 LEDs, 4L)"
+pcb = "hw/sunflower/s2-132/sunflower.kicad_pcb"
+sch = "hw/sunflower/s2-132/sunflower.kicad_sch"
+note = "38 mm round, 132 LEDs (6.9 mm^2/LED, 2.38 mm nearest, spiral relaxed so courtyards clear), 2x AW20198QNR. 0 open, 0 hard DRC errors; 1 thin pad joint (R16.1) and 1 dangling stub left; 673 vias, 125 in pads. $12.60 BOM @10."
+
+[[boards]]
+id = "sunflower-s1-66"
+name = "Sunflower s1-66 (66 LEDs, 4L, no via-in-pad, 1 open)"
+pcb = "hw/sunflower/s1-66/sunflower.kicad_pcb"
+sch = "hw/sunflower/s1-66/sunflower.kicad_sch"
+note = "s1-66 re-routed with no vias in SMD pads: 1 open (SW1_2 at U1 pin 4), 0 hard DRC, 451 vias."
+
 # ---- Skewed Parallelogram 4-Layer Family (25 x 70 mm) ----
 
 [[boards]]

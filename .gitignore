@@ -46,3 +46,6 @@ scripts/crunch/**/*.kicad_pcb
 scripts/crunch/**/q1*
 scripts/crunch/**/q8*
 design/study/crunch/silk/gemini.*
+hw/sunflower/*/route/
+hw/sunflower/*/route-*/
+hw/sunflower/*/fab/gerbers/
