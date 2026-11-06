@@ -1,9 +1,9 @@
 {
  "board": "round-pendant.kicad_pcb",
- "generated": "2026-11-04",
+ "generated": "2026-11-05",
  "glb": "board.glb",
- "bytes": 13905024,
- "kicad_bytes": 41405164,
+ "bytes": 13896548,
+ "kicad_bytes": 41304400,
  "parts": 339,
  "modelled": 329,
  "no_model": [
@@ -34,6 +34,6 @@
   "legacy": 2,
   "found": 0
  },
- "triangles": 808268,
+ "triangles": 807452,
  "primitives": 4889
 }

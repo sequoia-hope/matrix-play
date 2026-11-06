@@ -1,0 +1,150 @@
+    open: Pad 10 [I2C_SCL] of U2 on B.Cu / Via [I2C_SCL] on F.Cu - B.Cu
+    open: Pad 9 [I2C_SDA] of U1 on B.Cu / Via [I2C_SDA] on F.Cu - B.Cu
+    open: Pad 9 [I2C_SDA] of U2 on B.Cu / Via [I2C_SDA] on F.Cu - B.Cu
+    open: Pad 7 [INTB1] of U1 on B.Cu / Pad 12 [INTB1] of U3 on B.Cu
+    open: Pad 7 [INTB2] of U2 on B.Cu / Track [INTB2] on In3.Cu, length 0.8485 mm
+    open: Track [Net-(C24-Pad1)] on B.Cu, length 1.0817 mm / Pad 1 [Net-(C24-Pad1)] of R17 on B.Cu
+    open: Pad 2 [Net-(D235-G)] of D235 on F.Cu / Pad 2 [Net-(D235-G)] of R41 on B.Cu
+    open: Pad 1 [Net-(D235-R)] of D235 on F.Cu / Pad 2 [Net-(D235-R)] of R40 on B.Cu
+    open: Pad 1 [Net-(U3-XIN)] of Y1 on B.Cu / Pad 21 [Net-(U3-XIN)] of U3 on B.Cu
+    open: Pad 17 [PGOOD] of U3 on B.Cu / Pad 7 [PGOOD] of U5 on B.Cu
+    open: Via [SDB1] on F.Cu - B.Cu / Pad 9 [SDB1] of U3 on B.Cu
+    open: Pad 10 [SDB2] of U3 on B.Cu / Track [SDB2] on B.Cu, length 0.6467 mm
+    open: Pad 1 [USB_DM] of R14 on B.Cu / Pad 6 [USB_DM] of U7 on B.Cu
+    open: Pad 1 [VBAT] of TP3 on B.Cu / Pad 1 [VBAT] of C5 on B.Cu
+    open: Pad 18 [VBAT_EN] of U3 on B.Cu / Via [VBAT_EN] on F.Cu - B.Cu
+    plane open: Pad 1 [+3V3] of TP2 on B.Cu / Track [+3V3] on B.Cu, length 0.5701 mm
+    plane open: Pad 1 [+3V3] of R21 on B.Cu / Track [+3V3] on B.Cu, length 0.5701 mm
+    plane open: Pad 1 [+3V3] of C22 on B.Cu / Pad 1 [+3V3] of R30 on B.Cu
+    plane open: Track [+3V3] on B.Cu, length 0.7790 mm / Track [+3V3] on B.Cu, length 0.5601 mm
+    plane open: Track [+3V3] on B.Cu, length 1.9225 mm / Track [+3V3] on B.Cu, length 0.8226 mm
+    plane open: Pad 1 [+3V3] of C4 on B.Cu / Pad 1 [+3V3] of C22 on B.Cu
+    plane open: Via [+3V3] on F.Cu - B.Cu / Track [+3V3] on B.Cu, length 0.5601 mm
+    plane open: Pad 1 [+3V3] of C13 on B.Cu / Track [+3V3] on B.Cu, length 0.7790 mm
+    plane open: Track [+3V3] on B.Cu, length 0.5601 mm / Via [+3V3] on F.Cu - B.Cu
+    plane open: Track [+3V3] on F.Cu, length 0.5500 mm / Pad 1 [+3V3] of R13 on B.Cu
+    plane open: Via [+3V3] on F.Cu - B.Cu / Pad 44 [+3V3] of U3 on B.Cu
+    plane open: Via [+3V3] on F.Cu - B.Cu / Pad 30 [+3V3] of U3 on B.Cu
+    plane open: Via [+3V3] on F.Cu - B.Cu / Track [+3V3] on B.Cu, length 0.5701 mm
+    plane open: Track [+3V3] on B.Cu, length 0.5701 mm / Pad 6 [+3V3] of U5 on B.Cu
+    plane open: Pad 1 [+3V3] of R20 on B.Cu / Track [+3V3] on B.Cu, length 0.5701 mm
+    plane open: Pad 1 [+3V3] of C12 on B.Cu / Pad 38 [+3V3] of U3 on B.Cu
+    plane open: Track [+3V3] on B.Cu, length 0.5601 mm / Via [+3V3] on F.Cu - B.Cu
+    plane open: Pad 1 [+3V3] of R19 on B.Cu / Track [+3V3] on B.Cu, length 0.5000 mm
+    plane open: Pad 2 [+3V3] of U9 on B.Cu / Pad 9 [+3V3] of U9 on B.Cu
+    plane open: Track [+3V3] on B.Cu, length 0.5000 mm / Track [+3V3] on B.Cu, length 0.6601 mm
+    plane open: Track [+3V3] on B.Cu, length 0.5701 mm / Track [+3V3] on B.Cu, length 0.6176 mm
+    plane open: Track [+3V3] on B.Cu, length 0.5601 mm / Track [+3V3] on B.Cu, length 0.6601 mm
+    plane open: Track [GND] on B.Cu, length 1.0927 mm / Track [GND] on B.Cu, length 1.0927 mm
+    plane open: Track [GND] on B.Cu, length 0.4907 mm / Track [GND] on B.Cu, length 0.5801 mm
+    plane open: Pad 61 [GND] of U1 on B.Cu / Track [GND] on B.Cu, length 0.4609 mm
+    plane open: Track [GND] on B.Cu, length 0.6701 mm / Via [GND] on F.Cu - B.Cu
+    plane open: Zone 'plane GND' [GND] on In2.Cu, priority 0 / Zone 'plane GND' [GND] on In2.Cu, priority 0
+    plane open: Pad 36 [GND] of U1 on B.Cu / Pad 61 [GND] of U1 on B.Cu
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Track [GND] on B.Cu, length 0.5601 mm
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Track [GND] on B.Cu, length 0.5601 mm
+    plane open: Via [GND] on F.Cu - B.Cu / Track [GND] on B.Cu, length 1.1601 mm
+    plane open: Track [GND] on B.Cu, length 1.2001 mm / Track [GND] on B.Cu, length 0.6601 mm
+    plane open: Track [GND] on B.Cu, length 1.4101 mm / Track [GND] on B.Cu, length 0.8101 mm
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Pad 5 [GND] of U6 on B.Cu
+    plane open: Via [GND] on F.Cu - B.Cu / Track [GND] on B.Cu, length 1.2001 mm
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Track [GND] on B.Cu, length 0.7500 mm
+    plane open: Track [GND] on B.Cu, length 0.4800 mm / Track [GND] on B.Cu, length 1.1601 mm
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Via [GND] on F.Cu - B.Cu
+    plane open: Zone 'plane GND' [GND] on In2.Cu, priority 0 / Zone 'plane GND' [GND] on In2.Cu, priority 0
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Track [GND] on B.Cu, length 0.9500 mm
+    plane open: Track [GND] on B.Cu, length 1.4125 mm / Pad 61 [GND] of U3 on B.Cu
+    plane open: Pad 2 [GND] of C18 on B.Cu / Via [GND] on F.Cu - B.Cu
+    plane open: Pad 2 [GND] of C12 on B.Cu / Track [GND] on B.Cu, length 2.0000 mm
+    plane open: Pad 2 [GND] of C12 on B.Cu / Track [GND] on B.Cu, length 0.5601 mm
+    plane open: Track [GND] on B.Cu, length 0.6605 mm / Pad 15 [GND] of U5 on B.Cu
+    plane open: Track [GND] on B.Cu, length 1.4201 mm / Track [GND] on B.Cu, length 0.5601 mm
+    plane open: Via [GND] on F.Cu - B.Cu / Track [GND] on B.Cu, length 0.8641 mm
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Via [GND] on F.Cu - B.Cu
+    plane open: Via [GND] on F.Cu - B.Cu / Via [GND] on F.Cu - B.Cu
+    plane open: Track [GND] on B.Cu, length 2.2601 mm / Track [GND] on B.Cu, length 0.8101 mm
+    plane open: Track [GND] on B.Cu, length 0.9851 mm / Pad 61 [GND] of U2 on B.Cu
+    plane open: Track [GND] on B.Cu, length 0.8101 mm / Track [GND] on B.Cu, length 0.6701 mm
+    plane open: Pad 61 [GND] of U2 on B.Cu / Track [GND] on B.Cu, length 0.5951 mm
+    plane open: Track [GND] on B.Cu, length 0.9751 mm / Via [GND] on F.Cu - B.Cu
+    plane open: Track [GND] on B.Cu, length 0.5601 mm / Via [GND] on F.Cu - B.Cu
+    plane open: Track [GND] on B.Cu, length 0.6701 mm / Via [GND] on F.Cu - B.Cu
+    plane open: Track [GND] on In1.Cu, length 0.0200 mm / Pad 2 [GND] of R35 on B.Cu
+    plane open: Track [GND] on B.Cu, length 1.0927 mm / Track [GND] on B.Cu, length 1.0927 mm
+    plane open: Track [VSYS] on B.Cu, length 0.5601 mm / Via [VSYS] on F.Cu - B.Cu
+    plane open: Track [VSYS] on B.Cu, length 0.5601 mm / Track [VSYS] on B.Cu, length 0.4123 mm
+    plane open: Track [VSYS] on B.Cu, length 0.5601 mm / Track [VSYS] on B.Cu, length 0.7251 mm
+    plane open: Via [VSYS] on F.Cu - B.Cu / Track [VSYS] on B.Cu, length 0.5601 mm
+    plane open: Track [VSYS] on B.Cu, length 0.7106 mm / Via [VSYS] on F.Cu - B.Cu
+    plane open: Track [VSYS] on B.Cu, length 1.0800 mm / Via [VSYS] on F.Cu - B.Cu
+    plane open: Via [VSYS] on F.Cu - B.Cu / Pad 1 [VSYS] of C3 on B.Cu
+    plane open: Via [VSYS] on F.Cu - B.Cu / Track [VSYS] on B.Cu, length 0.9751 mm
+    plane open: Via [VSYS] on F.Cu - B.Cu / Via [VSYS] on F.Cu - B.Cu
+    plane open: Track [VSYS] on B.Cu, length 0.5601 mm / Via [VSYS] on F.Cu - B.Cu
+    plane open: Track [VSYS] on In1.Cu, length 0.5308 mm / Via [VSYS] on F.Cu - B.Cu
+    plane open: Track [VSYS] on B.Cu, length 0.7251 mm / Track [VSYS] on B.Cu, length 0.8101 mm
+    plane open: Track [VSYS] on B.Cu, length 0.5601 mm / Via [VSYS] on F.Cu - B.Cu
+    plane open: Track [VSYS] on B.Cu, length 0.5601 mm / Via [VSYS] on F.Cu - B.Cu
+    error: Track [/Power/BAT_N] on B.Cu, length 0.8846 mm (track_width)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.9192 mm (track_width)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.2572 mm (track_width)
+    error: Track [/Power/BAT_N] on B.Cu, length 0.6801 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.3536 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.4178 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 1.6263 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 1.9007 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 2.3923 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.4301 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 1.3509 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 1.0735 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.1414 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 1.1000 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 1.5008 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.3905 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.7778 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.2915 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.7517 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.4141 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.5500 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.8485 mm (track_width)
+    error: Track [VBAT] on B.Cu, length 0.9055 mm (track_width)
+    error: Track [VBAT] on In1.Cu, length 1.4560 mm (track_width)
+    error: Track [VBAT] on In1.Cu, length 0.1414 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.1414 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.4610 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.6708 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.7500 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 1.5556 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.2828 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.8515 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 2.4021 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 2.0000 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 2.7987 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.3536 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.1118 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.1000 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 2.1920 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 1.5746 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 1.7951 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 0.7018 mm (track_width)
+    error: Track [VBAT] on In3.Cu, length 5.2022 mm (track_width)
+    error: Track [VBUS] on B.Cu, length 1.3730 mm (track_width)
+    error: Track [VBUS] on B.Cu, length 1.5556 mm (track_width)
+    error: Track [VBUS] on B.Cu, length 0.3674 mm (track_width)
+    error: Track [VBUS] on B.Cu, length 3.0000 mm (track_width)
+    error: Track [VBUS] on B.Cu, length 0.5385 mm (track_width)
+    error: Track [VBUS] on In1.Cu, length 0.2828 mm (track_width)
+    error: Track [VBUS] on In1.Cu, length 3.4482 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.7071 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.4123 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.4500 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.9862 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.2828 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.7106 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.1000 mm (track_width)
+    error: Track [VSYS] on B.Cu, length 0.2002 mm (track_width)
+    error: Track [VSYS] on In1.Cu, length 0.5308 mm (track_width)
+    error: Track [VSYS] on In1.Cu, length 0.6727 mm (track_width)
+    error: Track [/Driver 2 and matrix/CS2_36] on In1.Cu, length 0.5000 mm (track_dangling)
+    error: Track [/Driver 2 and matrix/CS2_36] on In1.Cu, length 0.2828 mm (track_dangling)
+  kept seed 0: 118 signal open, 72 plane open, 64 new errors, 891 vias; zones refilled

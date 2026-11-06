@@ -119,7 +119,7 @@
  },
  "layers": {
   "board": "round-pendant.kicad_pcb",
-  "generated": "2026-11-04",
+  "generated": "2026-11-05",
   "view_mm": [
    80.237,
    80.239,
@@ -149,8 +149,8 @@
   "footprints": 339,
   "front": 235,
   "back": 104,
-  "tracks": 5870,
-  "length_mm": 4386.7,
+  "tracks": 5218,
+  "length_mm": 4331.6,
   "layers": [
    {
     "name": "F.Cu",
@@ -159,8 +159,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 2487,
-    "length_mm": 1071.1,
+    "tracks": 1952,
+    "length_mm": 1037.0,
     "pads": 944,
     "zones": []
    },
@@ -171,8 +171,8 @@
     "file": "in1.svg",
     "color": "#7FC87F",
     "note": "Inner layer 1 of 6, 15.2 \u00b5m.",
-    "tracks": 739,
-    "length_mm": 734.7,
+    "tracks": 698,
+    "length_mm": 728.1,
     "pads": 4,
     "zones": []
    },
@@ -197,8 +197,8 @@
     "file": "in3.svg",
     "color": "#4FCBCB",
     "note": "Inner layer 3 of 6, 15.2 \u00b5m.",
-    "tracks": 551,
-    "length_mm": 630.4,
+    "tracks": 555,
+    "length_mm": 626.9,
     "pads": 4,
     "zones": []
    },
@@ -209,8 +209,8 @@
     "file": "in4.svg",
     "color": "#DB628B",
     "note": "Inner layer 4 of 6, 15.2 \u00b5m.",
-    "tracks": 559,
-    "length_mm": 621.4,
+    "tracks": 549,
+    "length_mm": 620.9,
     "pads": 4,
     "zones": []
    },
@@ -236,8 +236,8 @@
     "file": "in6.svg",
     "color": "#28CCD9",
     "note": "Inner layer 6 of 6, 15.2 \u00b5m.",
-    "tracks": 552,
-    "length_mm": 615.7,
+    "tracks": 523,
+    "length_mm": 613.3,
     "pads": 4,
     "zones": []
    },
@@ -248,8 +248,8 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 982,
-    "length_mm": 713.3,
+    "tracks": 941,
+    "length_mm": 705.4,
     "pads": 491,
     "zones": [
      "+1V1",
@@ -302,10 +302,10 @@
  },
  "3d": {
   "board": "round-pendant.kicad_pcb",
-  "generated": "2026-11-04",
+  "generated": "2026-11-05",
   "glb": "board.glb",
-  "bytes": 13905024,
-  "kicad_bytes": 41405164,
+  "bytes": 13896548,
+  "kicad_bytes": 41304400,
   "parts": 339,
   "modelled": 329,
   "no_model": [
@@ -336,10 +336,10 @@
    "legacy": 2,
    "found": 0
   },
-  "triangles": 808268,
+  "triangles": 807452,
   "primitives": 4889
  },
- "when": "2026-11-04 22:33",
+ "when": "2026-11-05 19:49",
  "source": {
   "kind": "file",
   "pcb": "hw/round-pendant/d/round-pendant.kicad_pcb",

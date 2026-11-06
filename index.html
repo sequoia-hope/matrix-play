@@ -3,306 +3,559 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>round-pendant</title>
+<title>LED Matrix Topologies — Design-Space Exploration</title>
 <style>
 :root {
-  --bg: #f6f7f9; --card: #ffffff; --line: #e2e5ea; --fg: #14171c;
-  --muted: #5f6875; --accent: #2f6feb; --up: #1a9c5b; --warn: #b7791f;
-  --down: #98a1ae; --chip: #eef1f5;
-  --shadow: 0 1px 2px rgba(16,20,28,.06), 0 4px 12px rgba(16,20,28,.05);
+  --bg: #f6f7f9; --card: #ffffff; --canvas: #0f1319; --line: #e2e5ea; --fg: #14171c;
+  --muted: #5b6472; --accent: #2f6feb; --up: #168a50; --warn: #a86814;
+  --chip: #eef1f5; --btn-bg: #f0f3f7; --btn-hover: #e3e8f0;
+  --shadow: 0 1px 2px rgba(16,20,28,.05), 0 6px 18px rgba(16,20,28,.05);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0e1116; --card: #171b22; --line: #262c36; --fg: #e6e9ee;
-    --muted: #8b94a3; --accent: #5b9bff; --up: #35c07d; --warn: #d9a441;
-    --down: #4d5563; --chip: #222833; --shadow: none;
+    --bg: #0d1015; --card: #161b22; --canvas: #090c10; --line: #262d38; --fg: #e6eaf0;
+    --muted: #8c96a6; --accent: #5b9bff; --up: #35c07d; --warn: #dfa543;
+    --chip: #202632; --btn-bg: #212733; --btn-hover: #2b3342; --shadow: none;
   }
 }
 * { box-sizing: border-box; }
 body {
   margin: 0; background: var(--bg); color: var(--fg);
   font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  padding: 0 0 3rem;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 0 3.5rem;
 }
-header, main, footer { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
-header { padding-top: 1.75rem; padding-bottom: 1rem; }
-.title { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
-h1 { font-size: 1.5rem; margin: 0; letter-spacing: -.015em; }
-h2 {
-  font-size: .78rem; margin: 0 0 .6rem; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--muted); font-weight: 650;
-}
-.state {
-  display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px;
-  padding: .2rem .65rem; font-size: .76rem; font-weight: 600;
-  background: var(--chip); border: 1px solid var(--line); color: var(--muted);
-}
-.state .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--up); }
-.lede { color: var(--muted); margin: .55rem 0 0; }
-main { display: grid; gap: .9rem; }
-.top-viewer { max-width: 1100px; margin: 0 auto; padding: 16px 16px 0; }
-.card {
-  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-  padding: 1rem 1.1rem 1.1rem; box-shadow: var(--shadow); min-width: 0;
-}
-.needs { border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
-.needs h2 { color: var(--warn); }
-.needs p { margin: 0; font-size: 1.05rem; }
-.cols { display: grid; gap: .9rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.gates { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; }
-.gate {
-  text-align: center; padding: .35rem 0; border-radius: 6px; font-size: .78rem;
-  font-variant-numeric: tabular-nums; background: var(--chip); color: var(--muted);
-  border: 1px solid var(--line);
-}
-.gate.done { background: color-mix(in srgb, var(--up) 18%, var(--card)); color: var(--up); border-color: color-mix(in srgb, var(--up) 40%, var(--line)); font-weight: 650; }
-.gate.now { border-color: var(--accent); color: var(--accent); font-weight: 650; }
-.gate-names { color: var(--muted); font-size: .8rem; margin: .5rem 0 0; }
-dl { display: grid; grid-template-columns: max-content 1fr; gap: .25rem .9rem; margin: 0; }
-dt { color: var(--muted); }
-dd { margin: 0; font-variant-numeric: tabular-nums; }
-ul { margin: 0; padding-left: 1.15rem; }
-li { margin: .25rem 0; }
-.empty { color: var(--muted); font-style: italic; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .86em;
   background: var(--chip); border: 1px solid var(--line);
   border-radius: 5px; padding: .06em .35em;
 }
-a { color: var(--accent); }
-.viewer-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
-footer { margin-top: 1.5rem; color: var(--muted); font-size: .8rem; }
-@media (max-width: 520px) { .gates { grid-template-columns: repeat(6, 1fr); } }
-</style>
-</head>
-<body>
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-<div class="top-viewer">
-<section class="card">
-    <div class="viewer-head">
-      <h2>Board</h2>
-      <a href="viewer/">All boards and variants →</a>
-    </div>
-    <!-- pcbview:begin -->
-<!-- written by pcbview (python3 -m pcbview build pcbview.toml): change the config, not this -->
-<link rel="stylesheet" href="viewer/assets/viewer.css">
-<section class="vw" data-pv-embed aria-label="round-pendant, variant D (5x WLCSP-36 BGA drivers, solid exposed pads): schematic, PCB and 3D">
-  <div class="vw-bar">
-    <div class="vw-left"><button data-vw="layers" aria-pressed="true"
-      title="show or hide the side panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 14.2 5 8 8.2 1.8 5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M1.8 8 8 11.2 14.2 8M1.8 11 8 14.2 14.2 11" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span>Panel</span></button></div>
-    <div class="vw-tabs" role="tablist" aria-label="view"><button role="tab" data-tab="schematic" aria-controls="schematic" aria-selected="false">SCH</button><button role="tab" data-tab="copper" aria-controls="copper" aria-selected="true">PCB</button><button role="tab" data-tab="board3d" aria-controls="board3d" aria-selected="false">3D</button></div>
-    <div class="vw-tools">
-      <button data-vw="info" title="about this board" aria-label="about this board"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4.2M8 4.6v.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-      <button data-vw="full" title="full screen" aria-label="full screen"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 2h4.5v4.5M14 2 9 7M6.5 14H2V9.5M2 14l5-5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    </div>
-  </div>
-  
-  <div class="vw-panel" id="schematic" data-dir="viewer/round-pendant-d/sch/" role="tabpanel" hidden>
-    <div class="cu sch">
-      <div class="cu-panel">
-        <p class="cu-head">Sheets</p>
-        <div id="sch-sheets"></div>
-        <div class="cu-row">
-          <button data-sch="out" title="zoom out">&minus;</button>
-          <button data-sch="fit" title="the whole sheet">fit</button>
-          <button data-sch="in" title="zoom in">+</button>
-          <span class="sub" id="sch-zoom">1.0&times;</span>
-        </div>
-        <div class="cu-row"><a class="a3-btn" id="sch-pdf" download hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8v8.4M4.4 6.8 8 10.4l3.6-3.6M2 12v2.2h12V12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>PDF, every sheet</span></a></div>
-        <p class="sub cu-note" id="sch-cap"></p>
-        <p class="cu-hint">Keys: <b>1</b>&ndash;<b>8</b> pick a sheet, <b>+</b> and <b>&minus;</b> zoom, <b>0</b> fit.
-        Drag to pan; scroll or double-click to zoom.</p>
-      </div>
-      <div class="cu-canvas">
-        <div class="sch-plate" id="sch-plate">
-          <div class="sch-pan" id="sch-pan"><img id="sch-img" alt="" draggable="false"></div>
-          <p class="b3-msg" id="sch-msg" hidden></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="vw-panel" id="copper" data-dir="viewer/round-pendant-d/layers/" data-parts="viewer/round-pendant-d/3d/parts.json" role="tabpanel">
-    <div class="cu">
-      <div class="cu-panel">
-        <div id="cu-layers"></div>
-        <p class="cu-hint" style="margin-top:.3rem">The dot puts a layer on top at full
-        opacity; the box says whether it is drawn at all.</p>
-        <div class="cu-row">
-          <button data-act="all" title="show every layer">all</button>
-          <button data-act="none" title="show only the selected layer">none</button>
-          <button data-act="solo" title="the selected layer and the outline only">solo</button>
-          <button data-act="grid" title="the copper layers side by side">grid</button>
-        </div>
-        <label class="cu-ctl">opacity of the unselected copper
-          <input type="range" id="cu-dim" min="0" max="60" value="16"></label>
-        <label class="cu-ctl"><input type="checkbox" id="cu-mirror">
-          view from the back (mirrored)</label>
-        <div class="cu-row">
-          <button data-act="out" title="zoom out">&minus;</button>
-          <button data-act="fit" title="fit the board">fit</button>
-          <button data-act="in" title="zoom in">+</button>
-          <span class="sub" id="cu-zoom">1.0&times;</span>
-        </div>
-        <p class="cu-note" id="cu-note"></p>
-        <p class="cu-read" id="cu-read"></p>
-        <p class="cu-hint">Keys: <b>1</b>&ndash;<b>9</b> pick a layer, <b>s</b> solo,
-        <b>a</b> all, <b>m</b> mirror, <b>0</b> fit. Click a part for its pane;
-        coordinates are pcbnew&rsquo;s, in millimetres.</p>
-        <p class="cu-hint" id="cu-stats"></p>
-      </div>
-      <div class="cu-canvas">
-        <div class="cu-plate" id="cu-plate">
-          <div class="cu-pan" id="cu-pan"><div class="cu-flip" id="cu-flip"></div></div>
-          <div class="cu-scale"><i id="cu-bar"></i><span id="cu-barlab"></span></div>
-          <div class="cu-back" id="cu-back"></div>
-          <p class="b3-msg" id="cu-fallback" hidden></p>
-        </div>
-        <div class="cu-grid" id="cu-gridbox" hidden></div>
-      </div>
-      <aside class="b3-info pv-pane" id="cu-info" aria-label="the selected part" hidden>
-        <div class="b3-ih"><b class="pv-iref"></b><button class="b3-x" title="close"
-          aria-label="close the part pane">&times;</button></div>
-        <div class="b3-ib pv-ib"></div>
-      </aside>
-    </div>
-  </div>
-  
-  <div class="vw-panel" id="board3d" data-dir="viewer/round-pendant-d/3d/" role="tabpanel" hidden>
-    <div class="b3">
-      <div class="b3-bar">
-        <div class="cu-row" role="group" aria-label="view">
-          <button data-view="front" title="the front face, as pcbnew draws it">front</button>
-          <button data-view="back" title="the back face, turned over left to right">back</button>
-          <button data-view="tilt" title="from the front, tilted towards you">tilted</button>
-          <button data-view="edge" title="edge on: how tall each face stands">edge</button>
-        </div>
-        <div class="b3-layers" id="b3-layers"></div>
-        <label class="b3-find">find <input id="b3-find" list="b3-refs" placeholder="U1"
-          disabled spellcheck="false" autocomplete="off" title="a reference, e.g. U1"></label>
-        <datalist id="b3-refs"></datalist>
-      </div>
-      <div class="b3-body">
-        <div class="b3-stage" id="b3-stage">
-          <p class="b3-msg" id="b3-msg">The model loads when this tab is open.</p>
-          <div class="b3-tag" id="b3-tag" hidden></div>
-        </div>
-        <aside class="b3-info pv-pane" id="b3-info" aria-label="the selected part" hidden>
-          <div class="b3-ih"><b class="pv-iref"></b><button class="b3-x" title="close"
-            aria-label="close the part pane">&times;</button></div>
-          <div class="b3-ib pv-ib"></div>
-        </aside>
-      </div>
-      <p class="b3-facts" id="b3-facts"></p>
-    </div>
-  </div>
-  
-  <div class="vw-panel pv-over" id="overview" role="tabpanel" hidden>
-    <div class="pv-card">
-      <h1>round-pendant, variant D (5x WLCSP-36 BGA drivers, solid exposed pads)</h1>
-      <p class="pv-lede">Variant D: 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (zero driver exposed pads), solid GND exposed pads on U3 and U5 with zero foreign vias, 8 layers, through vias, 0 unconnected and 0 DRC errors, front seed web and 58 tidy back designators.</p>
-      <dl class="pv-facts"><dt>Source</dt><dd><code>hw/round-pendant/d/round-pendant.kicad_pcb</code><br><code>hw/round-pendant/d/round-pendant.kicad_sch</code></dd><dt>Board</dt><dd>&Oslash;38 mm<small>8 copper layers, 1 mm thick</small></dd><dt>Parts</dt><dd>339 footprints<small>235 on the front, 104 on the back</small></dd><dt>Copper</dt><dd>210 nets, 5,870 track segments, 876 vias<small>4,387 mm of routed track</small></dd><dt>Schematic</dt><dd>8 sheets<small>A4, A3, A3, A3, A3, A3, A3, A3</small></dd><dt>3D</dt><dd>329 of 339 parts drawn from a model<small>2 through an older KiCad&rsquo;s library variable (<code>${KICAD6_3DMODEL_DIR}</code> and so on), read as KiCad 9&rsquo;s library</small><small>10 name no model (BT1, J1, TP1&ndash;TP8)</small></dd></dl>
-      <p class="cu-hint">Built 2026-11-04 22:33 by pcbview from the KiCad files above:
-      <code>python3 -m pcbview build pcbview.toml</code>. Nothing here is drawn by hand &mdash; the layer plots, the model and the
-      sheets are KiCad&rsquo;s own exports.</p>
-    </div>
-  </div>
-</section>
-<script src="viewer/assets/parts.js" defer></script>
-<script src="viewer/assets/gesture.js" defer></script>
-<script src="viewer/assets/viewer.js" defer></script>
-<script src="viewer/assets/copper.js" defer></script>
-<script src="viewer/assets/sch.js" defer></script>
-<script type="importmap">{"imports": {"three": "./viewer/assets/vendor/three.module.js"}}</script>
-<script type="module" src="viewer/assets/board3d.js"></script>
-<!-- pcbview:end -->
-  </section>
-</div>
+/* ---- Hero header ---- */
+header { padding: 2.2rem 0 1.4rem; border-bottom: 1px solid var(--line); margin-bottom: 1.8rem; }
+.hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.eyebrow {
+  font-size: .75rem; font-weight: 650; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--muted); margin: 0 0 .35rem;
+}
+h1 { font-size: clamp(1.55rem, 2.8vw, 2.05rem); margin: 0; letter-spacing: -.02em; line-height: 1.2; }
+.lede { color: var(--muted); max-width: 78ch; margin: .7rem 0 0; font-size: .98rem; }
+.toolbar { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; margin-top: .2rem; }
+.seg {
+  display: inline-flex; background: var(--chip); border: 1px solid var(--line);
+  border-radius: 8px; padding: 2px; gap: 2px;
+}
+.seg button {
+  font: inherit; font-size: .8rem; font-weight: 600; color: var(--muted);
+  background: transparent; border: 0; border-radius: 6px; padding: .32rem .7rem; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.btn {
+  display: inline-flex; align-items: center; gap: .4rem; font-size: .82rem; font-weight: 600;
+  padding: .42rem .8rem; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--fg); white-space: nowrap;
+}
+.btn:hover { background: var(--btn-hover); text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { filter: brightness(1.07); }
 
-<header>
-  <div class="title">
-    <h1 id="board">round-pendant</h1>
-    <span class="state"><span class="dot"></span><span id="phase">phase …</span></span>
-  </div>
-  <p class="lede" id="doing"></p>
-</header>
-
-<main>
-
-  <section class="card needs" id="needs-card" hidden>
-    <h2>Needs you</h2>
-    <p id="needs"></p>
-  </section>
-
-  <section class="card">
-    <h2>Gates</h2>
-    <div class="gates" id="gates"></div>
-    <p class="gate-names">0 intent · 1 parts · 2 schematic · 3 nets · 4 brief · 5 rules ·
-      6 placement · 7 routing · 8 simulation · 9 silkscreen · 10 release</p>
-  </section>
-
-  <div class="cols">
-    <section class="card">
-      <h2>Latest checks</h2>
-      <dl id="checks"></dl>
-    </section>
-    <section class="card">
-      <h2>Documents</h2>
-      <ul id="links">
-        <li><a href="design/intent.md">Design intent</a></li>
-        <li><a href="design/decisions.md">Decision log</a></li>
-        <li><a href="design/gates/">Gate files</a></li>
-      </ul>
-    </section>
-  </div>
-</main>
-
-<footer>
-  Status from <code>design/status.json</code><span id="updated"></span>.
-  Built with the pcb-design skill and <a href="https://github.com/sequoia-hope/pcbview">pcbview</a>.
-</footer>
-
-<script>
-const $ = id => document.getElementById(id);
-const text = (el, s) => { el.textContent = s; return el; };
-
-function render(s) {
-  if (s.board) { text($("board"), s.board); document.title = s.board; }
-  text($("phase"), "phase " + (s.phase || "?"));
-  text($("doing"), s.doing || "");
-  // schema 1: needs_user is a list of {text}, and a check is {result}; older strings still read.
-  const needs = Array.isArray(s.needs_user) ? s.needs_user.map(n => n.text).join("\n\n") : (s.needs_user || "");
-  $("needs-card").hidden = !needs;
-  text($("needs"), needs);
-
-  const passed = new Set(s.gates_passed || Object.entries(s.gates || {}).filter(([, g]) => g.state === "passed").map(([n]) => +n));
-  const now = parseInt(s.phase, 10);
-  for (let i = 0; i <= 10; i++) {
-    const g = text(document.createElement("div"), i);
-    g.className = "gate" + (passed.has(i) ? " done" : i === now ? " now" : "");
-    $("gates").append(g);
-  }
-
-  const checks = Object.entries(s.checks || {});
-  if (!checks.length) $("checks").append(text(document.createElement("dd"), "Nothing run yet."));
-  for (const [k, v] of checks) {
-    $("checks").append(text(document.createElement("dt"), k), text(document.createElement("dd"), v && v.result !== undefined ? v.result : v));
-  }
-
-  for (const l of s.links || []) {
-    const a = text(document.createElement("a"), l.label);
-    a.href = l.href;
-    const li = document.createElement("li");
-    li.append(a);
-    $("links").append(li);
-  }
-  if (s.updated) text($("updated"), ", updated " + s.updated);
+/* ---- Family sections ---- */
+.section { margin-bottom: 2.4rem; }
+.sec-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: .8rem; flex-wrap: wrap; margin-bottom: .95rem;
+}
+.sec-head h2 { font-size: 1.18rem; margin: 0; letter-spacing: -.01em; }
+.sec-sub { color: var(--muted); font-size: .88rem; margin: .2rem 0 0; max-width: 82ch; }
+.sec-tag {
+  font-size: .75rem; font-weight: 600; color: var(--muted); background: var(--chip);
+  border: 1px solid var(--line); border-radius: 999px; padding: .18rem .65rem; white-space: nowrap;
 }
 
-fetch("design/status.json", { cache: "no-store" })
-  .then(r => r.json())
-  .then(render)
-  .catch(() => text($("doing"), "Couldn't read design/status.json. Serve the project with ./serve.sh rather than opening the file directly."));
+/* ---- Variant cards ---- */
+.grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+.grid.compact {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  margin-top: .9rem;
+}
+.vcard {
+  display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); transition: border-color .15s, transform .15s;
+}
+.vcard:hover { border-color: color-mix(in srgb, var(--accent) 65%, var(--line)); }
+.thumb {
+  position: relative; aspect-ratio: 16 / 10; background: var(--canvas);
+  border-bottom: 1px solid var(--line); display: block; overflow: hidden;
+}
+.grid.compact .thumb { aspect-ratio: 16 / 9; }
+.thumb img {
+  position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain;
+  transition: opacity .15s;
+}
+body[data-face="front"] .thumb img.back-layer { opacity: 0; pointer-events: none; }
+body[data-face="back"] .thumb img.front-layer { opacity: 0; pointer-events: none; }
+.face-pill {
+  position: absolute; bottom: 8px; right: 9px; font-size: .68rem; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase; padding: .12rem .45rem; border-radius: 5px;
+  background: rgba(15,19,25,.78); color: #cbd5e1; border: 1px solid rgba(255,255,255,.12);
+  pointer-events: none;
+}
+
+.vbody { padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .45rem; flex: 1; }
+.vtop { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; }
+.vtitle { font-size: .98rem; font-weight: 650; margin: 0; line-height: 1.3; color: var(--fg); }
+.vtitle a { color: inherit; }
+.vtitle a:hover { color: var(--accent); text-decoration: none; }
+.badge {
+  flex: none; font-size: .7rem; font-weight: 650; padding: .14rem .5rem; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--chip); color: var(--muted); white-space: nowrap;
+}
+.badge.ok {
+  background: color-mix(in srgb, var(--up) 15%, var(--card));
+  color: var(--up); border-color: color-mix(in srgb, var(--up) 38%, var(--line));
+}
+.badge.probe {
+  background: color-mix(in srgb, var(--warn) 15%, var(--card));
+  color: var(--warn); border-color: color-mix(in srgb, var(--warn) 38%, var(--line));
+}
+.vspecs {
+  font-size: .79rem; color: var(--muted); font-variant-numeric: tabular-nums;
+  display: flex; flex-wrap: wrap; gap: .25rem .55rem;
+}
+.vspecs span::after { content: "·"; margin-left: .55rem; opacity: .55; }
+.vspecs span:last-child::after { content: ""; margin: 0; }
+.vdesc { font-size: .85rem; color: var(--muted); margin: 0; flex: 1; line-height: 1.5; }
+.vlinks { display: flex; gap: .4rem; margin-top: .35rem; flex-wrap: wrap; }
+.vlinks a {
+  font-size: .76rem; font-weight: 600; padding: .26rem .6rem; border-radius: 6px;
+  background: var(--btn-bg); color: var(--fg); border: 1px solid var(--line);
+}
+.vlinks a:hover { background: var(--accent); border-color: var(--accent); color: #fff; text-decoration: none; }
+
+/* ---- Comparison table & docs ---- */
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 1.05rem 1.2rem; box-shadow: var(--shadow);
+}
+.card h3 {
+  font-size: .78rem; margin: 0 0 .75rem; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted); font-weight: 650;
+}
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: .5rem .65rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; }
+tr:last-child td { border-bottom: 0; }
+td.wrap-col { white-space: normal; min-width: 180px; }
+.cols { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top: 1rem; }
+.doc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; font-size: .88rem; }
+.doc-list li { display: flex; justify-content: space-between; gap: .75rem; align-items: baseline; }
+.doc-list small { color: var(--muted); font-size: .78rem; text-align: right; }
+
+details.milestones { margin-top: .95rem; }
+details.milestones > summary {
+  cursor: pointer; font-size: .84rem; font-weight: 600; color: var(--muted);
+  user-select: none; padding: .35rem 0;
+}
+details.milestones > summary:hover { color: var(--fg); }
+
+footer {
+  margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: .82rem; display: flex; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+}
+</style>
+</head>
+<body data-face="front">
+
+<div class="wrap">
+  <header>
+    <div class="hero-top">
+      <div>
+        <p class="eyebrow">RP2350 Hardware Design-Space Study</p>
+        <h1>Non-Rectangular LED Matrix Topologies</h1>
+        <p class="lede">
+          Exploring artistic, non-grid RGB LED matrix layouts alongside PCB stackup, IC packaging, and cost trade-offs —
+          comparing dense <b>8-layer Ø&thinsp;38&thinsp;mm phyllotaxis (&ldquo;sunflower&rdquo;) pendants</b> using WLCSP-36 BGA drivers against
+          low-cost <b>4-layer 25&thinsp;&times;&thinsp;70&thinsp;mm skewed-parallelogram boards</b> using exposed-pad QFNs and commodity prismatic LiPo cells.
+        </p>
+      </div>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Board preview face">
+          <button type="button" data-set-face="front" aria-pressed="true">Front (LEDs)</button>
+          <button type="button" data-set-face="back" aria-pressed="false">Back (ICs)</button>
+        </div>
+        <a class="btn primary" href="viewer/">Interactive Workspace &rarr;</a>
+        <a class="btn" href="https://github.com/sequoia-hope/round-pendant">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== FAMILY 1: SKEWED PARALLELOGRAM (4-LAYER) ==================== -->
+    <section class="section" aria-labelledby="fam-para">
+      <div class="sec-head">
+        <div>
+          <h2 id="fam-para">Skewed Parallelogram Family &mdash; 4-Layer Low-Cost Density Sweep</h2>
+          <p class="sec-sub">
+            25&thinsp;&times;&thinsp;70&thinsp;mm envelope sheared 17.75&deg; around a standard 20&thinsp;&times;&thinsp;35&thinsp;mm prismatic LiPo cell.
+            Zero BGA, solid QFN-40 exposed ground pads (<code>AW20198QNR</code>), 100% locally stocked JLCPCB BOM, swept from 66 to 264 RGB LEDs to map the exact 4-layer routing knee.
+          </p>
+        </div>
+        <span class="sec-tag">4 Layers &middot; QFN-40 EP &middot; $10.61&ndash;$19.03 BOM</span>
+      </div>
+
+      <div class="grid" id="grid-para"></div>
+    </section>
+
+    <!-- ==================== FAMILY 2: ROUND PHYLLOTAXIS PENDANT (6-8 LAYER) ==================== -->
+    <section class="section" aria-labelledby="fam-round">
+      <div class="sec-head">
+        <div>
+          <h2 id="fam-round">Sunflower Round Pendant Family &mdash; 8-Layer High-Density Phyllotaxis</h2>
+          <p class="sec-sub">
+            Ø&thinsp;38&thinsp;mm wearable pendant packing 235 RGB LEDs on a golden-angle spiral (~2.0&thinsp;mm pitch, 20.7&thinsp;LEDs/cm&sup2;)
+            with a Voronoi seed-web front silkscreen, custom round smartwatch cell, and WLCSP-36 BGA vs QFN-48 driver architectures.
+          </p>
+        </div>
+        <span class="sec-tag">6&ndash;8 Layers &middot; WLCSP-36 / QFN-48 &middot; 234&ndash;235 LEDs</span>
+      </div>
+
+      <div class="grid" id="grid-round"></div>
+
+      <details class="milestones">
+        <summary>Earlier round-pendant layout &amp; routing milestones (Variants A, B, C, y21, y30)</summary>
+        <div class="grid compact" id="grid-round-early"></div>
+      </details>
+    </section>
+
+    <!-- ==================== DESIGN-SPACE COMPARISON & DOCS ==================== -->
+    <section class="section" aria-labelledby="sec-compare">
+      <div class="card">
+        <h3 id="sec-compare">Design-Space Comparison Across Topologies</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Variant</th>
+                <th>Geometry &amp; Pitch</th>
+                <th>Stackup</th>
+                <th>RGB LEDs</th>
+                <th>Drivers &amp; Package</th>
+                <th>Routing &amp; DRC</th>
+                <th>Qty-10 BOM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="viewer/parallelogram-p1-66.html"><b>Parallelogram p1-66</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;5.20&thinsp;mm)</td>
+                <td>4L std</td>
+                <td>66&times; XL-1615RGBC</td>
+                <td>1&times; AW20198QNR (QFN-40 EP)</td>
+                <td><b>475/475 (100%)</b> &middot; 343 vias &middot; 0 DRC</td>
+                <td><b>$10.61</b></td>
+              </tr>
+              <tr>
+                <td><a href="viewer/parallelogram-p2-132.html"><b>Parallelogram p2-132</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;2.60&thinsp;mm)</td>
+                <td>4L std</td>
+                <td>132&times; XL-1615RGBC</td>
+                <td>2&times; AW20198QNR (QFN-40 EP)</td>
+                <td><b>761/761 (100%)</b> &middot; 670 vias &middot; 0 DRC</td>
+                <td><b>$12.60</b></td>
+              </tr>
+              <tr>
+                <td><a href="viewer/parallelogram-p3-162.html"><b>Parallelogram p3-162</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (2.55&times;3.15&thinsp;mm)</td>
+                <td>4L std</td>
+                <td>162&times; XL-1010RGB</td>
+                <td>3&times; AW20198QNR (QFN-40 EP)</td>
+                <td>870/901 (96.6%, 31 open &mdash; EP shadow)</td>
+                <td>$15.47</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/parallelogram-p3-198.html"><b>Parallelogram p3-198</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (2.55&times;2.60&thinsp;mm)</td>
+                <td>4L std</td>
+                <td>198&times; XL-1010RGB</td>
+                <td>3&times; AW20198QNR (QFN-40 EP)</td>
+                <td>989/1,045 (94.6%, 56 open)</td>
+                <td>$16.44</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/parallelogram-p4-264.html"><b>Parallelogram p4-264</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (2.02&times;2.60&thinsp;mm)</td>
+                <td>4L std</td>
+                <td>264&times; XL-1010RGB</td>
+                <td>4&times; AW20198QNR (QFN-40 EP)</td>
+                <td>1,190/1,329 (89.5%, 139 open)</td>
+                <td>$19.03</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/round-pendant-d.html"><b>Round Pendant D</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm)</td>
+                <td>8L ENIG</td>
+                <td>235&times; XL-1010RGB</td>
+                <td>5&times; IS31FL3745 (WLCSP-36 BGA)</td>
+                <td><b>100% routed</b> &middot; 876 vias &middot; 0 DRC</td>
+                <td>~$26.40</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/round-pendant-e.html"><b>Round Pendant E</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower + top-rim ALS</td>
+                <td>8L ENIG</td>
+                <td>235&times; XL-1010RGB</td>
+                <td>5&times; IS31FL3745 (WLCSP-36 BGA)</td>
+                <td><b>100% routed</b> &middot; 879 vias &middot; 0 DRC</td>
+                <td>~$26.47</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cols">
+        <div class="card">
+          <h3>Studies &amp; Drawings</h3>
+          <ul class="doc-list">
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/study/parallelogram/README.md">Parallelogram 4-Layer Cost &amp; Density Study</a>
+              <small>66&ndash;264 LED sweep</small>
+            </li>
+            <li>
+              <a href="design/study/parallelogram/floorplan.svg">Parallelogram 5-Tier Floorplan Drawing</a>
+              <small>Vector SVG</small>
+            </li>
+            <li>
+              <a href="design/study/center/index.html">Sunflower Center Symmetry Study</a>
+              <small>Interactive HTML</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/decisions.md">Engineering Decision Log</a>
+              <small>Architecture &amp; routing history</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/ultraroute-requests.md">UltraRoute Autorouter Notes</a>
+              <small>4L &amp; 8L routing benchmarks</small>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Component &amp; Schematic References</h3>
+          <ul class="doc-list">
+            <li>
+              <a href="design/renders/schematic/parallelogram-p1-66.pdf">Parallelogram p1-66 Schematic (PDF)</a>
+              <small>1&times; AW20198QNR + XL-1615</small>
+            </li>
+            <li>
+              <a href="design/renders/schematic/parallelogram-p2-132.pdf">Parallelogram p2-132 Schematic (PDF)</a>
+              <small>2&times; AW20198QNR + XL-1615</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/parts/drivers-aw20198.md">AW20198QNR QFN-40 Driver Audit</a>
+              <small>18&times;11 matrix sink/scan</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/parts/leds-xl1615.md">XL-1615RGBC-RF LED Pinout &amp; CPL Audit</a>
+              <small>0.80&thinsp;mm intra-pad channel</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/parts/drivers-bga.md">IS31FL3745 WLCSP-36 BGA Driver Audit</a>
+              <small>8-layer round pendant</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Every PCB layer plot, schematic sheet, and 3D model is exported directly from KiCad 9 via <a href="https://github.com/sequoia-hope/pcbview">pcbview</a> and routed with <code>ultraroute</code>.</span>
+    <span><a href="viewer/">All boards in viewer</a> &middot; <a href="https://github.com/sequoia-hope/round-pendant">Source repository</a></span>
+  </footer>
+</div>
+
+<script>
+const PARALLELOGRAM_CARDS = [
+  {
+    id: "parallelogram-p1-66",
+    title: "Parallelogram p1-66",
+    badge: "100% Routed · 0 DRC",
+    badgeKind: "ok",
+    specs: ["4 layers", "66× XL-1615 LEDs", "3.70×5.20 mm", "$10.61 BOM"],
+    desc: "6×11 skewed lattice driven by a single AW20198QNR QFN-40 around a 20×35 mm prismatic LiPo pocket, with EVQP7J side buttons and top-bezel light sensor (343 vias).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p2-132",
+    title: "Parallelogram p2-132",
+    badge: "100% Routed · 0 DRC",
+    badgeKind: "ok",
+    specs: ["4 layers", "132× XL-1615 LEDs", "3.70×2.60 mm", "$12.60 BOM"],
+    desc: "Doubles vertical density to 6×22 (8.5 LEDs/cm²) with 2× AW20198QNR QFNs. XL-1615's 0.80 mm intra-pad channel unlocks 761/761 connections (670 vias, 0 DRC) on 4 layers.",
+    silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p3-162",
+    title: "Parallelogram p3-162",
+    badge: "96.6% · Knee Onset",
+    badgeKind: "probe",
+    specs: ["4 layers", "162× XL-1010 LEDs", "2.55×3.15 mm", "$15.47 BOM"],
+    desc: "9×18 lattice with 3× AW20198QNR. Stepping column pitch to 2.55 mm (< 3.40 mm solid QFN thermal pad) begins shadowing front LED columns over back-side EPs (870/901 routed).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p3-198",
+    title: "Parallelogram p3-198",
+    badge: "94.6% · Density Probe",
+    badgeKind: "probe",
+    specs: ["4 layers", "198× XL-1010 LEDs", "2.55×2.60 mm", "$16.44 BOM"],
+    desc: "Full 3-driver 9×22 skewed matrix (12.8 LEDs/cm²). Demonstrates single inner-signal-layer (In2.Cu) congestion when carrying 33 scan buses plus 54 sink escapes (989/1,045 routed).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p4-264",
+    title: "Parallelogram p4-264",
+    badge: "89.5% · 4L Ceiling",
+    badgeKind: "probe",
+    specs: ["4 layers", "264× XL-1010 LEDs", "2.02×2.60 mm", "$19.03 BOM"],
+    desc: "4-driver 12×22 saturation tier (17.0 LEDs/cm²): two LED columns cross each solid 3.4 mm QFN pad on the opposite face, showing why ~2 mm pitch needs 6L or WLCSP (1,190/1,329 routed).",
+    silkF: true, silkB: true
+  }
+];
+
+const ROUND_MAIN_CARDS = [
+  {
+    id: "round-pendant-e",
+    title: "Round Pendant — Variant E",
+    badge: "100% Routed · 0 DRC",
+    badgeKind: "ok",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm", "WLCSP-36 + ALS"],
+    desc: "Golden-angle sunflower matrix with 5× IS31FL3745 WLCSP-36 BGA drivers (zero driver thermal pads blocking vias), top-rim ALS-PT19 ambient light sensor, and Voronoi seed-web silk (879 vias).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "round-pendant-d",
+    title: "Round Pendant — Variant D",
+    badge: "100% Routed · 0 DRC",
+    badgeKind: "ok",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm", "5× WLCSP-36 BGA"],
+    desc: "Clean 8-layer WLCSP-36 BGA architecture with unbroken solid GND thermal pads on RP2350 (U3) and BQ24073 (U5), strict copper-sliver/neck cleanup, and 58 tidy back designators (876 vias).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "round-pendant-c-web4",
+    title: "Round Pendant — Variant C (y30 QFN)",
+    badge: "100% Joined · QFN-48",
+    badgeKind: "",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm", "4× IS31FL3741A"],
+    desc: "Earlier 8-layer QFN-48 driver topology prior to the WLCSP-36 transition: all 235 sunflower LEDs connected on route y30 with front seed-web silkscreen and 0.8 mm back designators.",
+    silkF: true, silkB: true
+  }
+];
+
+const ROUND_EARLY_CARDS = [
+  {
+    id: "round-pendant-a",
+    title: "Variant A — Initial 6L",
+    badge: "Placement",
+    badgeKind: "",
+    specs: ["6L", "234 LEDs"],
+    desc: "Initial Ø 38 mm 6-layer placement exploring front-all-LEDs / back-all-ICs partitioning.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-b",
+    title: "Variant B — Off-Board USB",
+    badge: "Placement",
+    badgeKind: "",
+    specs: ["6L", "234 LEDs"],
+    desc: "Sunflower spiral with 6-pad off-board USB-C interface and side tactile switches.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c",
+    title: "Variant C — 235th Center LED",
+    badge: "Pre-route",
+    badgeKind: "",
+    specs: ["6L", "235 LEDs"],
+    desc: "Adds center pixel on RP2350 GPIO23–25 with radial driver-centered fan mapping.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c-web",
+    title: "Route y21 — Seed-Web Silk",
+    badge: "Iteration",
+    badgeKind: "",
+    specs: ["8L", "235 LEDs"],
+    desc: "First 8-layer route introducing the front Voronoi seed-web silkscreen between LEDs.",
+    silkF: true, silkB: false
+  },
+  {
+    id: "round-pendant-c-web3",
+    title: "Route y30 — Bare Back",
+    badge: "Iteration",
+    badgeKind: "",
+    specs: ["8L", "235 LEDs"],
+    desc: "Fully joined y30 copper route before back-side component designator placement.",
+    silkF: true, silkB: false
+  }
+];
+
+function cardHTML(c) {
+  const base = `viewer/${c.id}`;
+  const badgeCls = c.badgeKind ? `badge ${c.badgeKind}` : "badge";
+  return `
+    <article class="vcard">
+      <a class="thumb" href="${base}.html" aria-label="Open ${c.title} interactive viewer">
+        <img src="${base}/layers/body.svg" alt="" loading="lazy">
+        <img class="front-layer" src="${base}/layers/f.svg" alt="" loading="lazy">
+        ${c.silkF ? `<img class="front-layer" src="${base}/layers/silk_f.svg" alt="" loading="lazy">` : ""}
+        <img class="back-layer" src="${base}/layers/b.svg" alt="" loading="lazy">
+        ${c.silkB ? `<img class="back-layer" src="${base}/layers/silk_b.svg" alt="" loading="lazy">` : ""}
+        <img src="${base}/layers/edge.svg" alt="" loading="lazy">
+        <span class="face-pill" data-face-label>Front</span>
+      </a>
+      <div class="vbody">
+        <div class="vtop">
+          <h3 class="vtitle"><a href="${base}.html">${c.title}</a></h3>
+          <span class="${badgeCls}">${c.badge}</span>
+        </div>
+        <div class="vspecs">${c.specs.map(s => `<span>${s}</span>`).join("")}</div>
+        <p class="vdesc">${c.desc}</p>
+        <div class="vlinks">
+          <a href="${base}.html#copper">PCB Layers</a>
+          <a href="${base}.html#board3d">3D Model</a>
+          <a href="${base}.html#schematic">Schematic</a>
+        </div>
+      </div>
+    </article>`;
+}
+
+document.getElementById("grid-para").innerHTML = PARALLELOGRAM_CARDS.map(cardHTML).join("");
+document.getElementById("grid-round").innerHTML = ROUND_MAIN_CARDS.map(cardHTML).join("");
+document.getElementById("grid-round-early").innerHTML = ROUND_EARLY_CARDS.map(cardHTML).join("");
+
+for (const btn of document.querySelectorAll("[data-set-face]")) {
+  btn.addEventListener("click", () => {
+    const face = btn.dataset.setFace;
+    document.body.dataset.face = face;
+    for (const b of document.querySelectorAll("[data-set-face]")) {
+      b.setAttribute("aria-pressed", String(b === btn));
+    }
+    for (const pill of document.querySelectorAll("[data-face-label]")) {
+      pill.textContent = face === "front" ? "Front" : "Back";
+    }
+  });
+}
 </script>
 </body>
 </html>
