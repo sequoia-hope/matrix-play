@@ -121,6 +121,46 @@
   },
   "links": [
     {
+      "label": "Parallelogram 4-layer density & cost study (66..264 LEDs)",
+      "href": "design/study/parallelogram/README.md"
+    },
+    {
+      "label": "Parallelogram p1-66 (4L, 66x XL-1615 LEDs, $10.61 BOM \u2014 100% routed, 0 DRC) viewer",
+      "href": "viewer/parallelogram-p1-66.html"
+    },
+    {
+      "label": "Parallelogram p2-132 (4L, 132x XL-1615 LEDs, $12.60 BOM \u2014 100% routed, 0 DRC) viewer",
+      "href": "viewer/parallelogram-p2-132.html"
+    },
+    {
+      "label": "Parallelogram p3-162 (4L, 162 LEDs, $15.47 BOM \u2014 96.6% routed) viewer",
+      "href": "viewer/parallelogram-p3-162.html"
+    },
+    {
+      "label": "Parallelogram p3-198 (4L, 198 LEDs, $16.44 BOM \u2014 94.6% routed) viewer",
+      "href": "viewer/parallelogram-p3-198.html"
+    },
+    {
+      "label": "Parallelogram p4-264 (4L, 264 LEDs, $19.03 BOM \u2014 89.5% routed) viewer",
+      "href": "viewer/parallelogram-p4-264.html"
+    },
+    {
+      "label": "Parallelogram 25x70 mm floorplan drawing",
+      "href": "design/study/parallelogram/floorplan.svg"
+    },
+    {
+      "label": "AW20198QNR 4-layer driver datasheet audit",
+      "href": "design/parts/drivers-aw20198.md"
+    },
+    {
+      "label": "XL-1615RGBC-RF LED datasheet & pinout audit",
+      "href": "design/parts/leds-xl1615.md"
+    },
+    {
+      "label": "UltraRoute engineering & UX notes",
+      "href": "design/ultraroute-requests.md"
+    },
+    {
       "label": "Variant E (top-rim ALS-PT19 + 5x WLCSP-36) viewer",
       "href": "viewer/round-pendant-e.html"
     },
@@ -198,5 +238,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-05T02:20:00-08:00"
+  "updated": "2026-11-05T20:06:00-08:00"
 }

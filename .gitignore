@@ -34,6 +34,8 @@ hw/round-pendant/c-*/
 hw/round-pendant/d/route/
 hw/round-pendant/e/route/
 hw/round-pendant/*/fab/gerbers/
+hw/parallelogram/*/route/
+hw/parallelogram/*/fab/gerbers/
 scripts/crunch/router/ur-main/
 scripts/crunch/router/tools/
 scripts/crunch/**/*.kicad_pcb

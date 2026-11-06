@@ -1,0 +1,173 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "cf89d065-0b5f-49f8-bfdf-544010215f04")
+	(paper "A4")
+	(title_block
+		(title "parallelogram (p3-162): top")
+		(date "2026-11-05")
+		(rev "P2")
+		(company "CERN-OHL-P-2.0")
+		(comment 1 "162 RGB LEDs (9x18 skewed grid, 2.55x3.15 mm), 3x AW20198QNR QFN-40, 4-layer JLCPCB standard")
+		(comment 2 "Drawn by scripts/parallelogram/sch_gen.py")
+	)
+	(lib_symbols)
+	(text "Parallelogram 4-layer density study (p3-162): 162 RGB LEDs (9x18 skewed grid, 2.55x3.15 mm), 3x AW20198QNR QFN-40, 4-layer JLCPCB standard.\n25 x 70 mm tip-to-tip skewed parallelogram, 20 x 35 mm prismatic LiPo cell.\nSolid GND thermal pads on U3, U5, and all AW20198QNR QFN-40 drivers (0 via-in-pad)."
+		(exclude_from_sim no)
+		(at 20.32 105 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "3be7f262-5fd4-44d1-9ad7-4f8921030d8e")
+	)
+	(sheet
+		(at 20.32 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "8b56697e-c7d3-4d2f-9efa-5cac64e2d81d")
+		(property "Sheetname" "Power"
+			(at 20.32 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 20.32 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/cf89d065-0b5f-49f8-bfdf-544010215f04"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 83.82 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "57b0734f-4e2c-4a04-a1f0-d46e52a8ff2a")
+		(property "Sheetname" "MCU"
+			(at 83.82 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 83.82 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/cf89d065-0b5f-49f8-bfdf-544010215f04"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 25.4)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "c0317e5e-125a-407d-b2d2-682e2ad7c5fc")
+		(property "Sheetname" "Driver 1 and matrix"
+			(at 149.86 24.7 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix1.kicad_sch"
+			(at 149.86 47.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/cf89d065-0b5f-49f8-bfdf-544010215f04"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 53.34)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "8e359219-92ff-4880-ba5a-b4b3dc03e2b8")
+		(property "Sheetname" "Driver 2 and matrix"
+			(at 149.86 52.64 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix2.kicad_sch"
+			(at 149.86 75.46 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/cf89d065-0b5f-49f8-bfdf-544010215f04"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 81.28)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "74977389-2432-4ee3-b83e-c8f0218636af")
+		(property "Sheetname" "Driver 3 and matrix"
+			(at 149.86 80.58 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix3.kicad_sch"
+			(at 149.86 103.4 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/cf89d065-0b5f-49f8-bfdf-544010215f04"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
