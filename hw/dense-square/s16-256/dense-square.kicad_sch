@@ -1,0 +1,202 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "15ca3a62-93e2-4de1-889c-014331759652")
+	(paper "A4")
+	(title_block
+		(title "dense-square (s16-256): top")
+		(date "2026-11-06")
+		(rev "S16")
+		(company "CERN-OHL-P-2.0")
+		(comment 1 "256 MHPA0808RGBDT 0808 LEDs (16x16 square in 20x20 mm, 1.27 mm pitch, 64 LEDs/cm^2), 4x AW20198QNR, 8-layer ENIG")
+		(comment 2 "Drawn by scripts/dense_square/sch_gen.py")
+	)
+	(lib_symbols)
+	(text "Ultra-dense 20x20 mm square 0808 LED array (s16-256): 256 MHPA0808RGBDT 0808 LEDs (16x16 square in 20x20 mm, 1.27 mm pitch, 64 LEDs/cm^2), 4x AW20198QNR, 8-layer ENIG.\n25 x 50 mm rectangular PCB: North 20x20 mm window holds ONLY the dense MHPA0808RGBDT LED matrix;\nall drivers, MCU, flash, charger, and sensors sit in the South electronics bay (0 via-in-pad)."
+		(exclude_from_sim no)
+		(at 20.32 105 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "42333ff8-d3bc-4bfb-b149-521428d780f7")
+	)
+	(sheet
+		(at 20.32 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "10e86ba1-8d6b-4c5b-af0c-e944c55610a4")
+		(property "Sheetname" "Power"
+			(at 20.32 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 20.32 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "dense-square"
+				(path "/15ca3a62-93e2-4de1-889c-014331759652"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 83.82 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "1a74ab11-0a28-4eee-8ef0-3afccb148613")
+		(property "Sheetname" "MCU"
+			(at 83.82 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 83.82 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "dense-square"
+				(path "/15ca3a62-93e2-4de1-889c-014331759652"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 25.4)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "b31bd19d-ab53-4df8-875e-e99afcf46be7")
+		(property "Sheetname" "Driver 1 and matrix"
+			(at 149.86 24.7 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix1.kicad_sch"
+			(at 149.86 47.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "dense-square"
+				(path "/15ca3a62-93e2-4de1-889c-014331759652"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 53.34)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "5a2f8ebb-d016-42e2-a97c-bcf8c4cfc6fb")
+		(property "Sheetname" "Driver 2 and matrix"
+			(at 149.86 52.64 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix2.kicad_sch"
+			(at 149.86 75.46 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "dense-square"
+				(path "/15ca3a62-93e2-4de1-889c-014331759652"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 81.28)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "2b92b458-0afa-4ac5-89ca-11e61930cecb")
+		(property "Sheetname" "Driver 3 and matrix"
+			(at 149.86 80.58 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix3.kicad_sch"
+			(at 149.86 103.4 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "dense-square"
+				(path "/15ca3a62-93e2-4de1-889c-014331759652"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 109.22)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "517659b7-0c7d-49f5-a775-d4626996d0ea")
+		(property "Sheetname" "Driver 4 and matrix"
+			(at 149.86 108.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix4.kicad_sch"
+			(at 149.86 131.34 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "dense-square"
+				(path "/15ca3a62-93e2-4de1-889c-014331759652"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

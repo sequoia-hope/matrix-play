@@ -1,0 +1,32 @@
+{
+  "phase": "P3_i2c_matrix_emi",
+  "bus_extraction": {
+    "c_sda_total_pf": 23.3,
+    "c_scl_total_pf": 23.64,
+    "broadside_9p5mm_cmut_ff": 362.8,
+    "broadside_9p5mm_cgnd_ff": 294.8,
+    "broadside_cmut_to_cgnd_ratio": 1.23,
+    "broadside_9p5mm_m_nh": 4.5,
+    "broadside_9p5mm_lsda_nh": 8.76
+  },
+  "spice_results": {
+    "i2c_tr_1k_ns": 19.74,
+    "i2c_tr_4k7_counterfactual_ns": 92.84,
+    "i2c_fmp_limit_ns": 120.0,
+    "sda_glitch_default_srcr02_mv": 162.9,
+    "sda_glitch_optimized_srcr07_3ph_mv": 48.1,
+    "glitch_reduction_factor": 3.39,
+    "light_adc_glitch_without_c24_mv": 280.4,
+    "light_adc_glitch_with_c24_100nf_mv": 0.015,
+    "off_row_red_led_peak_vf_dgcr00_v": 2.196,
+    "off_row_red_led_peak_vf_dgcr44_v": 1.935
+  },
+  "radiated_emi_3m": {
+    "peak_emi_default_dbuvm": 27.9,
+    "peak_emi_optimized_dbuvm": -1.4,
+    "worst_fcc_class_b_margin_default_db": 18.1,
+    "worst_fcc_class_b_margin_optimized_db": 41.4,
+    "emi_reduction_at_300mhz_db": 30.4
+  },
+  "verdict": "1) R1/R2 = 1 kOhm pull-ups give tr = 19.74 ns on the 23.3 pF 46.6 mm I2C bus (well below the 120 ns Fm+ ceiling, whereas 4.7 kOhm would fail at 92.84 ns). 2) Because In2.Cu (CS/SW) sits only 0.21 mm from B.Cu (I2C_SDA) vs 1.29 mm from In1.Cu GND, factory-default AW20198 SRCR=0x02 (1 ns rise) injects 162.9 mV glitches into I2C_SDA; programming SRCR=0x07 (6/10 ns) + PCCR=0x02 (3-Phase) + SSCR=0x15 cuts I2C glitches 3.39x to 48.1 mV and drops 300 MHz radiated EMI by 30.4 dB! 3) DGCR=0x44 clamps off-row Red LED peak forward voltage from 2.196 V (visible ghost flash!) down to 1.935 V (< 1.65 V turn-on)."
+}

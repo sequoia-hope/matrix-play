@@ -1,0 +1,10 @@
+[package]
+name = "p2-132-sim"
+version = "0.1.0"
+edition = "2024"
+description = "Cycle-accurate board-level simulator for parallelogram/p2-132 running dual-core RP2350A firmware on picoem"
+
+[dependencies]
+rp2350-emu = { path = "/home/sequoia/Software/picoem/crates/rp2350-emu" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

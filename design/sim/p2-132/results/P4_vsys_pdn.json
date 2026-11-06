@@ -1,0 +1,145 @@
+{
+  "phase": "P4_vsys_pdn",
+  "vsys_copper_graph": {
+    "n_nodes": 142,
+    "connected_nodes": 96,
+    "R_ohm": {
+      "U2_PVCC": 0.40181531072396903,
+      "U1_PVCC": 0.37895463754188846
+    }
+  },
+  "sw1_1_copper_graph": {
+    "n_nodes": 51,
+    "connected_nodes": 51,
+    "R_ohm": {
+      "D1_A": 0.38038265162108914,
+      "D56_A": 0.18327173773770822
+    }
+  },
+  "in1_gnd_plane": {
+    "in1_r_sheet_mohm_sq": 1.134,
+    "gnd_bounce_dc_u1_mv_at_480ma": 1.01,
+    "gnd_bounce_dc_u2_mv_at_480ma": 0.94
+  },
+  "pdn_and_foldback": {
+    "L_vsys_u1_loop_nh": 30.22,
+    "L_vsys_u2_loop_nh": 20.76,
+    "R_vsys_u5_to_u2_mohm": 401.8,
+    "R_vsys_u5_to_u1_mohm": 379.0,
+    "R_sw1_1_u1_to_d1_mohm": 380.4,
+    "pdn_1phase": {
+      "v_u1_min_at_3p7v": 3.52,
+      "droop_from_vbat_mv": 180.0,
+      "ac_ripple_u1_vpp_mv": 91.9
+    },
+    "pdn_3phase": {
+      "v_u1_min_at_3p7v": 3.5622,
+      "droop_from_vbat_mv": 137.8,
+      "ac_ripple_u1_vpp_mv": 17.0
+    },
+    "gcc_foldback_lut": [
+      {
+        "vbat_v": 3.0,
+        "max_clean_gcc": 51
+      },
+      {
+        "vbat_v": 3.05,
+        "max_clean_gcc": 67
+      },
+      {
+        "vbat_v": 3.1,
+        "max_clean_gcc": 83
+      },
+      {
+        "vbat_v": 3.15,
+        "max_clean_gcc": 99
+      },
+      {
+        "vbat_v": 3.2,
+        "max_clean_gcc": 115
+      },
+      {
+        "vbat_v": 3.25,
+        "max_clean_gcc": 131
+      },
+      {
+        "vbat_v": 3.3,
+        "max_clean_gcc": 147
+      },
+      {
+        "vbat_v": 3.35,
+        "max_clean_gcc": 163
+      },
+      {
+        "vbat_v": 3.4,
+        "max_clean_gcc": 179
+      },
+      {
+        "vbat_v": 3.45,
+        "max_clean_gcc": 195
+      },
+      {
+        "vbat_v": 3.5,
+        "max_clean_gcc": 211
+      },
+      {
+        "vbat_v": 3.55,
+        "max_clean_gcc": 228
+      },
+      {
+        "vbat_v": 3.6,
+        "max_clean_gcc": 244
+      },
+      {
+        "vbat_v": 3.65,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 3.7,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 3.75,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 3.8,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 3.85,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 3.9,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 3.95,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 4.0,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 4.05,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 4.1,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 4.15,
+        "max_clean_gcc": 255
+      },
+      {
+        "vbat_v": 4.2,
+        "max_clean_gcc": 255
+      }
+    ]
+  },
+  "full_gcc255_vbat_floor_v": 3.65,
+  "verdict": "The 137.9 mm VSYS spine adds 379.0 mOhm + 30.22 nH from South U5 to North U1, plus 380.4 mOhm along SW1_1 to corner LED D1 and 220 mOhm in BQ24073's BAT FET. 3-Phase PWM stagger cuts AC PVCC ripple at U1 from 91.9 mVpp down to 17.0 mVpp! Below VBAT = 3.65 V, full-white GCC=255 pushes North D1's Blue/Green sinks into dropout (causing warm/red color shift on the North half before the South half!). Implementing our derived GCC(VBAT) foldback curve in firmware preserves D65 color balance all the way down to 3.10 V."
+}

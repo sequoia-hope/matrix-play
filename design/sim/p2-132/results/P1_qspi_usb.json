@@ -1,0 +1,39 @@
+{
+  "phase": "P1_qspi_usb",
+  "qspi_fdtd": {
+    "Z0_in2_fdtd_ohm": 109.21,
+    "qw_freq_ghz": 3.175,
+    "peak_next_db_below_1_5ghz": -10.46,
+    "peak_fext_db_below_1_5ghz": -33.08
+  },
+  "usb_fdtd": {
+    "Z_diff_in2_fdtd_ohm": 92.47,
+    "Z_odd_in2_fdtd_ohm": 46.23,
+    "s11_60mhz_db": -51.29,
+    "s11_240mhz_db": -37.34
+  },
+  "coupled_rlgc_and_spice": {
+    "in2_l11_nh_mm": 0.8461,
+    "in2_lm_sclk_sd0_nh_mm": 0.3076,
+    "in2_k_inductive": 0.3636,
+    "in2_cgnd_ff_mm": 26.15,
+    "in2_cm_sclk_sd0_ff_mm": 18.03,
+    "Z0_fcu_0p10mm_ohm": 88.0,
+    "Z0_bcu_0p10mm_ohm": 149.9,
+    "qspi_slewfast1": {
+      "v_clk_max": 3.765,
+      "v_clk_min": -0.466,
+      "v_fext_peak_mv": 313.0,
+      "v_next_peak_mv": 157.3
+    },
+    "qspi_slewfast0_default": {
+      "v_clk_max": 3.331,
+      "v_clk_min": -0.032,
+      "v_fext_peak_mv": 61.4,
+      "v_next_peak_mv": 38.0
+    },
+    "usb_fs_vdiff_peak_v": 3.379,
+    "usb_fs_overshoot_mv": 35.2
+  },
+  "verdict": "PASS with firmware pad constraint: keep RP2350 PADS_QSPI at SLEWFAST=0 (default 4 mA / ~2.4 ns). Because In2.Cu sits 1.065 mm from In1.Cu GND (single-ended Z0 = 109.21 Ohm, k_L = 0.36 at 0.40 mm pitch), enabling SLEWFAST=1 causes 3.77 V overshoot & 313 mV crosstalk, whereas SLEWFAST=0 cuts crosstalk 5.1x to 61 mV with zero ringing at 75 MHz XIP. Remarkably, 3D FDTD proves p2-132's tight edge-coupled USB_DP/USB_DM pair on In2.Cu (w=0.15 mm, gap=0.1875 mm) achieves Z_diff = 92.47 Ohm (within 2.8% of 90 Ohm USB spec, S11 = -51.29 dB @ 60 MHz)!"
+}

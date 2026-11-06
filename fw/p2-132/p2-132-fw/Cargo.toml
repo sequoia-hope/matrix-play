@@ -1,0 +1,12 @@
+[package]
+name = "p2-132-fw"
+version = "0.1.0"
+edition = "2024"
+description = "Bare-metal dual-core RP2350A firmware for the parallelogram/p2-132 132-LED pendant"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+debug = true

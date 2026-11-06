@@ -1,0 +1,11 @@
+[package]
+name = "p2-132-rom-shim"
+version = "0.1.0"
+edition = "2024"
+description = "Clean Armv8-M RP2350 architectural bootrom shim (PICOBIN validator + Core 1 SIO FIFO launch state machine, without CP7 canary traps)"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"

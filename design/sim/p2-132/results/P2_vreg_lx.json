@@ -1,0 +1,50 @@
+{
+  "phase": "P2_vreg_lx",
+  "fdtd_with_cutout": {
+    "with_cutout": true,
+    "s21_cs2_11_at_200mhz_db": -71.16,
+    "s21_cs2_11_at_500mhz_db": -55.88,
+    "s21_vbatsense_at_200mhz_db": -34.47,
+    "peak_efield_led_face": 3.049446806180356e-11
+  },
+  "fdtd_solid_in1": {
+    "with_cutout": false,
+    "s21_cs2_11_at_200mhz_db": -123.15,
+    "s21_cs2_11_at_500mhz_db": -110.01,
+    "s21_vbatsense_at_200mhz_db": -20.53,
+    "peak_efield_led_face": 5.114693391039538e-13
+  },
+  "solid_in1_shielding_improvement_at_200mhz_db": 52.0,
+  "peec_and_bem": {
+    "peec_loops": {
+      "with_cutout": {
+        "L_hot_loop_nH": 4.435,
+        "M_to_Y1_xtal_pH": 0.322
+      },
+      "solid_in1": {
+        "L_hot_loop_nH": 4.199,
+        "M_to_Y1_xtal_pH": 0.113
+      }
+    },
+    "bem_capacitances": {
+      "with_cutout": {
+        "C_lx_total_fF": 631.7,
+        "C_lx_to_gnd_in1_fF": 236.6,
+        "C_lx_to_vbatsense_fF": 254.0,
+        "C_lx_to_vreg_avdd_fF": 16.28,
+        "C_lx_to_fcu_cs2_11_fF": 27.13
+      },
+      "solid_in1": {
+        "C_lx_total_fF": 638.5,
+        "C_lx_to_gnd_in1_fF": 284.5,
+        "C_lx_to_vbatsense_fF": 249.8,
+        "C_lx_to_vreg_avdd_fF": 15.26,
+        "C_lx_to_fcu_cs2_11_fF": 0.5
+      }
+    },
+    "vbatsense_lx_glitch_pk_mv": 147.7,
+    "vreg_avdd_lx_glitch_pk_mv": 3.77,
+    "y1_xtal_induced_emf_uv": 24.2
+  },
+  "verdict": "REAL LAYOUT TRADE-OFF DISCOVERED: Because B.Cu sits 1.30 mm from In1.Cu across the 1.065 mm core, cutting 'LX cutout L2' [1.65..3.30 x 9.15..14.70] on In1.Cu saves only tiny LX-to-GND capacitance (284.5 -> 236.6 fF), while opening a +52.0 dB aperture to F.Cu LED column traces (CS2_10..12) AND raising hot-loop inductance (4.199 -> 4.435 nH). More importantly, VBAT_SENSE on In2.Cu crosses 0.21 mm directly above the B.Cu VREG_LX pour, picking up ~148 mV narrow switching spikes on the un-decoupled 50 kOhm divider -> firmware MUST average 8-16 ADC0 samples! Y1 (12 MHz crystal, 11.8 mm away) sees < 24 uV (completely immune)."
+}

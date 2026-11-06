@@ -36,6 +36,10 @@ hw/round-pendant/e/route/
 hw/round-pendant/*/fab/gerbers/
 hw/parallelogram/*/route/
 hw/parallelogram/*/fab/gerbers/
+hw/dense-square/*/route/
+hw/dense-square/*/fab/gerbers/
+design/sim/*/work/
+fw/**/target/
 scripts/crunch/router/ur-main/
 scripts/crunch/router/tools/
 scripts/crunch/**/*.kicad_pcb

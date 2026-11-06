@@ -8,6 +8,22 @@ out = "viewer"
 back = { href = "../index.html", label = "Overview" }
 repo = "https://github.com/sequoia-hope/round-pendant"
 
+# ---- Ultra-Dense 20x20 mm Square Matrix Family (25 x 50 mm, 8L) ----
+
+[[boards]]
+id = "dense-square-s16-256"
+name = "Dense Square s16-256 (256 LEDs, 1.27 mm)"
+pcb = "hw/dense-square/s16-256/dense-square.kicad_pcb"
+sch = "hw/dense-square/s16-256/dense-square.kicad_sch"
+note = "100% routed & DRC-clean maximum-density 20 x 20 mm square RGB matrix on a 25 x 50 mm 8-layer ENIG PCB: 16 x 16 = 256 MEIHUA MHPA0808RGBDT 0808 RGB LEDs (C404279, 0.80 x 0.80 mm, 1.27 mm = 50 mil pitch, 64.0 LEDs/cm^2 = 192 RGB dies/cm^2) in the north window with zero components underneath; 4x AW20198QNR QFN-40 drivers + RP2350A + BQ24073 + LIS3DHTR + XYC-PT19C-L1 sensor in the south bay ($21.42/bd BOM, 100% locally stocked at JLCPCB). 1,156/1,156 connections (0 open), 8,415 tracks, 1,087 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints."
+
+[[boards]]
+id = "dense-square-s15-225"
+name = "Dense Square s15-225 (225 LEDs, 1.36 mm)"
+pcb = "hw/dense-square/s15-225/dense-square.kicad_pcb"
+sch = "hw/dense-square/s15-225/dense-square.kicad_sch"
+note = "100% routed & DRC-clean 15 x 15 = 225 MEIHUA MHPA0808RGBDT 0808 square matrix (1.36 mm pitch = 56.25 LEDs/cm^2, 0.46 mm dual-track F.Cu streets) in the north 20 x 20 mm window of the 25 x 50 mm 8-layer ENIG PCB, zero components under the LED array, south-bay 4x AW20198QNR + RP2350A ($20.27/bd BOM). 1,100/1,100 connections (0 open), 5,377 tracks, 998 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints."
+
 # ---- Skewed Parallelogram 4-Layer Family (25 x 70 mm) ----
 
 [[boards]]
