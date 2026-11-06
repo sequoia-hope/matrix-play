@@ -1,0 +1,42 @@
+{
+ "board": "sunflower.kicad_pcb",
+ "generated": "2026-11-06",
+ "glb": "board.glb",
+ "bytes": 11907804,
+ "kicad_bytes": 35173056,
+ "parts": 221,
+ "modelled": 211,
+ "no_model": [
+  "BT1",
+  "J1",
+  "TP1",
+  "TP2",
+  "TP3",
+  "TP4",
+  "TP5",
+  "TP6",
+  "TP7",
+  "TP8"
+ ],
+ "missing": [],
+ "empty": [],
+ "substituted": [],
+ "resolved": [
+  "C16",
+  "C18"
+ ],
+ "flattened": [
+  "U1",
+  "U2"
+ ],
+ "boxed": [],
+ "why": {},
+ "missing_models": [],
+ "boxes": [],
+ "resolved_how": {
+  "legacy": 2,
+  "found": 0
+ },
+ "triangles": 815353,
+ "primitives": 1005
+}

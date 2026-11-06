@@ -1,8 +1,8 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-06T04:50:33",
+ "built": "2026-11-06T09:55:31",
  "pcbview": "0.1 (26ba32b)",
- "config": "pcbview.toml",
+ "config": "pcbview.publish.toml",
  "boards": [
   {
    "id": "dense-square-s16-256",
@@ -24,6 +24,72 @@
     "kind": "file",
     "pcb": "hw/dense-square/s15-225/dense-square.kicad_pcb",
     "sch": "hw/dense-square/s15-225/dense-square.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s2-88",
+   "name": "Sunflower s2-88 (88 LEDs, 4L, no via-in-pad)",
+   "page": "sunflower-s2-88.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s2-88/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s2-88/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s1-66-pofv",
+   "name": "Sunflower s1-66 (66 LEDs, 4L)",
+   "page": "sunflower-s1-66-pofv.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s1-66-pofv/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s1-66-pofv/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s2-88-pofv",
+   "name": "Sunflower s2-88 (88 LEDs, 4L, POFV)",
+   "page": "sunflower-s2-88-pofv.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s2-88-pofv/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s2-88-pofv/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s2-110",
+   "name": "Sunflower s2-110 (110 LEDs, 4L)",
+   "page": "sunflower-s2-110.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s2-110/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s2-110/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s2-132",
+   "name": "Sunflower s2-132 (132 LEDs, 4L)",
+   "page": "sunflower-s2-132.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s2-132/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s2-132/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s1-66",
+   "name": "Sunflower s1-66 (66 LEDs, 4L, no via-in-pad, 1 open)",
+   "page": "sunflower-s1-66.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s1-66/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s1-66/sunflower.kicad_sch"
    }
   },
   {

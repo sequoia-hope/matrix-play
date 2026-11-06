@@ -1,0 +1,175 @@
+{
+  "s1-66 (4L, 66x XL-1615, 1x AW20198)": {
+    "bom_per_board": 10.61,
+    "led_cost": 1.05,
+    "drv_ic_cost": 0.89,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 138,
+    "n_leds": 66,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ]
+    ]
+  },
+  "s2-88 (4L, 88x XL-1615, 2x AW20198)": {
+    "bom_per_board": 11.9,
+    "led_cost": 1.4,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 167,
+    "n_leds": 88,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ]
+    ]
+  },
+  "s2-110 (4L, 110x XL-1615, 2x AW20198)": {
+    "bom_per_board": 12.25,
+    "led_cost": 1.75,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 189,
+    "n_leds": 110,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ]
+    ]
+  },
+  "s2-132 (4L, 132x XL-1615, 2x AW20198)": {
+    "bom_per_board": 12.6,
+    "led_cost": 2.1,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 211,
+    "n_leds": 132,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ]
+    ]
+  },
+  "parallelogram p1-66 (4L)": {
+    "bom_per_board": 10.61,
+    "led_cost": 1.05,
+    "drv_ic_cost": 0.89,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 138,
+    "n_leds": 66,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ]
+    ]
+  },
+  "parallelogram p2-132 (4L)": {
+    "bom_per_board": 12.6,
+    "led_cost": 2.1,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 211,
+    "n_leds": 132,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ]
+    ]
+  },
+  "round-pendant-e (8L, 235x XL-1010, 5x WLCSP)": {
+    "bom_per_board": 26.46,
+    "led_cost": 6.34,
+    "drv_ic_cost": 11.31,
+    "mcu_plus_l1": 1.57,
+    "unique_lines": 32,
+    "total_placements": 332,
+    "n_leds": 235,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C42411119",
+        "AOTA-B201610S3R3-101-T",
+        0,
+        10
+      ],
+      [
+        "C146233",
+        "ALS-PT19-315C/L177/TR8",
+        0,
+        10
+      ],
+      [
+        "C2678907",
+        "IS31FL3745-CLS4-TR",
+        0,
+        50
+      ]
+    ]
+  }
+}
