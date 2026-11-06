@@ -214,25 +214,20 @@ footer {
       <div class="grid" id="grid-para"></div>
     </section>
 
-    <!-- ==================== FAMILY 2: ROUND PHYLLOTAXIS PENDANT (6-8 LAYER) ==================== -->
+    <!-- ==================== FAMILY 2: ROUND PENDANT (6-8 LAYER) ==================== -->
     <section class="section" aria-labelledby="fam-round">
       <div class="sec-head">
         <div>
-          <h2 id="fam-round">Sunflower Round Pendant Family &mdash; 8-Layer High-Density Phyllotaxis</h2>
+          <h2 id="fam-round">Round Pendant Family &mdash; Ø&thinsp;38&thinsp;mm Rectangular Grid &amp; Sunflower Phyllotaxis</h2>
           <p class="sec-sub">
-            Ø&thinsp;38&thinsp;mm wearable pendant packing 235 RGB LEDs on a golden-angle spiral (~2.0&thinsp;mm pitch, 20.7&thinsp;LEDs/cm&sup2;)
-            with a Voronoi seed-web front silkscreen, custom round smartwatch cell, and WLCSP-36 BGA vs QFN-48 driver architectures.
+            Ø&thinsp;38&thinsp;mm wearable pendant evolving from an orthogonal 2.0&thinsp;mm rectangular LED array (Variant&thinsp;A) to a 235-LED golden-angle sunflower spiral
+            with Voronoi seed-web silkscreen, round smartwatch LiPo cell, and QFN-60 vs WLCSP-36 BGA driver architectures.
           </p>
         </div>
-        <span class="sec-tag">6&ndash;8 Layers &middot; WLCSP-36 / QFN-48 &middot; 234&ndash;235 LEDs</span>
+        <span class="sec-tag">6&ndash;8 Layers &middot; WLCSP-36 / QFN-60 &middot; 234&ndash;235 LEDs</span>
       </div>
 
       <div class="grid" id="grid-round"></div>
-
-      <details class="milestones">
-        <summary>Earlier round-pendant layout &amp; routing milestones (Variants A, B, C, y21, y30)</summary>
-        <div class="grid compact" id="grid-round-early"></div>
-      </details>
     </section>
 
     <!-- ==================== DESIGN-SPACE COMPARISON & DOCS ==================== -->
@@ -299,6 +294,33 @@ footer {
                 <td>$19.03</td>
               </tr>
               <tr>
+                <td><a href="viewer/round-pendant-a.html"><b>Round Pendant A</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm orthogonal grid (2.0&times;2.0&thinsp;mm)</td>
+                <td>6L</td>
+                <td>234&times; XL-1010RGB</td>
+                <td>2&times; IS31FL3741A (QFN-60 EP)</td>
+                <td>Placement baseline (board-mount USB-C)</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/round-pendant-b.html"><b>Round Pendant B</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm)</td>
+                <td>6L</td>
+                <td>234&times; XL-1010RGB</td>
+                <td>2&times; IS31FL3741A (QFN-60 EP)</td>
+                <td>Placement (off-board 6-pad USB-C)</td>
+                <td>&mdash;</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/round-pendant-c-web4.html"><b>Round Pendant C (y30)</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm)</td>
+                <td>8L ENIG</td>
+                <td>235&times; XL-1010RGB</td>
+                <td>2&times; IS31FL3741A (QFN-60 EP)</td>
+                <td>100% joined &middot; 861 vias (pre-WLCSP)</td>
+                <td>~$25.20</td>
+              </tr>
+              <tr>
                 <td><a href="viewer/round-pendant-d.html"><b>Round Pendant D</b></a></td>
                 <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm)</td>
                 <td>8L ENIG</td>
@@ -332,6 +354,10 @@ footer {
             <li>
               <a href="design/study/parallelogram/floorplan.svg">Parallelogram 5-Tier Floorplan Drawing</a>
               <small>Vector SVG</small>
+            </li>
+            <li>
+              <a href="design/study/patterns/index.html">Grid vs. Golden-Spiral Pattern Study</a>
+              <small>Interactive HTML</small>
             </li>
             <li>
               <a href="design/study/center/index.html">Sunflower Center Symmetry Study</a>
@@ -432,13 +458,13 @@ const PARALLELOGRAM_CARDS = [
   }
 ];
 
-const ROUND_MAIN_CARDS = [
+const ROUND_CARDS = [
   {
     id: "round-pendant-e",
     title: "Round Pendant — Variant E",
     badge: "100% Routed · 0 DRC",
     badgeKind: "ok",
-    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm", "WLCSP-36 + ALS"],
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "WLCSP-36 + ALS"],
     desc: "Golden-angle sunflower matrix with 5× IS31FL3745 WLCSP-36 BGA drivers (zero driver thermal pads blocking vias), top-rim ALS-PT19 ambient light sensor, and Voronoi seed-web silk (879 vias).",
     silkF: true, silkB: true
   },
@@ -447,66 +473,63 @@ const ROUND_MAIN_CARDS = [
     title: "Round Pendant — Variant D",
     badge: "100% Routed · 0 DRC",
     badgeKind: "ok",
-    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm", "5× WLCSP-36 BGA"],
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "5× WLCSP-36 BGA"],
     desc: "Clean 8-layer WLCSP-36 BGA architecture with unbroken solid GND thermal pads on RP2350 (U3) and BQ24073 (U5), strict copper-sliver/neck cleanup, and 58 tidy back designators (876 vias).",
     silkF: true, silkB: true
   },
   {
     id: "round-pendant-c-web4",
-    title: "Round Pendant — Variant C (y30 QFN)",
-    badge: "100% Joined · QFN-48",
+    title: "Round Pendant — Variant C (y30, silk)",
+    badge: "100% Joined · QFN-60",
     badgeKind: "",
-    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm", "4× IS31FL3741A"],
-    desc: "Earlier 8-layer QFN-48 driver topology prior to the WLCSP-36 transition: all 235 sunflower LEDs connected on route y30 with front seed-web silkscreen and 0.8 mm back designators.",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "2× IS31FL3741A"],
+    desc: "8-layer QFN-60 driver topology prior to the WLCSP-36 transition: all 235 sunflower LEDs connected on route y30 with front Voronoi seed-web silkscreen and 52 tidy 0.8 mm back designators.",
     silkF: true, silkB: true
-  }
-];
-
-const ROUND_EARLY_CARDS = [
+  },
   {
-    id: "round-pendant-a",
-    title: "Variant A — Initial 6L",
-    badge: "Placement",
+    id: "round-pendant-c-web3",
+    title: "Round Pendant — Variant C (y30, bare back)",
+    badge: "100% Joined · QFN-60",
     badgeKind: "",
-    specs: ["6L", "234 LEDs"],
-    desc: "Initial Ø 38 mm 6-layer placement exploring front-all-LEDs / back-all-ICs partitioning.",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "No back silk"],
+    desc: "Fully joined y30 8-layer copper route with the front Voronoi seed-web silkscreen between the 235 sunflower LEDs and bare back mask before component designator placement.",
+    silkF: true, silkB: false
+  },
+  {
+    id: "round-pendant-c-web",
+    title: "Round Pendant — Variant C (y21, seed web)",
+    badge: "Route y21 · Seed Web",
+    badgeKind: "",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "2× IS31FL3741A"],
+    desc: "Earlier 8-layer route (2 +3V3 plane joins open) introducing the front Voronoi seed-web silkscreen between LEDs and removing back silk.",
+    silkF: true, silkB: false
+  },
+  {
+    id: "round-pendant-c",
+    title: "Round Pendant — Variant C (235th center LED)",
+    badge: "Pre-route · 6L",
+    badgeKind: "",
+    specs: ["6 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "Center GPIO pixel"],
+    desc: "Adds a 235th center RGB LED directly on RP2350 GPIO23–25 without nudging the surrounding sunflower spiral, paired with a radial driver-centered fan map.",
     silkF: false, silkB: true
   },
   {
     id: "round-pendant-b",
-    title: "Variant B — Off-Board USB",
-    badge: "Placement",
+    title: "Round Pendant — Variant B (Sunflower)",
+    badge: "Placement · 6L",
     badgeKind: "",
-    specs: ["6L", "234 LEDs"],
-    desc: "Sunflower spiral with 6-pad off-board USB-C interface and side tactile switches.",
+    specs: ["6 layers", "234× XL-1010 LEDs", "Ø 38 mm sunflower", "Off-board USB-C"],
+    desc: "Transitions from the rectangular grid to a golden-angle sunflower spiral, replacing the board-mounted USB-C connector with 6 back pads and fitting EVQP7C01P tactile switches at the rim.",
     silkF: false, silkB: true
   },
   {
-    id: "round-pendant-c",
-    title: "Variant C — 235th Center LED",
-    badge: "Pre-route",
+    id: "round-pendant-a",
+    title: "Round Pendant — Variant A (Rectangular Grid)",
+    badge: "2.0 mm Grid · 6L",
     badgeKind: "",
-    specs: ["6L", "235 LEDs"],
-    desc: "Adds center pixel on RP2350 GPIO23–25 with radial driver-centered fan mapping.",
+    specs: ["6 layers", "234× XL-1010 LEDs", "Ø 38 mm disc", "2.0×2.0 mm Grid"],
+    desc: "Initial Ø 38 mm 6-layer layout packing 234 RGB LEDs on an orthogonal 2.0 mm rectangular array on the front with board-mounted USB-C and all driver/MCU electronics on the back.",
     silkF: false, silkB: true
-  },
-  {
-    id: "round-pendant-c-web",
-    title: "Route y21 — Seed-Web Silk",
-    badge: "Iteration",
-    badgeKind: "",
-    specs: ["8L", "235 LEDs"],
-    desc: "First 8-layer route introducing the front Voronoi seed-web silkscreen between LEDs.",
-    silkF: true, silkB: false
-  },
-  {
-    id: "round-pendant-c-web3",
-    title: "Route y30 — Bare Back",
-    badge: "Iteration",
-    badgeKind: "",
-    specs: ["8L", "235 LEDs"],
-    desc: "Fully joined y30 copper route before back-side component designator placement.",
-    silkF: true, silkB: false
   }
 ];
 
@@ -541,8 +564,7 @@ function cardHTML(c) {
 }
 
 document.getElementById("grid-para").innerHTML = PARALLELOGRAM_CARDS.map(cardHTML).join("");
-document.getElementById("grid-round").innerHTML = ROUND_MAIN_CARDS.map(cardHTML).join("");
-document.getElementById("grid-round-early").innerHTML = ROUND_EARLY_CARDS.map(cardHTML).join("");
+document.getElementById("grid-round").innerHTML = ROUND_CARDS.map(cardHTML).join("");
 
 for (const btn of document.querySelectorAll("[data-set-face]")) {
   btn.addEventListener("click", () => {

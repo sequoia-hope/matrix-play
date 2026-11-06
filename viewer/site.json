@@ -1,6 +1,6 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-05T22:56:49",
+ "built": "2026-11-05T23:00:55",
  "pcbview": "0.1 (58db5b3)",
  "config": "pcbview.toml",
  "boards": [
@@ -83,7 +83,7 @@
   },
   {
    "id": "round-pendant-c-web4",
-   "name": "Round Pendant C-y30 (235 LEDs, QFN-48)",
+   "name": "Round Pendant C-y30 (235 LEDs, QFN-60)",
    "page": "round-pendant-c-web4.html",
    "embed": null,
    "source": {
@@ -138,7 +138,7 @@
   },
   {
    "id": "round-pendant-a",
-   "name": "Round Pendant A (234 LEDs, initial 6L)",
+   "name": "Round Pendant A (234 LEDs, rectangular grid)",
    "page": "round-pendant-a.html",
    "embed": null,
    "source": {
