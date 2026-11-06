@@ -2,7 +2,7 @@
 #     scripts/view.sh build pcbview.toml
 # Full option list: vendor/pcbview/README.md, "The config file".
 
-title = "LED Matrix Topologies"
+title = "LED Matrix Geometry & Patterns"
 subtitle = "RP2350 design-space exploration"
 out = "viewer"
 back = { href = "../index.html", label = "Overview" }
