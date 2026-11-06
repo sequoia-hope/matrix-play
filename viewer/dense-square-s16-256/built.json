@@ -1,0 +1,327 @@
+{
+ "sch": {
+  "schematic": "dense-square.kicad_sch",
+  "pdf": "dense-square.pdf",
+  "sheets": [
+   {
+    "sheet": "root",
+    "title": "dense-square (s16-256): top",
+    "desc": "256 MHPA0808RGBDT 0808 LEDs (16x16 square in 20x20 mm, 1.27 mm pitch, 64 LEDs/cm^2), 4x AW20198QNR, 8-layer ENIG \u00b7 0 symbols",
+    "file": "dense-square.svg",
+    "source": "dense-square.kicad_sch",
+    "paper": "A4",
+    "page": "1",
+    "symbols": 0,
+    "size_mm": [
+     297.0022,
+     210.0072
+    ]
+   },
+   {
+    "sheet": "Power",
+    "title": "Power",
+    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell) \u00b7 30 symbols",
+    "file": "dense-square-Power.svg",
+    "source": "power.kicad_sch",
+    "paper": "A3",
+    "page": "2",
+    "symbols": 30,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "MCU",
+    "title": "MCU",
+    "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, South-bay light sensor \u00b7 46 symbols",
+    "file": "dense-square-MCU.svg",
+    "source": "mcu.kicad_sch",
+    "paper": "A3",
+    "page": "3",
+    "symbols": 46,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 1 and matrix",
+    "title": "Driver 1 and matrix",
+    "desc": "U1 AW20198QNR (0x20), 64 MHPA0808RGBDT 0808 LEDs (leds-mhpa0808.md) \u00b7 71 symbols",
+    "file": "dense-square-Driver 1 and matrix.svg",
+    "source": "matrix1.kicad_sch",
+    "paper": "A3",
+    "page": "4",
+    "symbols": 71,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 2 and matrix",
+    "title": "Driver 2 and matrix",
+    "desc": "U2 AW20198QNR (0x25), 64 MHPA0808RGBDT 0808 LEDs (leds-mhpa0808.md) \u00b7 71 symbols",
+    "file": "dense-square-Driver 2 and matrix.svg",
+    "source": "matrix2.kicad_sch",
+    "paper": "A3",
+    "page": "5",
+    "symbols": 71,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 3 and matrix",
+    "title": "Driver 3 and matrix",
+    "desc": "U10 AW20198QNR (0x22), 64 MHPA0808RGBDT 0808 LEDs (leds-mhpa0808.md) \u00b7 70 symbols",
+    "file": "dense-square-Driver 3 and matrix.svg",
+    "source": "matrix3.kicad_sch",
+    "paper": "A3",
+    "page": "6",
+    "symbols": 70,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 4 and matrix",
+    "title": "Driver 4 and matrix",
+    "desc": "U11 AW20198QNR (0x23), 64 MHPA0808RGBDT 0808 LEDs (leds-mhpa0808.md) \u00b7 70 symbols",
+    "file": "dense-square-Driver 4 and matrix.svg",
+    "source": "matrix4.kicad_sch",
+    "paper": "A3",
+    "page": "7",
+    "symbols": 70,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   }
+  ]
+ },
+ "layers": {
+  "board": "dense-square.kicad_pcb",
+  "generated": "2026-11-06",
+  "view_mm": [
+   86.5,
+   74.0,
+   27.0,
+   52.0
+  ],
+  "size_mm": [
+   25.0,
+   50.0
+  ],
+  "round": null,
+  "polar": null,
+  "thickness": 1.0,
+  "plate": "#c8c8c8",
+  "body": "body.svg",
+  "vias": 1087,
+  "nets": 194,
+  "footprints": 357,
+  "front": 296,
+  "back": 61,
+  "tracks": 8415,
+  "length_mm": 5167.1,
+  "layers": [
+   {
+    "name": "F.Cu",
+    "slug": "f",
+    "kind": "copper",
+    "file": "f.svg",
+    "color": "#C83434",
+    "note": "Top copper, 35 \u00b5m (1 oz).",
+    "tracks": 3530,
+    "length_mm": 958.5,
+    "pads": 1278,
+    "zones": []
+   },
+   {
+    "name": "In1.Cu",
+    "slug": "in1",
+    "kind": "copper",
+    "file": "in1.svg",
+    "color": "#7FC87F",
+    "note": "Inner layer 1 of 6, 15.2 \u00b5m.",
+    "tracks": 1001,
+    "length_mm": 917.9,
+    "pads": 0,
+    "zones": []
+   },
+   {
+    "name": "In2.Cu",
+    "slug": "in2",
+    "kind": "copper",
+    "file": "in2.svg",
+    "color": "#CE7D2C",
+    "note": "Inner layer 2 of 6, 15.2 \u00b5m.",
+    "tracks": 0,
+    "length_mm": 0.0,
+    "pads": 0,
+    "zones": [
+     "GND"
+    ]
+   },
+   {
+    "name": "In3.Cu",
+    "slug": "in3",
+    "kind": "copper",
+    "file": "in3.svg",
+    "color": "#4FCBCB",
+    "note": "Inner layer 3 of 6, 15.2 \u00b5m.",
+    "tracks": 834,
+    "length_mm": 732.3,
+    "pads": 0,
+    "zones": []
+   },
+   {
+    "name": "In4.Cu",
+    "slug": "in4",
+    "kind": "copper",
+    "file": "in4.svg",
+    "color": "#DB628B",
+    "note": "Inner layer 4 of 6, 15.2 \u00b5m.",
+    "tracks": 877,
+    "length_mm": 657.5,
+    "pads": 0,
+    "zones": []
+   },
+   {
+    "name": "In5.Cu",
+    "slug": "in5",
+    "kind": "copper",
+    "file": "in5.svg",
+    "color": "#A7A5C6",
+    "note": "Inner layer 5 of 6, 15.2 \u00b5m.",
+    "tracks": 626,
+    "length_mm": 594.1,
+    "pads": 0,
+    "zones": []
+   },
+   {
+    "name": "In6.Cu",
+    "slug": "in6",
+    "kind": "copper",
+    "file": "in6.svg",
+    "color": "#28CCD9",
+    "note": "Inner layer 6 of 6, 15.2 \u00b5m.",
+    "tracks": 664,
+    "length_mm": 636.9,
+    "pads": 0,
+    "zones": []
+   },
+   {
+    "name": "B.Cu",
+    "slug": "b",
+    "kind": "copper",
+    "file": "b.svg",
+    "color": "#4D7FC4",
+    "note": "Bottom copper, 35 \u00b5m (1 oz).",
+    "tracks": 883,
+    "length_mm": 669.8,
+    "pads": 213,
+    "zones": [
+     "+3V3",
+     "/MCU/VREG_LX",
+     "+1V1",
+     "GND"
+    ]
+   },
+   {
+    "name": "Edge.Cuts",
+    "slug": "edge",
+    "kind": "outline",
+    "file": "edge.svg",
+    "color": "#D0D2CD",
+    "note": "The outline and every cut-out in it."
+   },
+   {
+    "name": "F.Silkscreen",
+    "slug": "silk_f",
+    "kind": "silk",
+    "file": "silk_f.svg",
+    "color": "#F2EDA1",
+    "note": "Silkscreen, front: reference designators and markings as printed."
+   },
+   {
+    "name": "B.Silkscreen",
+    "slug": "silk_b",
+    "kind": "silk",
+    "file": "silk_b.svg",
+    "color": "#E8B2A7",
+    "note": "Silkscreen, back, seen through the board (mirror the view to read it)."
+   },
+   {
+    "name": "F.Fab",
+    "slug": "fab_f",
+    "kind": "fab",
+    "file": "fab_f.svg",
+    "color": "#DDE1E8",
+    "note": "Part bodies and reference designators, front: what each piece of copper belongs to."
+   },
+   {
+    "name": "B.Fab",
+    "slug": "fab_b",
+    "kind": "fab",
+    "file": "fab_b.svg",
+    "color": "#96A2CE",
+    "note": "Part bodies and reference designators, back."
+   }
+  ]
+ },
+ "3d": {
+  "board": "dense-square.kicad_pcb",
+  "generated": "2026-11-06",
+  "glb": "board.glb",
+  "bytes": 19058720,
+  "kicad_bytes": 59757168,
+  "parts": 357,
+  "modelled": 347,
+  "no_model": [
+   "BT1",
+   "J1",
+   "TP1",
+   "TP2",
+   "TP3",
+   "TP4",
+   "TP5",
+   "TP6",
+   "TP7",
+   "TP8"
+  ],
+  "missing": [],
+  "empty": [],
+  "substituted": [],
+  "resolved": [
+   "C16",
+   "C18"
+  ],
+  "flattened": [
+   "U1",
+   "U2",
+   "U10",
+   "U11"
+  ],
+  "boxed": [],
+  "why": {},
+  "missing_models": [],
+  "boxes": [],
+  "resolved_how": {
+   "legacy": 2,
+   "found": 0
+  },
+  "triangles": 1362332,
+  "primitives": 1268
+ },
+ "when": "2026-11-06 04:49",
+ "source": {
+  "kind": "file",
+  "pcb": "hw/dense-square/s16-256/dense-square.kicad_pcb",
+  "sch": "hw/dense-square/s16-256/dense-square.kicad_sch"
+ }
+}

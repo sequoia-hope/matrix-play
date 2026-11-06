@@ -181,9 +181,10 @@ footer {
         <p class="eyebrow">RP2350 Hardware Design-Space Study</p>
         <h1>Matrix Play</h1>
         <p class="lede">
-          Exploring geometry and patterns in RGB LED matrix layouts alongside PCB stackup, IC packaging, and cost trade-offs —
-          comparing dense <b>8-layer Ø&thinsp;38&thinsp;mm phyllotaxis (&ldquo;sunflower&rdquo;) pendants</b> using WLCSP-36 BGA drivers against
-          low-cost <b>4-layer 25&thinsp;&times;&thinsp;70&thinsp;mm skewed-parallelogram boards</b> using exposed-pad QFNs and commodity prismatic LiPo cells.
+          Exploring geometry and patterns in RGB LED matrix layouts alongside PCB stackup, IC packaging, and cost trade-offs &mdash;
+          comparing ultra-dense <b>20&thinsp;&times;&thinsp;20&thinsp;mm 0808 square arrays</b> on 8-layer 25&thinsp;&times;&thinsp;50&thinsp;mm boards (up to 64&thinsp;LEDs/cm&sup2; with south-bay QFN electronics),
+          low-cost <b>4-layer 25&thinsp;&times;&thinsp;70&thinsp;mm skewed-parallelogram boards</b>, and
+          <b>8-layer Ø&thinsp;38&thinsp;mm phyllotaxis (&ldquo;sunflower&rdquo;) pendants</b>.
         </p>
       </div>
       <div class="toolbar">
@@ -198,6 +199,22 @@ footer {
   </header>
 
   <main>
+    <!-- ==================== FAMILY 0: ULTRA-DENSE SQUARE MATRIX (8-LAYER) ==================== -->
+    <section class="section" aria-labelledby="fam-square">
+      <div class="sec-head">
+        <div>
+          <h2 id="fam-square">Ultra-Dense Square Matrix Family &mdash; 20&thinsp;&times;&thinsp;20&thinsp;mm 0808 RGB Window</h2>
+          <p class="sec-sub">
+            25&thinsp;&times;&thinsp;50&thinsp;mm 8-layer ENIG rectangle packing up to 16&thinsp;&times;&thinsp;16&thinsp;=&thinsp;256 <code>MHPA0808RGBDT</code> (0.80&thinsp;&times;&thinsp;0.80&thinsp;mm) RGB LEDs at 1.27&thinsp;mm (50&thinsp;mil) pitch inside a dedicated north 20&thinsp;&times;&thinsp;20&thinsp;mm window &mdash;
+            with zero components underneath and all 4&times; <code>AW20198QNR</code> QFN-40 drivers, <code>RP2350A</code>, charger, IMU, and sensor isolated in the south bay.
+          </p>
+        </div>
+        <span class="sec-tag">8 Layers &middot; 0808 RGB &middot; 64.0 LEDs/cm&sup2; &middot; $20.27&ndash;$21.42 BOM</span>
+      </div>
+
+      <div class="grid" id="grid-square"></div>
+    </section>
+
     <!-- ==================== FAMILY 1: SKEWED PARALLELOGRAM (4-LAYER) ==================== -->
     <section class="section" aria-labelledby="fam-para">
       <div class="sec-head">
@@ -248,6 +265,24 @@ footer {
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><a href="viewer/dense-square-s16-256.html"><b>Dense Square s16-256</b></a></td>
+                <td>25&times;50&thinsp;mm, 20&times;20&thinsp;mm window (1.27&times;1.27&thinsp;mm)</td>
+                <td>8L ENIG</td>
+                <td>256&times; MHPA0808RGBDT</td>
+                <td>4&times; AW20198QNR (south bay)</td>
+                <td><b>1,156/1,156 (100%)</b> &middot; 1,087 vias &middot; 0 DRC</td>
+                <td><b>$21.42</b></td>
+              </tr>
+              <tr>
+                <td><a href="viewer/dense-square-s15-225.html"><b>Dense Square s15-225</b></a></td>
+                <td>25&times;50&thinsp;mm, 20&times;20&thinsp;mm window (1.36&times;1.36&thinsp;mm)</td>
+                <td>8L ENIG</td>
+                <td>225&times; MHPA0808RGBDT</td>
+                <td>4&times; AW20198QNR (south bay)</td>
+                <td><b>1,100/1,100 (100%)</b> &middot; 998 vias &middot; 0 DRC</td>
+                <td><b>$20.27</b></td>
+              </tr>
               <tr>
                 <td><a href="viewer/parallelogram-p1-66.html"><b>Parallelogram p1-66</b></a></td>
                 <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;5.20&thinsp;mm)</td>
@@ -321,6 +356,14 @@ footer {
           <h3>Studies &amp; Drawings</h3>
           <ul class="doc-list">
             <li>
+              <a href="design/sim/p2-132/report/index.html">Parallelogram p2-132 EM &amp; picoem Co-Sim</a>
+              <small>3D FDTD / PEEC + RP2350</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/study/dense-square/README.md">Ultra-Dense 20&times;20&thinsp;mm Square Matrix Study</a>
+              <small>225&ndash;256 MHPA0808 sweep</small>
+            </li>
+            <li>
               <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/study/parallelogram/README.md">Parallelogram 4-Layer Cost &amp; Density Study</a>
               <small>66&ndash;264 LED sweep</small>
             </li>
@@ -351,12 +394,20 @@ footer {
           <h3>Component &amp; Schematic References</h3>
           <ul class="doc-list">
             <li>
+              <a href="design/renders/schematic/dense-square-s16-256.pdf">Dense Square s16-256 Schematic (PDF)</a>
+              <small>4&times; AW20198QNR + MHPA0808</small>
+            </li>
+            <li>
               <a href="design/renders/schematic/parallelogram-p1-66.pdf">Parallelogram p1-66 Schematic (PDF)</a>
               <small>1&times; AW20198QNR + XL-1615</small>
             </li>
             <li>
               <a href="design/renders/schematic/parallelogram-p2-132.pdf">Parallelogram p2-132 Schematic (PDF)</a>
               <small>2&times; AW20198QNR + XL-1615</small>
+            </li>
+            <li>
+              <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/parts/leds-mhpa0808.md">MHPA0808RGBDT 0808 LED &amp; CPL Audit</a>
+              <small>0.80&times;0.80&thinsp;mm C404279</small>
             </li>
             <li>
               <a href="https://github.com/sequoia-hope/round-pendant/blob/main/design/parts/drivers-aw20198.md">AW20198QNR QFN-40 Driver Audit</a>
@@ -383,6 +434,27 @@ footer {
 </div>
 
 <script>
+const SQUARE_CARDS = [
+  {
+    id: "dense-square-s16-256",
+    title: "Dense Square s16-256",
+    badge: "100% Routed · 0 DRC",
+    badgeKind: "ok",
+    specs: ["8 layers", "256× MHPA0808", "1.27×1.27 mm (50 mil)", "$21.42 BOM"],
+    desc: "Maximum-density 16×16 square array (64.0 LEDs/cm² = 192 RGB dies/cm²) inside a 20×20 mm north window with zero components underneath; 4× AW20198QNR + RP2350A in the south bay (1,156/1,156 routed, 1,087 vias).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "dense-square-s15-225",
+    title: "Dense Square s15-225",
+    badge: "100% Routed · 0 DRC",
+    badgeKind: "ok",
+    specs: ["8 layers", "225× MHPA0808", "1.36×1.36 mm", "$20.27 BOM"],
+    desc: "15×15 square array (56.25 LEDs/cm²) opening 0.46 mm dual-track F.Cu streets in the north 20×20 mm window, paired with the same south-bay 4× AW20198QNR + RP2350A electronics (1,100/1,100 routed, 998 vias).",
+    silkF: true, silkB: true
+  }
+];
+
 const PARALLELOGRAM_CARDS = [
   {
     id: "parallelogram-p1-66",
@@ -400,7 +472,8 @@ const PARALLELOGRAM_CARDS = [
     badgeKind: "ok",
     specs: ["4 layers", "132× XL-1615 LEDs", "3.70×2.60 mm", "$12.60 BOM"],
     desc: "Doubles vertical density to 6×22 (8.5 LEDs/cm²) with 2× AW20198QNR QFNs. XL-1615's 0.80 mm intra-pad channel unlocks 761/761 connections (670 vias, 0 DRC) on 4 layers.",
-    silkF: true, silkB: true
+    silkF: true, silkB: true,
+    extraLinks: [{ href: "design/sim/p2-132/report/index.html", label: "EM + picoem Sim" }]
   },
   {
     id: "parallelogram-p3-198",
@@ -477,11 +550,13 @@ function cardHTML(c) {
           <a href="${base}.html#copper">PCB Layers</a>
           <a href="${base}.html#board3d">3D Model</a>
           <a href="${base}.html#schematic">Schematic</a>
+          ${(c.extraLinks || []).map(l => `<a href="${l.href}">${l.label}</a>`).join("")}
         </div>
       </div>
     </article>`;
 }
 
+document.getElementById("grid-square").innerHTML = SQUARE_CARDS.map(cardHTML).join("");
 document.getElementById("grid-para").innerHTML = PARALLELOGRAM_CARDS.map(cardHTML).join("");
 document.getElementById("grid-round").innerHTML = ROUND_CARDS.map(cardHTML).join("");
 

@@ -1,9 +1,31 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-06T01:32:06",
+ "built": "2026-11-06T04:50:33",
  "pcbview": "0.1 (26ba32b)",
  "config": "pcbview.toml",
  "boards": [
+  {
+   "id": "dense-square-s16-256",
+   "name": "Dense Square s16-256 (256 LEDs, 1.27 mm)",
+   "page": "dense-square-s16-256.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/dense-square/s16-256/dense-square.kicad_pcb",
+    "sch": "hw/dense-square/s16-256/dense-square.kicad_sch"
+   }
+  },
+  {
+   "id": "dense-square-s15-225",
+   "name": "Dense Square s15-225 (225 LEDs, 1.36 mm)",
+   "page": "dense-square-s15-225.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/dense-square/s15-225/dense-square.kicad_pcb",
+    "sch": "hw/dense-square/s15-225/dense-square.kicad_sch"
+   }
+  },
   {
    "id": "parallelogram-p1-66",
    "name": "Parallelogram p1-66 (66 LEDs, 4L)",
