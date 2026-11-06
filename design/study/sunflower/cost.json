@@ -1,11 +1,11 @@
 {
   "s1-66 (4L, 66x XL-1615, 1x AW20198)": {
-    "bom_per_board": 10.61,
+    "bom_per_board": 10.96,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
-    "mcu_plus_l1": 1.57,
-    "unique_lines": 32,
-    "total_placements": 138,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 33,
+    "total_placements": 139,
     "n_leds": 66,
     "low_stock": [
       [
@@ -15,20 +15,20 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
+        50
       ]
     ]
   },
   "s2-88 (4L, 88x XL-1615, 2x AW20198)": {
-    "bom_per_board": 11.9,
+    "bom_per_board": 12.24,
     "led_cost": 1.4,
     "drv_ic_cost": 1.77,
-    "mcu_plus_l1": 1.57,
-    "unique_lines": 32,
-    "total_placements": 167,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 33,
+    "total_placements": 168,
     "n_leds": 88,
     "low_stock": [
       [
@@ -38,20 +38,20 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
+        50
       ]
     ]
   },
   "s2-110 (4L, 110x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.25,
+    "bom_per_board": 12.59,
     "led_cost": 1.75,
     "drv_ic_cost": 1.77,
-    "mcu_plus_l1": 1.57,
-    "unique_lines": 32,
-    "total_placements": 189,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 33,
+    "total_placements": 190,
     "n_leds": 110,
     "low_stock": [
       [
@@ -61,20 +61,20 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
+        50
       ]
     ]
   },
   "s2-132 (4L, 132x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.6,
+    "bom_per_board": 12.94,
     "led_cost": 2.1,
     "drv_ic_cost": 1.77,
-    "mcu_plus_l1": 1.57,
-    "unique_lines": 32,
-    "total_placements": 211,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 33,
+    "total_placements": 212,
     "n_leds": 132,
     "low_stock": [
       [
@@ -84,18 +84,64 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
+        0,
+        50
+      ]
+    ]
+  },
+  "s1-66-pofv (4L, 66x XL-1615, 1x AW20198)": {
+    "bom_per_board": 10.96,
+    "led_cost": 1.05,
+    "drv_ic_cost": 0.89,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 33,
+    "total_placements": 139,
+    "n_leds": 66,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
         0,
         10
+      ],
+      [
+        "C23733",
+        "CL05A475MP5NRNC",
+        0,
+        50
+      ]
+    ]
+  },
+  "s2-88-pofv (4L, 88x XL-1615, 2x AW20198)": {
+    "bom_per_board": 12.24,
+    "led_cost": 1.4,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 33,
+    "total_placements": 168,
+    "n_leds": 88,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C23733",
+        "CL05A475MP5NRNC",
+        0,
+        50
       ]
     ]
   },
   "parallelogram p1-66 (4L)": {
-    "bom_per_board": 10.61,
+    "bom_per_board": 10.59,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
-    "mcu_plus_l1": 1.57,
+    "mcu_plus_l1": 1.55,
     "unique_lines": 32,
     "total_placements": 138,
     "n_leds": 66,
@@ -107,18 +153,18 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
+        50
       ]
     ]
   },
   "parallelogram p2-132 (4L)": {
-    "bom_per_board": 12.6,
+    "bom_per_board": 12.57,
     "led_cost": 2.1,
     "drv_ic_cost": 1.77,
-    "mcu_plus_l1": 1.57,
+    "mcu_plus_l1": 1.55,
     "unique_lines": 32,
     "total_placements": 211,
     "n_leds": 132,
@@ -130,18 +176,18 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
+        50
       ]
     ]
   },
   "round-pendant-e (8L, 235x XL-1010, 5x WLCSP)": {
-    "bom_per_board": 26.46,
+    "bom_per_board": 26.44,
     "led_cost": 6.34,
     "drv_ic_cost": 11.31,
-    "mcu_plus_l1": 1.57,
+    "mcu_plus_l1": 1.55,
     "unique_lines": 32,
     "total_placements": 332,
     "n_leds": 235,
@@ -153,10 +199,10 @@
         10
       ],
       [
-        "C42411119",
-        "AOTA-B201610S3R3-101-T",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
+        50
       ],
       [
         "C146233",

@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Matrix Play: Pattern Explorer</title>
+<style>
+:root {
+  --bg: #f6f7f9; --card: #ffffff; --canvas: #0f1319; --line: #e2e5ea; --fg: #14171c;
+  --muted: #5b6472; --accent: #2f6feb; --up: #168a50; --warn: #a86814;
+  --chip: #eef1f5; --btn-bg: #f0f3f7; --btn-hover: #e3e8f0;
+  --shadow: 0 1px 2px rgba(16,20,28,.05), 0 6px 18px rgba(16,20,28,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1015; --card: #161b22; --canvas: #090c10; --line: #262d38; --fg: #e6eaf0;
+    --muted: #8c96a6; --accent: #5b9bff; --up: #35c07d; --warn: #dfa543;
+    --chip: #202632; --btn-bg: #212733; --btn-hover: #2b3342; --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased; padding: 0 0 3.5rem;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .86em;
+  background: var(--chip); border: 1px solid var(--line); border-radius: 5px; padding: .06em .35em;
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+header { padding: 2.2rem 0 1.2rem; border-bottom: 1px solid var(--line); margin-bottom: 1.2rem; }
+.eyebrow { font-size: .75rem; font-weight: 650; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 0 0 .35rem; }
+h1 { font-size: clamp(1.55rem, 2.8vw, 2.05rem); margin: 0; letter-spacing: -.02em; line-height: 1.2; }
+.lede { color: var(--muted); max-width: 82ch; margin: .7rem 0 0; font-size: .98rem; }
+.controls {
+  position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px); border-bottom: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; gap: .55rem 1rem; align-items: center; padding: .6rem 0; margin-bottom: 1.4rem;
+}
+.ctl { display: inline-flex; align-items: center; gap: .4rem; font-size: .78rem; font-weight: 600; color: var(--muted); }
+.seg { display: inline-flex; background: var(--chip); border: 1px solid var(--line); border-radius: 8px; padding: 2px; gap: 2px; }
+.seg button {
+  font: inherit; font-size: .78rem; font-weight: 600; color: var(--muted);
+  background: transparent; border: 0; border-radius: 6px; padding: .26rem .6rem; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+select, .btn {
+  font: inherit; font-size: .8rem; font-weight: 600; padding: .3rem .6rem; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer;
+}
+.btn:hover { background: var(--btn-hover); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.small { font-size: .72rem; padding: .12rem .45rem; border-radius: 6px; }
+.scalebar { display: inline-flex; align-items: center; gap: .35rem; font-size: .74rem; color: var(--muted); }
+.scalebar i { display: inline-block; height: 6px; border: 1.5px solid var(--fg); border-top: 0; }
+.pcard {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: var(--shadow); margin-bottom: 1.2rem; overflow: hidden;
+}
+.pc-head { display: flex; justify-content: space-between; gap: .6rem 1rem; flex-wrap: wrap; padding: .85rem 1rem .5rem; }
+.pc-head h2 { font-size: 1.08rem; margin: 0; letter-spacing: -.01em; }
+.pc-head p { color: var(--muted); font-size: .86rem; margin: .15rem 0 0; max-width: 78ch; }
+.pc-ctl { display: flex; gap: .45rem; flex-wrap: wrap; align-items: flex-start; }
+.orow { display: flex; flex-wrap: wrap; gap: .8rem; padding: .3rem 1rem .9rem; align-items: flex-start; }
+.olabel { writing-mode: vertical-rl; transform: rotate(180deg); font-size: .72rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); align-self: center; }
+.cell { margin: 0; }
+.stack { position: relative; background: #06080b; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.stack canvas { display: block; }
+.stack canvas.led { position: absolute; left: 0; top: 0; mix-blend-mode: screen; }
+.cell figcaption { font-size: .78rem; color: var(--muted); padding-top: .3rem; line-height: 1.35; max-width: 340px; }
+.cell figcaption b { color: var(--fg); }
+.cell .cnt { font-variant-numeric: tabular-nums; color: var(--fg); font-weight: 650; }
+.cell .mix { display: block; font-size: .72rem; }
+.bad { color: var(--warn); }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; margin: .4rem 0 1rem; }
+th, td { padding: .3rem .55rem; border-bottom: 1px solid var(--line); text-align: left; }
+th { color: var(--muted); font-weight: 600; font-size: .78rem; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.notes { color: var(--muted); font-size: .86rem; max-width: 90ch; }
+.notes li { margin-bottom: .3rem; }
+#busy { font-size: .78rem; color: var(--warn); }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="eyebrow"><a href="../../../index.html">&larr; Matrix Play</a> &middot; Design study</p>
+  <h1>Pattern Explorer</h1>
+  <p class="lede">Candidate LED layouts for small Matrix Play boards, drawn at life size (96 CSS px per inch, so set browser zoom to 100%) inside a 40 mm circle and a 40 mm parallelogram sheared 17.75&deg; like the parallelogram boards. Every LED is drawn at its real footprint and spaced so that no two parts come closer than the clearance below, at every density. Each view exports a placement CSV for KiCad.</p>
+</header>
+
+<div class="controls" id="controls">
+  <label class="ctl">Footprint <select id="fp"></select></label>
+  <span class="ctl">Outline <span class="seg" id="outlineSeg"></span></span>
+  <span class="ctl">Zoom <span class="seg" id="zoomSeg"></span></span>
+  <span class="ctl">Animate all <span class="seg" id="animSeg"></span></span>
+  <button class="btn primary" id="play">Pause</button>
+  <span class="ctl">Diffuser <span class="seg" id="diffSeg"></span></span>
+  <span class="ctl">Guides <span class="seg" id="guideSeg"></span></span>
+  <span class="scalebar"><i id="bar"></i><span>10 mm</span></span>
+  <span id="busy"></span>
+</div>
+
+<main id="cards"></main>
+
+<section class="pcard" style="padding: .9rem 1rem">
+  <h2 style="font-size:1.08rem;margin:0 0 .2rem">LED counts, <span id="tblFp"></span></h2>
+  <p class="notes" style="margin:0">Counts for the selected footprint, both outlines, with each card's current options. Halftone and Apollonian mix sizes; their counts cover all sizes.</p>
+  <table id="tbl"></table>
+  <h2 style="font-size:1.08rem;margin:.6rem 0 .2rem">Rules</h2>
+  <ul class="notes">
+    <li>Parts are placed square to the board (0&deg;). Two parts never come closer than <b>0.25 mm</b> body to body, tested on the real rectangles; a part body stays at least <b>0.30 mm</b> inside the outline.</li>
+    <li>Dense pitch is the diagonal of the footprint grown by the clearance, so the rule holds in every direction: for 0603, hypot(1.6+0.25, 0.8+0.25) = 2.127 mm. Medium is 1.4&times; that, sparse 2&times;.</li>
+    <li>Every pattern passes a final clearance check. Any LED it removes is reported under the view (most patterns remove none; Poisson, Voronoi and Lissajous crossings can).</li>
+    <li>Halftone and Apollonian use a ladder of sizes: 1206, 0805, 0603, 0402, plus the selected footprint if it is not one of those.</li>
+    <li>CSV: one row per LED, <code>ref,x_mm,y_mm,rot_deg,footprint,w_mm,h_mm</code>, origin at the outline centre, +x right, +y down as in KiCad. Rows follow the chase order.</li>
+    <li>True size depends on the screen. Browsers draw 96 CSS px per inch, but many displays are not exactly that; check the 10 mm bar against a ruler.</li>
+  </ul>
+</section>
+</div>
+
+<script>
+'use strict';
+//==CORE-BEGIN (pure geometry, no DOM; tested in node)
+const PXMM = 96 / 25.4;
+const CLEAR = 0.25, EDGE = 0.30;
+const FOOTPRINTS = [
+  { id: '0402', w: 1.0, h: 0.5, note: '0402 chip' },
+  { id: '0603', w: 1.6, h: 0.8, note: '0603 chip' },
+  { id: '0805', w: 2.0, h: 1.25, note: '0805 chip' },
+  { id: '1206', w: 3.2, h: 1.6, note: '1206 chip' },
+  { id: 'XL-1615RGBC', w: 1.6, h: 1.5, note: 'used on the 38 mm and parallelogram boards' },
+  { id: 'XL-1010RGB', w: 1.0, h: 1.0, note: 'used on round-pendant-e' },
+  { id: 'MHPA0808', w: 0.8, h: 0.8, note: 'used on the 20 mm square boards' },
+];
+const FPMAP = Object.fromEntries(FOOTPRINTS.map(f => [f.id, f]));
+const DENS = [{ id: 'sparse', k: 2.0 }, { id: 'medium', k: 1.4 }, { id: 'dense', k: 1.0 }];
+const SHEAR_DEG = 17.75, SHEAR = Math.tan(SHEAR_DEG * Math.PI / 180), SCOS = Math.cos(SHEAR_DEG * Math.PI / 180);
+const PHI = (1 + Math.sqrt(5)) / 2;
+
+const OUTLINES = {
+  circle: {
+    id: 'circle', label: 'Circle, 40 mm', view: [44, 44], rfar: 20, half: [20, 20], area: Math.PI * 400,
+    dist: (x, y) => 20 - Math.hypot(x, y),
+  },
+  parallelogram: {
+    id: 'parallelogram', label: 'Parallelogram, 40 x 30 mm, 17.75°', view: [44, 47.4],
+    rfar: Math.hypot(20, 15 + 20 * SHEAR), half: [20, 15 + 20 * SHEAR], area: 40 * 30,
+    dist: (x, y) => Math.min(20 - Math.abs(x), (15 - Math.abs(y - SHEAR * x)) * SCOS),
+    poly: [[-20, -15 - 20 * SHEAR], [20, -15 + 20 * SHEAR], [20, 15 + 20 * SHEAR], [-20, 15 - 20 * SHEAR]],
+  },
+};
+
+const pitchOf = f => Math.hypot(f.w + CLEAR, f.h + CLEAR);
+const halfDiag = f => Math.hypot(f.w, f.h) / 2;
+function partInside(o, x, y, f) {
+  const a = f.w / 2, b = f.h / 2;
+  return o.dist(x - a, y - b) >= EDGE && o.dist(x + a, y - b) >= EDGE &&
+         o.dist(x - a, y + b) >= EDGE && o.dist(x + a, y + b) >= EDGE;
+}
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function ladderFor(fp) {
+  const ids = ['1206', '0805', '0603', '0402'];
+  if (!ids.includes(fp.id)) ids.push(fp.id);
+  return ids.map(i => FPMAP[i]).sort((a, b) => pitchOf(b) - pitchOf(a));
+}
+// Minimum pairwise distance (grid hash; exact when the minimum is below the cell size).
+function minDist(pts) {
+  if (pts.length < 2) return Infinity;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const [x, y] of pts) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+  const cell = Math.max(1e-9, 2 * Math.sqrt((x1 - x0) * (y1 - y0) / pts.length + 1e-12));
+  const g = new Map(); let best = Infinity;
+  for (const [x, y] of pts) {
+    const cx = Math.floor(x / cell), cy = Math.floor(y / cell);
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+      const a = g.get((cx + dx) * 1e6 + (cy + dy)); if (!a) continue;
+      for (const [u, v] of a) { const d = Math.hypot(x - u, y - v); if (d < best) best = d; }
+    }
+    const k = cx * 1e6 + cy; if (!g.has(k)) g.set(k, []); g.get(k).push([x, y]);
+  }
+  return best;
+}
+function dedupe(pts, q = 1e6) {
+  const seen = new Set(), out = [];
+  for (const p of pts) { const k = Math.round(p[0] * q) + ',' + Math.round(p[1] * q); if (!seen.has(k)) { seen.add(k); out.push(p); } }
+  return out;
+}
+function serpentine(leds, rowH) {
+  return leds.map(l => ({ l, r: Math.round(l.y / rowH) }))
+    .sort((a, b) => a.r - b.r || ((a.r & 1) ? b.l.x - a.l.x : a.l.x - b.l.x)).map(o => o.l);
+}
+// Final pass: keep LEDs inside the outline, then drop any that break the body-to-body clearance.
+function finish(o, leds) {
+  const cell = 4, g = new Map(), out = []; let removed = 0;
+  for (const L of leds) {
+    if (!partInside(o, L.x, L.y, L.f)) continue;
+    const cx = Math.floor(L.x / cell), cy = Math.floor(L.y / cell); let ok = true;
+    for (let dx = -1; dx <= 1 && ok; dx++) for (let dy = -1; dy <= 1 && ok; dy++) {
+      const a = g.get((cx + dx) * 1e4 + (cy + dy)); if (!a) continue;
+      for (const M of a) {
+        if (Math.abs(L.x - M.x) < (L.f.w + M.f.w) / 2 + CLEAR - 1e-9 &&
+            Math.abs(L.y - M.y) < (L.f.h + M.f.h) / 2 + CLEAR - 1e-9) { ok = false; break; }
+      }
+    }
+    if (!ok) { removed++; continue; }
+    const k = cx * 1e4 + cy; if (!g.has(k)) g.set(k, []); g.get(k).push(L); out.push(L);
+  }
+  return { leds: out, removed };
+}
+
+/* ---------- 1. Sunflower (Vogel) ---------- */
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+const VOGEL_UNIT_MIN = (() => {
+  const p = []; for (let n = 0; n < 4000; n++) { const r = Math.sqrt(n + 0.5), a = n * GOLDEN_ANGLE; p.push([r * Math.cos(a), r * Math.sin(a)]); }
+  return minDist(p);
+})();
+function genSunflower(o, fp, p) {
+  const c = p / VOGEL_UNIT_MIN, leds = [];
+  for (let n = 0; ; n++) {
+    const r = c * Math.sqrt(n + 0.5); if (r > o.rfar + 2) break;
+    const a = n * GOLDEN_ANGLE; leds.push({ x: r * Math.cos(a), y: r * Math.sin(a), f: fp });
+  }
+  return { leds, info: `c = ${c.toFixed(3)} mm` };
+}
+/* ---------- 2. Hex grid ---------- */
+function genHex(o, fp, p) {
+  const leds = [], dy = p * Math.sqrt(3) / 2, J = Math.ceil(o.half[1] / dy) + 1, I = Math.ceil(o.half[0] / p) + 1;
+  for (let j = -J; j <= J; j++) {
+    const row = [];
+    for (let i = -I; i <= I; i++) row.push({ x: (i + ((j & 1) ? 0.5 : 0)) * p, y: j * dy, f: fp });
+    if (j & 1) row.reverse(); leds.push(...row);
+  }
+  return { leds };
+}
+/* ---------- 3. Poisson disc (Bridson, seeded) ---------- */
+function genPoisson(o, fp, p, seed = 1234) {
+  const rnd = mulberry32(seed), r = p, cs = r / Math.SQRT2, [hx, hy] = o.half;
+  const W = Math.ceil(2 * hx / cs) + 1, H = Math.ceil(2 * hy / cs) + 1, grid = new Int32Array(W * H).fill(-1);
+  const pts = [], active = [];
+  const gi = (x, y) => [Math.floor((x + hx) / cs), Math.floor((y + hy) / cs)];
+  const ok = (x, y) => {
+    if (!partInside(o, x, y, fp)) return false;
+    const [cx, cy] = gi(x, y);
+    for (let i = Math.max(0, cx - 2); i <= Math.min(W - 1, cx + 2); i++) for (let j = Math.max(0, cy - 2); j <= Math.min(H - 1, cy + 2); j++) {
+      const k = grid[j * W + i]; if (k >= 0 && Math.hypot(pts[k][0] - x, pts[k][1] - y) < r) return false;
+    }
+    return true;
+  };
+  const add = (x, y) => { const [cx, cy] = gi(x, y); grid[cy * W + cx] = pts.length; active.push(pts.length); pts.push([x, y]); };
+  add(0, 0);
+  while (active.length) {
+    const ai = Math.floor(rnd() * active.length), [px, py] = pts[active[ai]]; let found = false;
+    for (let t = 0; t < 30; t++) {
+      const a = rnd() * 2 * Math.PI, d = r * (1 + rnd());
+      const x = px + d * Math.cos(a), y = py + d * Math.sin(a);
+      if (ok(x, y)) { add(x, y); found = true; break; }
+    }
+    if (!found) { active[ai] = active[active.length - 1]; active.pop(); }
+  }
+  return { leds: pts.map(([x, y]) => ({ x, y, f: fp })), info: `seed ${seed}, r = ${r.toFixed(3)} mm, k = 30` };
+}
+/* ---------- 4. Apollonian-style packing, mixed sizes ---------- */
+function genApollonian(o, fp, p, dens) {
+  const lad = ladderFor(fp), rr = lad.map(f => pitchOf(f) / 2), rMin = rr[rr.length - 1];
+  const cap = rr[0] * dens.k;            // largest gap one LED may claim
+  const step = 0.2, [hx, hy] = o.half, cx = [], cy = [], gap = [];
+  for (let y = -hy; y <= hy; y += step) for (let x = -hx; x <= hx; x += step) {
+    const d = o.dist(x, y) - EDGE + CLEAR / 2; if (d >= rMin) { cx.push(x); cy.push(y); gap.push(d); }
+  }
+  const N = cx.length, G = Float64Array.from(gap), leds = [], circles = [];
+  for (;;) {
+    let bi = -1, bg = -1;
+    for (let i = 0; i < N; i++) if (G[i] > bg) { bg = G[i]; bi = i; }
+    if (bg < rMin) break;
+    const R = Math.min(bg, cap); let k = 0; while (rr[k] > R) k++;
+    const x = cx[bi], y = cy[bi], f = lad[k];
+    leds.push({ x, y, f }); circles.push([x, y, R]);
+    for (let i = 0; i < N; i++) { const d = Math.hypot(cx[i] - x, cy[i] - y) - R; if (d < G[i]) G[i] = d; }
+  }
+  return { leds, guides: { circles }, info: `gap cap ${cap.toFixed(2)} mm` };
+}
+/* ---------- 5. Halftone ---------- */
+function starPoly(Ro, Ri) {
+  const p = []; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? Ri : Ro; p.push([r * Math.cos(a), r * Math.sin(a)]); }
+  return p;
+}
+function inPoly(poly, x, y) {
+  let c = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+}
+function segDist(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay, t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(px - ax - t * dx, py - ay - t * dy);
+}
+function genHalftone(o, fp, p, dens, kind) {
+  const lad = ladderFor(fp), P = pitchOf(lad[0]) * dens.k, L = lad.length;
+  const inr = o.id === 'circle' ? 20 : 15 * SCOS, star = starPoly(inr * 0.92, inr * 0.92 * 0.42);
+  const grad = (x, y) => {
+    if (kind === 'radial') return 1 - Math.hypot(x, y) / o.rfar;
+    if (kind === 'linear') return (o.half[0] - x) / (2 * o.half[0]);
+    if (inPoly(star, x, y)) return 1;
+    let d = Infinity; for (let i = 0, j = 9; i < 10; j = i++) d = Math.min(d, segDist(x, y, ...star[j], ...star[i]));
+    return 1 - d / (inr * 0.6);
+  };
+  const raw = [], I = Math.ceil(o.half[0] / P) + 1, J = Math.ceil(o.half[1] / P) + 1;
+  for (let j = -J; j <= J; j++) for (let i = -I; i <= I; i++) {
+    const x = (i + 0.5) * P, y = (j + 0.5) * P, v = Math.max(0, Math.min(1, grad(x, y)));
+    const idx = Math.min(L, Math.floor((1 - v) * (L + 1)));
+    if (idx >= L) continue;
+    let f = null; for (let k = idx; k < L; k++) if (partInside(o, x, y, lad[k])) { f = lad[k]; break; }
+    if (f) raw.push({ x, y, f });
+  }
+  return { leds: serpentine(raw, P), guides: kind === 'star' ? { polys: [[star, 0]] } : null, info: `grid ${P.toFixed(3)} mm`, pitchOverride: P };
+}
+/* ---------- 6a. Penrose P3 (Robinson triangles) ---------- */
+function penroseTris(n) {
+  let tris = [];
+  for (let i = 0; i < 10; i++) {
+    let B = [Math.cos((2 * i - 1) * Math.PI / 10), Math.sin((2 * i - 1) * Math.PI / 10)];
+    let C = [Math.cos((2 * i + 1) * Math.PI / 10), Math.sin((2 * i + 1) * Math.PI / 10)];
+    if (i % 2 === 0) [B, C] = [C, B];
+    tris.push([0, [0, 0], B, C]);
+  }
+  const lerp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+  for (let k = 0; k < n; k++) {
+    const res = [];
+    for (const [c, A, B, C] of tris) {
+      if (c === 0) { const P = lerp(A, B, 1 / PHI); res.push([0, C, P, B], [1, P, C, A]); }
+      else { const Q = lerp(B, A, 1 / PHI), R = lerp(B, C, 1 / PHI); res.push([1, R, C, A], [1, Q, R, B], [0, R, Q, A]); }
+    }
+    tris = res;
+  }
+  return tris;
+}
+const PENROSE_CACHE = {};
+function penroseLevel(n, mode) {
+  const key = n + mode; if (PENROSE_CACHE[key]) return PENROSE_CACHE[key];
+  const tris = penroseTris(n); let pts = [];
+  if (mode === 'vertices') for (const [, A, B, C] of tris) pts.push(A, B, C);
+  else for (const [, , B, C] of tris) pts.push([(B[0] + C[0]) / 2, (B[1] + C[1]) / 2]);   // BC is the rhomb's diagonal
+  pts = dedupe(pts);
+  return (PENROSE_CACHE[key] = { n, tris, pts, d: minDist(pts) });
+}
+function genPenrose(o, fp, p, dens, opts) {
+  const need = o.rfar + 2; let lv, s;
+  for (let n = 2; n < 14; n++) { lv = penroseLevel(n, opts.place); s = p / lv.d; if (s * Math.cos(Math.PI / 10) >= need) break; }
+  const leds = serpentine(lv.pts.map(([x, y]) => ({ x: x * s, y: y * s, f: fp })), p);
+  const lines = [];
+  for (const [, A, B, C] of lv.tris) {
+    if (Math.hypot(A[0], A[1]) * s > need + 6) continue;
+    lines.push([C[0] * s, C[1] * s, A[0] * s, A[1] * s], [A[0] * s, A[1] * s, B[0] * s, B[1] * s]);
+  }
+  return { leds, guides: { lines }, info: `deflation level ${lv.n}, rhomb edge ${(s * Math.pow(PHI, -lv.n)).toFixed(2)} mm` };
+}
+/* ---------- 6b. Hat monotile (Smith, Myers, Kaplan, Goodman-Strauss 2023), metatile substitution
+   after C. S. Kaplan's reference implementation (hatviz). ---------- */
+const HR3 = Math.sqrt(3) / 2, IDENT = [1, 0, 0, 0, 1, 0];
+const hp = (x, y) => ({ x, y }), hexPt = (x, y) => hp(x + 0.5 * y, HR3 * y);
+function inv(T) { const det = T[0] * T[4] - T[1] * T[3]; return [T[4] / det, -T[1] / det, (T[1] * T[5] - T[2] * T[4]) / det, -T[3] / det, T[0] / det, (T[2] * T[3] - T[0] * T[5]) / det]; }
+function mul(A, B) { return [A[0] * B[0] + A[1] * B[3], A[0] * B[1] + A[1] * B[4], A[0] * B[2] + A[1] * B[5] + A[2], A[3] * B[0] + A[4] * B[3], A[3] * B[1] + A[4] * B[4], A[3] * B[2] + A[4] * B[5] + A[5]]; }
+const padd = (p, q) => hp(p.x + q.x, p.y + q.y), psub = (p, q) => hp(p.x - q.x, p.y - q.y);
+const trot = a => [Math.cos(a), -Math.sin(a), 0, Math.sin(a), Math.cos(a), 0], ttrans = (x, y) => [1, 0, x, 0, 1, y];
+const rotAbout = (p, a) => mul(ttrans(p.x, p.y), mul(trot(a), ttrans(-p.x, -p.y)));
+const transPt = (M, P) => hp(M[0] * P.x + M[1] * P.y + M[2], M[3] * P.x + M[4] * P.y + M[5]);
+const matchSeg = (p, q) => [q.x - p.x, p.y - q.y, p.x, q.y - p.y, q.x - p.x, p.y];
+const matchTwo = (p1, q1, p2, q2) => mul(matchSeg(p2, q2), inv(matchSeg(p1, q1)));
+function intersect(p1, q1, p2, q2) {
+  const d = (q2.y - p2.y) * (q1.x - p1.x) - (q2.x - p2.x) * (q1.y - p1.y);
+  const uA = ((q2.x - p2.x) * (p1.y - p2.y) - (q2.y - p2.y) * (p1.x - p2.x)) / d;
+  return hp(p1.x + uA * (q1.x - p1.x), p1.y + uA * (q1.y - p1.y));
+}
+const HAT_OUTLINE = [hexPt(0, 0), hexPt(-1, -1), hexPt(0, -2), hexPt(2, -2), hexPt(2, -1), hexPt(4, -2), hexPt(5, -1),
+  hexPt(4, 0), hexPt(3, 0), hexPt(2, 2), hexPt(0, 3), hexPt(0, 2), hexPt(-1, 2)];
+class HatTile { constructor(label) { this.label = label; this.hat = true; } }
+class MetaTile {
+  constructor(shape, width) { this.shape = shape; this.width = width; this.children = []; }
+  addChild(T, geom) { this.children.push({ T, geom }); }
+  evalChild(n, i) { return transPt(this.children[n].T, this.children[n].geom.shape[i]); }
+  recentre() {
+    let cx = 0, cy = 0; for (const p of this.shape) { cx += p.x; cy += p.y; }
+    cx /= this.shape.length; cy /= this.shape.length;
+    this.shape = this.shape.map(p => padd(p, hp(-cx, -cy)));
+    const M = ttrans(-cx, -cy); for (const ch of this.children) ch.T = mul(M, ch.T);
+  }
+}
+const H1_hat = new HatTile('H1'), H_hat = new HatTile('H'), T_hat = new HatTile('T'), P_hat = new HatTile('P'), F_hat = new HatTile('F');
+function initH() {
+  const o = [hp(0, 0), hp(4, 0), hp(4.5, HR3), hp(2.5, 5 * HR3), hp(1.5, 5 * HR3), hp(-0.5, HR3)], m = new MetaTile(o, 2);
+  m.addChild(matchTwo(HAT_OUTLINE[5], HAT_OUTLINE[7], o[5], o[0]), H_hat);
+  m.addChild(matchTwo(HAT_OUTLINE[9], HAT_OUTLINE[11], o[1], o[2]), H_hat);
+  m.addChild(matchTwo(HAT_OUTLINE[5], HAT_OUTLINE[7], o[3], o[4]), H_hat);
+  m.addChild(mul(ttrans(2.5, HR3), mul([-0.5, -HR3, 0, HR3, -0.5, 0], [0.5, 0, 0, 0, -0.5, 0])), H1_hat);
+  return m;
+}
+function initT() { const m = new MetaTile([hp(0, 0), hp(3, 0), hp(1.5, 3 * HR3)], 2); m.addChild([0.5, 0, 0.5, 0, 0.5, HR3], T_hat); return m; }
+function initP() {
+  const m = new MetaTile([hp(0, 0), hp(4, 0), hp(3, 2 * HR3), hp(-1, 2 * HR3)], 2);
+  m.addChild([0.5, 0, 1.5, 0, 0.5, HR3], P_hat);
+  m.addChild(mul(ttrans(0, 2 * HR3), mul([0.5, HR3, 0, -HR3, 0.5, 0], [0.5, 0, 0, 0, 0.5, 0])), P_hat);
+  return m;
+}
+function initF() {
+  const m = new MetaTile([hp(0, 0), hp(3, 0), hp(3.5, HR3), hp(3, 2 * HR3), hp(-1, 2 * HR3)], 2);
+  m.addChild([0.5, 0, 1.5, 0, 0.5, HR3], F_hat);
+  m.addChild(mul(ttrans(0, 2 * HR3), mul([0.5, HR3, 0, -HR3, 0.5, 0], [0.5, 0, 0, 0, 0.5, 0])), F_hat);
+  return m;
+}
+const PATCH_RULES = [['H'], [0, 0, 'P', 2], [1, 0, 'H', 2], [2, 0, 'P', 2], [3, 0, 'H', 2], [4, 4, 'P', 2], [0, 4, 'F', 3],
+  [2, 4, 'F', 3], [4, 1, 3, 2, 'F', 0], [8, 3, 'H', 0], [9, 2, 'P', 0], [10, 2, 'H', 0], [11, 4, 'P', 2], [12, 0, 'H', 2],
+  [13, 0, 'F', 3], [14, 2, 'F', 1], [15, 3, 'H', 4], [8, 2, 'F', 1], [17, 3, 'H', 0], [18, 2, 'P', 0], [19, 2, 'H', 2],
+  [20, 4, 'F', 3], [20, 0, 'P', 2], [22, 0, 'H', 2], [23, 4, 'F', 3], [23, 0, 'F', 3], [16, 0, 'P', 2], [9, 4, 0, 2, 'T', 2], [4, 0, 'F', 3]];
+function constructPatch(H, T, P, F) {
+  const ret = new MetaTile([], H.width), shapes = { H, T, P, F };
+  for (const r of PATCH_RULES) {
+    if (r.length === 1) { ret.addChild(IDENT, shapes[r[0]]); continue; }
+    let Pp, Q, nshp;
+    if (r.length === 4) {
+      const ch = ret.children[r[0]], poly = ch.geom.shape;
+      Pp = transPt(ch.T, poly[(r[1] + 1) % poly.length]); Q = transPt(ch.T, poly[r[1]]); nshp = shapes[r[2]];
+      const np = nshp.shape; ret.addChild(matchTwo(np[r[3]], np[(r[3] + 1) % np.length], Pp, Q), nshp);
+    } else {
+      const chP = ret.children[r[0]], chQ = ret.children[r[2]];
+      Pp = transPt(chQ.T, chQ.geom.shape[r[3]]); Q = transPt(chP.T, chP.geom.shape[r[1]]); nshp = shapes[r[4]];
+      const np = nshp.shape; ret.addChild(matchTwo(np[r[5]], np[(r[5] + 1) % np.length], Pp, Q), nshp);
+    }
+  }
+  return ret;
+}
+function constructMetatiles(patch) {
+  const bps1 = patch.evalChild(8, 2), bps2 = patch.evalChild(21, 2), rbps = transPt(rotAbout(bps1, -2 * Math.PI / 3), bps2);
+  const p72 = patch.evalChild(7, 2), p252 = patch.evalChild(25, 2);
+  const llc = intersect(bps1, rbps, patch.evalChild(6, 2), p72);
+  let w = psub(patch.evalChild(6, 2), llc);
+  const Ho = [llc, bps1];
+  w = transPt(trot(-Math.PI / 3), w); Ho.push(padd(Ho[1], w)); Ho.push(patch.evalChild(14, 2));
+  w = transPt(trot(-Math.PI / 3), w); Ho.push(psub(Ho[3], w)); Ho.push(patch.evalChild(6, 2));
+  const nH = new MetaTile(Ho, patch.width * 2);
+  for (const c of [0, 9, 16, 27, 26, 6, 1, 8, 10, 15]) nH.addChild(patch.children[c].T, patch.children[c].geom);
+  const nP = new MetaTile([p72, padd(p72, psub(bps1, llc)), bps1, llc], patch.width * 2);
+  for (const c of [7, 2, 3, 4, 28]) nP.addChild(patch.children[c].T, patch.children[c].geom);
+  const nF = new MetaTile([bps2, patch.evalChild(24, 2), patch.evalChild(25, 0), p252, padd(p252, psub(llc, bps1))], patch.width * 2);
+  for (const c of [21, 20, 22, 23, 24, 25]) nF.addChild(patch.children[c].T, patch.children[c].geom);
+  const AAA = Ho[2], BBB = padd(Ho[1], psub(Ho[4], Ho[5])), CCC = transPt(rotAbout(BBB, -Math.PI / 3), AAA);
+  const nT = new MetaTile([BBB, CCC, AAA], patch.width * 2);
+  nT.addChild(patch.children[11].T, patch.children[11].geom);
+  for (const m of [nH, nP, nF, nT]) m.recentre();
+  return [nH, nT, nP, nF];
+}
+function polyArea(pts) { let a = 0; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) a += pts[j][0] * pts[i][1] - pts[i][0] * pts[j][1]; return a / 2; }
+function polyCentroid(pts) {
+  let a = 0, cx = 0, cy = 0;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const c = pts[j][0] * pts[i][1] - pts[i][0] * pts[j][1]; a += c; cx += (pts[j][0] + pts[i][0]) * c; cy += (pts[j][1] + pts[i][1]) * c;
+  }
+  return [cx / (3 * a), cy / (3 * a)];
+}
+const HAT_LEVELS = [];
+function hatLevel(L) {          // hats of the level-L H supertile (as hatviz draws it), as polygons in hex units
+  if (HAT_LEVELS[L]) return HAT_LEVELS[L];
+  let tiles = [initH(), initT(), initP(), initF()];
+  for (let i = 0; i < L; i++) tiles = constructMetatiles(constructPatch(...tiles));
+  const hats = [];
+  const walk = (g, T) => {
+    if (g.hat) { hats.push({ poly: HAT_OUTLINE.map(p => { const q = transPt(T, p); return [q.x, q.y]; }), refl: g.label === 'H1' }); return; }
+    for (const ch of g.children) walk(ch.geom, mul(T, ch.T));
+  };
+  walk(tiles[0], IDENT);
+  // Centre it on the mean hat centroid, snapped to a hat centroid.
+  const cs0 = hats.map(h => polyCentroid(h.poly)), mx = cs0.reduce((a, c) => a + c[0], 0) / cs0.length, my = cs0.reduce((a, c) => a + c[1], 0) / cs0.length;
+  let ox = 0, oy = 0, bd = Infinity; for (const [x, y] of cs0) { const d = Math.hypot(x - mx, y - my); if (d < bd) { bd = d; ox = x; oy = y; } }
+  for (const h of hats) h.poly = h.poly.map(([x, y]) => [x - ox, y - oy]);
+  for (const h of hats) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const [x, y] of h.poly) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+    h.bb = [x0, y0, x1, y1];
+  }
+  const verts = dedupe(hats.flatMap(h => h.poly)), cents = hats.map(h => polyCentroid(h.poly)), grid = new Map();
+  for (const h of hats) for (let i = Math.floor(h.bb[0]); i <= Math.floor(h.bb[2]); i++) for (let j = Math.floor(h.bb[1]); j <= Math.floor(h.bb[3]); j++) {
+    const k = i * 1e5 + j; if (!grid.has(k)) grid.set(k, []); grid.get(k).push(h);
+  }
+  return (HAT_LEVELS[L] = { L, hats, verts, cents, grid, dV: minDist(verts), dC: minDist(cents) });
+}
+function hatCovers(lv, rad) {    // every sample point of the disc lies inside some hat
+  const st = Math.max(rad / 25, 0.05);
+  for (let y = -rad; y <= rad; y += st) for (let x = -rad; x <= rad; x += st) {
+    if (x * x + y * y > rad * rad) continue;
+    let hit = false;
+    for (const h of lv.grid.get(Math.floor(x) * 1e5 + Math.floor(y)) || []) { const b = h.bb; if (x < b[0] || x > b[2] || y < b[1] || y > b[3]) continue; if (inPoly(h.poly, x, y)) { hit = true; break; } }
+    if (!hit) return false;
+  }
+  return true;
+}
+function genHat(o, fp, p, dens, opts) {
+  const need = o.rfar + 2; let lv, s;
+  for (let L = 1; L <= 6; L++) {
+    lv = hatLevel(L); s = p / (opts.place === 'vertices' ? lv.dV : lv.dC);
+    if (hatCovers(lv, need / s)) break;
+  }
+  const src = opts.place === 'vertices' ? lv.verts : lv.cents;
+  const leds = serpentine(src.map(([x, y]) => ({ x: x * s, y: y * s, f: fp })), p);
+  const polys = [];
+  for (const h of lv.hats) { const b = h.bb; if (Math.min(Math.abs(b[0]), Math.abs(b[2])) * s > need + 4 && Math.min(Math.abs(b[1]), Math.abs(b[3])) * s > need + 4) continue; polys.push([h.poly.map(([x, y]) => [x * s, y * s]), h.refl ? 1 : 0]); }
+  const nRefl = lv.hats.filter(h => h.refl).length;
+  return { leds, guides: { polys }, info: `level-${lv.L} H supertile, ${lv.hats.length} hats (${nRefl} reflected)` };
+}
+/* ---------- 7. Centroidal Voronoi (Lloyd) ---------- */
+function genVoronoi(o, fp, p, dens, opts, seed = 777) {
+  const rnd = mulberry32(seed), st = Math.min(0.25, p / 6), [hx, hy] = o.half, sx = [], sy = [];
+  for (let y = -hy; y <= hy; y += st) for (let x = -hx; x <= hx; x += st) if (partInside(o, x, y, fp)) { sx.push(x); sy.push(y); }
+  const A = sx.length * st * st, target = 1.12 * p, N = Math.max(1, Math.round(2 * A / (Math.sqrt(3) * target * target)));
+  let px = [], py = [];
+  while (px.length < N) { const i = Math.floor(rnd() * sx.length); px.push(sx[i] + (rnd() - 0.5) * st); py.push(sy[i] + (rnd() - 0.5) * st); }
+  const cell = target, own = new Int32Array(sx.length);
+  for (let it = 0; it < 60; it++) {
+    const g = new Map();
+    for (let k = 0; k < N; k++) { const key = Math.floor(px[k] / cell) * 1e4 + Math.floor(py[k] / cell); if (!g.has(key)) g.set(key, []); g.get(key).push(k); }
+    for (let i = 0; i < sx.length; i++) {
+      const cx = Math.floor(sx[i] / cell), cy = Math.floor(sy[i] / cell); let best = -1, bd = Infinity;
+      for (let ring = 1; ring <= 3 && best < 0; ring++) {
+        for (let dx = -ring; dx <= ring; dx++) for (let dy = -ring; dy <= ring; dy++) {
+          const a = g.get((cx + dx) * 1e4 + cy + dy); if (!a) continue;
+          for (const k of a) { const d = (px[k] - sx[i]) ** 2 + (py[k] - sy[i]) ** 2; if (d < bd) { bd = d; best = k; } }
+        }
+        if (best >= 0 && ring === 1 && bd > cell * cell) best = -1;       // widen if the nearest might be further out
+      }
+      if (best < 0) for (let k = 0; k < N; k++) { const d = (px[k] - sx[i]) ** 2 + (py[k] - sy[i]) ** 2; if (d < bd) { bd = d; best = k; } }
+      own[i] = best;
+    }
+    const ax = new Float64Array(N), ay = new Float64Array(N), an = new Float64Array(N);
+    for (let i = 0; i < sx.length; i++) { const k = own[i]; ax[k] += sx[i]; ay[k] += sy[i]; an[k]++; }
+    for (let k = 0; k < N; k++) if (an[k]) { px[k] = ax[k] / an[k]; py[k] = ay[k] / an[k]; }
+  }
+  const leds = serpentine(px.map((x, k) => ({ x, y: py[k], f: fp })), p);
+  return { leds, info: `${N} seeds, 60 Lloyd steps, seed ${seed}` };
+}
+/* ---------- 8a. Hilbert curve ---------- */
+function d2xy(n, d) {
+  let x = 0, y = 0, t = d;
+  for (let s = 1; s < n; s *= 2) {
+    const rx = 1 & (t / 2), ry = 1 & (t ^ rx);
+    if (ry === 0) { if (rx === 1) { x = s - 1 - x; y = s - 1 - y; } const tmp = x; x = y; y = tmp; }
+    x += s * rx; y += s * ry; t = Math.floor(t / 4);
+  }
+  return [x, y];
+}
+function genHilbert(o, fp, p) {
+  const m = 2, c = m * p, need = 2 * Math.max(o.half[0], o.half[1]) + c, k = Math.ceil(Math.log2(need / c)), n = 1 << k;
+  const V = []; for (let d = 0; d < n * n; d++) { const [x, y] = d2xy(n, d); V.push([(x - (n - 1) / 2) * c, (y - (n - 1) / 2) * c]); }
+  const leds = [];
+  for (let d = 0; d < V.length; d++) {
+    if (d > 0) for (let j = 1; j < m; j++) leds.push({ x: V[d - 1][0] + (V[d][0] - V[d - 1][0]) * j / m, y: V[d - 1][1] + (V[d][1] - V[d - 1][1]) * j / m, f: fp });
+    leds.push({ x: V[d][0], y: V[d][1], f: fp });
+  }
+  return { leds, guides: { path: V }, info: `order ${k} (${n}x${n} cells of ${c.toFixed(2)} mm), clipped; LED every ${p.toFixed(3)} mm of path` };
+}
+/* ---------- 8b. Lissajous ---------- */
+function genLissajous(o, fp, p, dens) {
+  const [a, b, dd] = { sparse: [3, 2, 2], medium: [4, 3, 4], dense: [5, 4, 3] }[dens.id], ph = Math.PI / dd, M = 6000;
+  const curve = s => { const q = []; for (let i = 0; i <= M; i++) { const t = 2 * Math.PI * i / M; q.push([s * Math.sin(a * t + ph), s * Math.sin(b * t)]); } return q; };
+  const hd = halfDiag(fp) + EDGE; let lo = 1, hi = 30;
+  for (let it = 0; it < 40; it++) { const mid = (lo + hi) / 2; if (curve(mid).every(([x, y]) => o.dist(x, y) >= hd)) lo = mid; else hi = mid; }
+  const q = curve(lo), cum = [0];
+  for (let i = 1; i < q.length; i++) cum.push(cum[i - 1] + Math.hypot(q[i][0] - q[i - 1][0], q[i][1] - q[i - 1][1]));
+  const Ltot = cum[cum.length - 1], n = Math.floor(Ltot / p), step = Ltot / n, leds = [];
+  for (let k = 0, j = 0; k < n; k++) {
+    const s = k * step; while (cum[j + 1] < s) j++;
+    const t = (s - cum[j]) / (cum[j + 1] - cum[j]);
+    leds.push({ x: q[j][0] + (q[j + 1][0] - q[j][0]) * t, y: q[j][1] + (q[j + 1][1] - q[j][1]) * t, f: fp });
+  }
+  return { leds, guides: { path: q, closed: true }, info: `${a}:${b}, phase \u03c0/${dd}, path ${Ltot.toFixed(1)} mm, ${n} stops of ${step.toFixed(3)} mm` };
+}
+/* ---------- 9. Sierpinski triangle ---------- */
+function genSierpinski(o, fp, p, dens, opts) {
+  const it = opts.iter, hd = halfDiag(fp) + EDGE, R3 = Math.sqrt(3);
+  const tri = (s, y0) => { const h = s * R3 / 2; return [[0, y0 - 2 * h / 3], [-s / 2, y0 + h / 3], [s / 2, y0 + h / 3]]; };
+  let best = { s: 0, y0: 0 };
+  for (let y0 = -4; y0 <= 4.001; y0 += 0.25) {
+    let lo = 0, hi = 60; for (let k = 0; k < 40; k++) { const mid = (lo + hi) / 2; if (tri(mid, y0).every(([x, y]) => o.dist(x, y) >= hd)) lo = mid; else hi = mid; }
+    if (lo > best.s + 1e-6) best = { s: lo, y0 };
+  }
+  const subs = [];
+  const rec = (A, B, C, d) => {
+    if (d === 0) { subs.push([A, B, C]); return; }
+    const mid = (u, v) => [(u[0] + v[0]) / 2, (u[1] + v[1]) / 2], ab = mid(A, B), ac = mid(A, C), bc = mid(B, C);
+    rec(A, ab, ac, d - 1); rec(ab, B, bc, d - 1); rec(ac, bc, C, d - 1);
+  };
+  const T = tri(best.s, best.y0); rec(T[0], T[1], T[2], it);
+  const rows = Math.max(1, Math.floor(best.s / p + 1e-9)), q = best.s / rows, eps = 1e-7 * best.s, raw = [];   // step q >= p divides the side exactly
+  const inTri = ([A, B, C], x, y) => {
+    const d1 = (x - B[0]) * (A[1] - B[1]) - (A[0] - B[0]) * (y - B[1]), d2 = (x - C[0]) * (B[1] - C[1]) - (B[0] - C[0]) * (y - C[1]), d3 = (x - A[0]) * (C[1] - A[1]) - (C[0] - A[0]) * (y - A[1]);
+    const sc = best.s; return !((d1 < -eps * sc || d2 < -eps * sc || d3 < -eps * sc) && (d1 > eps * sc || d2 > eps * sc || d3 > eps * sc));
+  };
+  for (let r = 0; r <= rows; r++) for (let j = 0; j <= r; j++) {
+    const x = T[0][0] + (j - r / 2) * q, y = T[0][1] + r * q * R3 / 2;
+    const ti = subs.findIndex(t => inTri(t, x, y)); if (ti >= 0) raw.push({ x, y, f: fp, ti, r, j });
+  }
+  raw.sort((a, b) => a.ti - b.ti || a.r - b.r || ((a.r & 1) ? b.j - a.j : a.j - b.j));
+  const lines = []; for (const [A, B, C] of subs) lines.push([...A, ...B], [...B, ...C], [...C, ...A]);
+  return { leds: raw.map(({ x, y, f }) => ({ x, y, f })), guides: { lines }, info: `${it} iterations, side ${best.s.toFixed(1)} mm, ${subs.length} triangles, lattice ${rows} steps per side`, pitchOverride: q };
+}
+
+const PATTERNS = [
+  { id: 'sunflower', name: '1. Sunflower (Vogel)', gen: genSunflower,
+    desc: 'Baseline. LED n sits at radius c&middot;&radic;(n+&frac12;) and angle n &times; 137.508&deg;; c is set so the closest pair is exactly one pitch apart. Chase order is n.' },
+  { id: 'hex', name: '2. Hexagonal grid', gen: genHex,
+    desc: 'Rows one pitch apart along the row, offset by half a pitch, rows &radic;3/2 pitch apart. The densest regular packing. Chase is serpentine by row.' },
+  { id: 'poisson', name: '3. Poisson disc', gen: genPoisson,
+    desc: 'Bridson sampling grown from the centre, minimum distance one pitch, 30 tries per point, seeded PRNG so it is the same every load. Chase follows the order points were added.' },
+  { id: 'apollonian', name: '4. Apollonian-style packing, mixed sizes', gen: genApollonian, mixed: true,
+    desc: 'Greedy circle packing: find the largest empty gap, put the biggest part that fits there, claim the gap (capped by density), repeat until even an 0402 does not fit. Big footprints land in big gaps, small ones in the cracks. Faint circles show the claimed gaps.' },
+  { id: 'halftone-radial', name: '5a. Halftone, radial', gen: (o, f, p, d) => genHalftone(o, f, p, d, 'radial'), mixed: true,
+    desc: 'Square grid sized for the largest part. Part size follows a gradient, here falling off from the centre; where the gradient is lowest the dot drops out, as in print halftone.' },
+  { id: 'halftone-linear', name: '5b. Halftone, linear', gen: (o, f, p, d) => genHalftone(o, f, p, d, 'linear'), mixed: true,
+    desc: 'Same grid, gradient from big parts at the left edge to none at the right.' },
+  { id: 'halftone-star', name: '5c. Halftone, star', gen: (o, f, p, d) => genHalftone(o, f, p, d, 'star'), mixed: true,
+    desc: 'Same grid, biggest parts inside a five-pointed star, shrinking with distance from its edge.' },
+  { id: 'penrose', name: '6a. Penrose tiling (P3 rhombs)', gen: genPenrose, opts: { place: ['vertices', 'centres'] },
+    desc: 'Robinson-triangle subdivision of a ten-triangle sun, deflated until it covers the outline, then scaled so the closest LEDs are one pitch apart. LEDs at rhomb vertices or rhomb centres.' },
+  { id: 'hat', name: '6b. Hat monotile', gen: genHat, opts: { place: ['vertices', 'centres'] },
+    desc: 'The 13-sided aperiodic hat (Smith, Myers, Kaplan, Goodman-Strauss 2023), built with the published H/T/P/F metatile substitution (after Kaplan&rsquo;s hatviz) and taken as the H supertile of the first level that covers the outline. Reflected hats are tinted in the guide. LEDs at hat vertices or hat centroids.' },
+  { id: 'voronoi', name: '7. Centroidal Voronoi', gen: genVoronoi,
+    desc: 'Seeded random points relaxed by 60 Lloyd steps (each point moves to the centroid of its Voronoi cell, on a 0.25 mm sample grid). Organic but even, like cells in a leaf.' },
+  { id: 'hilbert', name: '8a. Hilbert curve', gen: genHilbert,
+    desc: 'Hilbert curve on cells two pitches wide, so the gaps between passes show the curve; LEDs every pitch along its length, cropped to the outline. Chase runs along the curve.' },
+  { id: 'lissajous', name: '8b. Lissajous curve', gen: genLissajous,
+    desc: 'x = sin(a&middot;t + &phi;), y = sin(b&middot;t), scaled to fit; 3:2 (&phi; = &pi;/2) sparse, 4:3 (&pi;/4) medium, 5:4 (&pi;/3) dense; phases chosen so the curve does not retrace itself. LEDs evenly spaced by arc length; where passes cross, the clearance check drops the second LED.' },
+  { id: 'sierpinski', name: '9. Sierpinski triangle', gen: genSierpinski, opts: { iter: [2, 3] },
+    desc: 'The largest equilateral triangle that fits, with 2 or 3 iterations of the middle removed. LEDs on a triangular lattice that divides the side exactly (step at least one pitch), kept where they fall in a remaining triangle. Chase walks triangle by triangle.' },
+];
+
+function computeView(pat, outlineId, densId, fpId, opts) {
+  const o = OUTLINES[outlineId], fp = FPMAP[fpId], dens = DENS.find(d => d.id === densId), p = pitchOf(fp) * dens.k;
+  const t0 = Date.now(), g = pat.gen(o, fp, p, dens, opts || {});
+  const fin = finish(o, g.leds);
+  const byFp = {}; for (const L of fin.leds) byFp[L.f.id] = (byFp[L.f.id] || 0) + 1;
+  return { leds: fin.leds, removed: fin.removed, byFp, guides: g.guides || null, info: g.info || '', pitch: g.pitchOverride || p, ms: Date.now() - t0 };
+}
+//==CORE-END
+if (typeof module !== 'undefined') { module.exports = { OUTLINES, FOOTPRINTS, FPMAP, DENS, PATTERNS, computeView, hatLevel, hatCovers, polyArea, inPoly, CLEAR, EDGE, partInside, minDist, pitchOf }; }
+
+/* ===================== UI ===================== */
+if (typeof document !== 'undefined') (function () {
+  const DPR = Math.min(window.devicePixelRatio || 1, 3);
+  const S = { fp: '0603', outline: 'both', zoom: 1, diffuser: false, guides: true, playing: true, t: 0 };
+  const cards = PATTERNS.map(pat => ({ pat, anim: 'still', place: 'vertices', iter: 3, views: [], el: null }));
+  const CACHE = new Map(), SPR = new Map(), HUES = 24;
+  const $ = id => document.getElementById(id);
+
+  function seg(el, items, get, set) {
+    el.innerHTML = '';
+    for (const [val, label] of items) {
+      const b = document.createElement('button'); b.textContent = label; b.type = 'button';
+      b.setAttribute('aria-pressed', String(get() === val));
+      b.onclick = () => { set(val); for (const c of el.children) c.setAttribute('aria-pressed', String(c === b)); };
+      el.appendChild(b);
+    }
+  }
+  const fpSel = $('fp');
+  for (const f of FOOTPRINTS) { const o = document.createElement('option'); o.value = f.id; o.textContent = `${f.id} (${f.w} x ${f.h} mm)`; fpSel.appendChild(o); }
+  fpSel.value = S.fp; fpSel.onchange = () => { S.fp = fpSel.value; rebuild(); };
+  seg($('outlineSeg'), [['circle', 'Circle'], ['parallelogram', 'Parallelogram'], ['both', 'Both']], () => S.outline, v => { S.outline = v; rebuild(); });
+  seg($('zoomSeg'), [[1, '1x'], [2, '2x']], () => S.zoom, v => { S.zoom = v; rebuild(); });
+  seg($('animSeg'), [['still', 'Still'], ['chase', 'Chase'], ['pulse', 'Pulse'], ['twinkle', 'Twinkle']], () => 'still', v => {
+    for (const c of cards) { c.anim = v; syncCardAnim(c); }
+    if (v !== 'still' && !S.playing) togglePlay();
+    markDirty();
+  });
+  seg($('diffSeg'), [[false, 'Off'], [true, 'Frosted']], () => S.diffuser, v => { S.diffuser = v; applyDiffuser(); });
+  seg($('guideSeg'), [[true, 'On'], [false, 'Off']], () => S.guides, v => { S.guides = v; for (const c of cards) for (const vw of c.views) drawBg(vw); });
+  const playBtn = $('play');
+  function togglePlay() { S.playing = !S.playing; playBtn.textContent = S.playing ? 'Pause' : 'Play'; }
+  playBtn.onclick = togglePlay;
+  document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); togglePlay(); } });
+
+  function hsl2rgb(h, s, l) {
+    const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l), f = n => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+    return [Math.round(255 * f(0)), Math.round(255 * f(8)), Math.round(255 * f(4))];
+  }
+  function sprite(f, hue) {
+    const key = f.id + '|' + hue + '|' + S.zoom; let c = SPR.get(key); if (c) return c;
+    const s = PXMM * S.zoom * DPR, R = (Math.max(f.w, f.h) * 0.8 + 0.8) * s, size = Math.ceil(R * 2) + 2, m = size / 2;
+    c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d');
+    const col = hue >= HUES ? [255, 238, 214] : hsl2rgb(hue * 360 / HUES, 1, 0.55);
+    const rgba = a => `rgba(${col[0]},${col[1]},${col[2]},${a})`;
+    const gr = g.createRadialGradient(m, m, 0, m, m, R);
+    gr.addColorStop(0, rgba(0.7)); gr.addColorStop(0.3, rgba(0.32)); gr.addColorStop(0.65, rgba(0.08)); gr.addColorStop(1, rgba(0));
+    g.fillStyle = gr; g.fillRect(0, 0, size, size);
+    const w = f.w * s, h = f.h * s, mix = v => Math.round(v + (255 - v) * 0.6);
+    g.fillStyle = `rgb(${mix(col[0])},${mix(col[1])},${mix(col[2])})`; g.fillRect(m - w / 2, m - h / 2, w, h);
+    c.half = m; SPR.set(key, c); return c;
+  }
+
+  function getView(card, outlineId, densId) {
+    const pat = card.pat, opts = { place: card.place, iter: card.iter };
+    const key = [pat.id, outlineId, densId, S.fp, pat.opts ? JSON.stringify(opts) : ''].join('|');
+    if (!CACHE.has(key)) CACHE.set(key, computeView(pat, outlineId, densId, S.fp, opts));
+    return CACHE.get(key);
+  }
+
+  function buildCard(card) {
+    const pat = card.pat, el = document.createElement('section'); el.className = 'pcard'; el.id = 'p-' + pat.id;
+    el.innerHTML = `<div class="pc-head"><div><h2>${pat.name}</h2><p>${pat.desc}</p></div><div class="pc-ctl"></div></div><div class="pc-body"></div>`;
+    const ctl = el.querySelector('.pc-ctl');
+    const addSeg = (items, get, set) => { const s = document.createElement('span'); s.className = 'seg'; ctl.appendChild(s); seg(s, items, get, set); return s; };
+    if (pat.opts && pat.opts.place) addSeg([['vertices', 'Vertices'], ['centres', 'Centres']], () => card.place, v => { card.place = v; fillCard(card); });
+    if (pat.opts && pat.opts.iter) addSeg([[2, '2 iter'], [3, '3 iter']], () => card.iter, v => { card.iter = v; fillCard(card); });
+    card.animSeg = addSeg([['still', 'Still'], ['chase', 'Chase'], ['pulse', 'Pulse'], ['twinkle', 'Twinkle']], () => card.anim, v => {
+      card.anim = v; if (v !== 'still' && !S.playing) togglePlay(); for (const vw of card.views) vw.dirty = true; });
+    card.el = el; return el;
+  }
+  function syncCardAnim(card) { for (const b of card.animSeg.children) b.setAttribute('aria-pressed', String(b.textContent.toLowerCase() === card.anim)); for (const v of card.views) v.dirty = true; }
+
+  const io = new IntersectionObserver(es => { for (const e of es) { const v = e.target._view; if (v) { v.visible = e.isIntersecting; v.dirty = true; } } }, { rootMargin: '100px' });
+
+  function fillCard(card) {
+    const body = card.el.querySelector('.pc-body'); body.innerHTML = '';
+    for (const v of card.views) io.unobserve(v.fig); card.views = [];
+    const outs = S.outline === 'both' ? ['circle', 'parallelogram'] : [S.outline];
+    for (const oid of outs) {
+      const o = OUTLINES[oid], row = document.createElement('div'); row.className = 'orow';
+      row.innerHTML = `<div class="olabel">${oid}</div>`;
+      for (const d of DENS) {
+        const data = getView(card, oid, d.id);
+        const fig = document.createElement('figure'); fig.className = 'cell';
+        const W = Math.round(o.view[0] * PXMM * S.zoom), H = Math.round(o.view[1] * PXMM * S.zoom);
+        const stack = document.createElement('div'); stack.className = 'stack'; stack.style.width = W + 'px'; stack.style.height = H + 'px';
+        const bg = document.createElement('canvas'), led = document.createElement('canvas'); led.className = 'led';
+        for (const c of [bg, led]) { c.width = Math.round(W * DPR); c.height = Math.round(H * DPR); c.style.width = W + 'px'; c.style.height = H + 'px'; }
+        stack.append(bg, led);
+        const mix = pat => Object.entries(data.byFp).sort((a, b) => FPMAP[b[0]].w * FPMAP[b[0]].h - FPMAP[a[0]].w * FPMAP[a[0]].h).map(([k, n]) => `${k} &times;${n}`).join(', ');
+        const cap = document.createElement('figcaption');
+        cap.innerHTML = `<b>${d.id[0].toUpperCase() + d.id.slice(1)}</b> &middot; <span class="cnt">${data.leds.length} LEDs</span> &middot; pitch ${data.pitch.toFixed(2)} mm ` +
+          `<button class="btn small" type="button">CSV</button>` +
+          (card.pat.mixed ? `<span class="mix">${mix()}</span>` : '') +
+          (data.removed ? `<span class="mix bad">${data.removed} removed by the clearance check</span>` : '') +
+          `<span class="mix">${data.info}</span>`;
+        cap.querySelector('button').onclick = () => exportCsv(card, oid, d.id, data);
+        fig.append(stack, cap); row.appendChild(fig);
+        const v = { card, o, data, bg, led, fig, W, H, visible: false, dirty: true };
+        prepAnim(v); fig._view = v; io.observe(fig); card.views.push(v); drawBg(v);
+      }
+      body.appendChild(row);
+    }
+    applyDiffuser(card); updateTable();
+  }
+
+  function prepAnim(v) {
+    const L = v.data.leds, N = L.length, rnd = mulberry32(99);
+    v.xs = new Float32Array(N); v.ys = new Float32Array(N); v.r = new Float32Array(N); v.ph = new Float32Array(N); v.om = new Float32Array(N); v.hr = new Uint8Array(N);
+    v.rmax = 1;
+    for (let i = 0; i < N; i++) {
+      v.xs[i] = L[i].x; v.ys[i] = L[i].y; v.r[i] = Math.hypot(L[i].x, L[i].y); v.rmax = Math.max(v.rmax, v.r[i]);
+      v.ph[i] = rnd() * 6.283; v.om[i] = 1.2 + rnd() * 2.6; v.hr[i] = Math.floor(rnd() * HUES);
+    }
+  }
+  function drawBg(v) {
+    const g = v.bg.getContext('2d'), s = PXMM * S.zoom * DPR, o = v.o;
+    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#06080b'; g.fillRect(0, 0, v.bg.width, v.bg.height);
+    g.setTransform(s, 0, 0, s, v.bg.width / 2, v.bg.height / 2);
+    const path = () => { g.beginPath(); if (o.poly) { g.moveTo(...o.poly[0]); for (const q of o.poly.slice(1)) g.lineTo(...q); g.closePath(); } else g.arc(0, 0, 20, 0, 2 * Math.PI); };
+    path(); g.fillStyle = '#0d1219'; g.fill();
+    const G = v.data.guides;
+    if (S.guides && G) {
+      g.save(); path(); g.clip(); g.lineWidth = 0.6 / (PXMM * S.zoom); g.strokeStyle = 'rgba(130,160,200,0.30)';
+      if (G.lines) { g.beginPath(); for (const [a, b, c, d] of G.lines) { g.moveTo(a, b); g.lineTo(c, d); } g.stroke(); }
+      if (G.polys) for (const [poly, fl] of G.polys) {
+        g.beginPath(); g.moveTo(...poly[0]); for (const q of poly.slice(1)) g.lineTo(...q); g.closePath();
+        if (fl) { g.fillStyle = 'rgba(90,150,255,0.13)'; g.fill(); } g.stroke();
+      }
+      if (G.circles) { for (const [x, y, r] of G.circles) { g.beginPath(); g.arc(x, y, r, 0, 2 * Math.PI); g.stroke(); } }
+      if (G.path) { g.beginPath(); g.moveTo(...G.path[0]); for (const q of G.path) g.lineTo(...q); if (G.closed) g.closePath(); g.stroke(); }
+      g.restore();
+    }
+    path(); g.lineWidth = 1.2 / (PXMM * S.zoom); g.strokeStyle = 'rgba(190,205,225,0.75)'; g.stroke();
+  }
+  function drawLeds(v, mode, t) {
+    const g = v.led.getContext('2d'), s = PXMM * S.zoom * DPR, cx = v.led.width / 2, cy = v.led.height / 2, L = v.data.leds, N = L.length;
+    g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.clearRect(0, 0, v.led.width, v.led.height);
+    g.globalCompositeOperation = 'lighter';
+    const tail = Math.max(8, N / 8), head = (t * Math.max(15, N / 5)) % N, ring = (t * 14) % (v.rmax + 12) - 4;
+    for (let i = 0; i < N; i++) {
+      let b = 1, hue = HUES;
+      if (mode === 'chase') { const d = (head - i + N) % N; b = d < tail ? 1 - d / tail : 0; hue = Math.floor(i / N * HUES) % HUES; }
+      else if (mode === 'pulse') { const z = (v.r[i] - ring) / 2.4; b = Math.exp(-z * z); hue = Math.floor(v.r[i] / (v.rmax + 0.01) * HUES * 0.8); }
+      else if (mode === 'twinkle') { b = Math.pow(Math.max(0, Math.sin(v.om[i] * t + v.ph[i])), 10); hue = v.hr[i]; }
+      b = 0.12 + 0.88 * b;
+      const sp = sprite(L[i].f, hue); g.globalAlpha = b;
+      g.drawImage(sp, cx + v.xs[i] * s - sp.half, cy + v.ys[i] * s - sp.half);
+    }
+  }
+  function applyDiffuser(card) {
+    const list = card ? [card] : cards, px = 1.3 * PXMM * S.zoom;
+    for (const c of list) for (const v of c.views) v.led.style.filter = S.diffuser ? `blur(${px.toFixed(1)}px) brightness(1.7) saturate(1.25)` : '';
+  }
+  function markDirty() { for (const c of cards) for (const v of c.views) v.dirty = true; }
+
+  let last = 0;
+  function frame(ts) {
+    const dt = last ? Math.min(0.1, (ts - last) / 1000) : 0; last = ts; if (S.playing) S.t += dt;
+    for (const c of cards) for (const v of c.views) {
+      if (!v.visible) continue;
+      if (c.anim === 'still') { if (v.dirty) { drawLeds(v, 'still', 0); v.dirty = false; } }
+      else if (S.playing || v.dirty) { drawLeds(v, c.anim, S.t); v.dirty = false; }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function exportCsv(card, oid, did, data) {
+    const pid = card.pat.id + (card.pat.opts && card.pat.opts.place ? '-' + card.place : '') + (card.pat.opts && card.pat.opts.iter ? '-' + card.iter + 'iter' : '');
+    const rows = ['ref,x_mm,y_mm,rot_deg,footprint,w_mm,h_mm'];
+    data.leds.forEach((L, i) => rows.push(`D${i + 1},${L.x.toFixed(4)},${L.y.toFixed(4)},0,${L.f.id},${L.f.w},${L.f.h}`));
+    const blob = new Blob([rows.join('\n') + '\n'], { type: 'text/csv' }), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = `pattern-explorer_${pid}_${oid}_${did}_${S.fp}.csv`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  function updateTable() {
+    const t = $('tbl'); $('tblFp').textContent = `${S.fp} (${FPMAP[S.fp].w} x ${FPMAP[S.fp].h} mm)`;
+    let h = '<tr><th>Pattern</th>' + ['circle', 'parallelogram'].map(o => DENS.map(d => `<th class="n">${o === 'circle' ? 'Circle' : 'Para.'} ${d.id}</th>`).join('')).join('') + '</tr>';
+    for (const c of cards) {
+      const pid = c.pat.opts ? ` <span style="color:var(--muted)">(${[c.pat.opts.place ? c.place : '', c.pat.opts.iter ? c.iter + ' iter' : ''].filter(Boolean).join(', ')})</span>` : '';
+      h += `<tr><td>${c.pat.name}${pid}</td>`;
+      for (const o of ['circle', 'parallelogram']) for (const d of DENS) {
+        const key = [c.pat.id, o, d.id, S.fp, c.pat.opts ? JSON.stringify({ place: c.place, iter: c.iter }) : ''].join('|'), v = CACHE.get(key);
+        h += `<td class="n">${v ? v.leds.length : '&hellip;'}</td>`;
+      }
+      h += '</tr>';
+    }
+    t.innerHTML = h;
+  }
+
+  let job = 0;
+  function rebuild() {
+    const my = ++job, root = $('cards');
+    $('bar').style.width = (10 * PXMM * S.zoom) + 'px';
+    if (!root.children.length) for (const c of cards) root.appendChild(buildCard(c));
+    let i = 0; $('busy').textContent = 'computing...';
+    const step = () => {
+      if (my !== job) return;
+      if (i < cards.length) { fillCard(cards[i++]); setTimeout(step, 0); return; }
+      // also fill the other outline for the count table
+      for (const c of cards) for (const o of ['circle', 'parallelogram']) for (const d of DENS) getView(c, o, d.id);
+      updateTable(); $('busy').textContent = '';
+    };
+    step();
+  }
+  rebuild();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -25,13 +25,13 @@
  "thickness": 1.5862,
  "plate": "#c8c8c8",
  "body": "body.svg",
- "vias": 451,
+ "vias": 445,
  "nets": 101,
  "footprints": 148,
  "front": 67,
  "back": 81,
- "tracks": 2523,
- "length_mm": 2844.6,
+ "tracks": 2513,
+ "length_mm": 2827.6,
  "layers": [
   {
    "name": "F.Cu",
@@ -40,8 +40,8 @@
    "file": "f.svg",
    "color": "#C83434",
    "note": "Top copper, 35 \u00b5m (1 oz).",
-   "tracks": 1201,
-   "length_mm": 1019.2,
+   "tracks": 1183,
+   "length_mm": 977.2,
    "pads": 266,
    "zones": []
   },
@@ -66,8 +66,8 @@
    "file": "in2.svg",
    "color": "#CE7D2C",
    "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-   "tracks": 555,
-   "length_mm": 1032.9,
+   "tracks": 580,
+   "length_mm": 1053.1,
    "pads": 0,
    "zones": []
   },
@@ -78,9 +78,9 @@
    "file": "b.svg",
    "color": "#4D7FC4",
    "note": "Bottom copper, 35 \u00b5m (1 oz).",
-   "tracks": 767,
-   "length_mm": 792.4,
-   "pads": 310,
+   "tracks": 750,
+   "length_mm": 797.4,
+   "pads": 312,
    "zones": [
     "+1V1",
     "GND",
@@ -95,6 +95,14 @@
    "file": "edge.svg",
    "color": "#D0D2CD",
    "note": "The outline and every cut-out in it."
+  },
+  {
+   "name": "F.Silkscreen",
+   "slug": "silk_f",
+   "kind": "silk",
+   "file": "silk_f.svg",
+   "color": "#F2EDA1",
+   "note": "Silkscreen, front: reference designators and markings as printed."
   },
   {
    "name": "B.Silkscreen",

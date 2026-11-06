@@ -4,8 +4,8 @@
  "sheets": [
   {
    "sheet": "root",
-   "title": "sunflower (s2-88): top",
-   "desc": "88 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 2x AW20198QNR, 4-layer JLCPCB \u00b7 0 symbols",
+   "title": "sunflower (s2-88-pofv): top",
+   "desc": "88 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 2x AW20198QNR, 4-layer JLCPCB (vias in pads, POFV) \u00b7 0 symbols",
    "file": "sunflower.svg",
    "source": "sunflower.kicad_sch",
    "paper": "A4",
@@ -19,7 +19,7 @@
   {
    "sheet": "Power",
    "title": "Power",
-   "desc": "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell) \u00b7 30 symbols",
+   "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a JST GH plug) \u00b7 30 symbols",
    "file": "sunflower-Power.svg",
    "source": "power.kicad_sch",
    "paper": "A3",

@@ -5,8 +5,8 @@
   "sheets": [
    {
     "sheet": "root",
-    "title": "sunflower (s1-66): top",
-    "desc": "66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB \u00b7 0 symbols",
+    "title": "sunflower (s1-66-pofv): top",
+    "desc": "66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB (vias in pads, POFV) \u00b7 0 symbols",
     "file": "sunflower.svg",
     "source": "sunflower.kicad_sch",
     "paper": "A4",
@@ -20,7 +20,7 @@
    {
     "sheet": "Power",
     "title": "Power",
-    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell) \u00b7 30 symbols",
+    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a JST GH plug) \u00b7 30 symbols",
     "file": "sunflower-Power.svg",
     "source": "power.kicad_sch",
     "paper": "A3",
@@ -88,13 +88,13 @@
   "thickness": 1.5862,
   "plate": "#c8c8c8",
   "body": "body.svg",
-  "vias": 420,
+  "vias": 423,
   "nets": 101,
   "footprints": 148,
   "front": 67,
   "back": 81,
-  "tracks": 2738,
-  "length_mm": 2606.5,
+  "tracks": 2689,
+  "length_mm": 2737.2,
   "layers": [
    {
     "name": "F.Cu",
@@ -103,8 +103,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 1291,
-    "length_mm": 979.4,
+    "tracks": 1241,
+    "length_mm": 976.8,
     "pads": 266,
     "zones": []
    },
@@ -129,8 +129,8 @@
     "file": "in2.svg",
     "color": "#CE7D2C",
     "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-    "tracks": 540,
-    "length_mm": 924.2,
+    "tracks": 517,
+    "length_mm": 995.9,
     "pads": 0,
     "zones": []
    },
@@ -141,9 +141,9 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 907,
-    "length_mm": 702.9,
-    "pads": 310,
+    "tracks": 931,
+    "length_mm": 764.6,
+    "pads": 312,
     "zones": [
      "GND",
      "+3V3",
@@ -197,12 +197,11 @@
   "board": "sunflower.kicad_pcb",
   "generated": "2026-11-06",
   "glb": "board.glb",
-  "bytes": 7117704,
-  "kicad_bytes": 22992152,
+  "bytes": 7172196,
+  "kicad_bytes": 23229784,
   "parts": 148,
-  "modelled": 138,
+  "modelled": 139,
   "no_model": [
-   "BT1",
    "J1",
    "TP1",
    "TP2",
@@ -231,10 +230,10 @@
    "legacy": 2,
    "found": 0
   },
-  "triangles": 498917,
-  "primitives": 592
+  "triangles": 502834,
+  "primitives": 594
  },
- "when": "2026-11-06 04:39",
+ "when": "2026-11-06 11:13",
  "source": {
   "kind": "file",
   "pcb": "hw/sunflower/s1-66-pofv/sunflower.kicad_pcb",

@@ -2,12 +2,11 @@
  "board": "sunflower.kicad_pcb",
  "generated": "2026-11-06",
  "glb": "board.glb",
- "bytes": 11907804,
- "kicad_bytes": 35173056,
+ "bytes": 12064736,
+ "kicad_bytes": 35666136,
  "parts": 221,
- "modelled": 211,
+ "modelled": 212,
  "no_model": [
-  "BT1",
   "J1",
   "TP1",
   "TP2",
@@ -37,6 +36,6 @@
   "legacy": 2,
   "found": 0
  },
- "triangles": 815353,
- "primitives": 1005
+ "triangles": 828573,
+ "primitives": 1007
 }

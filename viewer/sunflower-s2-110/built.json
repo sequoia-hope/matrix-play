@@ -20,7 +20,7 @@
    {
     "sheet": "Power",
     "title": "Power",
-    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell) \u00b7 30 symbols",
+    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a JST GH plug) \u00b7 30 symbols",
     "file": "sunflower-Power.svg",
     "source": "power.kicad_sch",
     "paper": "A3",
@@ -102,13 +102,13 @@
   "thickness": 1.5862,
   "plate": "#c8c8c8",
   "body": "body.svg",
-  "vias": 619,
+  "vias": 640,
   "nets": 132,
   "footprints": 199,
   "front": 111,
   "back": 88,
-  "tracks": 4083,
-  "length_mm": 3195.7,
+  "tracks": 4108,
+  "length_mm": 3246.5,
   "layers": [
    {
     "name": "F.Cu",
@@ -117,8 +117,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 1921,
-    "length_mm": 1095.2,
+    "tracks": 1907,
+    "length_mm": 1113.4,
     "pads": 442,
     "zones": []
    },
@@ -143,8 +143,8 @@
     "file": "in2.svg",
     "color": "#CE7D2C",
     "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-    "tracks": 845,
-    "length_mm": 1178.1,
+    "tracks": 871,
+    "length_mm": 1198.3,
     "pads": 0,
     "zones": []
    },
@@ -155,9 +155,9 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 1317,
-    "length_mm": 922.5,
-    "pads": 363,
+    "tracks": 1330,
+    "length_mm": 934.8,
+    "pads": 365,
     "zones": [
      "GND",
      "/MCU/VREG_LX",
@@ -211,12 +211,11 @@
   "board": "sunflower.kicad_pcb",
   "generated": "2026-11-06",
   "glb": "board.glb",
-  "bytes": 10553160,
-  "kicad_bytes": 32022744,
+  "bytes": 10723172,
+  "kicad_bytes": 32816008,
   "parts": 199,
-  "modelled": 189,
+  "modelled": 190,
   "no_model": [
-   "BT1",
    "J1",
    "TP1",
    "TP2",
@@ -246,10 +245,10 @@
    "legacy": 2,
    "found": 0
   },
-  "triangles": 731581,
-  "primitives": 873
+  "triangles": 747002,
+  "primitives": 875
  },
- "when": "2026-11-06 04:40",
+ "when": "2026-11-06 11:14",
  "source": {
   "kind": "file",
   "pcb": "hw/sunflower/s2-110/sunflower.kicad_pcb",
