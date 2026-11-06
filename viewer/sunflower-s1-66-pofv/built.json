@@ -20,7 +20,7 @@
    {
     "sheet": "Power",
     "title": "Power",
-    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a JST GH plug) \u00b7 30 symbols",
+    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug) \u00b7 30 symbols",
     "file": "sunflower-Power.svg",
     "source": "power.kicad_sch",
     "paper": "A3",
@@ -88,13 +88,13 @@
   "thickness": 1.5862,
   "plate": "#c8c8c8",
   "body": "body.svg",
-  "vias": 423,
+  "vias": 395,
   "nets": 101,
   "footprints": 148,
   "front": 67,
   "back": 81,
-  "tracks": 2689,
-  "length_mm": 2737.2,
+  "tracks": 2599,
+  "length_mm": 2660.4,
   "layers": [
    {
     "name": "F.Cu",
@@ -103,8 +103,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 1241,
-    "length_mm": 976.8,
+    "tracks": 1197,
+    "length_mm": 962.3,
     "pads": 266,
     "zones": []
    },
@@ -129,8 +129,8 @@
     "file": "in2.svg",
     "color": "#CE7D2C",
     "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-    "tracks": 517,
-    "length_mm": 995.9,
+    "tracks": 475,
+    "length_mm": 959.8,
     "pads": 0,
     "zones": []
    },
@@ -141,8 +141,8 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 931,
-    "length_mm": 764.6,
+    "tracks": 927,
+    "length_mm": 738.3,
     "pads": 312,
     "zones": [
      "GND",
@@ -197,8 +197,8 @@
   "board": "sunflower.kicad_pcb",
   "generated": "2026-11-06",
   "glb": "board.glb",
-  "bytes": 7172196,
-  "kicad_bytes": 23229784,
+  "bytes": 7012900,
+  "kicad_bytes": 22505396,
   "parts": 148,
   "modelled": 139,
   "no_model": [
@@ -230,10 +230,10 @@
    "legacy": 2,
    "found": 0
   },
-  "triangles": 502834,
+  "triangles": 486768,
   "primitives": 594
  },
- "when": "2026-11-06 11:13",
+ "when": "2026-11-06 12:47",
  "source": {
   "kind": "file",
   "pcb": "hw/sunflower/s1-66-pofv/sunflower.kicad_pcb",

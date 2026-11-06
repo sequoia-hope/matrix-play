@@ -1,6 +1,6 @@
 {
   "s1-66 (4L, 66x XL-1615, 1x AW20198)": {
-    "bom_per_board": 10.96,
+    "bom_per_board": 10.73,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
     "mcu_plus_l1": 1.55,
@@ -23,7 +23,7 @@
     ]
   },
   "s2-88 (4L, 88x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.24,
+    "bom_per_board": 12.02,
     "led_cost": 1.4,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -46,7 +46,7 @@
     ]
   },
   "s2-110 (4L, 110x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.59,
+    "bom_per_board": 12.37,
     "led_cost": 1.75,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -69,7 +69,7 @@
     ]
   },
   "s2-132 (4L, 132x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.94,
+    "bom_per_board": 12.72,
     "led_cost": 2.1,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -92,7 +92,7 @@
     ]
   },
   "s1-66-pofv (4L, 66x XL-1615, 1x AW20198)": {
-    "bom_per_board": 10.96,
+    "bom_per_board": 10.73,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
     "mcu_plus_l1": 1.55,
@@ -115,7 +115,7 @@
     ]
   },
   "s2-88-pofv (4L, 88x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.24,
+    "bom_per_board": 12.02,
     "led_cost": 1.4,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,

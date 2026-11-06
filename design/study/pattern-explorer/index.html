@@ -82,6 +82,9 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 .notes { color: var(--muted); font-size: .86rem; max-width: 90ch; }
 .notes li { margin-bottom: .3rem; }
 #busy { font-size: .78rem; color: var(--warn); }
+.favb { font-size: .72rem; font-weight: 650; color: #f5b83d; background: color-mix(in srgb, #f5b83d 14%, transparent); border: 1px solid color-mix(in srgb, #f5b83d 45%, transparent); border-radius: 999px; padding: .05rem .5rem; vertical-align: middle; margin-left: .35rem; white-space: nowrap; }
+.stack.fav { border-color: #f5b83d; box-shadow: 0 0 0 1px #f5b83d55; }
+.favtag { position: absolute; left: 6px; top: 5px; font-size: .66rem; font-weight: 700; color: #1a1300; background: #f5b83d; border-radius: 4px; padding: 0 .35rem; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -93,6 +96,7 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 </header>
 
 <div class="controls" id="controls">
+  <span class="ctl">Show <span class="seg" id="showSeg"></span></span>
   <label class="ctl">Footprint <select id="fp"></select></label>
   <span class="ctl">Outline <span class="seg" id="outlineSeg"></span></span>
   <span class="ctl">Zoom <span class="seg" id="zoomSeg"></span></span>
@@ -108,15 +112,16 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 
 <section class="pcard" style="padding: .9rem 1rem">
   <h2 style="font-size:1.08rem;margin:0 0 .2rem">LED counts, <span id="tblFp"></span></h2>
-  <p class="notes" style="margin:0">Counts for the selected footprint, both outlines, with each card's current options. Halftone and Apollonian mix sizes; their counts cover all sizes.</p>
+  <p class="notes" style="margin:0">Counts for the selected footprint, both outlines, with each card's current options. Halftone and Apollonian mix sizes; their counts cover all sizes. &#9733; marks a favourite view; bidirectional halftone shows (A+B).</p>
   <table id="tbl"></table>
   <h2 style="font-size:1.08rem;margin:.6rem 0 .2rem">Rules</h2>
   <ul class="notes">
     <li>Parts are placed square to the board (0&deg;). Two parts never come closer than <b>0.25 mm</b> body to body, tested on the real rectangles; a part body stays at least <b>0.30 mm</b> inside the outline.</li>
     <li>Dense pitch is the diagonal of the footprint grown by the clearance, so the rule holds in every direction: for 0603, hypot(1.6+0.25, 0.8+0.25) = 2.127 mm. Medium is 1.4&times; that, sparse 2&times;.</li>
     <li>Every pattern passes a final clearance check. Any LED it removes is reported under the view (most patterns remove none; Poisson, Voronoi and Lissajous crossings can).</li>
-    <li>Halftone and Apollonian use a ladder of sizes: 1206, 0805, 0603, 0402, plus the selected footprint if it is not one of those.</li>
-    <li>CSV: one row per LED, <code>ref,x_mm,y_mm,rot_deg,footprint,w_mm,h_mm</code>, origin at the outline centre, +x right, +y down as in KiCad. Rows follow the chase order.</li>
+    <li>Mixed-size patterns (halftone, Apollonian, size-gradient bidirectional halftone) use a ladder of sizes. With a square footprint selected: SQ-2.0, XL-1615RGBC, XL-1010RGB, MHPA0808; with a rectangular chip: 1206, 0805, 0603, 0402. The selected footprint is added if it is not already one of them.</li>
+    <li>The default footprint is XL-1615RGBC (1.6 x 1.5 mm), the LED on the boards. SQ-1.0, SQ-1.5 and SQ-2.0 are generic squares, not specific parts.</li>
+    <li>CSV: one row per LED, <code>ref,x_mm,y_mm,rot_deg,footprint,w_mm,h_mm</code>, origin at the outline centre, +x right, +y down as in KiCad. Rows follow the chase order. Rotating Lissajous adds <code>frames</code> (space-separated frame numbers) and one 0/1 column per frame, <code>f0..f(K-1)</code>; bidirectional halftone adds <code>set</code> (A or B).</li>
     <li>True size depends on the screen. Browsers draw 96 CSS px per inch, but many displays are not exactly that; check the 10 mm bar against a ruler.</li>
   </ul>
 </section>
@@ -128,14 +133,18 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
 const PXMM = 96 / 25.4;
 const CLEAR = 0.25, EDGE = 0.30;
 const FOOTPRINTS = [
-  { id: '0402', w: 1.0, h: 0.5, note: '0402 chip' },
-  { id: '0603', w: 1.6, h: 0.8, note: '0603 chip' },
-  { id: '0805', w: 2.0, h: 1.25, note: '0805 chip' },
-  { id: '1206', w: 3.2, h: 1.6, note: '1206 chip' },
-  { id: 'XL-1615RGBC', w: 1.6, h: 1.5, note: 'used on the 38 mm and parallelogram boards' },
-  { id: 'XL-1010RGB', w: 1.0, h: 1.0, note: 'used on round-pendant-e' },
-  { id: 'MHPA0808', w: 0.8, h: 0.8, note: 'used on the 20 mm square boards' },
+  { id: 'XL-1615RGBC', w: 1.6, h: 1.5, note: 'the board LED (38 mm and parallelogram boards)', group: 'Square LEDs' },
+  { id: 'XL-1010RGB', w: 1.0, h: 1.0, note: 'used on round-pendant-e', group: 'Square LEDs' },
+  { id: 'MHPA0808', w: 0.8, h: 0.8, note: 'used on the 20 mm square boards', group: 'Square LEDs' },
+  { id: 'SQ-1.0', w: 1.0, h: 1.0, note: 'generic 1.0 mm square', group: 'Generic squares' },
+  { id: 'SQ-1.5', w: 1.5, h: 1.5, note: 'generic 1.5 mm square', group: 'Generic squares' },
+  { id: 'SQ-2.0', w: 2.0, h: 2.0, note: 'generic 2.0 mm square', group: 'Generic squares' },
+  { id: '0402', w: 1.0, h: 0.5, note: '0402 chip', group: 'Rectangular chips' },
+  { id: '0603', w: 1.6, h: 0.8, note: '0603 chip', group: 'Rectangular chips' },
+  { id: '0805', w: 2.0, h: 1.25, note: '0805 chip', group: 'Rectangular chips' },
+  { id: '1206', w: 3.2, h: 1.6, note: '1206 chip', group: 'Rectangular chips' },
 ];
+const DEFAULT_FP = 'XL-1615RGBC';
 const FPMAP = Object.fromEntries(FOOTPRINTS.map(f => [f.id, f]));
 const DENS = [{ id: 'sparse', k: 2.0 }, { id: 'medium', k: 1.4 }, { id: 'dense', k: 1.0 }];
 const SHEAR_DEG = 17.75, SHEAR = Math.tan(SHEAR_DEG * Math.PI / 180), SCOS = Math.cos(SHEAR_DEG * Math.PI / 180);
@@ -169,8 +178,9 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   };
 }
-function ladderFor(fp) {
-  const ids = ['1206', '0805', '0603', '0402'];
+const isSquare = f => Math.abs(f.w - f.h) <= 0.15;
+function ladderFor(fp) {      // sizes for the mixed-size patterns: square ladder for square parts, chip ladder otherwise
+  const ids = isSquare(fp) ? ['SQ-2.0', 'XL-1615RGBC', 'XL-1010RGB', 'MHPA0808'] : ['1206', '0805', '0603', '0402'];
   if (!ids.includes(fp.id)) ids.push(fp.id);
   return ids.map(i => FPMAP[i]).sort((a, b) => pitchOf(b) - pitchOf(a));
 }
@@ -614,6 +624,85 @@ function genSierpinski(o, fp, p, dens, opts) {
   return { leds: raw.map(({ x, y, f }) => ({ x, y, f })), guides: { lines }, info: `${it} iterations, side ${best.s.toFixed(1)} mm, ${subs.length} triangles, lattice ${rows} steps per side`, pitchOverride: q };
 }
 
+/* ---------- 10. Rotating Lissajous (3D): K projected frames merged onto one LED set ---------- */
+const ROT_CURVES = {
+  cyl32: { label: 'Cylinder 3:2', f: t => [Math.sin(3 * t + Math.PI / 2), Math.sin(2 * t), Math.cos(3 * t + Math.PI / 2)], text: 'x = sin(3t + &pi;/2), y = sin 2t, z = cos(3t + &pi;/2) (a 3:2 Lissajous wrapped on a cylinder)' },
+  cyl43: { label: 'Cylinder 4:3', f: t => [Math.sin(4 * t + Math.PI / 4), Math.sin(3 * t), Math.cos(4 * t + Math.PI / 4)], text: 'x = sin(4t + &pi;/4), y = sin 3t, z = cos(4t + &pi;/4)' },
+  knot: { label: 'Knot 3:2:5', f: t => [Math.cos(3 * t + 0.7), Math.cos(2 * t + 0.2), Math.cos(5 * t)], text: 'Lissajous knot x = cos(3t + 0.7), y = cos(2t + 0.2), z = cos 5t' },
+};
+function genRotLiss(o, fp, p, dens, opts) {
+  const K = opts.K || 8, cv = ROT_CURVES[opts.curve] || ROT_CURVES.cyl32, M = 4000;
+  const base = []; for (let i = 0; i <= M; i++) base.push(cv.f(2 * Math.PI * i / M));
+  const proj = (s, th) => { const c = Math.cos(th), sn = Math.sin(th); return base.map(([x, y, z]) => [s * (x * c + z * sn), s * y]); };
+  const thetas = Array.from({ length: K }, (_, k) => 2 * Math.PI * k / K);       // one full turn about the vertical axis
+  const hd = halfDiag(fp) + EDGE; let lo = 1, hi = 30;
+  for (let it = 0; it < 40; it++) { const mid = (lo + hi) / 2; if (thetas.every(th => proj(mid, th).every(([x, y]) => o.dist(x, y) >= hd))) lo = mid; else hi = mid; }
+  // Snap radius: 'tight' = the clearance pitch of the footprint (closest two parts may sit); 'loose' = the arc spacing.
+  const snapR = opts.snap === 'loose' ? p : pitchOf(fp), cell = Math.max(snapR, pitchOf(fp)), g = new Map(), leds = [], dropped = new Array(K).fill(0), paths = [];
+  const near = (x, y) => { const cx = Math.floor(x / cell), cy = Math.floor(y / cell), out = [];
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) { const a = g.get((cx + dx) * 1e4 + cy + dy); if (a) out.push(...a); } return out; };
+  for (let k = 0; k < K; k++) {
+    const q = proj(lo, thetas[k]); paths.push(q);
+    const cum = [0]; for (let i = 1; i < q.length; i++) cum.push(cum[i - 1] + Math.hypot(q[i][0] - q[i - 1][0], q[i][1] - q[i - 1][1]));
+    const Lt = cum[cum.length - 1], n = Math.max(1, Math.floor(Lt / p)), step = Lt / n;
+    for (let m = 0, j = 0; m < n; m++) {
+      const sd = m * step; while (cum[j + 1] < sd) j++;
+      const u = (sd - cum[j]) / ((cum[j + 1] - cum[j]) || 1), x = q[j][0] + (q[j + 1][0] - q[j][0]) * u, y = q[j][1] + (q[j + 1][1] - q[j][1]) * u;
+      const nb = near(x, y); let best = null, bd = Infinity;
+      for (const L of nb) { const d = Math.hypot(L.x - x, L.y - y); if (d < bd) { bd = d; best = L; } }
+      if (best && bd < snapR) { if (!best.frames.includes(k)) best.frames.push(k); continue; }       // snap: reuse the LED
+      const clear = partInside(o, x, y, fp) && nb.every(L => !(Math.abs(L.x - x) < (L.f.w + fp.w) / 2 + CLEAR && Math.abs(L.y - y) < (L.f.h + fp.h) / 2 + CLEAR));
+      if (!clear) { dropped[k]++; continue; }
+      const L = { x, y, f: fp, frames: [k] }; leds.push(L);
+      const key = Math.floor(x / cell) * 1e4 + Math.floor(y / cell); if (!g.has(key)) g.set(key, []); g.get(key).push(L);
+    }
+  }
+  return { leds, K, dropped, guides: { path: paths[0], closed: true }, info: `${cv.label}, ${K} frames per turn, LED every ${p.toFixed(2)} mm of path, snap radius ${snapR.toFixed(2)} mm (${opts.snap === 'loose' ? 'loose' : 'tight'})` };
+}
+/* ---------- 11. Bidirectional halftone: two interleaved sets with opposite gradients ---------- */
+const BAYER4 = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+function bidirGrad(o, dir) {      // value for set A in 0..1; set B uses 1 - value
+  const R = o.id === 'circle' ? 20 : 0.85 * o.rfar;
+  return dir === 'radial' ? (x, y) => Math.min(1, Math.hypot(x, y) / R) : (x, y) => Math.max(0, Math.min(1, (x + o.half[0]) / (2 * o.half[0])));
+}
+function genBidir(o, fp, p, dens, opts) {
+  const dir = opts.dir || 'linear', grad = bidirGrad(o, dir), [hx, hy] = o.half;
+  if ((opts.mode || 'fixed') === 'fixed') {
+    // One footprint. Ordered dither on a square grid: A takes the sites whose threshold is below m*v, B those above 1 - m*(1-v); never both.
+    const q = (Math.max(fp.w, fp.h) + CLEAR) * dens.k, m = 0.9, leds = [];
+    const I = Math.ceil(hx / q) + 1, J = Math.ceil(hy / q) + 1;
+    for (let j = -J; j <= J; j++) {
+      const row = [];
+      for (let i = -I; i <= I; i++) {
+        const x = (i + 0.5) * q, y = (j + 0.5) * q, v = grad(x, y), t = (BAYER4[((j % 4) + 4) % 4][((i % 4) + 4) % 4] + 0.5) / 16;
+        if (t < m * v) row.push({ x, y, f: fp, set: 'A' }); else if (t > 1 - m * (1 - v)) row.push({ x, y, f: fp, set: 'B' });
+      }
+      if (j & 1) row.reverse(); leds.push(...row);
+    }
+    return { leds, info: `fixed size, ${q.toFixed(2)} mm grid, 4x4 ordered dither, fill ${m * 100}%`, pitchOverride: q };
+  }
+  // Size gradient: two square grids offset by half a pitch both ways (a checkerboard). Grid pitch is the smallest that clears.
+  const lad = ladderFor(fp), L = lad.length, pick = v => Math.min(L, Math.floor((1 - v) * (L + 1)));
+  const build = P => {
+    const leds = [], I = Math.ceil(hx / P) + 1, J = Math.ceil(hy / P) + 1;
+    for (let j = -J; j <= J; j++) for (let h = 0; h < 2; h++) {
+      const row = [];
+      for (let i = -I; i <= I; i++) {
+        const x = (i + h * 0.5) * P, y = (j + h * 0.5) * P, v = h ? 1 - grad(x, y) : grad(x, y), idx = pick(v);
+        if (idx >= L) continue;
+        let f = null; for (let k = idx; k < L; k++) if (partInside(o, x, y, lad[k])) { f = lad[k]; break; }
+        if (f) row.push({ x, y, f, set: h ? 'B' : 'A' });
+      }
+      if (j & 1) row.reverse(); leds.push(...row);
+    }
+    return leds;
+  };
+  let P = Math.max(lad[0].w, lad[0].h) + CLEAR;
+  for (let it = 0; it < 80; it++) { if (finish(o, build(P)).removed === 0) break; P *= 1.02; }
+  P *= dens.k;
+  return { leds: build(P), info: `size gradient, two grids of ${P.toFixed(2)} mm offset half a pitch`, pitchOverride: P };
+}
+
 const PATTERNS = [
   { id: 'sunflower', name: '1. Sunflower (Vogel)', gen: genSunflower,
     desc: 'Baseline. LED n sits at radius c&middot;&radic;(n+&frac12;) and angle n &times; 137.508&deg;; c is set so the closest pair is exactly one pitch apart. Chase order is n.' },
@@ -622,7 +711,7 @@ const PATTERNS = [
   { id: 'poisson', name: '3. Poisson disc', gen: genPoisson,
     desc: 'Bridson sampling grown from the centre, minimum distance one pitch, 30 tries per point, seeded PRNG so it is the same every load. Chase follows the order points were added.' },
   { id: 'apollonian', name: '4. Apollonian-style packing, mixed sizes', gen: genApollonian, mixed: true,
-    desc: 'Greedy circle packing: find the largest empty gap, put the biggest part that fits there, claim the gap (capped by density), repeat until even an 0402 does not fit. Big footprints land in big gaps, small ones in the cracks. Faint circles show the claimed gaps.' },
+    desc: 'Greedy circle packing: find the largest empty gap, put the biggest part that fits there, claim the gap (capped by density), repeat until even the smallest part does not fit. Big footprints land in big gaps, small ones in the cracks. Faint circles show the claimed gaps.' },
   { id: 'halftone-radial', name: '5a. Halftone, radial', gen: (o, f, p, d) => genHalftone(o, f, p, d, 'radial'), mixed: true,
     desc: 'Square grid sized for the largest part. Part size follows a gradient, here falling off from the centre; where the gradient is lowest the dot drops out, as in print halftone.' },
   { id: 'halftone-linear', name: '5b. Halftone, linear', gen: (o, f, p, d) => genHalftone(o, f, p, d, 'linear'), mixed: true,
@@ -641,6 +730,12 @@ const PATTERNS = [
     desc: 'x = sin(a&middot;t + &phi;), y = sin(b&middot;t), scaled to fit; 3:2 (&phi; = &pi;/2) sparse, 4:3 (&pi;/4) medium, 5:4 (&pi;/3) dense; phases chosen so the curve does not retrace itself. LEDs evenly spaced by arc length; where passes cross, the clearance check drops the second LED.' },
   { id: 'sierpinski', name: '9. Sierpinski triangle', gen: genSierpinski, opts: { iter: [2, 3] },
     desc: 'The largest equilateral triangle that fits, with 2 or 3 iterations of the middle removed. LEDs on a triangular lattice that divides the side exactly (step at least one pitch), kept where they fall in a remaining triangle. Chase walks triangle by triangle.' },
+  { id: 'rotliss', name: '10. Rotating Lissajous (3D)', gen: genRotLiss, dens: ['sparse', 'medium'], frames: true,
+    opts: { curve: ['cyl32', 'cyl43', 'knot'], K: [4, 6, 8, 10, 12], snap: ['tight', 'loose'] }, defAnim: 'rotate',
+    desc: 'A 3D curve turned about the vertical axis and projected flat, K frames per full turn. Each frame gets LEDs spaced evenly along its projected curve; a point closer than the footprint&rsquo;s clearance pitch to an LED already placed reuses it (Snap: loose uses the arc spacing instead, fewer LEDs, coarser motion), otherwise it becomes a new LED if it clears every other part, or is dropped. Rotate lights one frame at a time so the curve reads as turning. The guide shows frame 0. The CSV lists each LED&rsquo;s frames for firmware.' },
+  { id: 'bidir', name: '11. Bidirectional halftone', gen: genBidir, dens: ['medium', 'dense'], sets: true,
+    opts: { mode: ['fixed', 'size'], dir: ['linear', 'radial'] }, defAnim: 'sweepA',
+    desc: 'Two interleaved halftones with opposite gradients. Set A (amber) thickens left to right, or outward; set B (cyan) the other way. Fixed size (default) uses one footprint and makes the gradient by spacing: a 4x4 ordered dither where each grid site goes to A, B or neither. Size gradient uses two half-pitch-offset grids whose part size follows each set&rsquo;s gradient. Sweep lights one set progressively along its own direction.' },
 ];
 
 function computeView(pat, outlineId, densId, fpId, opts) {
@@ -648,37 +743,57 @@ function computeView(pat, outlineId, densId, fpId, opts) {
   const t0 = Date.now(), g = pat.gen(o, fp, p, dens, opts || {});
   const fin = finish(o, g.leds);
   const byFp = {}; for (const L of fin.leds) byFp[L.f.id] = (byFp[L.f.id] || 0) + 1;
-  return { leds: fin.leds, removed: fin.removed, byFp, guides: g.guides || null, info: g.info || '', pitch: g.pitchOverride || p, ms: Date.now() - t0 };
+  const out = { leds: fin.leds, removed: fin.removed, byFp, guides: g.guides || null, info: g.info || '', pitch: g.pitchOverride || p, ms: Date.now() - t0 };
+  if (g.K) {
+    out.K = g.K; out.dropped = g.dropped; out.perFrame = new Array(g.K).fill(0);
+    for (const L of fin.leds) for (const k of L.frames) out.perFrame[k]++;
+  }
+  if (fin.leds.some(L => L.set)) { out.setA = fin.leds.filter(L => L.set === 'A').length; out.setB = fin.leds.filter(L => L.set === 'B').length; }
+  return out;
 }
 //==CORE-END
-if (typeof module !== 'undefined') { module.exports = { OUTLINES, FOOTPRINTS, FPMAP, DENS, PATTERNS, computeView, hatLevel, hatCovers, polyArea, inPoly, CLEAR, EDGE, partInside, minDist, pitchOf }; }
+if (typeof module !== 'undefined') { module.exports = { DEFAULT_FP, OUTLINES, FOOTPRINTS, FPMAP, DENS, PATTERNS, computeView, hatLevel, hatCovers, polyArea, inPoly, CLEAR, EDGE, partInside, minDist, pitchOf }; }
 
 /* ===================== UI ===================== */
 if (typeof document !== 'undefined') (function () {
   const DPR = Math.min(window.devicePixelRatio || 1, 3);
-  const S = { fp: '0603', outline: 'both', zoom: 1, diffuser: false, guides: true, playing: true, t: 0 };
-  const cards = PATTERNS.map(pat => ({ pat, anim: 'still', place: 'vertices', iter: 3, views: [], el: null }));
-  const CACHE = new Map(), SPR = new Map(), HUES = 24;
+  const S = { fp: DEFAULT_FP, outline: 'both', zoom: 1, diffuser: false, guides: true, playing: true, t: 0, favOnly: false };
+  // The user's favourite views: [pattern, outline, density]
+  const FAVS = [['penrose', 'circle', 'medium'], ['penrose', 'parallelogram', 'medium'], ['halftone-radial', 'circle', 'dense'], ['halftone-radial', 'parallelogram', 'dense'],
+    ['sunflower', 'parallelogram', 'medium'], ['voronoi', 'parallelogram', 'medium']];
+  const isFav = (pid, o, d) => FAVS.some(f => f[0] === pid && f[1] === o && f[2] === d);
+  const GEOM_OPTS = ['place', 'iter', 'curve', 'K', 'snap', 'mode', 'dir'];
+  const cards = PATTERNS.map(pat => ({ pat, anim: pat.defAnim || 'still', views: [], el: null,
+    o: { place: 'vertices', iter: 3, curve: 'cyl32', K: 8, snap: 'tight', mode: 'fixed', dir: 'linear', rate: 4, dimAll: true } }));
+  const CACHE = new Map(), SPR = new Map(), HUES = 24, HUE_A = 2, HUE_B = 13;
   const $ = id => document.getElementById(id);
+  const OPT_LABELS = {
+    place: { vertices: 'Vertices', centres: 'Centres' }, iter: { 2: '2 iter', 3: '3 iter' },
+    curve: Object.fromEntries(Object.entries(ROT_CURVES).map(([k, v]) => [k, v.label])), K: { 4: 'K 4', 6: '6', 8: '8', 10: '10', 12: '12' },
+    snap: { tight: 'Snap tight', loose: 'Loose' }, mode: { fixed: 'Fixed size', size: 'Size gradient' }, dir: { linear: 'Linear', radial: 'Radial' },
+  };
 
   function seg(el, items, get, set) {
     el.innerHTML = '';
     for (const [val, label] of items) {
-      const b = document.createElement('button'); b.textContent = label; b.type = 'button';
+      const b = document.createElement('button'); b.textContent = label; b.type = 'button'; b.dataset.val = String(val);
       b.setAttribute('aria-pressed', String(get() === val));
       b.onclick = () => { set(val); for (const c of el.children) c.setAttribute('aria-pressed', String(c === b)); };
       el.appendChild(b);
     }
   }
-  const fpSel = $('fp');
-  for (const f of FOOTPRINTS) { const o = document.createElement('option'); o.value = f.id; o.textContent = `${f.id} (${f.w} x ${f.h} mm)`; fpSel.appendChild(o); }
+  const fpSel = $('fp'); let grp = null, og = null;
+  for (const f of FOOTPRINTS) {
+    if (f.group !== grp) { grp = f.group; og = document.createElement('optgroup'); og.label = grp; fpSel.appendChild(og); }
+    const o = document.createElement('option'); o.value = f.id; o.textContent = `${f.id} (${f.w} x ${f.h} mm)${f.id === DEFAULT_FP ? ', board LED' : ''}`; og.appendChild(o);
+  }
   fpSel.value = S.fp; fpSel.onchange = () => { S.fp = fpSel.value; rebuild(); };
+  seg($('showSeg'), [[false, 'All'], [true, '★ Favourites']], () => S.favOnly, v => { S.favOnly = v; rebuild(); });
   seg($('outlineSeg'), [['circle', 'Circle'], ['parallelogram', 'Parallelogram'], ['both', 'Both']], () => S.outline, v => { S.outline = v; rebuild(); });
   seg($('zoomSeg'), [[1, '1x'], [2, '2x']], () => S.zoom, v => { S.zoom = v; rebuild(); });
   seg($('animSeg'), [['still', 'Still'], ['chase', 'Chase'], ['pulse', 'Pulse'], ['twinkle', 'Twinkle']], () => 'still', v => {
     for (const c of cards) { c.anim = v; syncCardAnim(c); }
     if (v !== 'still' && !S.playing) togglePlay();
-    markDirty();
   });
   seg($('diffSeg'), [[false, 'Off'], [true, 'Frosted']], () => S.diffuser, v => { S.diffuser = v; applyDiffuser(); });
   seg($('guideSeg'), [[true, 'On'], [false, 'Off']], () => S.guides, v => { S.guides = v; for (const c of cards) for (const vw of c.views) drawBg(vw); });
@@ -705,36 +820,61 @@ if (typeof document !== 'undefined') (function () {
     c.half = m; SPR.set(key, c); return c;
   }
 
-  function getView(card, outlineId, densId) {
-    const pat = card.pat, opts = { place: card.place, iter: card.iter };
-    const key = [pat.id, outlineId, densId, S.fp, pat.opts ? JSON.stringify(opts) : ''].join('|');
-    if (!CACHE.has(key)) CACHE.set(key, computeView(pat, outlineId, densId, S.fp, opts));
+  const geomOpts = card => Object.fromEntries(GEOM_OPTS.filter(k => card.pat.opts && card.pat.opts[k]).map(k => [k, card.o[k]]));
+  const viewKey = (card, oid, did) => [card.pat.id, oid, did, S.fp, JSON.stringify(geomOpts(card))].join('|');
+  function getView(card, oid, did) {
+    const key = viewKey(card, oid, did);
+    if (!CACHE.has(key)) CACHE.set(key, computeView(card.pat, oid, did, S.fp, geomOpts(card)));
     return CACHE.get(key);
   }
+  const densOf = pat => DENS.filter(d => !pat.dens || pat.dens.includes(d.id));
+  const cardHasFav = card => FAVS.some(f => f[0] === card.pat.id);
 
+  function animItems(card) {
+    const base = [['still', 'Still'], ['chase', 'Chase'], ['pulse', 'Pulse'], ['twinkle', 'Twinkle']];
+    if (card.pat.frames) return [['rotate', 'Rotate'], ...base];
+    if (card.pat.sets) return [card.o.dir === 'radial' ? ['sweepA', 'Out (A)'] : ['sweepA', 'Sweep → (A)'], card.o.dir === 'radial' ? ['sweepB', 'In (B)'] : ['sweepB', 'Sweep ← (B)'], ...base];
+    return base;
+  }
   function buildCard(card) {
     const pat = card.pat, el = document.createElement('section'); el.className = 'pcard'; el.id = 'p-' + pat.id;
-    el.innerHTML = `<div class="pc-head"><div><h2>${pat.name}</h2><p>${pat.desc}</p></div><div class="pc-ctl"></div></div><div class="pc-body"></div>`;
+    el.innerHTML = `<div class="pc-head"><div><h2>${pat.name}${cardHasFav(card) ? ' <span class="favb">★ favourite views</span>' : ''}</h2><p>${pat.desc}</p></div><div class="pc-ctl"></div></div><div class="pc-body"></div>`;
     const ctl = el.querySelector('.pc-ctl');
     const addSeg = (items, get, set) => { const s = document.createElement('span'); s.className = 'seg'; ctl.appendChild(s); seg(s, items, get, set); return s; };
-    if (pat.opts && pat.opts.place) addSeg([['vertices', 'Vertices'], ['centres', 'Centres']], () => card.place, v => { card.place = v; fillCard(card); });
-    if (pat.opts && pat.opts.iter) addSeg([[2, '2 iter'], [3, '3 iter']], () => card.iter, v => { card.iter = v; fillCard(card); });
-    card.animSeg = addSeg([['still', 'Still'], ['chase', 'Chase'], ['pulse', 'Pulse'], ['twinkle', 'Twinkle']], () => card.anim, v => {
-      card.anim = v; if (v !== 'still' && !S.playing) togglePlay(); for (const vw of card.views) vw.dirty = true; });
+    if (pat.opts) for (const k of Object.keys(pat.opts)) {
+      addSeg(pat.opts[k].map(v => [v, OPT_LABELS[k][v]]), () => card.o[k], v => {
+        card.o[k] = v;
+        if (k === 'dir') seg(card.animSeg, animItems(card), () => card.anim, setAnim);
+        fillCard(card); updateTable();
+      });
+    }
+    const setAnim = v => { card.anim = v; if (v !== 'still' && !S.playing) togglePlay(); for (const vw of card.views) vw.dirty = true; };
+    card.animSeg = addSeg(animItems(card), () => card.anim, setAnim);
+    if (pat.frames) {
+      addSeg([[2, '2 fps'], [4, '4 fps'], [8, '8 fps']], () => card.o.rate, v => { card.o.rate = v; });
+      addSeg([[true, 'Others dim'], [false, 'Others off']], () => card.o.dimAll, v => { card.o.dimAll = v; for (const vw of card.views) vw.dirty = true; });
+    }
     card.el = el; return el;
   }
-  function syncCardAnim(card) { for (const b of card.animSeg.children) b.setAttribute('aria-pressed', String(b.textContent.toLowerCase() === card.anim)); for (const v of card.views) v.dirty = true; }
+  function syncCardAnim(card) {
+    if (!animItems(card).some(([v]) => v === card.anim)) card.anim = 'still';
+    for (const b of card.animSeg.children) b.setAttribute('aria-pressed', String(b.dataset.val === card.anim));
+    for (const v of card.views) v.dirty = true;
+  }
 
   const io = new IntersectionObserver(es => { for (const e of es) { const v = e.target._view; if (v) { v.visible = e.isIntersecting; v.dirty = true; } } }, { rootMargin: '100px' });
 
   function fillCard(card) {
     const body = card.el.querySelector('.pc-body'); body.innerHTML = '';
     for (const v of card.views) io.unobserve(v.fig); card.views = [];
-    const outs = S.outline === 'both' ? ['circle', 'parallelogram'] : [S.outline];
+    card.el.style.display = S.favOnly && !cardHasFav(card) ? 'none' : '';
+    if (S.favOnly && !cardHasFav(card)) return;
+    const outs = S.favOnly ? ['circle', 'parallelogram'] : S.outline === 'both' ? ['circle', 'parallelogram'] : [S.outline];
     for (const oid of outs) {
+      const dl = densOf(card.pat).filter(d => !S.favOnly || isFav(card.pat.id, oid, d.id)); if (!dl.length) continue;
       const o = OUTLINES[oid], row = document.createElement('div'); row.className = 'orow';
       row.innerHTML = `<div class="olabel">${oid}</div>`;
-      for (const d of DENS) {
+      for (const d of dl) {
         const data = getView(card, oid, d.id);
         const fig = document.createElement('figure'); fig.className = 'cell';
         const W = Math.round(o.view[0] * PXMM * S.zoom), H = Math.round(o.view[1] * PXMM * S.zoom);
@@ -742,11 +882,19 @@ if (typeof document !== 'undefined') (function () {
         const bg = document.createElement('canvas'), led = document.createElement('canvas'); led.className = 'led';
         for (const c of [bg, led]) { c.width = Math.round(W * DPR); c.height = Math.round(H * DPR); c.style.width = W + 'px'; c.style.height = H + 'px'; }
         stack.append(bg, led);
-        const mix = pat => Object.entries(data.byFp).sort((a, b) => FPMAP[b[0]].w * FPMAP[b[0]].h - FPMAP[a[0]].w * FPMAP[a[0]].h).map(([k, n]) => `${k} &times;${n}`).join(', ');
+        const fav = isFav(card.pat.id, oid, d.id);
+        if (fav) { stack.classList.add('fav'); const t = document.createElement('span'); t.className = 'favtag'; t.textContent = '★ Favourite'; stack.appendChild(t); }
+        const mix = Object.entries(data.byFp).sort((a, b) => FPMAP[b[0]].w * FPMAP[b[0]].h - FPMAP[a[0]].w * FPMAP[a[0]].h).map(([k, n]) => `${k} &times;${n}`).join(', ');
         const cap = document.createElement('figcaption');
+        let extra = '';
+        if (data.K) {
+          const dropped = data.dropped.reduce((a, b) => a + b, 0);
+          extra += `<span class="mix">per frame: ${data.perFrame.join(' &middot; ')}</span><span class="mix${dropped ? ' bad' : ''}">${dropped} frame points dropped for clearance${dropped ? ' (' + data.dropped.join(', ') + ')' : ''}</span>`;
+        }
+        if (data.setA !== undefined) extra += `<span class="mix"><b style="color:#ffae42">A ${data.setA}</b> + <b style="color:#4fd8ff">B ${data.setB}</b></span>`;
         cap.innerHTML = `<b>${d.id[0].toUpperCase() + d.id.slice(1)}</b> &middot; <span class="cnt">${data.leds.length} LEDs</span> &middot; pitch ${data.pitch.toFixed(2)} mm ` +
-          `<button class="btn small" type="button">CSV</button>` +
-          (card.pat.mixed ? `<span class="mix">${mix()}</span>` : '') +
+          `<button class="btn small" type="button">CSV</button>` + extra +
+          (card.pat.mixed || (card.pat.sets && card.o.mode === 'size') ? `<span class="mix">${mix}</span>` : '') +
           (data.removed ? `<span class="mix bad">${data.removed} removed by the clearance check</span>` : '') +
           `<span class="mix">${data.info}</span>`;
         cap.querySelector('button').onclick = () => exportCsv(card, oid, d.id, data);
@@ -756,16 +904,19 @@ if (typeof document !== 'undefined') (function () {
       }
       body.appendChild(row);
     }
-    applyDiffuser(card); updateTable();
+    applyDiffuser(card);
   }
 
   function prepAnim(v) {
-    const L = v.data.leds, N = L.length, rnd = mulberry32(99);
+    const L = v.data.leds, N = L.length, rnd = mulberry32(99), dir = v.card.o.dir;
     v.xs = new Float32Array(N); v.ys = new Float32Array(N); v.r = new Float32Array(N); v.ph = new Float32Array(N); v.om = new Float32Array(N); v.hr = new Uint8Array(N);
-    v.rmax = 1;
+    v.set = new Uint8Array(N); v.c = new Float32Array(N); v.fr = L.map(l => l.frames || null);
+    v.rmax = 1; v.cmin = Infinity; v.cmax = -Infinity;
     for (let i = 0; i < N; i++) {
       v.xs[i] = L[i].x; v.ys[i] = L[i].y; v.r[i] = Math.hypot(L[i].x, L[i].y); v.rmax = Math.max(v.rmax, v.r[i]);
       v.ph[i] = rnd() * 6.283; v.om[i] = 1.2 + rnd() * 2.6; v.hr[i] = Math.floor(rnd() * HUES);
+      v.set[i] = L[i].set === 'A' ? 1 : L[i].set === 'B' ? 2 : 0;
+      v.c[i] = dir === 'radial' ? v.r[i] : L[i].x; v.cmin = Math.min(v.cmin, v.c[i]); v.cmax = Math.max(v.cmax, v.c[i]);
     }
   }
   function drawBg(v) {
@@ -793,12 +944,25 @@ if (typeof document !== 'undefined') (function () {
     g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.clearRect(0, 0, v.led.width, v.led.height);
     g.globalCompositeOperation = 'lighter';
     const tail = Math.max(8, N / 8), head = (t * Math.max(15, N / 5)) % N, ring = (t * 14) % (v.rmax + 12) - 4;
+    const K = v.data.K || 1, pos = (t * v.card.o.rate) % K, FADE = 0.6, floorRot = v.card.o.dimAll ? 0.14 : 0.02;
+    const span = v.cmax - v.cmin + 8, sw = (t * 12) % (span + 6);         // sweep front, 12 mm/s
     for (let i = 0; i < N; i++) {
-      let b = 1, hue = HUES;
+      let b = 1, hue = HUES, fl = 0.12;
       if (mode === 'chase') { const d = (head - i + N) % N; b = d < tail ? 1 - d / tail : 0; hue = Math.floor(i / N * HUES) % HUES; }
       else if (mode === 'pulse') { const z = (v.r[i] - ring) / 2.4; b = Math.exp(-z * z); hue = Math.floor(v.r[i] / (v.rmax + 0.01) * HUES * 0.8); }
       else if (mode === 'twinkle') { b = Math.pow(Math.max(0, Math.sin(v.om[i] * t + v.ph[i])), 10); hue = v.hr[i]; }
-      b = 0.12 + 0.88 * b;
+      else if (mode === 'rotate' && v.fr[i]) {
+        b = 0; let bk = 0;
+        for (const k of v.fr[i]) { const age = (pos - k + K) % K, w = age < 1 ? 1 : Math.max(0, 1 - (age - 1) / FADE); if (w > b) { b = w; bk = k; } }
+        hue = Math.floor(bk / K * HUES) % HUES; fl = floorRot;
+      }
+      else if ((mode === 'sweepA' || mode === 'sweepB') && v.set[i]) {
+        const want = mode === 'sweepA' ? 1 : 2, front = mode === 'sweepA' ? v.cmin - 4 + sw : v.cmax + 4 - sw;
+        const d = mode === 'sweepA' ? front - v.c[i] : v.c[i] - front;
+        b = v.set[i] === want && d >= 0 ? 0.35 + 0.65 * Math.exp(-d / 5) : 0; hue = v.set[i] === 1 ? HUE_A : HUE_B; fl = 0.08;
+      }
+      else if (mode === 'still' && v.set[i]) hue = v.set[i] === 1 ? HUE_A : HUE_B;
+      b = fl + (1 - fl) * b;
       const sp = sprite(L[i].f, hue); g.globalAlpha = b;
       g.drawImage(sp, cx + v.xs[i] * s - sp.half, cy + v.ys[i] * s - sp.half);
     }
@@ -807,7 +971,6 @@ if (typeof document !== 'undefined') (function () {
     const list = card ? [card] : cards, px = 1.3 * PXMM * S.zoom;
     for (const c of list) for (const v of c.views) v.led.style.filter = S.diffuser ? `blur(${px.toFixed(1)}px) brightness(1.7) saturate(1.25)` : '';
   }
-  function markDirty() { for (const c of cards) for (const v of c.views) v.dirty = true; }
 
   let last = 0;
   function frame(ts) {
@@ -820,10 +983,22 @@ if (typeof document !== 'undefined') (function () {
     requestAnimationFrame(frame);
   }
 
+  function optTag(card) {
+    const g = geomOpts(card); return Object.keys(g).map(k => k === 'K' ? 'K' + g[k] : k === 'iter' ? g[k] + 'iter' : String(g[k])).join('-');
+  }
   function exportCsv(card, oid, did, data) {
-    const pid = card.pat.id + (card.pat.opts && card.pat.opts.place ? '-' + card.place : '') + (card.pat.opts && card.pat.opts.iter ? '-' + card.iter + 'iter' : '');
-    const rows = ['ref,x_mm,y_mm,rot_deg,footprint,w_mm,h_mm'];
-    data.leds.forEach((L, i) => rows.push(`D${i + 1},${L.x.toFixed(4)},${L.y.toFixed(4)},0,${L.f.id},${L.f.w},${L.f.h}`));
+    const pid = card.pat.id + (card.pat.opts ? '-' + optTag(card) : '');
+    const K = data.K || 0, hasSet = data.setA !== undefined;
+    let head = 'ref,x_mm,y_mm,rot_deg,footprint,w_mm,h_mm';
+    if (K) head += ',frames' + Array.from({ length: K }, (_, k) => ',f' + k).join('');
+    if (hasSet) head += ',set';
+    const rows = [head];
+    data.leds.forEach((L, i) => {
+      let r = `D${i + 1},${L.x.toFixed(4)},${L.y.toFixed(4)},0,${L.f.id},${L.f.w},${L.f.h}`;
+      if (K) r += ',' + L.frames.slice().sort((a, b) => a - b).join(' ') + Array.from({ length: K }, (_, k) => ',' + (L.frames.includes(k) ? 1 : 0)).join('');
+      if (hasSet) r += ',' + L.set;
+      rows.push(r);
+    });
     const blob = new Blob([rows.join('\n') + '\n'], { type: 'text/csv' }), a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = `pattern-explorer_${pid}_${oid}_${did}_${S.fp}.csv`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
@@ -833,11 +1008,12 @@ if (typeof document !== 'undefined') (function () {
     const t = $('tbl'); $('tblFp').textContent = `${S.fp} (${FPMAP[S.fp].w} x ${FPMAP[S.fp].h} mm)`;
     let h = '<tr><th>Pattern</th>' + ['circle', 'parallelogram'].map(o => DENS.map(d => `<th class="n">${o === 'circle' ? 'Circle' : 'Para.'} ${d.id}</th>`).join('')).join('') + '</tr>';
     for (const c of cards) {
-      const pid = c.pat.opts ? ` <span style="color:var(--muted)">(${[c.pat.opts.place ? c.place : '', c.pat.opts.iter ? c.iter + ' iter' : ''].filter(Boolean).join(', ')})</span>` : '';
+      const g = geomOpts(c), pid = c.pat.opts ? ` <span style="color:var(--muted)">(${Object.keys(g).map(k => k === 'K' ? 'K ' + g[k] : OPT_LABELS[k][g[k]]).join(', ')})</span>` : '';
       h += `<tr><td>${c.pat.name}${pid}</td>`;
       for (const o of ['circle', 'parallelogram']) for (const d of DENS) {
-        const key = [c.pat.id, o, d.id, S.fp, c.pat.opts ? JSON.stringify({ place: c.place, iter: c.iter }) : ''].join('|'), v = CACHE.get(key);
-        h += `<td class="n">${v ? v.leds.length : '&hellip;'}</td>`;
+        if (!densOf(c.pat).includes(d)) { h += '<td class="n">&ndash;</td>'; continue; }
+        const v = CACHE.get(viewKey(c, o, d.id)), star = isFav(c.pat.id, o, d.id) ? ' ★' : '';
+        h += `<td class="n">${v ? v.leds.length + (v.setA !== undefined ? ` <span style="color:var(--muted)">(${v.setA}+${v.setB})</span>` : '') : '&hellip;'}${star}</td>`;
       }
       h += '</tr>';
     }
@@ -853,8 +1029,7 @@ if (typeof document !== 'undefined') (function () {
     const step = () => {
       if (my !== job) return;
       if (i < cards.length) { fillCard(cards[i++]); setTimeout(step, 0); return; }
-      // also fill the other outline for the count table
-      for (const c of cards) for (const o of ['circle', 'parallelogram']) for (const d of DENS) getView(c, o, d.id);
+      for (const c of cards) for (const o of ['circle', 'parallelogram']) for (const d of densOf(c.pat)) getView(c, o, d.id);
       updateTable(); $('busy').textContent = '';
     };
     step();

@@ -16,9 +16,9 @@ Generator: `scripts/sunflower/`, forked from `scripts/parallelogram/`. Boards: `
   | AW20198 drivers | (±12.6, 3) mm |
   | EVQP7J side buttons | north-east and north-west rim (±21°), 0.40 mm proud of the edge |
   | J1 (USB pads) | Variant D's position |
-  | BT1 battery socket | JST GH 1.25 mm 2-pin, SM02B-GHS-TB (C189893), at the north-west rim (−11.2, −11.0) mm, turned 45°, mouth to the rim |
+  | BT1 battery socket | Molex PicoBlade 1.25 mm 2-pin right-angle, 53261-0271 (C177225), at the north-west rim (−11.4, −10.2) mm, turned 250°, plug entering from the board-centre side |
 
-- **Battery connector:** the user chose JST GH 1.25 mm, the plug sold on many small pouch cells as "JST 1.25". `scripts/sunflower/jst_site.py` searched every routed tier for a spot where its 7.0 × 6.5 mm courtyard clears all back parts with the mouth facing the rim. The only clear sites are at the north-west rim; the south-east spot by the protection IC would need U8, C6 and R8 moved. The battery nets therefore run about 30 mm across the board at 0.25 mm, roughly 20 mV of drop at the 300 mA charge rate. Pin 1 is +, marked on the silk; check the cell's plug polarity, since makers differ. The connector stands between the board and the cell, so the cell rests on it, and the plug body overhangs the rim by a few millimetres when fitted.
+- **Battery connector:** the user asked for a JST-style plug and first picked JST GH 1.25 mm. The 1.25 mm plugs on most small LiPo cells are friction-fit Molex PicoBlade clones ("micro JST 1.25", MX1.25), which don't mate with latching GH, so BT1 is now a genuine PicoBlade 53261-0271 (C177225, 27k at JLC; the CJT A1251WR-S-2P clone, C225111, is a cheaper same-size option). Its courtyard is 9.4 × 6.8 mm, wider than GH's 7.0 × 6.5 mm. `scripts/sunflower/jst_site.py` searches every routed tier for a spot where the courtyard clears all back parts. With the plug facing the rim nothing fits on every tier. The user chose the north-west rim with the plug entering from the board-centre side, which needs no parts moved. The alternative was the south-east rim by the charger, which needs U8, C6 and R8 moved. The battery nets run about 30 mm across the board at 0.25 mm, roughly 20 mV of drop at the 300 mA charge rate. Pin 1 is +, marked on the silk; check the cell's plug polarity, since makers differ. The plug has to go in before the cell is laid on the board, and the cell rests on the socket body.
 - **Silkscreen:** the front carries the main pendant's seed web, the Voronoi cells of the LED centres with a ring round the outside, clipped clear of pads. The back names the buttons by function (PWR on SW1, USER/WAKE; BOOT on SW2, BOOTSEL) and marks the battery socket BATT with + and −, plus a LIPO 403535 note and IC designators.
 - **Stackup:** 4 layers, JLC04161H-7628. In1 is an unbroken GND plane, In2 is the only inner signal layer. Vias are 0.30/0.15 mm. No vias go through the solid exposed pads except their own GND thermal vias.
 
@@ -26,12 +26,12 @@ Generator: `scripts/sunflower/`, forked from `scripts/parallelogram/`. Boards: `
 
 | Tier | LEDs | Drivers | mm² per LED | Nearest spacing | Opens | Hard DRC | Vias | Vias in SMD pads | BOM/bd @10 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| s1-66 (pofv) | 66 | 1 | 13.8 | 3.46 mm | **0** | **0** | 423 | 82 | $10.96 |
-| s2-88 (pofv) | 88 | 2 | 10.4 | 3.00 mm | **0** | **0** | 482 | 86 | $12.24 |
-| s2-110 (pofv) | 110 | 2 | 8.3 | 2.69 mm | **0** | 2 (`+3V3` 0.10 mm next to U3, from before the JST swap) | 640 | 125 | $12.59 |
-| s2-132 (pofv) | 132 | 2 | 6.9 | 2.38 mm | 2 (`BAT_N` to the new socket, 1 GND link at TP8/U1) | 1 | 692 | 135 | $12.94 |
+| s1-66 (pofv) | 66 | 1 | 13.8 | 3.46 mm | **0** | **0** | 395 | 83 | $10.73 |
+| s2-88 (pofv) | 88 | 2 | 10.4 | 3.00 mm | **0** | **0** | 472 | 84 | $12.02 |
+| s2-110 (pofv) | 110 | 2 | 8.3 | 2.69 mm | 1 (`I2C_SDA` at U1 pin 28) | 5 (the 2 old `+3V3` 0.10 mm tracks by U3, 3 dangling stubs) | 632 | 121 | $12.37 |
+| s2-132 (pofv) | 132 | 2 | 6.9 | 2.38 mm | 2 (an LED cathode by U3, one GND link) | 0 | 709 | 137 | $12.72 |
 
-Numbers are after the JST GH swap (2026-11-06): every board was re-routed locally round the new socket (`apply_jst.py`, then `route_variant.py --continue-plough` with rip discs at the new site and the old pads), then cleaned (`finish_jst.sh`, which keeps `clean_copper_4l.py`'s output only when it stays at 0 open). The connector added $0.35 per board. Before the swap s2-132 was at 0 open; its battery-minus trace now has to cross the densest part of the board, and a second pass with a rip corridor along that path is queued. The pre-swap boards are kept as `route/pre_jst.kicad_pcb` in each folder.
+Numbers are after the battery socket moved to the north-west rim (2026-11-06; first JST GH, then Molex PicoBlade). Each board was re-routed locally round the new socket: `apply_jst.py` swaps the footprint, moves it and strips the copper in the way, then `route_variant.py --continue-plough` runs with a rip disc at the site. `finish_jst.sh` then cleans the copper, keeping `clean_copper_4l.py`'s output only when it stays at 0 open, and redoes silk, 3D models and the audit. s2-110 and s2-132 were at 0 open before the move; one more targeted pass each didn't close their new opens. The pre-move boards are kept as `route/pre_jst.kicad_pcb` (pads) and `route/pre_picoblade.kicad_pcb` (GH) in each folder.
 
 For comparison, the parallelogram's p2-132 used 9.6 mm² per LED and its p3-162 (10.5 LEDs/cm²) did not close. Main round-pendant Variant E is $26.46 per board in parts, on 8 layers with 5 WLCSP drivers.
 
@@ -55,18 +55,18 @@ These were re-routed from bare boards with the rule in place. The generator's pr
 
 | Tier | Opens | Hard DRC | Vias | Note |
 |---|---:|---:|---:|---|
-| s2-88 | **0** | **0** | 528 | Raw router copper: `clean_copper_4l.py` breaks 2 connections on this board, so it isn't used. 2 dangling stubs pruned by hand. Left: 2 thin pad joints and untidy copper (off-centre via joins, cap gaps) that DRC accepts. |
-| s1-66 | 1 (`SW1_2` at U1 pin 4, as before the swap) | 6 (3 GND-plane necks on In1, 2 dangling USB_DM stubs, 1 dangling via) | 445 | Probe board, not for fab. |
+| s2-88 | **0** | **0** | 529 | Raw router copper: `clean_copper_4l.py` breaks 2 connections on this board, so it isn't used. Left: thin pad joints and untidy copper (off-centre via joins, cap gaps) that DRC accepts. |
+| s1-66 | 1 (`SW1_4` at U1 pin 3) | 5 (3 GND-plane necks on In1, 2 dangling USB_DM stubs) | 434 | Probe board, not for fab. |
 
-A check of vias inside non-GND SMD pads finds 4 on each board, all false: the rotated BT1 pads' bounding boxes and the drivers' unnumbered paste windows. Neither board has a via in a copper pad.
+A bounding-box check of vias in non-GND SMD pads flags a few on each board, all false: rotated BT1 pads and the drivers' unnumbered paste windows. Tested against the real pad shapes, neither board has a via in a copper pad.
 
 Keeping vias out of pads costs at most an open or two and some clean-up, so a POFV-free 4-layer order is in reach at 88 LEDs. The filled-via (POFV) routes are kept as `hw/sunflower/s1-66-pofv` and `s2-88-pofv`, each with fab files.
 
 ## Open items
 
 - s2-88 (no vias in pads): 2 thin pad joints and copper tidying, then fab export.
-- s2-132: close the battery-minus and TP8 GND opens left by the JST swap (second pass queued).
-- Battery socket: check the 3D stack (the cell rests on the GH body; take its height from the JST drawing) and the plug overhang at the rim against the enclosure; check JLC's placement preview for BT1's rotation.
+- s2-110 and s2-132: close the opens left by the socket move (s2-110: I2C_SDA at U1; s2-132: an LED cathode near U3 and one GND link).
+- Battery socket: the plug goes in from the board-centre side, so it must be fitted before the cell is laid on; check the stack height (the cell rests on the socket and plug) against the enclosure, and check JLC's placement preview for BT1's rotation (250°).
 - s1-66 (no vias in pads): 1 open at U1's SW side. Try U1 turned 90° or 180° so its SW pins face the LED field.
 - The RP2350 `+3V3` band and `+1V1` ring zones fill in 1–4 pieces on these routes. The nets are still joined (0 unconnected), but the reference wants them whole, as Variant F did with locked tracks. Worth checking before fab on whichever tier is chosen.
 - ultraroute: the necks and sub-width segments near U3 (s2-110 `+3V3` at 0.10 mm under a 0.15 mm rule, the s2-88 CS1_1 neck) are the min-connection-width items already on the ultraroute session's list.

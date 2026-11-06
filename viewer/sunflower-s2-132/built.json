@@ -20,7 +20,7 @@
    {
     "sheet": "Power",
     "title": "Power",
-    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a JST GH plug) \u00b7 30 symbols",
+    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug) \u00b7 30 symbols",
     "file": "sunflower-Power.svg",
     "source": "power.kicad_sch",
     "paper": "A3",
@@ -102,13 +102,13 @@
   "thickness": 1.5862,
   "plate": "#c8c8c8",
   "body": "body.svg",
-  "vias": 692,
+  "vias": 709,
   "nets": 132,
   "footprints": 221,
   "front": 133,
   "back": 88,
-  "tracks": 4395,
-  "length_mm": 3463.2,
+  "tracks": 4416,
+  "length_mm": 3477.4,
   "layers": [
    {
     "name": "F.Cu",
@@ -117,8 +117,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 2020,
-    "length_mm": 1102.8,
+    "tracks": 1964,
+    "length_mm": 1110.4,
     "pads": 530,
     "zones": []
    },
@@ -143,8 +143,8 @@
     "file": "in2.svg",
     "color": "#CE7D2C",
     "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-    "tracks": 1048,
-    "length_mm": 1322.4,
+    "tracks": 1212,
+    "length_mm": 1361.7,
     "pads": 0,
     "zones": []
    },
@@ -155,8 +155,8 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 1327,
-    "length_mm": 1038.0,
+    "tracks": 1240,
+    "length_mm": 1005.4,
     "pads": 365,
     "zones": [
      "+1V1",
@@ -211,8 +211,8 @@
   "board": "sunflower.kicad_pcb",
   "generated": "2026-11-06",
   "glb": "board.glb",
-  "bytes": 12064736,
-  "kicad_bytes": 35666136,
+  "bytes": 12145468,
+  "kicad_bytes": 35847088,
   "parts": 221,
   "modelled": 212,
   "no_model": [
@@ -245,10 +245,10 @@
    "legacy": 2,
    "found": 0
   },
-  "triangles": 828573,
-  "primitives": 1007
+  "triangles": 836515,
+  "primitives": 1008
  },
- "when": "2026-11-06 11:15",
+ "when": "2026-11-06 12:48",
  "source": {
   "kind": "file",
   "pcb": "hw/sunflower/s2-132/sunflower.kicad_pcb",

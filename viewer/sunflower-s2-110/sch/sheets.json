@@ -19,7 +19,7 @@
   {
    "sheet": "Power",
    "title": "Power",
-   "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a JST GH plug) \u00b7 30 symbols",
+   "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug) \u00b7 30 symbols",
    "file": "sunflower-Power.svg",
    "source": "power.kicad_sch",
    "paper": "A3",
