@@ -2,99 +2,103 @@
 #     scripts/view.sh build pcbview.toml
 # Full option list: vendor/pcbview/README.md, "The config file".
 
-title = "round-pendant"
-subtitle = "235-LED round pendant"
+title = "LED Matrix Topologies"
+subtitle = "RP2350 design-space exploration"
 out = "viewer"
-back = { href = "../index.html", label = "Project page" }
+back = { href = "../index.html", label = "Overview" }
+repo = "https://github.com/sequoia-hope/round-pendant"
 
-[[boards]]
-id = "round-pendant-c"
-name = "round-pendant, variant C"
-pcb = "hw/round-pendant/c/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/c/round-pendant.kicad_sch"
-note = "From variant B: one extra LED at the centre on RP2350 GPIO23-25, 235 in all, nothing nudged. Driver-centred fan map. Not routed yet; routing attacks are running on copies."
-
-[[boards]]
-id = "round-pendant-a"
-name = "round-pendant, variant A"
-pcb = "hw/round-pendant/a/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/a/round-pendant.kicad_sch"
-note = "First layout: 38 mm, six layers, 234 RGB LEDs top, all electronics bottom."
-
-[[boards]]
-id = "round-pendant-b"
-name = "round-pendant, variant B"
-pcb = "hw/round-pendant/b/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/b/round-pendant.kicad_sch"
-note = "From variant A: sunflower LEDs, USB-C off the board through six pads, EVQP7C01P buttons with pegs between the LEDs."
-
-[[boards]]
-id = "round-pendant-c-web"
-name = "round-pendant, y21 route with seed web silk"
-pcb = "hw/round-pendant/c-web/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/c-web/round-pendant.kicad_sch"
-note = "Earlier route with 2 +3V3 joins open. Front silk drawn as a web between the LEDs. Back silk removed."
-
-[[boards]]
-id = "round-pendant-c-web3"
-name = "round-pendant, y30 route, no back silk"
-pcb = "hw/round-pendant/c-web3/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/c-web3/round-pendant.kicad_sch"
-note = "Route y30 with the seed web on the front and no silk on the back."
-
-[[boards]]
-id = "round-pendant-c-web4"
-name = "round-pendant, 235 LEDs, fully connected, seed web and tidy designators"
-pcb = "hw/round-pendant/c-web4/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/c-web4/round-pendant.kicad_sch"
-note = "Work in progress: 8 layers, through vias, every connection joined, not signed off. Route y30, seed web on the front, 52 tidy designators on the back at 0.8 mm."
-
-[[boards]]
-id = "round-pendant-d"
-name = "round-pendant, variant D (5x WLCSP-36 BGA drivers, solid exposed pads)"
-pcb = "hw/round-pendant/d/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/d/round-pendant.kicad_sch"
-note = "Variant D: 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (zero driver exposed pads), solid GND exposed pads on U3 and U5 with zero foreign vias, 8 layers, through vias, strict copper cleanup (0 DRC errors/warnings, 0 copper_audit defects), front seed web and 58 tidy back designators."
-
-[[boards]]
-id = "round-pendant-e"
-embed = "index.html"
-name = "round-pendant, variant E (top-rim ALS-PT19 light sensor + 5x WLCSP-36 BGA drivers)"
-pcb = "hw/round-pendant/e/round-pendant.kicad_pcb"
-sch = "hw/round-pendant/e/round-pendant.kicad_sch"
-note = "Variant E: adds front-side 12-o'clock top-rim Everlight ALS-PT19-315C/L177/TR8 ambient light sensor (Q2, GPIO1 switched collector + 22 k / 100 nF RC filter to ADC1) onto cleaned Variant D (5x IS31FL3745-CLS4-TR WLCSP-36 drivers, solid U3/U5 exposed pads, 8 layers, 0 DRC errors/warnings, 0 copper_audit defects)."
+# ---- Skewed Parallelogram 4-Layer Family (25 x 70 mm) ----
 
 [[boards]]
 id = "parallelogram-p1-66"
-name = "parallelogram, p1-66 (4L, 66x XL-1615RGBC LEDs, 1x AW20198QNR, $10.61 BOM — 100% routed, 0 DRC)"
+name = "Parallelogram p1-66 (66 LEDs, 4L)"
 pcb = "hw/parallelogram/p1-66/parallelogram.kicad_pcb"
 sch = "hw/parallelogram/p1-66/parallelogram.kicad_sch"
-note = "100% routed & DRC-clean lowest-cost 4-layer skewed parallelogram (25 x 70 mm, 17.75 deg skew): 6 x 11 = 66 XL-1615RGBC-RF RGB LEDs (C965840, 1.6 x 1.5 mm, 3.70 x 5.20 mm = 4.3 LEDs/cm^2), 1x locally in-stock AW20198QNR QFN-40 driver ($10.61/bd BOM, or $10.05 w/ RP2040), centered 20 x 35 mm prismatic LiPo pocket, peg-less EVQP7J01P side buttons, top-bezel XYC-PT19C-L1 sensor. 475/475 connections (0 open), 2,604 tracks, 343 vias (-27% vs XL-1010), 0 DRC errors/warnings, 0 copper_audit defects (incl. 0 strip_zones / 0 zone_intrusions), 0 thin pad joints."
+note = "100% routed & DRC-clean lowest-cost 4-layer skewed parallelogram (25 x 70 mm, 17.75 deg skew): 6 x 11 = 66 XL-1615RGBC-RF RGB LEDs (C965840, 1.6 x 1.5 mm, 3.70 x 5.20 mm = 4.3 LEDs/cm^2), 1x locally in-stock AW20198QNR QFN-40 driver ($10.61/bd BOM, or $10.05 w/ RP2040), centered 20 x 35 mm prismatic LiPo pocket, peg-less EVQP7J01P side buttons, top-bezel XYC-PT19C-L1 sensor. 475/475 connections (0 open), 2,604 tracks, 343 vias (-27% vs XL-1010), 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints."
 
 [[boards]]
 id = "parallelogram-p2-132"
-name = "parallelogram, p2-132 (4L, 132x XL-1615RGBC LEDs, 2x AW20198QNR, $12.60 BOM — 100% routed, 0 DRC)"
+name = "Parallelogram p2-132 (132 LEDs, 4L)"
 pcb = "hw/parallelogram/p2-132/parallelogram.kicad_pcb"
 sch = "hw/parallelogram/p2-132/parallelogram.kicad_sch"
 note = "100% routed & DRC-clean 4-layer high-density 6-column parallelogram (25 x 70 mm, 17.75 deg skew): 6 x 22 = 132 XL-1615RGBC-RF RGB LEDs (C965840, 1.6 x 1.5 mm, 3.70 x 2.60 mm = 8.5 LEDs/cm^2), 2x locally in-stock AW20198QNR QFN-40 drivers ($12.60/bd BOM, or $12.04 w/ RP2040), solid B.Cu exposed pads. Swapping XL-1010 -> XL-1615 opened a 0.80 mm intra-LED channel, closing the last 2 opens to 761/761 (100.0%, 0 open), 5,782 tracks, 670 vias (-22% vs XL-1010), 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints."
 
 [[boards]]
 id = "parallelogram-p3-162"
-name = "parallelogram, p3-162 (4L, 162 RGB LEDs, 3x AW20198QNR, $15.47 BOM — 96.6% routed, 31 open)"
+name = "Parallelogram p3-162 (162 LEDs, 4L)"
 pcb = "hw/parallelogram/p3-162/parallelogram.kicad_pcb"
 sch = "hw/parallelogram/p3-162/parallelogram.kicad_sch"
 note = "Intermediate 3-driver 4-layer density tier: 9 x 18 = 162 RGB LEDs (2.55 x 3.15 mm = 10.5 LEDs/cm^2) on 25 x 70 mm skewed parallelogram, 3x AW20198QNR QFN-40 with solid exposed ground pads. Column pitch 2.55 mm < 3.40 mm QFN EP begins shadowing F.Cu columns: 870/901 connections routed (96.56%: 28 signal + 3 plane open), 6,289 tracks, 793 vias."
 
 [[boards]]
 id = "parallelogram-p3-198"
-name = "parallelogram, p3-198 (4L, 198 RGB LEDs, 3x AW20198QNR, $16.44 BOM — 94.6% routed, 56 open)"
+name = "Parallelogram p3-198 (198 LEDs, 4L)"
 pcb = "hw/parallelogram/p3-198/parallelogram.kicad_pcb"
 sch = "hw/parallelogram/p3-198/parallelogram.kicad_sch"
 note = "Full 3-driver 4-layer density tier: 9 x 22 = 198 RGB LEDs (2.55 x 2.60 mm = 12.8 LEDs/cm^2) on 25 x 70 mm skewed parallelogram, 3x AW20198QNR QFN-40 with solid exposed ground pads. 989/1,045 connections routed (94.64%: 56 signal open, 0 plane open), 7,117 tracks, 955 vias."
 
 [[boards]]
 id = "parallelogram-p4-264"
-name = "parallelogram, p4-264 (4L, 264 RGB LEDs, 4x AW20198QNR, $19.03 BOM — 89.5% routed, 139 open)"
+name = "Parallelogram p4-264 (264 LEDs, 4L)"
 pcb = "hw/parallelogram/p4-264/parallelogram.kicad_pcb"
 sch = "hw/parallelogram/p4-264/parallelogram.kicad_sch"
 note = "4-driver 4-layer saturation tier: 12 x 22 = 264 RGB LEDs (2.02 x 2.60 mm = 17.0 LEDs/cm^2) on 25 x 70 mm skewed parallelogram, 4x AW20198QNR QFN-40 with solid exposed ground pads. 1,190/1,329 connections routed (89.54%: 139 signal open, 0 plane open), 7,945 tracks, 1,041 vias."
+
+# ---- Sunflower Round Pendant Family (dia. 38 mm) ----
+
+[[boards]]
+id = "round-pendant-e"
+name = "Round Pendant E (235 LEDs, WLCSP + ALS)"
+pcb = "hw/round-pendant/e/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/e/round-pendant.kicad_sch"
+note = "Variant E: adds front-side 12-o'clock top-rim Everlight ALS-PT19-315C/L177/TR8 ambient light sensor (Q2, GPIO1 switched collector + 22 k / 100 nF RC filter to ADC1) onto cleaned Variant D (5x IS31FL3745-CLS4-TR WLCSP-36 drivers, solid U3/U5 exposed pads, 8 layers, 0 DRC errors/warnings, 0 copper_audit defects)."
+
+[[boards]]
+id = "round-pendant-d"
+name = "Round Pendant D (235 LEDs, WLCSP-36)"
+pcb = "hw/round-pendant/d/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/d/round-pendant.kicad_sch"
+note = "Variant D: 5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (zero driver exposed pads), solid GND exposed pads on U3 and U5 with zero foreign vias, 8 layers, through vias, strict copper cleanup (0 DRC errors/warnings, 0 copper_audit defects), front seed web and 58 tidy back designators."
+
+[[boards]]
+id = "round-pendant-c-web4"
+name = "Round Pendant C-y30 (235 LEDs, QFN-48)"
+pcb = "hw/round-pendant/c-web4/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/c-web4/round-pendant.kicad_sch"
+note = "8-layer QFN-48 driver topology (4x IS31FL3741A) prior to the WLCSP-36 transition: every connection joined on route y30, Voronoi seed web on the front, 52 tidy designators on the back at 0.8 mm."
+
+[[boards]]
+id = "round-pendant-c-web3"
+name = "Round Pendant C-y30 (bare back silk)"
+pcb = "hw/round-pendant/c-web3/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/c-web3/round-pendant.kicad_sch"
+note = "Route y30 with the seed web on the front and no silk on the back."
+
+[[boards]]
+id = "round-pendant-c-web"
+name = "Round Pendant C-y21 (seed-web silk)"
+pcb = "hw/round-pendant/c-web/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/c-web/round-pendant.kicad_sch"
+note = "Earlier route with 2 +3V3 joins open. Front silk drawn as a web between the LEDs. Back silk removed."
+
+[[boards]]
+id = "round-pendant-c"
+name = "Round Pendant C (235 LEDs, pre-route)"
+pcb = "hw/round-pendant/c/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/c/round-pendant.kicad_sch"
+note = "From variant B: one extra LED at the centre on RP2350 GPIO23-25, 235 in all, nothing nudged. Driver-centred fan map before routing."
+
+[[boards]]
+id = "round-pendant-b"
+name = "Round Pendant B (234 LEDs, off-board USB)"
+pcb = "hw/round-pendant/b/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/b/round-pendant.kicad_sch"
+note = "From variant A: sunflower LEDs, USB-C off the board through six pads, EVQP7C01P buttons with pegs between the LEDs."
+
+[[boards]]
+id = "round-pendant-a"
+name = "Round Pendant A (234 LEDs, initial 6L)"
+pcb = "hw/round-pendant/a/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/a/round-pendant.kicad_sch"
+note = "First layout: 38 mm, six layers, 234 RGB LEDs top, all electronics bottom."
