@@ -2,22 +2,22 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "7d226cb3-0f59-4830-a1f5-81c751fad00e")
+	(uuid "71f06f2f-68af-4573-a534-583382b2dd22")
 	(paper "A4")
 	(title_block
-		(title "sunflower (s1-66): top")
+		(title "sunflower (s1-66-pofv): top")
 		(date "2026-11-05")
 		(rev "S1")
 		(company "CERN-OHL-P-2.0")
-		(comment 1 "66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB")
+		(comment 1 "66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB (vias in pads, POFV)")
 		(comment 2 "Drawn by scripts/sunflower/sch_gen.py")
 	)
 	(lib_symbols)
-	(text "Sunflower 4-layer density study (s1-66): 66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB.\n38 mm round board, Vogel-spiral LED field, 35 mm round LiPo cell behind the board.\nSolid GND thermal pads on U3, U5, and all AW20198QNR QFN-40 drivers (0 via-in-pad)."
+	(text "Sunflower 4-layer density study (s1-66-pofv): 66 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 1x AW20198QNR, 4-layer JLCPCB (vias in pads, POFV).\n38 mm round board, Vogel-spiral LED field, 35 mm round LiPo cell behind the board.\nSolid GND thermal pads on U3, U5, and all AW20198QNR QFN-40 drivers (0 via-in-pad)."
 		(exclude_from_sim no)
 		(at 20.32 105 0)
 		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "90e62fdf-3eb8-493d-bd95-8f9b00c521a1")
+		(uuid "efdcca23-c392-4ae3-b955-2aa00a125d40")
 	)
 	(sheet
 		(at 20.32 35.56)
@@ -31,7 +31,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "542701e2-cb84-42c3-92b3-d4aa5d8fb65f")
+		(uuid "73922c4c-170e-4a8b-93dd-201bad53a51e")
 		(property "Sheetname" "Power"
 			(at 20.32 34.86 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -42,7 +42,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+				(path "/71f06f2f-68af-4573-a534-583382b2dd22"
 					(page "2")
 				)
 			)
@@ -60,7 +60,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "f33b5ad0-9e69-4374-9ff6-abd99c96e9a9")
+		(uuid "3c1f616a-3486-4d5c-9fc4-e662a9935d24")
 		(property "Sheetname" "MCU"
 			(at 83.82 34.86 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -71,7 +71,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+				(path "/71f06f2f-68af-4573-a534-583382b2dd22"
 					(page "3")
 				)
 			)
@@ -89,7 +89,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "5fd342ac-513c-4564-a304-dcae94e4afa5")
+		(uuid "a69f4a6d-7086-4b10-9727-34798391ac90")
 		(property "Sheetname" "Driver 1 and matrix"
 			(at 149.86 24.7 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -100,7 +100,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+				(path "/71f06f2f-68af-4573-a534-583382b2dd22"
 					(page "4")
 				)
 			)

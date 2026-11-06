@@ -426,6 +426,10 @@ def generate_libs(variant_name: str):
     (pretty / "LED_XL-1010RGB.kicad_mod").write_text(fp_led())
     (pretty / "LED_XL-1615RGBC.kicad_mod").write_text(fp_led_xl1615())
     (pretty / "BatteryPads.kicad_mod").write_text(battery())
+    # Battery connector (config.BAT_FP): KiCad's own footprint, copied in; its 3D model stays in KiCad's library
+    from config import BAT_FP, BAT_LIB_SRC
+    bat_name = BAT_FP.split(":")[1]
+    shutil.copy(f"{BAT_LIB_SRC}/{bat_name}.kicad_mod", pretty / f"{bat_name}.kicad_mod")
     for name in ("L_pol_2016", "C_0402_1005Metric_small_pads"):
         shutil.copy(VENDOR / f"{name}.kicad_mod", pretty / f"{name}.kicad_mod")
     (pretty / "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias.kicad_mod").write_text(rp2350_solid_ep())

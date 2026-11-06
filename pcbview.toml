@@ -31,42 +31,42 @@ id = "sunflower-s2-88"
 name = "Sunflower s2-88 (88 LEDs, 4L, no via-in-pad)"
 pcb = "hw/sunflower/s2-88/sunflower.kicad_pcb"
 sch = "hw/sunflower/s2-88/sunflower.kicad_sch"
-note = "38 mm round, 88 XL-1615RGBC-RF LEDs in a Vogel spiral (10.4 mm^2/LED, 3.0 mm nearest), 2x AW20198QNR QFN, 4 layers with no vias in SMD pads (no POFV). 0 open; router output, copper clean-up pending (4 dangling vias, 2 thin pad joints). $11.90 BOM @10."
+note = "38 mm round, 88 XL-1615RGBC-RF LEDs in a Vogel spiral (10.4 mm^2/LED, 3.0 mm nearest), 2x AW20198QNR QFN, 4 layers with no vias in SMD pads (no POFV). Molex PicoBlade 1.25 mm battery socket at the NW rim, seed-web front silk, PWR/BOOT labels. 0 open, 0 DRC errors; thin pad joints left. $12.02 BOM @10."
 
 [[boards]]
 id = "sunflower-s1-66-pofv"
 name = "Sunflower s1-66 (66 LEDs, 4L)"
 pcb = "hw/sunflower/s1-66-pofv/sunflower.kicad_pcb"
 sch = "hw/sunflower/s1-66-pofv/sunflower.kicad_sch"
-note = "38 mm round, 66 XL-1615RGBC-RF LEDs in a sunflower (13.8 mm^2/LED), 1x AW20198QNR, light sensor at the centre, Variant D's RP2350 block. 0 open, 0 DRC errors/warnings, 0 pad-joint faults; 420 vias, 79 in SMD pads (order with POFV). $10.61 BOM @10, fab files in fab/."
+note = "38 mm round, 66 XL-1615RGBC-RF LEDs in a sunflower (13.8 mm^2/LED), 1x AW20198QNR, light sensor at the centre, Variant D's RP2350 block, Molex PicoBlade battery socket, seed-web front silk, PWR/BOOT labels. 0 open, 0 DRC errors/warnings, 0 pad-joint faults; 395 vias, 83 in SMD pads (order with POFV). $10.73 BOM @10, fab files in fab/."
 
 [[boards]]
 id = "sunflower-s2-88-pofv"
 name = "Sunflower s2-88 (88 LEDs, 4L, POFV)"
 pcb = "hw/sunflower/s2-88-pofv/sunflower.kicad_pcb"
 sch = "hw/sunflower/s2-88-pofv/sunflower.kicad_sch"
-note = "38 mm round, 88 LEDs, 2x AW20198QNR. 0 open, 0 DRC errors/warnings; 496 vias, 89 in SMD pads (order with POFV). $11.90 BOM @10, fab files in fab/."
+note = "38 mm round, 88 LEDs, 2x AW20198QNR, Molex PicoBlade battery socket, seed-web front silk, PWR/BOOT labels. 0 open, 0 DRC errors/warnings, copper audit clean; 472 vias, 84 in SMD pads (order with POFV). $12.02 BOM @10, fab files in fab/."
 
 [[boards]]
 id = "sunflower-s2-110"
 name = "Sunflower s2-110 (110 LEDs, 4L)"
 pcb = "hw/sunflower/s2-110/sunflower.kicad_pcb"
 sch = "hw/sunflower/s2-110/sunflower.kicad_sch"
-note = "38 mm round, 110 LEDs (8.3 mm^2/LED, 2.69 mm nearest), 2x AW20198QNR. 0 open; 2 +3V3 track-width errors (0.10 mm under a 0.15 mm rule) beside U3 left by the router; 619 vias, 118 in pads. $12.25 BOM @10."
+note = "38 mm round, 110 LEDs (8.3 mm^2/LED, 2.69 mm nearest), 2x AW20198QNR, PicoBlade battery socket. 1 open (I2C_SDA at U1) after the socket move; 2 +3V3 track-width errors beside U3 and 3 dangling stubs; 632 vias, 121 in pads. $12.37 BOM @10."
 
 [[boards]]
 id = "sunflower-s2-132"
 name = "Sunflower s2-132 (132 LEDs, 4L)"
 pcb = "hw/sunflower/s2-132/sunflower.kicad_pcb"
 sch = "hw/sunflower/s2-132/sunflower.kicad_sch"
-note = "38 mm round, 132 LEDs (6.9 mm^2/LED, 2.38 mm nearest, spiral relaxed so courtyards clear), 2x AW20198QNR. 0 open, 0 hard DRC errors; 1 thin pad joint (R16.1) and 1 dangling stub left; 673 vias, 125 in pads. $12.60 BOM @10."
+note = "38 mm round, 132 LEDs (6.9 mm^2/LED, 2.38 mm nearest, spiral relaxed so courtyards clear), 2x AW20198QNR, PicoBlade battery socket. 2 opens after the socket move (an LED cathode near U3, one GND link); 709 vias, 137 in pads. $12.72 BOM @10."
 
 [[boards]]
 id = "sunflower-s1-66"
 name = "Sunflower s1-66 (66 LEDs, 4L, no via-in-pad, 1 open)"
 pcb = "hw/sunflower/s1-66/sunflower.kicad_pcb"
 sch = "hw/sunflower/s1-66/sunflower.kicad_sch"
-note = "s1-66 re-routed with no vias in SMD pads: 1 open (SW1_2 at U1 pin 4), 0 hard DRC, 451 vias."
+note = "s1-66 re-routed with no vias in SMD pads, PicoBlade battery socket: 1 open (SW1_4 at U1 pin 3), 5 DRC errors, 434 vias. Probe board."
 
 # ---- Skewed Parallelogram 4-Layer Family (25 x 70 mm) ----
 

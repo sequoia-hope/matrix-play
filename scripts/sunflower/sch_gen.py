@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / ".claude/skills/pcb-design/scripts"))
 sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from kicad_write import S, Schematic, Sym, SymbolLib, dump, new_uuid, yes  # noqa: E402
-from config import VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
+from config import BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
 
 PROJECT = "sunflower"
 DATE = "2026-11-05"
@@ -106,7 +106,7 @@ class Sheet(Schematic):
 
 
 def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
-    s = Sheet(spec, libs, "power", "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell)")
+    s = Sheet(spec, libs, "power", "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug)")
     j1 = s.symbol(
         "round_pendant:USB_Pads", "J1", "USB wires", (40.64, 93.98),
         in_bom=False, fields={"MPN": "none, wire pads"}, ref_at=(30.48, 81.28), value_at=(30.48, 83.82),
@@ -213,13 +213,13 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
     s.wire(b, (b[0] + 2.54, b[1]))
     s.power("round_pendant:VBAT", (b[0] + 2.54, b[1]))
     bt = s.symbol(
-        "Connector_Generic:Conn_01x02", "BT1", "CELL 802035", (45.72, by + 2.54), mirror="y",
-        footprint="round_pendant:BatteryPads", in_bom=False,
-        fields={"Manufacturer": "Generic", "MPN": "802035", "LCSC": ""},
+        "Connector_Generic:Conn_01x02", "BT1", BAT_VALUE, (45.72, by + 2.54), mirror="y",
+        footprint=BAT_FP,
+        fields={"Manufacturer": BAT_MFR, "MPN": BAT_MPN, "LCSC": BAT_LCSC},
         ref_at=(25.4, by), value_at=(25.4, by + 2.54), justify="left",
     )
     a, n = bt.pin("1"), bt.pin("2")
-    s.text("Hand-soldered leads. Standard 802035 / 102035 (20x35 mm) prismatic LiPo cell.", (20.32, by - 7.62))
+    s.text("Molex PicoBlade 1.25 mm socket (the friction-fit \"JST 1.25\" on most small LiPos) for the 403535 (35 mm round) cell. Pin 1 = +. Check the plug's polarity: makers differ.", (20.32, by - 7.62))
     vbat_y = by
     s.wire(a, (a[0] + 7.62, a[1]), (a[0] + 7.62, vbat_y), (208.28, vbat_y))
     s.power("round_pendant:VBAT", (66.04, vbat_y))

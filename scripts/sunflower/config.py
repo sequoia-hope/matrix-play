@@ -92,6 +92,18 @@ VARIANTS = {
     "s2-110": _v("s2-110", "S3", 110, (5, 5), "110 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 2x AW20198QNR, 4-layer JLCPCB"),
     "s2-132": _v("s2-132", "S4", 132, (6, 6), "132 XL-1615RGBC-RF LEDs in a 38 mm sunflower, 2x AW20198QNR, 4-layer JLCPCB"),
 }
+# Routes that allow vias in SMD pads (order with POFV) are kept beside the no-via-in-pad routes, as their own folders.
+for _k in ("s1-66", "s2-88"):
+    _s = VARIANTS[_k]
+    VARIANTS[_k + "-pofv"] = _v(_k + "-pofv", _s.title_rev, _s.n, _s.wedges, _s.summary + " (vias in pads, POFV)")
+
+# Battery connector: Molex PicoBlade 1.25 mm 2-pin right-angle SMD, 53261-0271 (LCSC C177225). The "JST 1.25" plug on most
+# small LiPo cells is this friction-fit PicoBlade style, not latching JST GH. On B.Cu with its mouth (mounting-tab side)
+# facing the board centre at the north-west rim; (x, y, orientation) relative to the board centre, the same on every tier.
+BAT_FP = "round_pendant:Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal"  # copied from KiCad's Connector_Molex by lib_gen.py
+BAT_LIB_SRC = "/usr/share/kicad/footprints/Connector_Molex.pretty"
+BAT_LCSC, BAT_MPN, BAT_MFR, BAT_VALUE = "C177225", "53261-0271", "Molex", "PicoBlade 2P"
+BAT_POS = (-11.40, -10.20, 250.0)  # jst_site.py: NW rim, plug entering from the board-centre side (user's choice); the 9.4 mm-wide socket can't face the rim there
 
 
 def sunflower_points(n: int) -> List[Tuple[float, float]]:

@@ -184,7 +184,7 @@ footer {
           Exploring geometry and patterns in RGB LED matrix layouts alongside PCB stackup, IC packaging, and cost trade-offs &mdash;
           comparing ultra-dense <b>20&thinsp;&times;&thinsp;20&thinsp;mm 0808 square arrays</b> on 8-layer 25&thinsp;&times;&thinsp;50&thinsp;mm boards (up to 64&thinsp;LEDs/cm&sup2; with south-bay QFN electronics),
           low-cost <b>4-layer 25&thinsp;&times;&thinsp;70&thinsp;mm skewed-parallelogram boards</b>,
-          low-cost <b>4-layer Ø&thinsp;38&thinsp;mm sunflower boards</b> (66&ndash;132 LEDs from $10.61), and
+          low-cost <b>4-layer Ø&thinsp;38&thinsp;mm sunflower boards</b> (66&ndash;132 LEDs from $10.73), and
           <b>8-layer Ø&thinsp;38&thinsp;mm phyllotaxis (&ldquo;sunflower&rdquo;) pendants</b>.
         </p>
       </div>
@@ -194,6 +194,7 @@ footer {
           <button type="button" data-set-face="back" aria-pressed="false">Back (ICs)</button>
         </div>
         <a class="btn primary" href="viewer/">Interactive Workspace &rarr;</a>
+        <a class="btn" href="design/study/pattern-explorer/">Pattern Explorer</a>
         <a class="btn" href="https://github.com/sequoia-hope/round-pendant">GitHub</a>
       </div>
     </div>
@@ -224,10 +225,10 @@ footer {
           <p class="sec-sub">
             The parallelogram&rsquo;s low-cost parts (<code>XL-1615RGBC-RF</code> LEDs, <code>AW20198QNR</code> QFN-40 drivers) laid out as a golden-angle Vogel spiral on a Ø&thinsp;38&thinsp;mm disc,
             with the light sensor at the centre and Variant&thinsp;D&rsquo;s RP2350 block on the back. Swept from 66 to 132 LEDs: every tier routes to 0 opens on 4 layers,
-            because a spiral has no LED columns lined up over the drivers&rsquo; exposed pads. The 88-LED tier also routes with no vias in pads (no filled-via surcharge).
+            because a spiral has no LED columns lined up over the drivers&rsquo; exposed pads. The 88-LED tier also routes with no vias in pads (no filled-via surcharge). Every board has the main pendant&rsquo;s seed-web front silk, PWR / BOOT button labels and a Molex PicoBlade 1.25&thinsp;mm battery socket (the friction-fit &ldquo;JST 1.25&rdquo; plug most small LiPos ship with).
           </p>
         </div>
-        <span class="sec-tag">4 Layers &middot; QFN-40 EP &middot; 66&ndash;132 LEDs &middot; $10.61&ndash;$12.60 BOM</span>
+        <span class="sec-tag">4 Layers &middot; QFN-40 EP &middot; 66&ndash;132 LEDs &middot; $10.73&ndash;$12.72 BOM</span>
       </div>
 
       <div class="grid" id="grid-sunflower"></div>
@@ -307,8 +308,8 @@ footer {
                 <td>4L std (POFV)</td>
                 <td>66&times; XL-1615RGBC</td>
                 <td>1&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>0 open</b> &middot; 420 vias &middot; 0 DRC &middot; fab files</td>
-                <td><b>$10.61</b></td>
+                <td><b>0 open</b> &middot; 395 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>$10.73</b></td>
               </tr>
               <tr>
                 <td><a href="viewer/sunflower-s2-88-pofv.html"><b>Sunflower s2-88</b></a></td>
@@ -316,8 +317,8 @@ footer {
                 <td>4L std (POFV)</td>
                 <td>88&times; XL-1615RGBC</td>
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>0 open</b> &middot; 496 vias &middot; 0 DRC &middot; fab files</td>
-                <td><b>$11.90</b></td>
+                <td><b>0 open</b> &middot; 472 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>$12.02</b></td>
               </tr>
               <tr>
                 <td><a href="viewer/sunflower-s2-88.html"><b>Sunflower s2-88 (no via-in-pad)</b></a></td>
@@ -325,8 +326,8 @@ footer {
                 <td>4L std, no POFV</td>
                 <td>88&times; XL-1615RGBC</td>
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>0 open</b> &middot; 512 vias &middot; clean-up pending</td>
-                <td>$11.90</td>
+                <td><b>0 open</b> &middot; 529 vias &middot; 0 DRC, thin joints to fix</td>
+                <td>$12.02</td>
               </tr>
               <tr>
                 <td><a href="viewer/sunflower-s2-110.html"><b>Sunflower s2-110</b></a></td>
@@ -334,8 +335,8 @@ footer {
                 <td>4L std (POFV)</td>
                 <td>110&times; XL-1615RGBC</td>
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>0 open</b> &middot; 619 vias &middot; 2 track-width errors</td>
-                <td>$12.25</td>
+                <td>1 open &middot; 632 vias &middot; 5 DRC errors</td>
+                <td>$12.37</td>
               </tr>
               <tr>
                 <td><a href="viewer/sunflower-s2-132.html"><b>Sunflower s2-132</b></a></td>
@@ -343,8 +344,8 @@ footer {
                 <td>4L std (POFV)</td>
                 <td>132&times; XL-1615RGBC</td>
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>0 open</b> &middot; 673 vias &middot; 0 hard DRC, 1 thin joint</td>
-                <td>$12.60</td>
+                <td>2 open (battery socket move) &middot; 709 vias</td>
+                <td>$12.72</td>
               </tr>
               <tr>
                 <td><a href="viewer/parallelogram-p1-66.html"><b>Parallelogram p1-66</b></a></td>
@@ -418,6 +419,10 @@ footer {
         <div class="card">
           <h3>Studies &amp; Drawings</h3>
           <ul class="doc-list">
+            <li>
+              <a href="design/study/pattern-explorer/">Pattern Explorer</a>
+              <small>LED layouts at life size, animated, CSV export</small>
+            </li>
             <li>
               <a href="design/sim/p2-132/report/index.html">Parallelogram p2-132 EM &amp; picoem Co-Sim</a>
               <small>3D FDTD / PEEC + RP2350</small>
@@ -528,8 +533,8 @@ const SUNFLOWER_CARDS = [
     title: "Sunflower s1-66",
     badge: "0 Open · 0 DRC",
     badgeKind: "ok",
-    specs: ["4 layers", "66× XL-1615 LEDs", "3.46 mm nearest", "$10.61 BOM"],
-    desc: "Cheapest tier: one AW20198QNR drives a 66-LED Vogel spiral (13.8 mm²/LED) with the light sensor at the centre (420 vias, 79 in pads, so order with filled vias). Fab files exported. The no-via-in-pad re-route is in the viewer with 1 open.",
+    specs: ["4 layers", "66× XL-1615 LEDs", "3.46 mm nearest", "$10.73 BOM"],
+    desc: "Cheapest tier: one AW20198QNR drives a 66-LED Vogel spiral (13.8 mm²/LED) with the light sensor at the centre (395 vias, 83 in pads, so order with filled vias). PicoBlade battery socket, seed-web front silk, PWR/BOOT labels; fab files exported. The no-via-in-pad re-route is in the viewer with 1 open.",
     silkF: true, silkB: true
   },
   {
@@ -537,35 +542,35 @@ const SUNFLOWER_CARDS = [
     title: "Sunflower s2-88",
     badge: "0 Open · 0 DRC",
     badgeKind: "ok",
-    specs: ["4 layers", "88× XL-1615 LEDs", "3.00 mm nearest", "$11.90 BOM"],
-    desc: "Two AW20198QNR drivers, east and west, each taking four 11-LED wedges of the spiral (10.4 mm²/LED). 496 vias, 89 in pads (order with filled vias). Fab files exported.",
+    specs: ["4 layers", "88× XL-1615 LEDs", "3.00 mm nearest", "$12.02 BOM"],
+    desc: "Two AW20198QNR drivers, east and west, each taking four 11-LED wedges of the spiral (10.4 mm²/LED). 472 vias, 84 in pads (order with filled vias). PicoBlade battery socket, seed-web front silk, PWR/BOOT labels; fab files exported.",
     silkF: true, silkB: true
   },
   {
     id: "sunflower-s2-88",
     title: "Sunflower s2-88 — No Via-in-Pad",
-    badge: "0 Open · Clean-up Pending",
+    badge: "0 Open · 0 DRC",
     badgeKind: "probe",
-    specs: ["4 layers", "88× XL-1615 LEDs", "no POFV", "$11.90 BOM"],
-    desc: "The same 88-LED board re-routed with a rule that keeps vias out of SMD pads, so it can be ordered without the filled-via option. 0 opens (512 vias); 4 dangling vias and 2 thin pad joints still to clean up.",
+    specs: ["4 layers", "88× XL-1615 LEDs", "no POFV", "$12.02 BOM"],
+    desc: "The same 88-LED board re-routed with a rule that keeps vias out of SMD pads, so it can be ordered without the filled-via option. 0 opens and 0 DRC errors (529 vias); thin pad joints still to fix before fab.",
     silkF: true, silkB: true
   },
   {
     id: "sunflower-s2-110",
     title: "Sunflower s2-110",
-    badge: "0 Open · 2 Width Errors",
+    badge: "1 Open · 5 DRC Errors",
     badgeKind: "probe",
-    specs: ["4 layers", "110× XL-1615 LEDs", "2.69 mm nearest", "$12.25 BOM"],
-    desc: "Ten wedges at 8.3 mm²/LED. Routes to 0 opens (619 vias); the router left two +3V3 tracks beside the RP2350 at 0.10 mm under a 0.15 mm rule.",
+    specs: ["4 layers", "110× XL-1615 LEDs", "2.69 mm nearest", "$12.37 BOM"],
+    desc: "Ten wedges at 8.3 mm²/LED. Was at 0 opens until the battery socket moved; now 1 open (I2C_SDA at U1), plus two +3V3 tracks beside the RP2350 at 0.10 mm under a 0.15 mm rule (632 vias).",
     silkF: true, silkB: true
   },
   {
     id: "sunflower-s2-132",
     title: "Sunflower s2-132",
-    badge: "0 Open · Density Probe",
+    badge: "2 Open · Density Probe",
     badgeKind: "probe",
-    specs: ["4 layers", "132× XL-1615 LEDs", "2.38 mm nearest", "$12.60 BOM"],
-    desc: "Densest tier (6.9 mm²/LED), where LED courtyards start to touch and the spiral is relaxed to clear them. 0 opens and 0 hard DRC errors (673 vias); one thin pad joint and one stub left.",
+    specs: ["4 layers", "132× XL-1615 LEDs", "2.38 mm nearest", "$12.72 BOM"],
+    desc: "Densest tier (6.9 mm²/LED), where LED courtyards start to touch and the spiral is relaxed to clear them. Routed to 0 opens before the battery socket moved to the north-west rim; the local re-route left 2 opens in the dense middle (709 vias).",
     silkF: true, silkB: true
   }
 ];

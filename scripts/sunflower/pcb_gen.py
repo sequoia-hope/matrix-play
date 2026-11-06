@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / ".claude/skills/pcb-design/scripts"))
 sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from config import (  # noqa: E402
+    BAT_POS,
     CELL_D,
     OX,
     OY,
@@ -201,9 +202,12 @@ def stage_place(spec: VariantSpec):
     for ref in MACRO_REFS:
         at_ref(ref)
 
-    # 4. South rim: J1 USB pads, R1/R2 CC resistors, BT1 cell pads, Q1 VBAT sense divider -- all as in Variant D.
-    for ref in ("J1", "R1", "R2", "BT1", "Q1", "R9", "R10", "R11", "R12", "C7"):
+    # 4. South rim: J1 USB pads, R1/R2 CC resistors, Q1 VBAT sense divider -- all as in Variant D.
+    for ref in ("J1", "R1", "R2", "Q1", "R9", "R10", "R11", "R12", "C7"):
         at_ref(ref)
+    # BT1: the JST GH battery socket, mouth to the rim, at the site jst_site.py found clear on every tier.
+    set_bcu("BT1", *BAT_POS)
+    placed.add("BT1")
 
     # 5. Side-actuated EVQP7J01P buttons at the NE / NW rim (Variant D's angles), knobs 0.45 mm past the edge.
     def rim_button(ref: str, east: bool, phi_deg: float):
@@ -713,6 +717,28 @@ def stage_zones(spec: VariantSpec):
     os._exit(0)
 
 
+def stage_bat(spec: VariantSpec):
+    """Put BT1 (after a sync swapped in the JST GH footprint) at BAT_POS on B.Cu, on a board that is already routed."""
+    import pcbnew
+
+    hw = spec.hw_dir
+    pcb_path = hw / "sunflower.kicad_pcb"
+    pro_path = hw / "sunflower.kicad_pro"
+    pro_bytes = pro_path.read_bytes()
+    b = pcbnew.LoadBoard(str(pcb_path))
+    f = next(f for f in b.GetFootprints() if f.GetReference() == "BT1")
+    if f.GetLayer() == pcbnew.F_Cu:
+        f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
+    x, y, rot = BAT_POS
+    f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(OX + x), pcbnew.FromMM(OY + y)))
+    f.SetOrientationDegrees(float(rot))
+    f.Value().SetVisible(False)
+    pcbnew.SaveBoard(str(pcb_path), b)
+    pro_path.write_bytes(pro_bytes)
+    print(f"[{spec.name}] BT1 ({f.GetFPID().GetUniStringLibItemName()}) at {BAT_POS}", flush=True)
+    os._exit(0)
+
+
 def stage_models(spec: VariantSpec):
     """Attach 3D STEP models to all custom footprints for pcbview."""
     import pcbnew
@@ -844,8 +870,51 @@ def stage_post_silk(spec: VariantSpec):
             added += 1
         return added
 
-    # Front stays bare (brief section 9): no lattice web on the sunflower.
+    # Front: the sunflower "seed" web, as on the main pendant (scripts/silk_web.py): the Voronoi diagram of the LED
+    # centres, so every LED sits in its own cell, plus a ring round the outside. Clipped clear of exposed front
+    # copper (pads, Q2, untented vias) and holes; tented vias may sit under it.
+    from shapely.geometry import LineString, MultiPoint, Point, Polygon, box
+    from shapely.ops import linemerge, unary_union, voronoi_diagram
+
+    web_w, web_clear, ring_r = 0.10, 0.10, R_BOARD - 0.25
+    leds = [f for f in b.GetFootprints() if re.fullmatch(r"D\d+", f.GetReference())]
+    pts = [(um(f.GetPosition().x) - OX, um(f.GetPosition().y) - OY) for f in leds]
+    disc = Point(0, 0).buffer(ring_r, 180)
+    edges = set()
+    for cell in voronoi_diagram(MultiPoint(pts), envelope=box(-30, -30, 30, 30)).geoms:
+        c = list(cell.exterior.coords)
+        for p, q in zip(c, c[1:]):
+            edges.add(tuple(sorted((tuple(round(v, 4) for v in p), tuple(round(v, 4) for v in q)))))
+    keep = []
+    for f in b.GetFootprints():
+        for p in f.Pads():
+            if p.IsOnLayer(pcbnew.F_Cu):
+                o = p.GetEffectivePolygon(pcbnew.F_Cu).Outline(0)
+                keep.append(Polygon([(um(o.CPoint(i).x) - OX, um(o.CPoint(i).y) - OY) for i in range(o.PointCount())])
+                            .buffer(web_clear + web_w / 2, 8))
+            elif p.GetDrillSize().x > 0:
+                keep.append(Point(um(p.GetPosition().x) - OX, um(p.GetPosition().y) - OY)
+                            .buffer(um(p.GetDrillSize().x) / 2 + web_clear + web_w / 2, 16))
+    for t in b.GetTracks():
+        if isinstance(t, pcbnew.PCB_VIA) and not t.IsTented(pcbnew.F_Mask):
+            keep.append(Point(um(t.GetPosition().x) - OX, um(t.GetPosition().y) - OY)
+                        .buffer(um(t.GetWidth(pcbnew.F_Cu)) / 2 + web_clear + web_w / 2, 8))
+    keep = unary_union(keep)
+    web = linemerge(unary_union([LineString(e).intersection(disc) for e in edges if LineString(e).intersects(disc)]))
     seg_cnt = 0
+    for geom in (web.difference(keep), disc.exterior.difference(keep)):
+        for ln in (geom.geoms if hasattr(geom, "geoms") else [geom]):
+            c = list(ln.coords)
+            for p, q in zip(c, c[1:]):
+                if math.dist(p, q) > 0.005:
+                    s = pcbnew.PCB_SHAPE(b)
+                    s.SetShape(pcbnew.SHAPE_T_SEGMENT)
+                    s.SetLayer(pcbnew.F_SilkS)
+                    s.SetWidth(mm(web_w))
+                    s.SetStart(pcbnew.VECTOR2I(mm(OX + p[0]), mm(OY + p[1])))
+                    s.SetEnd(pcbnew.VECTOR2I(mm(OX + q[0]), mm(OY + q[1])))
+                    b.Add(s)
+                    seg_cnt += 1
 
     # Add Q2 collector pin-1 dot on F.SilkS
     q2_p1 = next(p for p in fps["Q2"].Pads() if p.GetNumber() == "1").GetPosition()
@@ -860,20 +929,30 @@ def stage_post_silk(spec: VariantSpec):
     b.Add(q2_dot)
 
     # Add clean B.SilkS connector & cell labels clear of all B.Mask openings
+    # Back mask openings as their real shapes (a turned pad's bounding box is far bigger than its copper), 0.22 mm clear;
+    # labels already placed are kept as boxes in bmask_obs.
+    from shapely.strtree import STRtree
     bmask_obs = []
+    pad_polys = []
     for f in b.GetFootprints():
         if f.GetLayer() == pcbnew.B_Cu:
             for p in f.Pads():
                 if p.IsOnLayer(pcbnew.B_Mask):
-                    bb = p.GetBoundingBox()
-                    bmask_obs.append((um(bb.GetLeft()) - OX - 0.22, um(bb.GetTop()) - OY - 0.22, um(bb.GetRight()) - OX + 0.22, um(bb.GetBottom()) - OY + 0.22))
+                    o = p.GetEffectivePolygon(pcbnew.B_Cu).Outline(0)
+                    pad_polys.append(Polygon([(um(o.CPoint(i).x) - OX, um(o.CPoint(i).y) - OY)
+                                              for i in range(o.PointCount())]).buffer(0.22, 4))
+    pad_tree = STRtree(pad_polys)
 
-    def add_b_label(txt: str, tx: float, ty: float, deg: float = 0.0):
+    def clear_of_pads(x0, y0, x1, y1):
+        r = box(x0, y0, x1, y1)
+        return not any(pad_polys[i].intersects(r) for i in pad_tree.query(r))
+
+    def add_b_label(txt: str, tx: float, ty: float, deg: float = 0.0, size: float = 0.85, dry: bool = False):
         t = pcbnew.PCB_TEXT(b)
         t.SetText(txt)
         t.SetLayer(pcbnew.B_SilkS)
-        t.SetTextSize(pcbnew.VECTOR2I(mm(0.85), mm(0.85)))
-        t.SetTextThickness(mm(0.15))
+        t.SetTextSize(pcbnew.VECTOR2I(mm(size), mm(size)))
+        t.SetTextThickness(mm(min(0.15, size * 0.18)))
         t.SetMirrored(True)
         t.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_CENTER)
         t.SetVertJustify(pcbnew.GR_TEXT_V_ALIGN_CENTER)
@@ -881,31 +960,87 @@ def stage_post_silk(spec: VariantSpec):
         t.SetTextAngleDegrees(deg)
         bb = t.GetBoundingBox()
         bx0, by0, bx1, by1 = um(bb.GetLeft()) - OX, um(bb.GetTop()) - OY, um(bb.GetRight()) - OX, um(bb.GetBottom()) - OY
-        if all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and all(
+        if clear_of_pads(bx0, by0, bx1, by1) and all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and all(
             inside_disc(u, v, 0.45) for u in (bx0, bx1) for v in (by0, by1)
         ):
+            if dry:
+                return True
             b.Add(t)
             bmask_obs.append((bx0 - 0.25, by0 - 0.25, bx1 + 0.25, by1 + 0.25))
             return True
         return False
 
-    def label_near(txt, cands):
+    def label_near(txt, cands, size=0.85):
         for tx, ty, deg in cands:
-            if add_b_label(txt, tx, ty, deg):
+            if add_b_label(txt, tx, ty, deg, size):
                 return True
         print(f"  label not placed: {txt}")
         return False
 
+    def around(x, y, rmax=3.0, deg=0.0):
+        """Candidates in rings round (x, y), nearest first."""
+        out = [(x, y, deg)]
+        r = 0.3
+        while r <= rmax:
+            n = max(8, int(2 * math.pi * r / 0.3))
+            out += [(x + r * math.cos(2 * math.pi * k / n), y + r * math.sin(2 * math.pi * k / n), deg) for k in range(n)]
+            r += 0.3
+        return out
+
+    def inward(ref, steps=(2.4, 2.9, 3.4, 3.9, 4.4, 5.0), sideways=(0.0, 0.8, -0.8, 1.6, -1.6)):
+        """Label candidates on the line from part `ref` towards the board centre, upright."""
+        p = fps[ref].GetPosition()
+        x, y = um(p.x) - OX, um(p.y) - OY
+        r = math.hypot(x, y) or 1.0
+        ux, uy = -x / r, -y / r
+        return [(x + ux * d - uy * s, y + uy * d + ux * s, 0.0) for d in steps for s in sideways]
+
+    # What the side buttons do (SW1 = USER / WAKE, the power button; SW2 = BOOTSEL)
+    label_near("PWR", inward("SW1"))
+    label_near("BOOT", inward("SW2"))
+    # Battery connector polarity: "+" past pad 1's end of the pad row, "-" past pad 2's, clear of the body
+    bt_pads = {p.GetNumber(): p for p in fps["BT1"].Pads()}
+    if "1" in bt_pads and "2" in bt_pads:
+        q1, q2 = bt_pads["1"].GetPosition(), bt_pads["2"].GetPosition()
+        x1, y1, x2, y2 = um(q1.x) - OX, um(q1.y) - OY, um(q2.x) - OX, um(q2.y) - OY
+        L = math.hypot(x2 - x1, y2 - y1) or 1.0
+        ux, uy = (x2 - x1) / L, (y2 - y1) / L
+        # beside each pad, nearest spot first: past the row end, then outward towards the rim, then inward
+        # "+" and "-" as a pair in front of the mouth, in the same order as pads 1 and 2, so their order shows polarity
+        # (the pads themselves sit too close to the rim for a mark beside each).
+        mp = [q.GetPosition() for q in fps["BT1"].Pads() if q.GetNumber() == "MP"]
+        mx = sum(um(q.x) - OX for q in mp) / len(mp)
+        my = sum(um(q.y) - OY for q in mp) / len(mp)
+        cx_, cy_ = (x1 + x2) / 2, (y1 + y2) / 2
+        il = math.hypot(mx - cx_, my - cy_) or 1.0
+        ix, iy = (mx - cx_) / il, (my - cy_) / il
+        placed_pair = False
+        for d in [3.0 + 0.25 * k for k in range(24)]:
+            for half in (1.0, 1.2, 1.4):  # centres >= 2 mm apart, so the two boxes (with margins) don't touch
+                pa = (cx_ + ix * d - ux * half, cy_ + iy * d - uy * half)
+                pb = (cx_ + ix * d + ux * half, cy_ + iy * d + uy * half)
+                if add_b_label("+", *pa, 0.0, 0.85, dry=True) and add_b_label("-", *pb, 0.0, 0.85, dry=True):
+                    add_b_label("+", *pa, 0.0, 0.85)
+                    add_b_label("-", *pb, 0.0, 0.85)
+                    placed_pair = True
+                    break
+            if placed_pair:
+                break
+        if not placed_pair:
+            print("  label not placed: + - pair")
     bt = fps["BT1"].GetPosition()
     btx, bty = um(bt.x) - OX, um(bt.y) - OY
-    label_near("BT1 +  - 4.2V", [(btx, bty + dy, 0.0) for dy in (2.3, -2.3, 2.8, -2.8)])
+    label_near("BATT", [c for c in around(btx, bty, 8.0) if math.hypot(c[0] - btx, c[1] - bty) >= 3.0])
     j1 = fps["J1"].GetPosition()
     j1x, j1y = um(j1.x) - OX, um(j1.y) - OY
     label_near("USB 5V", [(j1x, j1y + dy, 0.0) for dy in (-1.9, -2.4, 1.6)])
-    label_near("LIPO 35mm ROUND", [(x, y, 0.0) for x, y in ((0, -17.4), (0, 15.0), (-9, -14), (9, -14), (-11, 9))])
+    # Cell note: first free spot, scanning outward from the north rim
+    lipo = sorted(((x / 2, y / 2, 0.0) for x in range(-28, 29) for y in range(-34, 35)),
+                  key=lambda c: math.hypot(c[0], c[1] + 15.5))
+    label_near("LIPO 403535", lipo)
 
     # Add IC pin-1 dots and visible B.SilkS designators adjacent to major B.Cu parts (clear of B.Mask & edge)
-    ic_refs = ["U3", "U1", "U2", "U10", "U11", "U4", "U5", "U6", "U7", "U8", "U9", "Q1"]
+    ic_refs = ["U3", "U1", "U2", "U10", "U11", "U4", "U5", "U6", "U7", "U8", "U9", "Q1", "BT1"]
     p1_dots = 0
     for r in ic_refs:
         if r not in fps:
@@ -920,7 +1055,7 @@ def stage_post_silk(spec: VariantSpec):
         for dist_out in (0.65, 0.85, 1.05):
             dx_b, dy_b = px0 + (vx / vlen) * dist_out, py0 + (vy / vlen) * dist_out
             bx0, by0, bx1, by1 = dx_b - 0.16, dy_b - 0.16, dx_b + 0.16, dy_b + 0.16
-            if all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and inside_disc(dx_b, dy_b, 0.45):
+            if clear_of_pads(bx0, by0, bx1, by1) and all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and inside_disc(dx_b, dy_b, 0.45):
                 dot = pcbnew.PCB_SHAPE(b)
                 dot.SetShape(pcbnew.SHAPE_T_CIRCLE)
                 dot.SetFilled(True)
@@ -985,6 +1120,7 @@ if __name__ == "__main__":
         "sync": stage_sync,
         "place": stage_place,
         "zones": stage_zones,
+        "bat": stage_bat,
         "models": stage_models,
         "post_silk": stage_post_silk,
     }[stage_arg](spec_arg)

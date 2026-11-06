@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "7d226cb3-0f59-4830-a1f5-81c751fad00e")
+	(uuid "6aa1903d-7693-4587-9036-935707e69368")
 	(paper "A4")
 	(title_block
 		(title "sunflower (s1-66): top")
@@ -17,7 +17,7 @@
 		(exclude_from_sim no)
 		(at 20.32 105 0)
 		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "90e62fdf-3eb8-493d-bd95-8f9b00c521a1")
+		(uuid "1e7be635-3328-4711-83a3-7863352b3a9a")
 	)
 	(sheet
 		(at 20.32 35.56)
@@ -31,7 +31,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "542701e2-cb84-42c3-92b3-d4aa5d8fb65f")
+		(uuid "649a24e1-6531-4a0f-b8e3-dc3be0dc551b")
 		(property "Sheetname" "Power"
 			(at 20.32 34.86 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -42,7 +42,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+				(path "/6aa1903d-7693-4587-9036-935707e69368"
 					(page "2")
 				)
 			)
@@ -60,7 +60,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "f33b5ad0-9e69-4374-9ff6-abd99c96e9a9")
+		(uuid "fe113ee4-5ec6-42a9-b99b-7ffbc4899380")
 		(property "Sheetname" "MCU"
 			(at 83.82 34.86 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -71,7 +71,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+				(path "/6aa1903d-7693-4587-9036-935707e69368"
 					(page "3")
 				)
 			)
@@ -89,7 +89,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "5fd342ac-513c-4564-a304-dcae94e4afa5")
+		(uuid "a28563af-2810-41de-babe-b08a2905f1a0")
 		(property "Sheetname" "Driver 1 and matrix"
 			(at 149.86 24.7 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -100,7 +100,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/7d226cb3-0f59-4830-a1f5-81c751fad00e"
+				(path "/6aa1903d-7693-4587-9036-935707e69368"
 					(page "4")
 				)
 			)
