@@ -1,0 +1,76 @@
+{
+ "schematic": "sunflower.kicad_sch",
+ "pdf": "sunflower.pdf",
+ "sheets": [
+  {
+   "sheet": "root",
+   "title": "sunflower (s2-110-usbc): top",
+   "desc": "110 XL-1615RGBC-RF LEDs in a 38 mm sunflower with a centre LED, USB-C on the back, light sensor at the rim, 2x AW20198QNR, 4-layer JLCPCB \u00b7 0 symbols",
+   "file": "sunflower.svg",
+   "source": "sunflower.kicad_sch",
+   "paper": "A4",
+   "page": "1",
+   "symbols": 0,
+   "size_mm": [
+    297.0022,
+    210.0072
+   ]
+  },
+  {
+   "sheet": "Power",
+   "title": "Power",
+   "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug) \u00b7 30 symbols",
+   "file": "sunflower-Power.svg",
+   "source": "power.kicad_sch",
+   "paper": "A3",
+   "page": "2",
+   "symbols": 30,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "MCU",
+   "title": "MCU",
+   "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, top-bezel light sensor \u00b7 46 symbols",
+   "file": "sunflower-MCU.svg",
+   "source": "mcu.kicad_sch",
+   "paper": "A3",
+   "page": "3",
+   "symbols": 46,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 1 and matrix",
+   "title": "Driver 1 and matrix",
+   "desc": "U1 AW20198QNR (0x20), 55 RGB LEDs (drivers-aw20198.md) \u00b7 62 symbols",
+   "file": "sunflower-Driver 1 and matrix.svg",
+   "source": "matrix1.kicad_sch",
+   "paper": "A3",
+   "page": "4",
+   "symbols": 62,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 2 and matrix",
+   "title": "Driver 2 and matrix",
+   "desc": "U2 AW20198QNR (0x25), 55 RGB LEDs (drivers-aw20198.md) \u00b7 62 symbols",
+   "file": "sunflower-Driver 2 and matrix.svg",
+   "source": "matrix2.kicad_sch",
+   "paper": "A3",
+   "page": "5",
+   "symbols": 62,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  }
+ ]
+}

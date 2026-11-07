@@ -1,6 +1,6 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-06T12:48:54",
+ "built": "2026-11-06T21:19:34",
  "pcbview": "0.1 (26ba32b)",
  "config": "pcbview.publish.toml",
  "boards": [
@@ -57,6 +57,17 @@
     "kind": "file",
     "pcb": "hw/sunflower/s2-88-pofv/sunflower.kicad_pcb",
     "sch": "hw/sunflower/s2-88-pofv/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-s2-110-usbc",
+   "name": "Sunflower s2-110 USB-C (centre LED, rim light sensor)",
+   "page": "sunflower-s2-110-usbc.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/s2-110-usbc/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/s2-110-usbc/sunflower.kicad_sch"
    }
   },
   {

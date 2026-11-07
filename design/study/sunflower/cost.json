@@ -137,6 +137,29 @@
       ]
     ]
   },
+  "s2-110-usbc (4L, 110x XL-1615, 2x AW20198)": {
+    "bom_per_board": 12.55,
+    "led_cost": 1.75,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 34,
+    "total_placements": 191,
+    "n_leds": 110,
+    "low_stock": [
+      [
+        "C25744",
+        "0402WGF1002TCE",
+        0,
+        10
+      ],
+      [
+        "C23733",
+        "CL05A475MP5NRNC",
+        0,
+        50
+      ]
+    ]
+  },
   "parallelogram p1-66 (4L)": {
     "bom_per_board": 10.59,
     "led_cost": 1.05,

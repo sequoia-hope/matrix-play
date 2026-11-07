@@ -1,0 +1,56 @@
+{
+ "board": "sunflower.kicad_pcb",
+ "generated": "2026-11-06",
+ "glb": "board.glb",
+ "bytes": 10569644,
+ "kicad_bytes": 32190336,
+ "parts": 199,
+ "modelled": 190,
+ "no_model": [
+  "TP1",
+  "TP2",
+  "TP3",
+  "TP4",
+  "TP5",
+  "TP6",
+  "TP7",
+  "TP8"
+ ],
+ "missing": [
+  "J1"
+ ],
+ "empty": [],
+ "substituted": [],
+ "resolved": [
+  "C16",
+  "C18"
+ ],
+ "flattened": [
+  "U1",
+  "U2"
+ ],
+ "boxed": [
+  "J1"
+ ],
+ "why": {
+  "J1": "no such file"
+ },
+ "missing_models": [
+  "${KICAD9_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step"
+ ],
+ "boxes": [
+  {
+   "model": "${KICAD9_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step",
+   "why": "no such file",
+   "refs": [
+    "J1"
+   ]
+  }
+ ],
+ "resolved_how": {
+  "legacy": 2,
+  "found": 0
+ },
+ "triangles": 731249,
+ "primitives": 876
+}

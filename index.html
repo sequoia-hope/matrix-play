@@ -339,6 +339,15 @@ footer {
                 <td>$12.37</td>
               </tr>
               <tr>
+                <td><a href="viewer/sunflower-s2-110-usbc.html"><b>Sunflower s2-110-usbc</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower + centre LED, ALS at rim</td>
+                <td>4L std (POFV), USB-C on back</td>
+                <td>110&times; XL-1615RGBC</td>
+                <td>2&times; AW20198QNR (QFN-40 EP)</td>
+                <td>1 open &middot; 623 vias &middot; routing in progress</td>
+                <td>$12.55</td>
+              </tr>
+              <tr>
                 <td><a href="viewer/sunflower-s2-132.html"><b>Sunflower s2-132</b></a></td>
                 <td>Ø&thinsp;38&thinsp;mm sunflower (2.38&thinsp;mm nearest) + ALS</td>
                 <td>4L std (POFV)</td>
@@ -562,6 +571,15 @@ const SUNFLOWER_CARDS = [
     badgeKind: "probe",
     specs: ["4 layers", "110× XL-1615 LEDs", "2.69 mm nearest", "$12.37 BOM"],
     desc: "Ten wedges at 8.3 mm²/LED. Was at 0 opens until the battery socket moved; now 1 open (I2C_SDA at U1), plus two +3V3 tracks beside the RP2350 at 0.10 mm under a 0.15 mm rule (632 vias).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "sunflower-s2-110-usbc",
+    title: "Sunflower s2-110 — USB-C",
+    badge: "1 Open · Routing",
+    badgeKind: "probe",
+    specs: ["4 layers", "110× XL-1615 LEDs", "USB-C on back", "$12.55 BOM"],
+    desc: "USB-C receptacle (HRO TYPE-C-31-M-12) on the back at the bottom rim, front LEDs steered round its six through-holes, an LED at the centre and the light sensor at the top rim. Buttons and PicoBlade battery socket stay at the top. VBAT_EN moved to GPIO28 so it can route beside VBAT_SENSE. Down to 1 open (VSYS at driver U2, 623 vias); still routing.",
     silkF: true, silkB: true
   },
   {
