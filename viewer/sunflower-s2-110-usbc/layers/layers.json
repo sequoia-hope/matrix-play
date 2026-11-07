@@ -1,6 +1,6 @@
 {
  "board": "sunflower.kicad_pcb",
- "generated": "2026-11-06",
+ "generated": "2026-11-07",
  "view_mm": [
   80.237,
   80.239,
@@ -25,13 +25,13 @@
  "thickness": 1.5862,
  "plate": "#c8c8c8",
  "body": "body.svg",
- "vias": 612,
+ "vias": 637,
  "nets": 134,
- "footprints": 199,
+ "footprints": 206,
  "front": 111,
- "back": 88,
- "tracks": 4197,
- "length_mm": 3328.6,
+ "back": 95,
+ "tracks": 4462,
+ "length_mm": 3350.7,
  "layers": [
   {
    "name": "F.Cu",
@@ -40,8 +40,8 @@
    "file": "f.svg",
    "color": "#C83434",
    "note": "Top copper, 35 \u00b5m (1 oz).",
-   "tracks": 1869,
-   "length_mm": 1058.6,
+   "tracks": 1951,
+   "length_mm": 1068.4,
    "pads": 448,
    "zones": []
   },
@@ -66,8 +66,8 @@
    "file": "in2.svg",
    "color": "#CE7D2C",
    "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-   "tracks": 851,
-   "length_mm": 1244.3,
+   "tracks": 946,
+   "length_mm": 1251.2,
    "pads": 6,
    "zones": []
   },
@@ -78,9 +78,9 @@
    "file": "b.svg",
    "color": "#4D7FC4",
    "note": "Bottom copper, 35 \u00b5m (1 oz).",
-   "tracks": 1477,
-   "length_mm": 1025.7,
-   "pads": 381,
+   "tracks": 1565,
+   "length_mm": 1031.1,
+   "pads": 389,
    "zones": [
     "+1V1",
     "GND",

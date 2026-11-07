@@ -33,12 +33,12 @@
   {
    "sheet": "MCU",
    "title": "MCU",
-   "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, top-bezel light sensor \u00b7 46 symbols",
+   "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, top-bezel light sensor \u00b7 53 symbols",
    "file": "sunflower-MCU.svg",
    "source": "mcu.kicad_sch",
    "paper": "A3",
    "page": "3",
-   "symbols": 46,
+   "symbols": 53,
    "size_mm": [
     419.989,
     297.0022

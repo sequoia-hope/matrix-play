@@ -1,12 +1,13 @@
 {
  "board": "sunflower.kicad_pcb",
- "generated": "2026-11-06",
+ "generated": "2026-11-07",
  "glb": "board.glb",
- "bytes": 10678276,
- "kicad_bytes": 32672784,
- "parts": 199,
+ "bytes": 10857876,
+ "kicad_bytes": 33609712,
+ "parts": 206,
  "modelled": 191,
  "no_model": [
+  "NT1",
   "TP1",
   "TP2",
   "TP3",
@@ -14,7 +15,13 @@
   "TP5",
   "TP6",
   "TP7",
-  "TP8"
+  "TP8",
+  "TP11",
+  "TP12",
+  "TP13",
+  "TP14",
+  "TP15",
+  "TP16"
  ],
  "missing": [],
  "empty": [],
@@ -35,6 +42,6 @@
   "legacy": 2,
   "found": 0
  },
- "triangles": 736449,
+ "triangles": 753974,
  "primitives": 880
 }

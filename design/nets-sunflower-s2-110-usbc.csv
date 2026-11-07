@@ -56,7 +56,9 @@ net,class,v_max,i_cont,i_peak,impedance,length_limit,reason
 /MCU/ACC_INT,SIGNAL,3.4,,,,,"Control or status, low current"
 /MCU/ACC_SCL,SIGNAL,3.4,,,,,"Control or status, low current"
 /MCU/ACC_SDA,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/BOARD_ID0,SIGNAL,3.4,,,,,"GPIO19 board ID strap, tied to GND through net tie NT1 (reads 0)"
 /MCU/BTN,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/GPIO29_TP,SIGNAL,3.4,,,,,GPIO29 spare GPIO (ADC3) to its test pad
 /MCU/LIGHT,ANALOG,3.4,0.00015,0.00015,,,"XYC-PT19C-L1 emitter analog node (22 k || 100 nF to GND, ADC1)"
 /MCU/LIGHT_PWR,SIGNAL,3.4,0.00015,0.00015,,,GPIO1 switched 3.3 V collector supply for Q2 (0 uA sleep)
 /MCU/QSPI_SCLK,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
@@ -68,6 +70,8 @@ net,class,v_max,i_cont,i_peak,impedance,length_limit,reason
 /MCU/RUN,SIGNAL,3.4,,,,,"Control or status, low current"
 /MCU/SWCLK,SIGNAL,3.4,,,,,"Control or status, low current"
 /MCU/SWDIO,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/UART_RX,SIGNAL,3.4,,,,,GPIO25 UART1 RX to its test pad
+/MCU/UART_TX,SIGNAL,3.4,,,,,GPIO24 UART1 TX to its test pad
 /MCU/USB_DM_MCU,DIFF_HS,3.6,,,90 diff,,"USB FS, 27 R to pin, very short"
 /MCU/USB_DP_MCU,DIFF_HS,3.6,,,90 diff,,"USB FS, 27 R to pin, very short"
 /MCU/VREG_AVDD,ANALOG,3.4,0.001,0.001,,,"Regulator analog filter, RFILT and CFILT"

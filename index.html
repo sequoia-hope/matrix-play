@@ -344,7 +344,7 @@ footer {
                 <td>4L std, no POFV, USB-C on back</td>
                 <td>110&times; XL-1615RGBC</td>
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>0 open</b> &middot; 612 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>0 open</b> &middot; 637 vias &middot; 0 DRC &middot; test pads &middot; fab files</td>
                 <td>$12.55</td>
               </tr>
               <tr>
@@ -579,7 +579,7 @@ const SUNFLOWER_CARDS = [
     badge: "0 Open · 0 DRC",
     badgeKind: "ok",
     specs: ["4 layers", "110× XL-1615 LEDs", "USB-C on back", "$12.55 BOM"],
-    desc: "USB-C receptacle (HRO TYPE-C-31-M-12) on the back at the bottom rim, front LEDs steered round its six through-holes, an LED at the centre and the light sensor at the top rim. Buttons and PicoBlade battery socket stay at the top. No vias in pads, so no filled-via option needed. VBAT_EN is on GPIO28 here. 0 opens, 0 DRC errors or warnings, copper audit clean (612 vias); fab files exported.",
+    desc: "USB-C receptacle (HRO TYPE-C-31-M-12) on the back at the bottom rim, front LEDs steered round its six through-holes, an LED at the centre and the light sensor at the top rim. Buttons and PicoBlade battery socket stay at the top. No vias in pads, so no filled-via option needed. VBAT_EN is on GPIO28 here. Test pads on the back for the power rails, SWD and reset, I2C, UART (GPIO24 TX, GPIO25 RX) and GPIO29, and board ID straps on GPIO19-21 (this board reads 6). 0 opens, 0 DRC errors or warnings, copper audit clean (637 vias); fab files exported.",
     silkF: true, silkB: true
   },
   {
