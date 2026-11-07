@@ -62,6 +62,16 @@ A bounding-box check of vias in non-GND SMD pads flags a few on each board, all 
 
 Keeping vias out of pads costs at most an open or two and some clean-up, so a POFV-free 4-layer order is in reach at 88 LEDs. The filled-via (POFV) routes are kept as `hw/sunflower/s1-66-pofv` and `s2-88-pofv`, each with fab files.
 
+## USB-C study (s2-110-usbc)
+
+Asked for on 2026-11-06: a real USB-C on the back instead of the wire pads, buttons and battery socket at the top, an LED at the centre, and the light sensor out at the rim. Built as its own variant beside s2-110 (`hw/sunflower/s2-110-usbc`, `VariantSpec(centre_led, usb_c, als_pos)` in `config.py`).
+
+- **Receptacle:** HRO TYPE-C-31-M-12 (C165948, 322k at JLC), KiCad's footprint, on B.Cu at the south rim, mouth out, front 0.3 mm past the edge. Its 4 shell legs and 2 pegs go through the board, so they are keepouts for the front LEDs: `sunflower_points(..., keepouts=...)` pushes LED centres out of them (and out of the light sensor's spot) before the courtyard relaxation. Note that flipping a footprint to B.Cu mirrors it front-to-back, so the receptacle sits at 180°.
+- **Why not beside the battery socket:** at every angle next to the socket on the north rim, the receptacle's 10.7 × 9.5 mm courtyard lands on U3 itself (and Y1, the RP2350 decoupling). That spot needs the RP2350 block moved, which every tier copies from Variant D. At the south rim it only displaces U7 (ESD), U8/R8/C6 (cell protection) and C1, which the legaliser moves round it.
+- **Centre LED and light sensor:** the spiral starts at the centre (LED 0 at 0, 0); Q2 sits on F.Cu at the top rim (0, −18.2) with R43/C70 behind it.
+- **Route:** from scratch, then plough passes with wider shove reach and targeted rip-ups. VBAT_EN would not route from GPIO14 (pin 18), nor from GPIO15 or GPIO0: its 22 mm run south to Q1 (by the USB-C) has to cross the LED field. It now sits on **GPIO28 (pin 42)**, beside VBAT_SENSE on pin 40, and routes along the same inner-layer path (`VariantSpec.vbat_en_gpio`, this variant only; firmware must use GPIO28 here). Now 1 open (VSYS at U2 pin 5), 1 narrow neck, 623 vias; still routing. BOM $12.55 at qty 10 ($0.18 over s2-110 for the receptacle).
+- **Helpers:** `scripts/sunflower/fix_open_4l.py` (4-layer copy of the one-connection maze fixer; no via holes in SMD pads) and `gnd_via.py` (tie a GND pad to the In1 plane). Neither found legal room round U2.
+
 ## Open items
 
 - s2-88 (no vias in pads): 2 thin pad joints and copper tidying, then fab export.

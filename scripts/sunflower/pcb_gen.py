@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from config import (  # noqa: E402
     BAT_POS,
+    USB_POS,
     CELL_D,
     OX,
     OY,
@@ -195,7 +196,10 @@ def stage_place(spec: VariantSpec):
         placed.add(c["ref"])
 
     # 2. Q2 light sensor on F.Cu at the eye of the sunflower.
-    set_fcu("Q2", 0.00, 0.00, 0.0, hide_ref=True)
+    if spec.als_pos:
+        set_fcu("Q2", *spec.als_pos, hide_ref=True)  # at the rim; the centre has an LED
+    else:
+        set_fcu("Q2", 0.00, 0.00, 0.0, hide_ref=True)
     placed.add("Q2")
 
     # 3. The proven RP2350 + regulator + crystal + flash + charger + ESD + LDO macro at Variant D's position.
@@ -205,6 +209,9 @@ def stage_place(spec: VariantSpec):
     # 4. South rim: J1 USB pads, R1/R2 CC resistors, Q1 VBAT sense divider -- all as in Variant D.
     for ref in ("J1", "R1", "R2", "Q1", "R9", "R10", "R11", "R12", "C7"):
         at_ref(ref)
+    if spec.usb_c:
+        # USB-C receptacle at the south rim, mouth out; the parts under it are legalised round it below
+        set_bcu("J1", *USB_POS)
     # BT1: the JST GH battery socket, mouth to the rim, at the site jst_site.py found clear on every tier.
     set_bcu("BT1", *BAT_POS)
     placed.add("BT1")
@@ -235,8 +242,13 @@ def stage_place(spec: VariantSpec):
         at_ref(ref)
 
     # Q2's load resistor and filter cap behind it (the legaliser walks them clear of L1).
-    set_bcu("R43", -1.50, -1.60, 180.0)
-    set_bcu("C70", 1.50, -1.60, 180.0)
+    if spec.als_pos:
+        ax, ay, _ = spec.als_pos
+        set_bcu("R43", ax - 1.5, ay + 2.0, 180.0)
+        set_bcu("C70", ax + 1.5, ay + 2.0, 180.0)
+    else:
+        set_bcu("R43", -1.50, -1.60, 180.0)
+        set_bcu("C70", 1.50, -1.60, 180.0)
     placed.update({"R43", "C70"})
 
     # 7. Place AW20198QNR QFN-40 drivers + programmatically place their 5 local passives right at PVCC(5) & VCC(22)/ISET(29)!
@@ -289,6 +301,14 @@ def stage_place(spec: VariantSpec):
         raise SystemExit(f"[{spec.name}] footprints with no placement rule: {missing}")
 
     # 9. Legalize movable auxiliary passives/TPs against all fixed ICs/decouplers and the board circle.
+    def crt_poly(f):
+        from shapely.geometry import Polygon
+        cy = f.GetCourtyard(pcbnew.B_CrtYd)
+        if not cy.OutlineCount():
+            return None
+        o = cy.Outline(0)
+        return Polygon([(um(o.CPoint(i).x), um(o.CPoint(i).y)) for i in range(o.PointCount())])
+
     def cbox_bcu(f):
         cy = f.GetCourtyard(pcbnew.B_CrtYd)
         q = cy.BBox() if cy.OutlineCount() else f.GetBoundingBox(False, False)
@@ -299,6 +319,9 @@ def stage_place(spec: VariantSpec):
         "R18", "R19", "R20", "R21", "R22", "R31", "C35", "R43", "C70",
         "TP1", "TP2", "TP3", "TP4", "TP5", "TP6", "TP7", "TP8",
     ]
+    if spec.usb_c:
+        # Variant D parts the receptacle sits on: ESD, VBUS cap, cell protection and its resistor
+        movable = ["U7", "U8", "C1", "R8", "C6"] + movable
     fixed_boxes = {
         r: cbox_bcu(f)
         for r, f in fps.items()
@@ -344,7 +367,10 @@ def stage_place(spec: VariantSpec):
                 continue
             c = fixed_boxes[r2]
             if not (a[2] <= c[0] + 0.02 or c[2] <= a[0] + 0.02 or a[3] <= c[1] + 0.02 or c[3] <= a[1] + 0.02):
-                raise SystemExit(f"[{spec.name}] B.Cu courtyard overlap: {r1} {a} vs {r2} {c}")
+                # Boxes overlap; a turned part's box is bigger than its courtyard, so test the real outlines
+                pa, pc = crt_poly(fps[r1]), crt_poly(fps[r2])
+                if pa is None or pc is None or pa.intersection(pc).area > 1e-3:
+                    raise SystemExit(f"[{spec.name}] B.Cu courtyard overlap: {r1} {a} vs {r2} {c}")
 
     # Hide noisy B.Cu silkscreen designators prior to post_silk tidy pass
     for f in b.GetFootprints():

@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / ".claude/skills/pcb-design/scripts"))
 sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from kicad_write import S, Schematic, Sym, SymbolLib, dump, new_uuid, yes  # noqa: E402
-from config import BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
+from config import USB_FP, BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
 
 PROJECT = "sunflower"
 DATE = "2026-11-05"
@@ -107,20 +107,36 @@ class Sheet(Schematic):
 
 def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
     s = Sheet(spec, libs, "power", "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug)")
-    j1 = s.symbol(
-        "round_pendant:USB_Pads", "J1", "USB wires", (40.64, 93.98),
-        in_bom=False, fields={"MPN": "none, wire pads"}, ref_at=(30.48, 81.28), value_at=(30.48, 83.82),
-    )
+    if spec.usb_c:
+        j1 = s.symbol(
+            "round_pendant:USB_C_16P", "J1", "USB-C", (40.64, 93.98),
+            footprint=USB_FP,
+            fields={"LCSC": "C165948", "MPN": "TYPE-C-31-M-12", "Manufacturer": "Korean Hroparts Elec"},
+            ref_at=(30.48, 78.74), value_at=(30.48, 81.28),
+        )
+        # The wire-pad symbol's pin numbers, mapped to the receptacle's
+        jp = {"1": "A5", "2": "B5", "3": "A7", "4": "A6", "5": "A4", "6": "A1"}
+        sh = j1.pin("S1")
+        s.wire(sh, (sh[0] + 2.54, sh[1]))
+        s.power("power:GND", (sh[0] + 2.54, sh[1]))
+        for nc in ("A8", "B8"):
+            s.no_connect(j1.pin(nc))
+    else:
+        j1 = s.symbol(
+            "round_pendant:USB_Pads", "J1", "USB wires", (40.64, 93.98),
+            in_bom=False, fields={"MPN": "none, wire pads"}, ref_at=(30.48, 81.28), value_at=(30.48, 83.82),
+        )
+        jp = {k: k for k in "123456"}
     vbus_y = 68.58
-    px = j1.pin("5")[0]
-    s.wire(j1.pin("5"), (px + 2.54, j1.pin("5")[1]), (px + 2.54, vbus_y), (64.77, vbus_y))
-    g = j1.pin("6")
+    px = j1.pin(jp["5"])[0]
+    s.wire(j1.pin(jp["5"]), (px + 2.54, j1.pin(jp["5"])[1]), (px + 2.54, vbus_y), (64.77, vbus_y))
+    g = j1.pin(jp["6"])
     s.wire(g, (g[0] + 2.54, g[1]), (g[0] + 2.54, g[1] + 7.62))
     s.power("power:GND", (g[0] + 2.54, g[1] + 7.62))
     s.power("power:PWR_FLAG", (g[0] + 7.62, g[1] + 7.62), rot=180, value="PWR_FLAG")
     s.wire((g[0] + 2.54, g[1] + 7.62), (g[0] + 7.62, g[1] + 7.62))
     for pin, net, x, ref in (("1", "CC1", 60.96, "R1"), ("2", "CC2", 71.12, "R2")):
-        p = j1.pin(pin)
+        p = j1.pin(jp[pin])
         s.wire(p, (x, p[1]), (x, 104.14))
         s.label(net, (p[0] + 7.62, p[1]))
         s.res_v(ref, "5.1k", (x, 104.14), to_gnd=True)
@@ -132,7 +148,7 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         ref_at=(90.17, 99.06), value_at=(90.17, 101.6),
     )
     for pin, u, jog in (("3", "1", 5.08), ("4", "3", 7.62)):
-        q, v = j1.pin(pin), u7.pin(u)
+        q, v = j1.pin(jp[pin]), u7.pin(u)
         s.wire(q, (q[0] + jog, q[1]), (q[0] + jog, v[1]), v)
     s.label("USB_DM_C", (74.93, u7.pin("1")[1]))
     s.label("USB_DP_C", (74.93, u7.pin("3")[1]))
@@ -145,7 +161,7 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
     s.wire((64.77, vbus_y), (121.92, vbus_y))
     s.power("power:VBUS", (73.66, vbus_y))
     s.power("power:PWR_FLAG", (81.28, vbus_y), value="PWR_FLAG")
-    s.box((15.24, 55.88), (110.49, 132.08), "USB WIRES, ESD")
+    s.box((15.24, 55.88), (110.49, 132.08), "USB-C, ESD" if spec.usb_c else "USB WIRES, ESD")
 
     u5x, u5y = 160.02, 86.36
     u5 = s.symbol(
@@ -357,9 +373,10 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         11: "BTN",
         12: "CHG",
         13: "PGOOD",
-        14: "VBAT_EN",
+        spec.vbat_en_gpio: "VBAT_EN",
         27: "LIGHT",
     }
+    assert len(used) == 12, "vbat_en_gpio clashes with a used GPIO"
     gl = {"I2C_SDA", "I2C_SCL", "LED_SDB", "CHG", "PGOOD", "VBAT_EN"}
     for i in range(30):
         nm = f"GPIO{i}" if i < 26 else f"GPIO{i}/ADC{i - 26}"

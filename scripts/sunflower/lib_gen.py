@@ -380,6 +380,24 @@ def generate_libs(variant_name: str):
         width=10.16,
         ref="J",
     )
+    usb_c = ic(
+        "USB_C_16P",
+        "USB-C receptacle, USB 2.0, 16 pins (HRO TYPE-C-31-M-12)",
+        "round_pendant:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+        right=[
+            ("passive", ["A4", "A9", "B4", "B9"], "VBUS"),
+            ("passive", ["A7", "B7"], "D-"),
+            ("passive", ["A6", "B6"], "D+"),
+            ("passive", "A5", "CC1"),
+            ("passive", "B5", "CC2"),
+            ("passive", ["A1", "A12", "B1", "B12"], "GND"),
+            ("passive", "S1", "SHIELD"),
+            ("passive", "A8", "SBU1"),
+            ("passive", "B8", "SBU2"),
+        ],
+        width=10.16,
+        ref="J",
+    )
     als = ic(
         "ALS-PT19",
         "Ambient light sensor phototransistor, 1.6 x 0.8 mm SMD",
@@ -395,6 +413,7 @@ def generate_libs(variant_name: str):
         S("generator", "sunflower_symbols"),
         S("generator_version", "9.0"),
         usb,
+        usb_c,
         als,
         aw20198_sym(),
         charger,
@@ -430,6 +449,10 @@ def generate_libs(variant_name: str):
     from config import BAT_FP, BAT_LIB_SRC
     bat_name = BAT_FP.split(":")[1]
     shutil.copy(f"{BAT_LIB_SRC}/{bat_name}.kicad_mod", pretty / f"{bat_name}.kicad_mod")
+    if VARIANTS[variant_name].usb_c:
+        from config import USB_FP, USB_LIB_SRC
+        usb_name = USB_FP.split(":")[1]
+        shutil.copy(f"{USB_LIB_SRC}/{usb_name}.kicad_mod", pretty / f"{usb_name}.kicad_mod")
     for name in ("L_pol_2016", "C_0402_1005Metric_small_pads"):
         shutil.copy(VENDOR / f"{name}.kicad_mod", pretty / f"{name}.kicad_mod")
     (pretty / "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias.kicad_mod").write_text(rp2350_solid_ep())

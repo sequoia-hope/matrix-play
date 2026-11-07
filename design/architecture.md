@@ -37,6 +37,6 @@ flowchart LR
 | 10 | ACC_INT | power-up wake source |
 | 11 | SW1 | power-up wake source, 1 kΩ series |
 | 12, 13 | CHG, PGOOD | open drain, 100 kΩ pull-ups to 3V3 |
-| 14 | VBAT_EN | Switches the divider via Q1; default pull-down keeps it off |
+| 14 | VBAT_EN | Switches the divider via Q1; default pull-down keeps it off (GPIO28 on sunflower s2-110-usbc, see design/study/sunflower) |
 | 26 | VBAT_SENSE | ADC0, 100 kΩ / 100 kΩ with 100 nF |
 | others | test pads where they fit | |
