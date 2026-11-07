@@ -276,11 +276,14 @@ def stage_place(spec: VariantSpec):
         c_vcc_1u = f"C{drv.cap_base + 3}"
 
         p5_x = um(p5.x) - OX
-        set_bcu(c_pvcc_100n, p5_x - 0.65, dy0 + pvcc_dir * 3.95, 90.0)
-        set_bcu(c_pvcc_1u, p5_x + 0.65, dy0 + pvcc_dir * 3.95, 90.0)
+        # USB-C variant: the east driver's PVCC caps sit 0.45 mm further out, so its south pins can escape
+        # without via-in-pad (the receptacle crowds that corner; found while routing s2-110-usbc)
+        pv = 0.45 if spec.usb_c and dx0 > 0 else 0.0
+        set_bcu(c_pvcc_100n, p5_x - 0.65, dy0 + pvcc_dir * (3.95 + pv), 90.0)
+        set_bcu(c_pvcc_1u, p5_x + 0.65, dy0 + pvcc_dir * (3.95 + pv), 90.0)
         if drv.bulk_ref:
             bulk_dx = 2.10 if dx0 <= 0 else -2.10
-            set_bcu(drv.bulk_ref, p5_x + bulk_dx, dy0 + pvcc_dir * 4.40, 90.0)
+            set_bcu(drv.bulk_ref, p5_x + bulk_dx, dy0 + pvcc_dir * (4.40 + pv), 90.0)
             drv_fixed.add(drv.bulk_ref)
 
         p22_x = um(p22.x) - OX

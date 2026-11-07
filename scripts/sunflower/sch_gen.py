@@ -147,11 +147,21 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         fields={"LCSC": "C15999", "MPN": "USBLC6-2P6", "Manufacturer": "STMicroelectronics"},
         ref_at=(90.17, 99.06), value_at=(90.17, 101.6),
     )
-    for pin, u, jog in (("3", "1", 5.08), ("4", "3", 7.62)):
-        q, v = j1.pin(jp[pin]), u7.pin(u)
-        s.wire(q, (q[0] + jog, q[1]), (q[0] + jog, v[1]), v)
-    s.label("USB_DM_C", (74.93, u7.pin("1")[1]))
-    s.label("USB_DP_C", (74.93, u7.pin("3")[1]))
+    if spec.usb_c:
+        # The receptacle's D-/D+ pins sit above CC1, so a jogged wire down to U7 would end on the CC1 wire and
+        # merge the nets. Join them by label instead.
+        for pin, u, net in (("3", "1", "USB_DM_C"), ("4", "3", "USB_DP_C")):
+            q, v = j1.pin(jp[pin]), u7.pin(u)
+            s.wire(q, (q[0] + 2.54, q[1]))
+            s.label(net, (q[0] + 2.54, q[1]))
+            s.wire((74.93, v[1]), v)
+            s.label(net, (74.93, v[1]))
+    else:
+        for pin, u, jog in (("3", "1", 5.08), ("4", "3", 7.62)):
+            q, v = j1.pin(jp[pin]), u7.pin(u)
+            s.wire(q, (q[0] + jog, q[1]), (q[0] + jog, v[1]), v)
+        s.label("USB_DM_C", (74.93, u7.pin("1")[1]))
+        s.label("USB_DP_C", (74.93, u7.pin("3")[1]))
     s.wire(u7.pin("5"), (86.36, vbus_y))
     s.power("power:GND", u7.pin("2"))
     for pin, net in (("6", "USB_DM"), ("4", "USB_DP")):

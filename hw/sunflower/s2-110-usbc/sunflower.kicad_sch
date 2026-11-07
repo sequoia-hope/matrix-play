@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "27e38407-2322-4e93-854a-5ac471153023")
+	(uuid "65731fde-ad15-4ad5-b144-ead81b3a881a")
 	(paper "A4")
 	(title_block
 		(title "sunflower (s2-110-usbc): top")
@@ -17,7 +17,7 @@
 		(exclude_from_sim no)
 		(at 20.32 105 0)
 		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "cfb7734e-f1a7-41a7-883c-24425a380f6c")
+		(uuid "73841261-3f39-48ab-8b21-4860ea5e934e")
 	)
 	(sheet
 		(at 20.32 35.56)
@@ -31,7 +31,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "44883fa1-3405-479b-9ebf-3eed7d8528b0")
+		(uuid "2b1a614c-c6fd-4690-aea1-1bd792942570")
 		(property "Sheetname" "Power"
 			(at 20.32 34.86 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -42,7 +42,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/27e38407-2322-4e93-854a-5ac471153023"
+				(path "/65731fde-ad15-4ad5-b144-ead81b3a881a"
 					(page "2")
 				)
 			)
@@ -60,7 +60,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "524e6c2d-0db7-4307-9f40-1bd881de0fb5")
+		(uuid "56337b24-69f8-49d8-bc2b-a50461378e64")
 		(property "Sheetname" "MCU"
 			(at 83.82 34.86 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -71,7 +71,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/27e38407-2322-4e93-854a-5ac471153023"
+				(path "/65731fde-ad15-4ad5-b144-ead81b3a881a"
 					(page "3")
 				)
 			)
@@ -89,7 +89,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "c76d3d7b-905b-4ff9-9459-c811e587f5d6")
+		(uuid "8d95196d-9b1c-403f-a3f4-a09279ef8e1f")
 		(property "Sheetname" "Driver 1 and matrix"
 			(at 149.86 24.7 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -100,7 +100,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/27e38407-2322-4e93-854a-5ac471153023"
+				(path "/65731fde-ad15-4ad5-b144-ead81b3a881a"
 					(page "4")
 				)
 			)
@@ -118,7 +118,7 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "23154fcd-cab5-4ace-806a-bb9bc505f44d")
+		(uuid "5d210855-f4ca-4a5e-ab6a-0d48c90e5ab7")
 		(property "Sheetname" "Driver 2 and matrix"
 			(at 149.86 52.64 0)
 			(effects (font (size 1.27 1.27)) (justify left bottom))
@@ -129,7 +129,7 @@
 		)
 		(instances
 			(project "sunflower"
-				(path "/27e38407-2322-4e93-854a-5ac471153023"
+				(path "/65731fde-ad15-4ad5-b144-ead81b3a881a"
 					(page "5")
 				)
 			)
