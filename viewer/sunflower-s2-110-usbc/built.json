@@ -102,13 +102,13 @@
   "thickness": 1.5862,
   "plate": "#c8c8c8",
   "body": "body.svg",
-  "vias": 621,
-  "nets": 132,
+  "vias": 612,
+  "nets": 134,
   "footprints": 199,
   "front": 111,
   "back": 88,
-  "tracks": 4013,
-  "length_mm": 3366.3,
+  "tracks": 4197,
+  "length_mm": 3328.6,
   "layers": [
    {
     "name": "F.Cu",
@@ -117,8 +117,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 1841,
-    "length_mm": 1098.2,
+    "tracks": 1869,
+    "length_mm": 1058.6,
     "pads": 448,
     "zones": []
    },
@@ -143,8 +143,8 @@
     "file": "in2.svg",
     "color": "#CE7D2C",
     "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-    "tracks": 971,
-    "length_mm": 1255.6,
+    "tracks": 851,
+    "length_mm": 1244.3,
     "pads": 6,
     "zones": []
    },
@@ -155,8 +155,8 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 1201,
-    "length_mm": 1012.4,
+    "tracks": 1477,
+    "length_mm": 1025.7,
     "pads": 381,
     "zones": [
      "+1V1",
@@ -211,10 +211,10 @@
   "board": "sunflower.kicad_pcb",
   "generated": "2026-11-06",
   "glb": "board.glb",
-  "bytes": 10569644,
-  "kicad_bytes": 32190336,
+  "bytes": 10678276,
+  "kicad_bytes": 32672784,
   "parts": 199,
-  "modelled": 190,
+  "modelled": 191,
   "no_model": [
    "TP1",
    "TP2",
@@ -225,9 +225,7 @@
    "TP7",
    "TP8"
   ],
-  "missing": [
-   "J1"
-  ],
+  "missing": [],
   "empty": [],
   "substituted": [],
   "resolved": [
@@ -238,32 +236,18 @@
    "U1",
    "U2"
   ],
-  "boxed": [
-   "J1"
-  ],
-  "why": {
-   "J1": "no such file"
-  },
-  "missing_models": [
-   "${KICAD9_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step"
-  ],
-  "boxes": [
-   {
-    "model": "${KICAD9_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step",
-    "why": "no such file",
-    "refs": [
-     "J1"
-    ]
-   }
-  ],
+  "boxed": [],
+  "why": {},
+  "missing_models": [],
+  "boxes": [],
   "resolved_how": {
    "legacy": 2,
    "found": 0
   },
-  "triangles": 731249,
-  "primitives": 876
+  "triangles": 736449,
+  "primitives": 880
  },
- "when": "2026-11-06 14:35",
+ "when": "2026-11-06 22:44",
  "source": {
   "kind": "file",
   "pcb": "hw/sunflower/s2-110-usbc/sunflower.kicad_pcb",
