@@ -105,7 +105,7 @@
  },
  "layers": {
   "board": "parallelogram.kicad_pcb",
-  "generated": "2026-11-05",
+  "generated": "2026-11-07",
   "view_mm": [
    86.115,
    63.982,
@@ -228,7 +228,7 @@
  },
  "3d": {
   "board": "parallelogram.kicad_pcb",
-  "generated": "2026-11-05",
+  "generated": "2026-11-07",
   "glb": "board.glb",
   "bytes": 15420168,
   "kicad_bytes": 47914376,
@@ -270,7 +270,7 @@
   "triangles": 915565,
   "primitives": 5259
  },
- "when": "2026-11-05 19:52",
+ "when": "2026-11-07 12:30",
  "source": {
   "kind": "file",
   "pcb": "hw/parallelogram/p4-264/parallelogram.kicad_pcb",
