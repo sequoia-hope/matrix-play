@@ -28,7 +28,7 @@ This study explores how far a **standard 4-layer JLCPCB PCB (`JLC04161H-7628`, `
 | Layer | Function | Rules & Geometry |
 |---|---|---|
 | `L1` (`F.Cu`) | Skewed RGB LED matrix + `Q2` sensor | Vertical `CS` cathode chains within columns + short horizontal anode stubs |
-| `L2` (`In1.Cu`) | **Unbroken solid `GND` reference plane** | `1` unbroken piece (`1,226–1,377 mm²`), `0.15 mm` clearance, `0.12 mm` min width, `L1` `VREG_LX` switch-node cutout |
+| `L2` (`In1.Cu`) | **Unbroken solid `GND` reference plane** | `1` unbroken piece (`1,226–1,377 mm²`), `0.15 mm` clearance, `0.12 mm` min width, `VREG_LX` switch-node cutout shaped to the LX copper (zone and LX pads + `0.25 mm`, `~5.4 mm²`; was a `9.2 mm²` bounding box until 2026-11-07) |
 | `L3` (`In2.Cu`) | **Single inner signal / `SW` scan highway** | Carries horizontal/diagonal `SW` anode buses, `CS` trunks from `B.Cu` QFNs, `I2C`, `QSPI`, and `VSYS`/`+3V3` links |
 | `L4` (`B.Cu`) | All ICs, passives, `J1`/`BT1` pads, RP2350 zones | Solid exposed `GND` pads (`U3.61`, `U5.17`, `U1/U2/U10/U11.41`) + unbroken `RP2350` `+1V1` ring & `+3V3` band |
 
