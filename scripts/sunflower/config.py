@@ -63,6 +63,11 @@ class VariantSpec:
     usb_c: bool = False
     als_pos: Tuple[float, float, float] | None = None
     vbat_en_gpio: int = 14  # RP2350 GPIO switching the VBAT divider (s2-110-usbc: GPIO28, pin 42, routes beside VBAT_SENSE)
+    # Bring-up pads (2026-11-07, s2-110-usbc): test points for UART1, I2C0, VBUS and a spare ADC GPIO (TP_GPIOS),
+    # and board ID straps. ID_GPIOS are read with internal pull-ups; the ones in id_tied are tied to GND (bit = 0),
+    # the rest left open (bit = 1). Boards without straps read all ones.
+    test_pads: bool = False
+    id_tied: Tuple[int, ...] = ()
 
     @property
     def n_leds(self) -> int:
@@ -105,7 +110,18 @@ for _k in ("s1-66", "s2-88"):
 # USB-C study: s2-110 with a USB-C receptacle at the south rim, an LED at the centre and the light sensor at the top rim.
 VARIANTS["s2-110-usbc"] = _v("s2-110-usbc", "S3C", 110, (5, 5),
                              "110 XL-1615RGBC-RF LEDs in a 38 mm sunflower with a centre LED, USB-C on the back, light sensor at the rim, 2x AW20198QNR, 4-layer JLCPCB",
-                             centre_led=True, usb_c=True, als_pos=(0.0, -18.20, 0.0), vbat_en_gpio=28)
+                             centre_led=True, usb_c=True, als_pos=(0.0, -18.20, 0.0), vbat_en_gpio=28,
+                             test_pads=True, id_tied=(19,))
+
+# Board ID straps: GPIO19..21 (RP2350A pins 31-33, east side, next to the exposed GND pad). Read with pull-ups,
+# ID = GPIO19 | GPIO20 << 1 | GPIO21 << 2; a tied pin reads 0. 0b111 = no straps (every board before s2-110-usbc).
+ID_GPIOS = (19, 20, 21)
+# Test-pad GPIOs on boards with test_pads: UART1 on GPIO24 (TX) and GPIO25 (RX), and GPIO29, the only free ADC input.
+TP_GPIOS = {24: "UART_TX", 25: "UART_RX", 29: "GPIO29_TP"}
+# Where pcb_gen puts the bring-up pads and the ID net tie on B.Cu (x, y from the board centre).
+TEST_PAD_POS = {"TP5": (3.0, -17.0), "TP11": (8.5, 15.4), "TP12": (10.25, 14.15),
+                "TP13": (6.5, 16.25), "TP14": (10.5, -4.6), "TP15": (10.9, -6.9), "TP16": (10.75, -9.75),
+                "NT1": (3.75, -10.0)}
 
 # USB-C receptacle (HRO TYPE-C-31-M-12, LCSC C165948) on B.Cu at the south rim, mouth out, its front 0.3 mm past the
 # rim. The north rim was tried first (next to the battery socket) but its courtyard lands on U3 at every angle there.

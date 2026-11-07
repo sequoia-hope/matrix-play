@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / ".claude/skills/pcb-design/scripts"))
 sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from kicad_write import S, Schematic, Sym, SymbolLib, dump, new_uuid, yes  # noqa: E402
-from config import USB_FP, BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
+from config import ID_GPIOS, TP_GPIOS, USB_FP, BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
 
 PROJECT = "sunflower"
 DATE = "2026-11-05"
@@ -387,10 +387,31 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         27: "LIGHT",
     }
     assert len(used) == 12, "vbat_en_gpio clashes with a used GPIO"
+    if spec.test_pads:
+        tp_nets = dict(TP_GPIOS)
+        assert not set(tp_nets) & (set(used) | set(ID_GPIOS) | {26}), "test-pad GPIO clashes"
+        used.update(tp_nets)
+    assert not set(spec.id_tied) - set(ID_GPIOS)
     gl = {"I2C_SDA", "I2C_SCL", "LED_SDB", "CHG", "PGOOD", "VBAT_EN"}
     for i in range(30):
         nm = f"GPIO{i}" if i < 26 else f"GPIO{i}/ADC{i - 26}"
         p = u.pin(nm)
+        if i in spec.id_tied:
+            # A net tie, not a bare wire to GND: KiCad's ERC flags a bidirectional pin on a power net, and the tie's
+            # pins are passive. On the board it is a 0.5 mm copper link, no part to place.
+            k = ID_GPIOS.index(i)
+            nt = s.symbol(
+                "Device:NetTie_2", f"NT{k + 1}", "NetTie_2", (p[0] + 22.86, p[1]),
+                footprint="NetTie:NetTie-2_SMD_Pad0.5mm", in_bom=False,
+                fields={"Manufacturer": "", "MPN": "", "LCSC": ""},
+                ref_at=(p[0] + 22.86, p[1] - 2.54), value_at=(p[0] + 22.86, p[1] - 5.08),
+            )
+            a, b = nt.pin("1"), nt.pin("2")
+            s.wire(p, a)
+            s.label(f"BOARD_ID{k}", (p[0] + 2.54, p[1]))
+            s.wire(b, (b[0] + 7.62, b[1]))
+            s.power("power:GND", (b[0] + 7.62, b[1]))
+            continue
         if i in used:
             s.wire(p, (p[0] + 7.62, p[1]))
             if used[i] in gl:
@@ -555,6 +576,40 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
             s.wire(p, (p[0], p[1] + 2.54))
             s.label(net, (p[0], p[1] + 2.54), rot=270)
     s.box((271.78, 200.66), (381.0, 228.6), "TEST PADS")
+
+    if spec.test_pads:
+        # One row across the empty top of the sheet.
+        # TP9 and TP10 (UART on GPIO8/9, west of U3) were dropped: they blocked the routing there. UART1 is on
+        # GPIO24/25 instead (TP14/TP15).
+        pads = [("TP11", "I2C_SDA"), ("TP12", "I2C_SCL"), ("TP13", "VBUS")]
+        pads += [(f"TP{14 + k}", net) for k, net in enumerate(TP_GPIOS.values())]
+        y = 35.56
+        for c, (ref, net) in enumerate(pads):
+            x = 88.9 + c * 22.86
+            t = s.symbol(
+                "Connector:TestPoint", ref, net, (x, y), footprint=TP, in_bom=False,
+                fields={"Manufacturer": "", "MPN": "", "LCSC": ""},
+                ref_at=(x + 1.27, y - 6.35), value_at=(x + 1.27, y - 3.81),
+            )
+            p = t.pin("1")
+            if net == "VBUS":
+                s.wire(p, (p[0], p[1] + 2.54), (p[0] - 5.08, p[1] + 2.54))
+                s.power("power:VBUS", (p[0] - 5.08, p[1] + 2.54))
+            else:
+                s.wire(p, (p[0], p[1] + 2.54))
+                s.label(net, (p[0], p[1] + 2.54), rot=270, **(GL if net.startswith("I2C") else {}))
+        s.box((73.66, 22.86), (266.7, 50.8), "BRING-UP PADS: I2C0, VBUS, UART1 (GPIO24 TX, GPIO25 RX), SPARE ADC GPIO29")
+
+        bits = sum(1 << k for k, g in enumerate(ID_GPIOS) if g not in spec.id_tied)
+        lines = [
+            f"GPIO{ID_GPIOS[0]}, GPIO{ID_GPIOS[1]}, GPIO{ID_GPIOS[2]}: read with internal pull-ups.",
+            f"ID = GPIO{ID_GPIOS[0]} + 2 x GPIO{ID_GPIOS[1]} + 4 x GPIO{ID_GPIOS[2]}; tied to GND = 0, open = 1.",
+            f"This board: {', '.join(f'GPIO{g}' for g in spec.id_tied)} tied (NT), ID = {bits} (0b{bits:03b}).",
+            "Boards without straps read 7.",
+        ]
+        for k, ln in enumerate(lines):
+            s.text(ln, (274.32, 30.48 + k * 5.08))
+        s.box((271.78, 22.86), (381.0, 50.8), "BOARD ID STRAPS")
 
     qx, qy = 116.84, 243.84
     q2 = s.symbol(
@@ -767,7 +822,12 @@ def sheet_node(name, file, uuid, at, size, page, root_uuid):
 
 
 def generate_schematics(variant_name: str):
+    global TP
     spec = VARIANTS[variant_name]
+    if spec.test_pads:
+        # Same pad with a 0.75 mm courtyard (pad + 0.25 mm) instead of KiCad's 1.0 mm, so the test pads fit the
+        # pockets left between the routed parts on the back (lib_gen.py writes it).
+        TP = "round_pendant:TestPoint_Pad_D1.0mm_CrtYd0.75"
     hw = spec.hw_dir
     libs = SymbolLib([hw / "lib/round_pendant.kicad_sym"])
     cells = build_led_cells(spec)

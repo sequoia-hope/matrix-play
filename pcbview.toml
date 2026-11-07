@@ -52,7 +52,7 @@ id = "sunflower-s2-110-usbc"
 name = "Sunflower s2-110 USB-C (centre LED, rim light sensor)"
 pcb = "hw/sunflower/s2-110-usbc/sunflower.kicad_pcb"
 sch = "hw/sunflower/s2-110-usbc/sunflower.kicad_sch"
-note = "USB-C study on the 110-LED tier: HRO TYPE-C-31-M-12 receptacle on the back at the south rim (the front LEDs are steered clear of its 6 through-holes), an LED at the centre, the light sensor at the top rim, PicoBlade battery socket and both buttons at the top. VBAT_EN on GPIO28 (beside VBAT_SENSE) in this variant. No via-in-pad. 0 open, 0 DRC errors/warnings, copper audit clean; 612 vias. $12.55 BOM @10, fab files in fab/."
+note = "USB-C study on the 110-LED tier: HRO TYPE-C-31-M-12 receptacle on the back at the south rim (the front LEDs are steered clear of its 6 through-holes), an LED at the centre, the light sensor at the top rim, PicoBlade battery socket and both buttons at the top. VBAT_EN on GPIO28 (beside VBAT_SENSE) in this variant. Test pads on the back for power rails, SWD and RUN, I2C, UART1 (GPIO24 TX, GPIO25 RX) and GPIO29; board ID straps on GPIO19-21 (this board reads 6). No via-in-pad. 0 open, 0 DRC errors/warnings, copper audit clean; 637 vias. $12.55 BOM @10, fab files in fab/."
 
 [[boards]]
 id = "sunflower-s2-110"

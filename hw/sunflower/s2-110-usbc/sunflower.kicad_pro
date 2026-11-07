@@ -693,7 +693,15 @@
       },
       {
         "netclass": "SIGNAL",
+        "pattern": "/MCU/BOARD_ID0"
+      },
+      {
+        "netclass": "SIGNAL",
         "pattern": "/MCU/BTN"
+      },
+      {
+        "netclass": "SIGNAL",
+        "pattern": "/MCU/GPIO29_TP"
       },
       {
         "netclass": "ANALOG",
@@ -738,6 +746,14 @@
       {
         "netclass": "SIGNAL",
         "pattern": "/MCU/SWDIO"
+      },
+      {
+        "netclass": "SIGNAL",
+        "pattern": "/MCU/UART_RX"
+      },
+      {
+        "netclass": "SIGNAL",
+        "pattern": "/MCU/UART_TX"
       },
       {
         "netclass": "DIFF_HS",

@@ -453,6 +453,15 @@ def generate_libs(variant_name: str):
         from config import USB_FP, USB_LIB_SRC
         usb_name = USB_FP.split(":")[1]
         shutil.copy(f"{USB_LIB_SRC}/{usb_name}.kicad_mod", pretty / f"{usb_name}.kicad_mod")
+    if VARIANTS[variant_name].test_pads:
+        # KiCad's 1.0 mm test pad with its courtyard cut from r = 1.0 to r = 0.75 mm (pad edge + 0.25 mm)
+        tp = Path("/usr/share/kicad/footprints/TestPoint.pretty/TestPoint_Pad_D1.0mm.kicad_mod").read_text()
+        tp = tp.replace('(footprint "TestPoint_Pad_D1.0mm"', '(footprint "TestPoint_Pad_D1.0mm_CrtYd0.75"', 1)
+        i = tp.rfind("(fp_circle", 0, tp.index('(layer "F.CrtYd")'))
+        circ = tp[i:tp.index('(layer "F.CrtYd")', i)]
+        assert "(end 1 0)" in circ, "unexpected TestPoint courtyard"
+        tp = tp[:i] + circ.replace("(end 1 0)", "(end 0.75 0)") + tp[i + len(circ):]
+        (pretty / "TestPoint_Pad_D1.0mm_CrtYd0.75.kicad_mod").write_text(tp)
     for name in ("L_pol_2016", "C_0402_1005Metric_small_pads"):
         shutil.copy(VENDOR / f"{name}.kicad_mod", pretty / f"{name}.kicad_mod")
     (pretty / "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias.kicad_mod").write_text(rp2350_solid_ep())

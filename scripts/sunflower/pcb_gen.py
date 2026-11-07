@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from config import (  # noqa: E402
     BAT_POS,
+    TEST_PAD_POS,
     USB_POS,
     CELL_D,
     OX,
@@ -298,6 +299,12 @@ def stage_place(spec: VariantSpec):
     # 8. Test points where Variant D has them.
     for k in range(1, 9):
         at_ref(f"TP{k}")
+    # Bring-up pads and the board-ID net tie (s2-110-usbc): spots that were free of B.Cu copper and courtyards on
+    # the routed board, 2026-11-07. UART (GPIO24/25) and GPIO29 east of U3, I2C and VBUS by the USB-C.
+    if spec.test_pads:
+        for ref, (x, y) in TEST_PAD_POS.items():
+            set_bcu(ref, x, y, 0.0)
+            placed.add(ref)
 
     missing = sorted(r for r in fps if r not in placed)
     if missing:
@@ -979,7 +986,7 @@ def stage_post_silk(spec: VariantSpec):
         r = box(x0, y0, x1, y1)
         return not any(pad_polys[i].intersects(r) for i in pad_tree.query(r))
 
-    def add_b_label(txt: str, tx: float, ty: float, deg: float = 0.0, size: float = 0.85, dry: bool = False):
+    def add_b_label(txt: str, tx: float, ty: float, deg: float = 0.0, size: float = 0.85, dry: bool = False, avoid=()):
         t = pcbnew.PCB_TEXT(b)
         t.SetText(txt)
         t.SetLayer(pcbnew.B_SilkS)
@@ -994,7 +1001,7 @@ def stage_post_silk(spec: VariantSpec):
         bx0, by0, bx1, by1 = um(bb.GetLeft()) - OX, um(bb.GetTop()) - OY, um(bb.GetRight()) - OX, um(bb.GetBottom()) - OY
         if clear_of_pads(bx0, by0, bx1, by1) and all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and all(
             inside_disc(u, v, 0.45) for u in (bx0, bx1) for v in (by0, by1)
-        ):
+        ) and all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in avoid):
             if dry:
                 return True
             b.Add(t)
@@ -1002,11 +1009,12 @@ def stage_post_silk(spec: VariantSpec):
             return True
         return False
 
-    def label_near(txt, cands, size=0.85):
+    def label_near(txt, cands, size=0.85, avoid=(), quiet=False):
         for tx, ty, deg in cands:
-            if add_b_label(txt, tx, ty, deg, size):
+            if add_b_label(txt, tx, ty, deg, size, avoid=avoid):
                 return True
-        print(f"  label not placed: {txt}")
+        if not quiet:
+            print(f"  label not placed: {txt}")
         return False
 
     def around(x, y, rmax=3.0, deg=0.0):
@@ -1067,9 +1075,20 @@ def stage_post_silk(spec: VariantSpec):
     j1x, j1y = um(j1.x) - OX, um(j1.y) - OY
     label_near("USB 5V", [(j1x, j1y + dy, 0.0) for dy in (-1.9, -2.4, 1.6)])
     # Cell note: first free spot, scanning outward from the north rim
+    # B.Cu part bodies (courtyard boxes): a label there is hidden under the part once assembled.
+    bodies = []
+    for f in b.GetFootprints():
+        if f.GetLayer() == pcbnew.B_Cu and not re.fullmatch(r"(TP|NT)\d+", f.GetReference()):
+            bb = f.GetCourtyard(pcbnew.B_CrtYd).BBox()
+            if bb.GetWidth() > 0:
+                bodies.append((um(bb.GetLeft()) - OX, um(bb.GetTop()) - OY, um(bb.GetRight()) - OX, um(bb.GetBottom()) - OY))
+
     lipo = sorted(((x / 2, y / 2, 0.0) for x in range(-28, 29) for y in range(-34, 35)),
                   key=lambda c: math.hypot(c[0], c[1] + 15.5))
-    label_near("LIPO 403535", lipo)
+    # flat first, then sideways, then at the 0.8 mm minimum text height
+    (label_near("LIPO 403535", lipo, avoid=bodies, quiet=True)
+     or label_near("LIPO 403535", [(x, y, 90.0) for x, y, _ in lipo], avoid=bodies, quiet=True)
+     or label_near("LIPO 403535", lipo + [(x, y, 90.0) for x, y, _ in lipo], 0.8, avoid=bodies))
 
     # Add IC pin-1 dots and visible B.SilkS designators adjacent to major B.Cu parts (clear of B.Mask & edge)
     ic_refs = ["U3", "U1", "U2", "U10", "U11", "U4", "U5", "U6", "U7", "U8", "U9", "Q1", "BT1"]
@@ -1132,6 +1151,31 @@ def stage_post_silk(spec: VariantSpec):
             if add_b_label(r, tx, ty, deg):
                 des_placed += 1
                 break
+
+    if spec.test_pads:
+        # Name every test pad beside it (back silk), so a probe or jig finds them. After the pin-1 dots and
+        # designators, which matter more for assembly.
+        names = {"TP1": "VSYS", "TP2": "3V3", "TP3": "VBAT", "TP4": "1V1", "TP5": "RUN", "TP6": "CLK", "TP7": "DIO",
+                 "TP8": "GND", "TP11": "SDA", "TP12": "SCL", "TP13": "VBUS",
+                 "TP14": "TX", "TP15": "RX", "TP16": "29"}
+        tp_at = {r: (um(fps[r].GetPosition().x) - OX, um(fps[r].GetPosition().y) - OY) for r in names if r in fps}
+        for ref, txt in names.items():
+            if ref not in fps:
+                continue
+            qx, qy = tp_at[ref]
+            ok = False
+            for reach in (3.0, 4.5):
+                # a label must read as its own pad's: its pad clearly the nearest test pad (else it misleads)
+                cands = [c for c in around(qx, qy, reach)
+                         if all(math.hypot(c[0] - qx, c[1] - qy) < 0.6 * math.hypot(c[0] - ox, c[1] - oy)
+                                for r2, (ox, oy) in tp_at.items() if r2 != ref)]
+                cands = sorted(cands + [(x, y, 90.0) for x, y, _ in cands], key=lambda c: math.hypot(c[0] - qx, c[1] - qy))
+                # 0.8 mm is the board's minimum silk text height
+                ok = label_near(txt, cands, 0.85, avoid=bodies, quiet=True) or label_near(txt, cands, 0.8, avoid=bodies, quiet=True)
+                if ok:
+                    break
+            if not ok:
+                print(f"  label not placed: {txt} ({ref})")
 
     # Unlock all routed copper so finished board has 0 locked copper per LESSONS.md
     for tr in b.GetTracks():

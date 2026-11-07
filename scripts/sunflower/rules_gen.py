@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts/sunflower"))
-from config import VARIANTS, VariantSpec, build_led_cells  # noqa: E402
+from config import ID_GPIOS, TP_GPIOS, VARIANTS, VariantSpec, build_led_cells  # noqa: E402
 
 BASE_ROWS = [
     ("+1V1", "POWER", "1.1", "0.05", "0.1", "", "", "RP2350 core; reference ring + regulator zones per chips/rp2350.md"),
@@ -103,6 +103,14 @@ def build_rows(spec: VariantSpec):
             "ANALOG", "4.5", "", "", "", "",
             "AW20198 ISET current-setting resistor node (30 k to GND); drivers-aw20198.md",
         ))
+    if spec.test_pads:
+        for g, net in TP_GPIOS.items():
+            what = {"UART_TX": "UART1 TX", "UART_RX": "UART1 RX"}.get(net, "spare GPIO (ADC3)")
+            rows.append((f"/MCU/{net}", "SIGNAL", "3.4", "", "", "", "", f"GPIO{g} {what} to its test pad"))
+        for g in spec.id_tied:
+            k = ID_GPIOS.index(g)
+            rows.append((f"/MCU/BOARD_ID{k}", "SIGNAL", "3.4", "", "", "", "",
+                         f"GPIO{g} board ID strap, tied to GND through net tie NT{k + 1} (reads 0)"))
     rows.sort(key=lambda r: r[0])
     return rows
 
