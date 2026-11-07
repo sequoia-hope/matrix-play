@@ -792,6 +792,9 @@ def stage_models(spec: VariantSpec):
         "SW_Panasonic_EVQP7J": (base + "SW-SMD_EVQP7C01P-L3.6-W3.5-H1.4-P3.6-LS4.7.step", 0, 0.0),
         "XySemi_DFN-6_1.8x1.4mm": (base + "DFNFC-6_L1.8-W1.4-H0.6-P0.50-BL_XB9901A.step", 0, 0.56),
         "Texas_X2SON-4_1x1mm_P0.65mm": (base + "X2SON-4_L1.0-W1.0-H0.4-P0.65-TL-EPSLDPRT.step", 270, 0.0),
+        # LCSC C165948 (EasyEDA model); KiCad ships no STEP for its HRO footprint. Turned 180 and moved 0.8 mm
+        # so the shell legs and pegs sit in the footprint's slots (checked with a kicad-cli render).
+        "USB_C_Receptacle_HRO_TYPE-C-31-M-12": (base + "USB-C-SMD_TYPE-C-31-M-12.step", 180, (0.0, -0.8, 0.0)),
     }
 
     b = pcbnew.LoadBoard(str(pcb_path))
@@ -806,7 +809,7 @@ def stage_models(spec: VariantSpec):
             m.m_Filename = fn
             m.m_Rotation = pcbnew.VECTOR3D(0, 0, rot)
             m.m_Show = True
-            m.m_Offset = pcbnew.VECTOR3D(0, 0, zoff)
+            m.m_Offset = pcbnew.VECTOR3D(*zoff) if isinstance(zoff, tuple) else pcbnew.VECTOR3D(0, 0, zoff)
             ms.push_back(m)
             n += 1
 
