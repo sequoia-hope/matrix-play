@@ -539,15 +539,7 @@ def stage_zones(spec: VariantSpec):
     gnd_pts = disc_vertices(inset=0.30)
     add_zone("plane GND", IN1_CU, "GND", gnd_pts, 0, minw=0.12, clear=0.15)
 
-    lxpads = [p for p in fps["L1"].Pads() if p.GetNetname().endswith("VREG_LX")] + [
-        p for p in fps["U3"].Pads() if p.GetNetname().endswith("VREG_LX")
-    ]
-    lxbbs = [p.GetBoundingBox() for p in lxpads]
-    lx0 = min(um(q.GetLeft()) for q in lxbbs) - OX - 0.25
-    lx1 = max(um(q.GetRight()) for q in lxbbs) - OX + 0.25
-    ly0 = min(um(q.GetTop()) for q in lxbbs) - OY - 0.25
-    ly1 = max(um(q.GetBottom()) for q in lxbbs) - OY + 0.25
-    add_area("LX cutout L2", IN1_CU, [(lx0, ly0), (lx1, ly0), (lx1, ly1), (lx0, ly1)], tracks=True, pour=True)
+    # (the LX cutout itself is added after the vendor zones below: it follows the VREG_LX copper)
 
     # 4. RP2350 4-layer unbroken B.Cu power rings + vendor regulator zones (chips/rp2350.md):
     #    - "RP2350 ring" (+1V1, sq(2.32), prio 3): 1 unbroken ring inside U3 moat (1.80..2.32 mm)
@@ -681,6 +673,17 @@ def stage_zones(spec: VariantSpec):
         z_pts = [(round(x, 4), round(y, 4)) for x, y in list(raw_poly.exterior.coords)[:-1]]
         add_zone(f"vendor {net}", B_CU, net, z_pts, q["prio"], minw=0.10, clear=0.12)
         add_area(f"vendor {net} area", B_CU, z_pts)
+        if net.endswith("VREG_LX"):
+            lx_zone_poly = raw_poly
+
+    # In1.Cu GND cutout under the LX node (chips/rp2350.md §6.3.8.1): the VREG_LX zone plus the LX pads
+    # of U3 and L1, grown 0.25 mm. Not their bounding box, which also cleared plane under pins 46/47.
+    lx_polys = [lx_zone_poly] + [ppoly for pnet, ppoly in bcu_pad_polys if pnet.endswith("VREG_LX")]
+    lx_cut = unary_union([g.buffer(0) for g in lx_polys]).buffer(0.25, join_style=2, mitre_limit=1.5).simplify(0.01)
+    if hasattr(lx_cut, "geoms"):
+        lx_cut = max(lx_cut.geoms, key=lambda g: g.area)
+    add_area("LX cutout L2", IN1_CU, [(round(x, 4), round(y, 4)) for x, y in list(lx_cut.exterior.coords)[:-1]],
+             tracks=True, pour=True)
 
     # Fill zones first so we place single-point PGND vias squarely inside the actual filled vendor GND pour!
 
