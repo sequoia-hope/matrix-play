@@ -1,6 +1,6 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-07T12:30:58",
+ "built": "2026-11-07T19:22:44",
  "pcbview": "0.1 (26ba32b)",
  "config": "pcbview.publish.toml",
  "boards": [
@@ -57,6 +57,28 @@
     "kind": "file",
     "pcb": "hw/sunflower/s2-88-pofv/sunflower.kicad_pcb",
     "sch": "hw/sunflower/s2-88-pofv/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-pn-dense-1d",
+   "name": "Penrose pn-dense-1d (67 LEDs, 1 driver + GPIO LED)",
+   "page": "sunflower-pn-dense-1d.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/pn-dense-1d/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/pn-dense-1d/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-pn-dense",
+   "name": "Penrose pn-dense (67 LEDs, 2 drivers)",
+   "page": "sunflower-pn-dense.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/pn-dense/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/pn-dense/sunflower.kicad_sch"
    }
   },
   {

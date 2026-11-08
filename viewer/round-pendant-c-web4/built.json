@@ -77,7 +77,7 @@
  },
  "layers": {
   "board": "round-pendant.kicad_pcb",
-  "generated": "2026-11-05",
+  "generated": "2026-11-07",
   "view_mm": [
    80.237,
    80.239,
@@ -260,7 +260,7 @@
  },
  "3d": {
   "board": "round-pendant.kicad_pcb",
-  "generated": "2026-11-05",
+  "generated": "2026-11-07",
   "glb": "board.glb",
   "bytes": 13544020,
   "kicad_bytes": 41438772,
@@ -297,7 +297,7 @@
   "triangles": 792374,
   "primitives": 4700
  },
- "when": "2026-11-05 19:48",
+ "when": "2026-11-07 19:22",
  "source": {
   "kind": "file",
   "pcb": "hw/round-pendant/c-web4/round-pendant.kicad_pcb",

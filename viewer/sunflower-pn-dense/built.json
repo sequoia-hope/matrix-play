@@ -1,0 +1,263 @@
+{
+ "sch": {
+  "schematic": "sunflower.kicad_sch",
+  "pdf": "sunflower.pdf",
+  "sheets": [
+   {
+    "sheet": "root",
+    "title": "sunflower (pn-dense): top",
+    "desc": "67-LED dense Penrose P3 tiling of XL-1615RGBC-RF LEDs (rhomb vertices, 2.547 mm closest pair) in a 38 mm disc, USB-C on the back, light sensor at the rim, 2x AW20198QNR, 4-layer JLCPCB \u00b7 0 symbols",
+    "file": "sunflower.svg",
+    "source": "sunflower.kicad_sch",
+    "paper": "A4",
+    "page": "1",
+    "symbols": 0,
+    "size_mm": [
+     297.0022,
+     210.0072
+    ]
+   },
+   {
+    "sheet": "Power",
+    "title": "Power",
+    "desc": "USB-C wires, charger, protection, LDO, VBAT sense (35 mm round cell on a PicoBlade 1.25 mm plug) \u00b7 30 symbols",
+    "file": "sunflower-Power.svg",
+    "source": "power.kicad_sch",
+    "paper": "A3",
+    "page": "2",
+    "symbols": 30,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "MCU",
+    "title": "MCU",
+    "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, top-bezel light sensor \u00b7 53 symbols",
+    "file": "sunflower-MCU.svg",
+    "source": "mcu.kicad_sch",
+    "paper": "A3",
+    "page": "3",
+    "symbols": 53,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 1 and matrix",
+    "title": "Driver 1 and matrix",
+    "desc": "U1 AW20198QNR (0x20), 35 RGB LEDs (drivers-aw20198.md) \u00b7 42 symbols",
+    "file": "sunflower-Driver 1 and matrix.svg",
+    "source": "matrix1.kicad_sch",
+    "paper": "A3",
+    "page": "4",
+    "symbols": 42,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 2 and matrix",
+    "title": "Driver 2 and matrix",
+    "desc": "U2 AW20198QNR (0x25), 32 RGB LEDs (drivers-aw20198.md) \u00b7 39 symbols",
+    "file": "sunflower-Driver 2 and matrix.svg",
+    "source": "matrix2.kicad_sch",
+    "paper": "A3",
+    "page": "5",
+    "symbols": 39,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   }
+  ]
+ },
+ "layers": {
+  "board": "sunflower.kicad_pcb",
+  "generated": "2026-11-07",
+  "view_mm": [
+   80.237,
+   80.239,
+   39.523,
+   39.522
+  ],
+  "size_mm": [
+   38.002,
+   38.002
+  ],
+  "round": {
+   "centre": [
+    100.0,
+    100.0
+   ],
+   "dia": 38.0
+  },
+  "polar": [
+   100.0,
+   100.0
+  ],
+  "thickness": 1.5862,
+  "plate": "#c8c8c8",
+  "body": "body.svg",
+  "vias": 419,
+  "nets": 134,
+  "footprints": 163,
+  "front": 68,
+  "back": 95,
+  "tracks": 2950,
+  "length_mm": 2600.2,
+  "layers": [
+   {
+    "name": "F.Cu",
+    "slug": "f",
+    "kind": "copper",
+    "file": "f.svg",
+    "color": "#C83434",
+    "note": "Top copper, 35 \u00b5m (1 oz).",
+    "tracks": 1328,
+    "length_mm": 985.4,
+    "pads": 276,
+    "zones": []
+   },
+   {
+    "name": "In1.Cu",
+    "slug": "in1",
+    "kind": "copper",
+    "file": "in1.svg",
+    "color": "#7FC87F",
+    "note": "Inner layer 1 of 2, 15.2 \u00b5m.",
+    "tracks": 0,
+    "length_mm": 0.0,
+    "pads": 6,
+    "zones": [
+     "GND"
+    ]
+   },
+   {
+    "name": "In2.Cu",
+    "slug": "in2",
+    "kind": "copper",
+    "file": "in2.svg",
+    "color": "#CE7D2C",
+    "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
+    "tracks": 452,
+    "length_mm": 864.1,
+    "pads": 6,
+    "zones": []
+   },
+   {
+    "name": "B.Cu",
+    "slug": "b",
+    "kind": "copper",
+    "file": "b.svg",
+    "color": "#4D7FC4",
+    "note": "Bottom copper, 35 \u00b5m (1 oz).",
+    "tracks": 1170,
+    "length_mm": 750.7,
+    "pads": 389,
+    "zones": [
+     "+1V1",
+     "GND",
+     "+3V3",
+     "/MCU/VREG_LX"
+    ]
+   },
+   {
+    "name": "Edge.Cuts",
+    "slug": "edge",
+    "kind": "outline",
+    "file": "edge.svg",
+    "color": "#D0D2CD",
+    "note": "The outline and every cut-out in it."
+   },
+   {
+    "name": "F.Silkscreen",
+    "slug": "silk_f",
+    "kind": "silk",
+    "file": "silk_f.svg",
+    "color": "#F2EDA1",
+    "note": "Silkscreen, front: reference designators and markings as printed."
+   },
+   {
+    "name": "B.Silkscreen",
+    "slug": "silk_b",
+    "kind": "silk",
+    "file": "silk_b.svg",
+    "color": "#E8B2A7",
+    "note": "Silkscreen, back, seen through the board (mirror the view to read it)."
+   },
+   {
+    "name": "F.Fab",
+    "slug": "fab_f",
+    "kind": "fab",
+    "file": "fab_f.svg",
+    "color": "#DDE1E8",
+    "note": "Part bodies and reference designators, front: what each piece of copper belongs to."
+   },
+   {
+    "name": "B.Fab",
+    "slug": "fab_b",
+    "kind": "fab",
+    "file": "fab_b.svg",
+    "color": "#96A2CE",
+    "note": "Part bodies and reference designators, back."
+   }
+  ]
+ },
+ "3d": {
+  "board": "sunflower.kicad_pcb",
+  "generated": "2026-11-07",
+  "glb": "board.glb",
+  "bytes": 7696896,
+  "kicad_bytes": 25060532,
+  "parts": 163,
+  "modelled": 148,
+  "no_model": [
+   "NT2",
+   "TP1",
+   "TP2",
+   "TP3",
+   "TP4",
+   "TP5",
+   "TP6",
+   "TP7",
+   "TP8",
+   "TP11",
+   "TP12",
+   "TP13",
+   "TP14",
+   "TP15",
+   "TP16"
+  ],
+  "missing": [],
+  "empty": [],
+  "substituted": [],
+  "resolved": [
+   "C16",
+   "C18"
+  ],
+  "flattened": [
+   "U1",
+   "U2"
+  ],
+  "boxed": [],
+  "why": {},
+  "missing_models": [],
+  "boxes": [],
+  "resolved_how": {
+   "legacy": 2,
+   "found": 0
+  },
+  "triangles": 536731,
+  "primitives": 621
+ },
+ "when": "2026-11-07 19:18",
+ "source": {
+  "kind": "file",
+  "pcb": "hw/sunflower/pn-dense/sunflower.kicad_pcb",
+  "sch": "hw/sunflower/pn-dense/sunflower.kicad_sch"
+ }
+}

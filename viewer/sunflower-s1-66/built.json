@@ -63,7 +63,7 @@
  },
  "layers": {
   "board": "sunflower.kicad_pcb",
-  "generated": "2026-11-06",
+  "generated": "2026-11-07",
   "view_mm": [
    80.237,
    80.239,
@@ -195,7 +195,7 @@
  },
  "3d": {
   "board": "sunflower.kicad_pcb",
-  "generated": "2026-11-06",
+  "generated": "2026-11-07",
   "glb": "board.glb",
   "bytes": 7187532,
   "kicad_bytes": 23324496,
@@ -233,7 +233,7 @@
   "triangles": 504264,
   "primitives": 594
  },
- "when": "2026-11-06 12:48",
+ "when": "2026-11-07 19:19",
  "source": {
   "kind": "file",
   "pcb": "hw/sunflower/s1-66/sunflower.kicad_pcb",

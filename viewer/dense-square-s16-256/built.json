@@ -105,7 +105,7 @@
  },
  "layers": {
   "board": "dense-square.kicad_pcb",
-  "generated": "2026-11-06",
+  "generated": "2026-11-07",
   "view_mm": [
    86.5,
    74.0,
@@ -276,7 +276,7 @@
  },
  "3d": {
   "board": "dense-square.kicad_pcb",
-  "generated": "2026-11-06",
+  "generated": "2026-11-07",
   "glb": "board.glb",
   "bytes": 19058720,
   "kicad_bytes": 59757168,
@@ -318,7 +318,7 @@
   "triangles": 1362332,
   "primitives": 1268
  },
- "when": "2026-11-06 04:49",
+ "when": "2026-11-07 19:15",
  "source": {
   "kind": "file",
   "pcb": "hw/dense-square/s16-256/dense-square.kicad_pcb",
