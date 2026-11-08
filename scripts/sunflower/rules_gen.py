@@ -111,6 +111,14 @@ def build_rows(spec: VariantSpec):
             k = ID_GPIOS.index(g)
             rows.append((f"/MCU/BOARD_ID{k}", "SIGNAL", "3.4", "", "", "", "",
                          f"GPIO{g} board ID strap, tied to GND through net tie NT{k + 1} (reads 0)"))
+    if spec.direct_led:
+        # The centre LED on GPIOs (direct-led.md): <= 11.3 mA DC worst case red, ~1 mA green/blue; 3V3 rail.
+        led_ref = f"D{spec.n + 1}"
+        for g, col, imax in zip(spec.direct_led, ("R", "G", "B"), ("0.0113", "0.0020", "0.0020")):
+            rows.append((f"Net-(U3-GPIO{g})", "SIGNAL", "3.4", imax, imax, "", "",
+                         f"GPIO{g} to the {col} series resistor of {led_ref} (PWM, sinks); direct-led.md"))
+            rows.append((f"Net-({led_ref}-{col})", "SIGNAL", "3.4", imax, imax, "", "",
+                         f"{led_ref} {col} cathode to its series resistor; direct-led.md"))
     rows.sort(key=lambda r: r[0])
     return rows
 

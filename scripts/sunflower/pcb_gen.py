@@ -26,12 +26,14 @@ from config import (  # noqa: E402
     TEST_PAD_POS,
     USB_POS,
     CELL_D,
+    DIRECT_R,
     OX,
     OY,
     R_BOARD,
     VARIANTS,
     VariantSpec,
     build_led_cells,
+    penrose_edges,
 )
 
 REF_PCB = ROOT / "hw/round-pendant/d/round-pendant.kicad_pcb"
@@ -196,6 +198,17 @@ def stage_place(spec: VariantSpec):
         set_fcu(c["ref"], c["x_mm"], c["y_mm"], 0.0, hide_ref=True)
         placed.add(c["ref"])
 
+    # 1b. The directly driven LED at the board centre (the Penrose sun's centre vertex). Its three series resistors go on
+    # B.Cu as close to RP2350 GPIO7/8/9 (U3 west side, pins 10/12/13) as there is room: the strip between U3 and the
+    # battery socket holds C8/C9/C20, so they sit in one row just below the socket, west of U3, leaving the upper half
+    # of that pocket for SW2's BOOT label (the legaliser checks them).
+    if spec.direct_led:
+        set_fcu(f"D{spec.n + 1}", 0.0, 0.0, 0.0, hide_ref=True)
+        placed.add(f"D{spec.n + 1}")
+        for (ref, _), (x, y) in zip(DIRECT_R, ((-10.95, -2.60), (-12.90, -2.60), (-14.85, -2.60))):
+            set_bcu(ref, x, y, 0.0)
+            placed.add(ref)
+
     # 2. Q2 light sensor on F.Cu at the eye of the sunflower.
     if spec.als_pos:
         set_fcu("Q2", *spec.als_pos, hide_ref=True)  # at the rim; the centre has an LED
@@ -302,7 +315,14 @@ def stage_place(spec: VariantSpec):
     # Bring-up pads and the board-ID net tie (s2-110-usbc): spots that were free of B.Cu copper and courtyards on
     # the routed board, 2026-11-07. UART (GPIO24/25) and GPIO29 east of U3, I2C and VBUS by the USB-C.
     if spec.test_pads:
+        # The tie spot is for the board's one ID tie, whichever GPIO it is on (NT1 = GPIO19, NT2 = GPIO20, ...).
+        nts = sorted(r for r in fps if re.fullmatch(r"NT\d+", r))
+        assert len(nts) <= 1, f"one free spot for an ID net tie, {nts} need placing"
         for ref, (x, y) in TEST_PAD_POS.items():
+            if ref == "NT1":
+                if not nts:
+                    continue
+                ref = nts[0]
             set_bcu(ref, x, y, 0.0)
             placed.add(ref)
 
@@ -329,6 +349,8 @@ def stage_place(spec: VariantSpec):
         "R18", "R19", "R20", "R21", "R22", "R31", "C35", "R43", "C70",
         "TP1", "TP2", "TP3", "TP4", "TP5", "TP6", "TP7", "TP8",
     ]
+    if spec.direct_led:
+        movable += [ref for ref, _ in DIRECT_R]
     if spec.usb_c:
         # Variant D parts the receptacle sits on: ESD, VBUS cap, cell protection and its resistor
         movable = ["U7", "U8", "C1", "R8", "C6"] + movable
@@ -923,10 +945,14 @@ def stage_post_silk(spec: VariantSpec):
     pts = [(um(f.GetPosition().x) - OX, um(f.GetPosition().y) - OY) for f in leds]
     disc = Point(0, 0).buffer(ring_r, 180)
     edges = set()
-    for cell in voronoi_diagram(MultiPoint(pts), envelope=box(-30, -30, 30, 30)).geoms:
-        c = list(cell.exterior.coords)
-        for p, q in zip(c, c[1:]):
-            edges.add(tuple(sorted((tuple(round(v, 4) for v in p), tuple(round(v, 4) for v in q)))))
+    if spec.layout == "penrose":
+        # Penrose board: the rhomb edges themselves (the LEDs sit on their vertices), clipped clear of the pads below.
+        edges = set(penrose_edges())
+    else:
+        for cell in voronoi_diagram(MultiPoint(pts), envelope=box(-30, -30, 30, 30)).geoms:
+            c = list(cell.exterior.coords)
+            for p, q in zip(c, c[1:]):
+                edges.add(tuple(sorted((tuple(round(v, 4) for v in p), tuple(round(v, 4) for v in q)))))
     keep = []
     for f in b.GetFootprints():
         for p in f.Pads():
@@ -1039,8 +1065,12 @@ def stage_post_silk(spec: VariantSpec):
         return [(x + ux * d - uy * s, y + uy * d + ux * s, 0.0) for d in steps for s in sideways]
 
     # What the side buttons do (SW1 = USER / WAKE, the power button; SW2 = BOOTSEL)
-    label_near("PWR", inward("SW1"))
-    label_near("BOOT", inward("SW2"))
+    # (if the line to the centre is full, e.g. pn-dense-1d's direct-LED resistors below the battery socket, step wider)
+    wide = dict(sideways=(2.4, -2.4, 3.2, -3.2))
+    label_near("PWR", inward("SW1"), quiet=True) or label_near("PWR", inward("SW1", **wide))
+    label_near("BOOT", inward("SW2"), quiet=True) or label_near("BOOT", inward("SW2", **wide), quiet=True) or \
+        label_near("BOOT", [c for d in (0.0, 90.0) for c in around(um(fps["SW2"].GetPosition().x) - OX,
+                                                                   um(fps["SW2"].GetPosition().y) - OY, 4.5, d)])
     # Battery connector polarity: "+" past pad 1's end of the pad row, "-" past pad 2's, clear of the body
     bt_pads = {p.GetNumber(): p for p in fps["BT1"].Pads()}
     if "1" in bt_pads and "2" in bt_pads:

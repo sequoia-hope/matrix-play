@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / ".claude/skills/pcb-design/scripts"))
 sys.path.insert(0, str(ROOT / "scripts/sunflower"))
 
 from kicad_write import S, Schematic, Sym, SymbolLib, dump, new_uuid, yes  # noqa: E402
-from config import ID_GPIOS, TP_GPIOS, USB_FP, BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
+from config import DIRECT_R, ID_GPIOS, TP_GPIOS, USB_FP, BAT_FP, BAT_LCSC, BAT_MFR, BAT_MPN, BAT_VALUE, VARIANTS, VariantSpec, DriverSpec, build_led_cells  # noqa: E402
 
 PROJECT = "sunflower"
 DATE = "2026-11-05"
@@ -32,6 +32,8 @@ PARTS = {
     "27R": ("C25100", "0402WGF270JTCE", "UNI-ROYAL"),
     "33R": ("C25105", "0402WGF330JTCE", "UNI-ROYAL"),
     "100R": ("C25076", "0402WGF1000TCE", "UNI-ROYAL"),
+    "150R": ("C25082", "0402WGF1500TCE", "UNI-ROYAL"),
+    "510R": ("C25123", "0402WGF5100TCE", "UNI-ROYAL"),
     "1k": ("C11702", "0402WGF1001TCE", "UNI-ROYAL"),
     "3k": ("C25784", "0402WGF3001TCE", "UNI-ROYAL"),
     "3.6k": ("C25891", "0402WGF3601TCE", "UNI-ROYAL"),
@@ -422,8 +424,50 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         elif i == 26:
             s.wire(p, (p[0] + 7.62, p[1]))
             s.label("VBAT_SENSE", (p[0] + 7.62, p[1]), **GL)
+        elif i in spec.direct_led:
+            continue  # drawn below: the GPIO-driven LED
         else:
             s.no_connect(p)
+
+    if spec.direct_led:
+        # The centre LED on three GPIOs (design/parts/direct-led.md): each cathode through its series resistor to a GPIO
+        # that sinks it, common anode on +3V3 (= IOVDD, so no pin can ever see more than IOVDD). The pins are 2.54 mm
+        # apart, too close for a resistor and its text on each row, so the three wires run out past the GPIO labels and
+        # down below the RP2350 as nested L's (top pin outermost, so nothing crosses), to resistors 7.62 mm apart and
+        # the LED on their left with its cathodes facing them.
+        gp = [u.pin(f"GPIO{g}") for g in spec.direct_led]
+        assert gp[0][1] < gp[1][1] < gp[2][1], "R, G, B pins run top to bottom"
+        px = gp[0][0]
+        ybase = u.pin("GPIO29/ADC3")[1] + 7.62
+        rows = [ybase + 20.32, ybase + 12.7, ybase + 5.08]   # GPIO7 (R) lowest/outermost ... GPIO9 (B) highest/innermost
+        cols = [px + 50.8, px + 45.72, px + 40.64]
+        led_ref = f"D{spec.n + 1}"
+        led_at = (px + 7.62, rows[1])
+        led = s.symbol(
+            "round_pendant:XL-1615RGBC", led_ref, "RGB", led_at, rot=90,
+            footprint="round_pendant:LED_XL-1615RGBC",
+            fields={"LCSC": "C965840", "MPN": "XL-1615RGBC-RF", "Manufacturer": "XINGLIGHT",
+                    "Cell": "direct drive: GPIO" + "/".join(str(g) for g in spec.direct_led) + " (R/G/B), board centre"},
+            ref_at=(led_at[0], led_at[1] + 6.35), value_at=(led_at[0], led_at[1] + 8.89), justify="",
+        )
+        # xl-1615rgbc-rf.pdf p. 8: Pin 1=R, Pin 2=Common Anode (+), Pin 3=G, Pin 4=B
+        cath = [led.pin("1"), led.pin("3"), led.pin("4")]
+        an = led.pin("2")
+        assert all(c[0] > an[0] for c in cath), (cath, an)  # cathodes face right, anode left
+        s.wire(an, (an[0], an[1] - 5.08))
+        s.power("power:+3V3", (an[0], an[1] - 5.08))
+        jx = led_at[0] + 7.62
+        for (ref, val), p, col, row, c in zip(DIRECT_R, gp, cols, rows, cath):
+            s.wire(p, (col, p[1]), (col, row))
+            r = s.res_h(ref, val, (px + 22.86, row))
+            s.wire((col, row), r.pin("2"))
+            if abs(row - c[1]) < 1e-6:
+                s.wire(r.pin("1"), c)
+            else:
+                s.wire(r.pin("1"), (jx, row), (jx, c[1]), c)
+        s.text("CENTRE LED, DRIVEN DIRECTLY (direct-led.md)\nGPIO7/8/9 sink R/G/B: pin low (PWM) = on, high = off.\n"
+               "Anode on +3V3 = IOVDD: no pin ever sees more than IOVDD.",
+               (px - 63.5, rows[1] - 2.54))
 
     for nm in ("RUN", "SWCLK", "SWDIO"):
         p = u.pin(nm)

@@ -1,6 +1,6 @@
 {
   "s1-66 (4L, 66x XL-1615, 1x AW20198)": {
-    "bom_per_board": 10.73,
+    "bom_per_board": 10.6,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
     "mcu_plus_l1": 1.55,
@@ -8,12 +8,6 @@
     "total_placements": 139,
     "n_leds": 66,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -23,7 +17,7 @@
     ]
   },
   "s2-88 (4L, 88x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.02,
+    "bom_per_board": 11.89,
     "led_cost": 1.4,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -31,12 +25,6 @@
     "total_placements": 168,
     "n_leds": 88,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -46,7 +34,7 @@
     ]
   },
   "s2-110 (4L, 110x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.37,
+    "bom_per_board": 12.24,
     "led_cost": 1.75,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -54,12 +42,6 @@
     "total_placements": 190,
     "n_leds": 110,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -69,7 +51,7 @@
     ]
   },
   "s2-132 (4L, 132x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.72,
+    "bom_per_board": 12.59,
     "led_cost": 2.1,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -77,12 +59,6 @@
     "total_placements": 212,
     "n_leds": 132,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -92,7 +68,7 @@
     ]
   },
   "s1-66-pofv (4L, 66x XL-1615, 1x AW20198)": {
-    "bom_per_board": 10.73,
+    "bom_per_board": 10.6,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
     "mcu_plus_l1": 1.55,
@@ -100,12 +76,6 @@
     "total_placements": 139,
     "n_leds": 66,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -115,7 +85,7 @@
     ]
   },
   "s2-88-pofv (4L, 88x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.02,
+    "bom_per_board": 11.89,
     "led_cost": 1.4,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -123,12 +93,6 @@
     "total_placements": 168,
     "n_leds": 88,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -138,7 +102,7 @@
     ]
   },
   "s2-110-usbc (4L, 110x XL-1615, 2x AW20198)": {
-    "bom_per_board": 12.55,
+    "bom_per_board": 12.43,
     "led_cost": 1.75,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -147,11 +111,39 @@
     "n_leds": 110,
     "low_stock": [
       [
-        "C25744",
-        "0402WGF1002TCE",
+        "C23733",
+        "CL05A475MP5NRNC",
         0,
-        10
-      ],
+        50
+      ]
+    ]
+  },
+  "pn-dense (4L, 67x XL-1615, 2x AW20198)": {
+    "bom_per_board": 11.75,
+    "led_cost": 1.07,
+    "drv_ic_cost": 1.77,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 34,
+    "total_placements": 148,
+    "n_leds": 67,
+    "low_stock": [
+      [
+        "C23733",
+        "CL05A475MP5NRNC",
+        0,
+        50
+      ]
+    ]
+  },
+  "pn-dense-1d (4L, 66x XL-1615, 1x AW20198)": {
+    "bom_per_board": 10.81,
+    "led_cost": 1.07,
+    "drv_ic_cost": 0.89,
+    "mcu_plus_l1": 1.55,
+    "unique_lines": 36,
+    "total_placements": 144,
+    "n_leds": 67,
+    "low_stock": [
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -161,7 +153,7 @@
     ]
   },
   "parallelogram p1-66 (4L)": {
-    "bom_per_board": 10.59,
+    "bom_per_board": 10.46,
     "led_cost": 1.05,
     "drv_ic_cost": 0.89,
     "mcu_plus_l1": 1.55,
@@ -169,12 +161,6 @@
     "total_placements": 138,
     "n_leds": 66,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -184,7 +170,7 @@
     ]
   },
   "parallelogram p2-132 (4L)": {
-    "bom_per_board": 12.57,
+    "bom_per_board": 12.45,
     "led_cost": 2.1,
     "drv_ic_cost": 1.77,
     "mcu_plus_l1": 1.55,
@@ -192,12 +178,6 @@
     "total_placements": 211,
     "n_leds": 132,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",
@@ -207,7 +187,7 @@
     ]
   },
   "round-pendant-e (8L, 235x XL-1010, 5x WLCSP)": {
-    "bom_per_board": 26.44,
+    "bom_per_board": 26.34,
     "led_cost": 6.34,
     "drv_ic_cost": 11.31,
     "mcu_plus_l1": 1.55,
@@ -215,12 +195,6 @@
     "total_placements": 332,
     "n_leds": 235,
     "low_stock": [
-      [
-        "C25744",
-        "0402WGF1002TCE",
-        0,
-        10
-      ],
       [
         "C23733",
         "CL05A475MP5NRNC",

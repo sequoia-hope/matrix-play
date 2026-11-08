@@ -27,6 +27,20 @@ note = "100% routed & DRC-clean 15 x 15 = 225 MEIHUA MHPA0808RGBDT 0808 square m
 # ---- Sunflower 4-Layer Family (dia. 38 mm) ----
 
 [[boards]]
+id = "sunflower-pn-dense-1d"
+name = "Penrose pn-dense-1d (67 LEDs, 1 driver + GPIO LED)"
+pcb = "hw/sunflower/pn-dense-1d/sunflower.kicad_pcb"
+sch = "hw/sunflower/pn-dense-1d/sunflower.kicad_sch"
+note = "Parent: sunflower-pn-dense. Same dense Penrose P3 field (67 XL-1615RGBC-RF on rhomb vertices, 2.547 mm closest pair), one AW20198QNR: 66 matrix LEDs in 6 wedges of 11, the centre LED driven directly by RP2350 GPIO7/8/9 (R/G/B) through 150/510/510 ohm, anode on +3V3 (design/parts/direct-led.md). USB-C on the back, rim light sensor, test pads, PicoBlade socket, board ID 3 (GPIO21 tied). No via-in-pad. 0 open, 0 DRC errors/warnings, copper audit clean, 0 thin pad joints; 528 vias. $10.81 BOM @10, fab files in fab/."
+
+[[boards]]
+id = "sunflower-pn-dense"
+name = "Penrose pn-dense (67 LEDs, 4L, USB-C)"
+pcb = "hw/sunflower/pn-dense/sunflower.kicad_pcb"
+sch = "hw/sunflower/pn-dense/sunflower.kicad_sch"
+note = "Parent: sunflower-s2-110-usbc. 38 mm round, 67 XL-1615RGBC-RF LEDs on the vertices of a Penrose P3 rhomb tiling at the pattern explorer's dense pitch (closest pair 2.547 mm, rhomb edge 4.12 mm, centre vertex at the board centre; 4 vertices dropped for the USB-C through-holes), rhomb-edge front silk, USB-C on the back, light sensor at the top rim, test pads, PicoBlade socket, 2x AW20198QNR, board ID 5 (GPIO20 tied). No via-in-pad. 0 open, 0 DRC errors/warnings, copper audit clean, 0 thin pad joints; 419 vias. $11.75 BOM @10, fab files in fab/."
+
+[[boards]]
 id = "sunflower-s2-88"
 name = "Sunflower s2-88 (88 LEDs, 4L, no via-in-pad)"
 pcb = "hw/sunflower/s2-88/sunflower.kicad_pcb"

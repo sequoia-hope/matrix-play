@@ -12,6 +12,7 @@ parallelogram's columns); within a wedge the SW index is the LED's radius rank 1
 ring across all of a driver's wedges (circumferential, like the parallelogram's rows). Driver 1 takes the
 western wedges, driver 2 the eastern.
 """
+import dataclasses
 import math
 from dataclasses import dataclass
 from pathlib import Path
@@ -68,6 +69,12 @@ class VariantSpec:
     # the rest left open (bit = 1). Boards without straps read all ones.
     test_pads: bool = False
     id_tied: Tuple[int, ...] = ()
+    # LED field: "vogel" (sunflower spiral, n LEDs) or "penrose" (Penrose P3 rhomb vertices at the pattern explorer's
+    # dense pitch, cropped to R_OUT; n is then the vertex count left after the keepouts, see penrose_points).
+    layout: str = "vogel"
+    # One LED driven straight from RP2350 GPIOs (pn-dense-1d): the GPIOs on its (R, G, B) cathodes, each through a
+    # series resistor, anode on +3V3 (design/parts/direct-led.md). It sits at the board centre; the matrix keeps n LEDs.
+    direct_led: Tuple[int, ...] = ()
 
     @property
     def n_leds(self) -> int:
@@ -230,8 +237,115 @@ def sunflower_points(n: int, centre: bool = False, keepouts=()) -> List[Tuple[fl
     return pts
 
 
+# Penrose P3 field (2026-11-07, pn-dense): the pattern explorer's "Penrose tiling (P3 rhombs)" view at dense density with
+# LEDs at rhomb vertices (design/study/pattern-explorer/index.html, penroseTris / genPenrose). The same Robinson-triangle
+# deflation of a ten-triangle sun, scaled so the closest two vertices are exactly the explorer's dense pitch for
+# XL-1615 (hypot(1.6 + 0.25, 1.5 + 0.25) = 2.547 mm), centre vertex at the board centre, cropped to R_OUT. Vertices
+# inside a keepout are dropped, not pushed, so the tiling stays exact. At this orientation the closest pairs lie at
+# 18/54/90/126/162 deg and no two XL-1615 courtyards (2.0 x 1.9 mm at 0 deg) overlap.
+PHI = (1.0 + math.sqrt(5.0)) / 2.0
+PENROSE_PITCH = math.hypot(1.6 + 0.25, 1.5 + 0.25)
+PENROSE_LEVEL = 4      # deflations; level 4 at this pitch covers r = 22 mm (rhomb edge 4.12 mm)
+PENROSE_SNAP = 0.025   # ultraroute's cell; moves a vertex at most 0.018 mm
+
+
+def penrose_triangles(level: int):
+    """Robinson triangles (kind, A, B, C) of the deflated sun, unit circumradius (kind 0 = thin/half-kite, 1 = thick)."""
+    tris = []
+    for i in range(10):
+        B = (math.cos((2 * i - 1) * math.pi / 10), math.sin((2 * i - 1) * math.pi / 10))
+        C = (math.cos((2 * i + 1) * math.pi / 10), math.sin((2 * i + 1) * math.pi / 10))
+        if i % 2 == 0:
+            B, C = C, B
+        tris.append((0, (0.0, 0.0), B, C))
+
+    def lerp(a, b, t):
+        return (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)
+
+    for _ in range(level):
+        res = []
+        for c, A, B, C in tris:
+            if c == 0:
+                P = lerp(A, B, 1 / PHI)
+                res += [(0, C, P, B), (1, P, C, A)]
+            else:
+                Q, R = lerp(B, A, 1 / PHI), lerp(B, C, 1 / PHI)
+                res += [(1, R, C, A), (1, Q, R, B), (0, R, Q, A)]
+        tris = res
+    return tris
+
+
+def penrose_scale(level: int = PENROSE_LEVEL) -> float:
+    """mm per unit so the closest two vertices are PENROSE_PITCH apart."""
+    v = list({(round(p[0], 9), round(p[1], 9)): p for t in penrose_triangles(level) for p in t[1:]}.values())
+    d = min(math.dist(a, b) for i, a in enumerate(v) for b in v[i + 1:])
+    return PENROSE_PITCH / d
+
+
+def penrose_edges(level: int = PENROSE_LEVEL) -> List[Tuple[Tuple[float, float], Tuple[float, float]]]:
+    """Rhomb edges in board mm (CA and AB of each Robinson triangle; BC is the rhomb's diagonal), for silk guides."""
+    s = penrose_scale(level)
+    e = set()
+    for _, A, B, C in penrose_triangles(level):
+        for p, q in ((C, A), (A, B)):
+            p, q = (round(p[0] * s, 4), round(p[1] * s, 4)), (round(q[0] * s, 4), round(q[1] * s, 4))
+            e.add(tuple(sorted((p, q))))
+    return sorted(e)
+
+
+def penrose_points(keepouts=(), r_max: float = R_OUT, report: bool = False) -> List[Tuple[float, float]]:
+    s = penrose_scale()
+    v = {(round(p[0], 9), round(p[1], 9)): p for t in penrose_triangles(PENROSE_LEVEL) for p in t[1:]}
+    pts, dropped = [], []
+    for x, y in sorted(v.values(), key=lambda p: (round(math.hypot(*p), 9), math.atan2(p[1], p[0]))):
+        x, y = x * s, y * s
+        if math.hypot(x, y) > r_max + 1e-6:
+            continue
+        if any(math.hypot(x - kx, y - ky) < kr for kx, ky, kr in keepouts):
+            dropped.append((round(x, 3), round(y, 3)))
+            continue
+        pts.append((round(round(x / PENROSE_SNAP) * PENROSE_SNAP, 4), round(round(y / PENROSE_SNAP) * PENROSE_SNAP, 4)))
+    if report:
+        print(f"penrose: level {PENROSE_LEVEL}, scale {s:.4f} mm/unit, rhomb edge {s * PHI ** -PENROSE_LEVEL:.3f} mm, "
+              f"{len(pts)} LEDs within r {r_max} mm, {len(dropped)} dropped in keepouts: {dropped}")
+    for i in range(len(pts)):
+        for j in range(i + 1, len(pts)):
+            if abs(pts[i][0] - pts[j][0]) < CRT_W and abs(pts[i][1] - pts[j][1]) < CRT_H:
+                raise SystemExit(f"penrose: LED courtyards {i} {pts[i]} and {j} {pts[j]} overlap")
+    return pts
+
+
 def spec_points(spec) -> List[Tuple[float, float]]:
+    if spec.layout == "penrose":
+        pts = penrose_points(front_keepouts(spec))
+        if spec.direct_led:
+            pts = [p for p in pts if p != (0.0, 0.0)]  # the centre vertex is the direct LED, not a matrix cell
+        assert len(pts) == spec.n, (len(pts), spec.n)
+        return pts
     return sunflower_points(spec.n, centre=spec.centre_led, keepouts=front_keepouts(spec))
+
+
+# Dense Penrose study: s2-110-usbc's board (USB-C on the back, centre LED, rim light sensor, test pads, PicoBlade socket,
+# 2x AW20198) with the LED field taken from the pattern explorer's dense Penrose P3 vertices. ID strap GPIO20 (ID = 5).
+VARIANTS["pn-dense"] = _v("pn-dense", "PN", 0, (4, 4),
+                          "Dense Penrose P3 tiling of XL-1615RGBC-RF LEDs (rhomb vertices, 2.547 mm closest pair) in a 38 mm disc, USB-C on the back, light sensor at the rim, 2x AW20198QNR, 4-layer JLCPCB",
+                          centre_led=True, usb_c=True, als_pos=(0.0, -18.20, 0.0), vbat_en_gpio=28,
+                          test_pads=True, id_tied=(20,), layout="penrose")
+VARIANTS["pn-dense"] = dataclasses.replace(
+    VARIANTS["pn-dense"], n=len(penrose_points(front_keepouts(VARIANTS["pn-dense"]))))
+VARIANTS["pn-dense"] = dataclasses.replace(
+    VARIANTS["pn-dense"], summary=VARIANTS["pn-dense"].summary.replace("Dense", f"{VARIANTS['pn-dense'].n}-LED dense", 1))
+
+
+# One driver: pn-dense with U2 removed and the centre LED driven directly by GPIO7/8/9 (R, G, B), so the matrix is 66 LEDs
+# in 6 wedges of 11 on U1. Board ID strap GPIO21 (ID = 3).
+VARIANTS["pn-dense-1d"] = _v("pn-dense-1d", "PN1", 66, (6,),
+                             "67-LED dense Penrose P3 tiling of XL-1615RGBC-RF LEDs (rhomb vertices, 2.547 mm closest pair) in a 38 mm disc: 66 on 1x AW20198QNR, the centre LED on RP2350 GPIO7/8/9; USB-C on the back, light sensor at the rim, 4-layer JLCPCB",
+                             centre_led=True, usb_c=True, als_pos=(0.0, -18.20, 0.0), vbat_en_gpio=28,
+                             test_pads=True, id_tied=(21,), layout="penrose", direct_led=(7, 8, 9))
+assert len(spec_points(VARIANTS["pn-dense-1d"])) == 66
+# Direct LED parts: the LED takes the next D number after the matrix; R/G/B series resistors (direct-led.md).
+DIRECT_R = (("R80", "150R"), ("R81", "510R"), ("R82", "510R"))
 
 
 def _nn(spec):
@@ -251,12 +365,17 @@ def nn_mean(spec) -> float:
 def build_led_cells(spec: VariantSpec) -> List[dict]:
     """Ordered LED records D1..DN by (driver, triplet, SW), each with its sunflower position."""
     pts = spec_points(spec)
-    assert spec.n == 11 * sum(spec.wedges), (spec.n, spec.wedges)
+    n_w = sum(spec.wedges)
+    assert spec.n <= 11 * n_w, (spec.n, spec.wedges)
     # Angle measured clockwise on screen from due south (y down), so the first half of the sort is the west half.
     def ang(p):
         return (math.atan2(-p[0], p[1])) % (2 * math.pi)  # south=0, west=pi/2, north=pi, east=3pi/2
     order = sorted(range(spec.n), key=lambda i: ang(pts[i]))
-    wedges = [order[11 * w: 11 * w + 11] for w in range(spec.n // 11)]
+    # Wedges of 11 when n fills them (the Vogel tiers); otherwise n is spread as evenly as it goes (sizes differ by at
+    # most one, each <= 11), so a wedge's unused SW lines are simply left unconnected at its driver.
+    sizes = [spec.n // n_w + (1 if w < spec.n % n_w else 0) for w in range(n_w)]
+    starts = [sum(sizes[:w]) for w in range(n_w)]
+    wedges = [order[a: a + k] for a, k in zip(starts, sizes)]
     recs = []
     w = 0
     for drv, n_w in zip(spec.drivers, spec.wedges):
