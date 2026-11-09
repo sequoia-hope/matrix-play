@@ -1,10 +1,10 @@
 # Phase 8 Simulation & Layout-Coupled Verification: Sunflower `s2-110-usbc`
 
-Reproducible post-layout signal-integrity (SI), power-distribution-network (PDN), simultaneous-switching-output (SSO), crosstalk, control-loop stability, and thermal analysis for [sunflower.kicad_pcb](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_pcb), generated and verified by [sim_audit.py](file:///home/sequoia/pcb/round-pendant/design/sim/sunflower-s2-110-usbc/sim_audit.py) (`python3 design/sim/sunflower-s2-110-usbc/sim_audit.py`).
+Reproducible post-layout signal-integrity (SI), power-distribution-network (PDN), simultaneous-switching-output (SSO), crosstalk, control-loop stability, and thermal analysis for [sunflower.kicad_pcb](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_pcb), generated and verified by [sim_audit.py](sim_audit.py) (`python3 design/sim/sunflower-s2-110-usbc/sim_audit.py`).
 
 ---
 
-## 1. Trigger Audit Against [simulation.md](file:///home/sequoia/pcb/round-pendant/.claude/skills/pcb-design/references/simulation.md)
+## 1. Trigger Audit Against [simulation.md](../../../.claude/skills/pcb-design/references/simulation.md)
 
 | Domain (`simulation.md`) | `s2-110-usbc` Circuit / Net | Trigger Metric on Routed PCB (`JLC04161H-7628`, `t_out = 35 µm`, `t_in = 15.2 µm`) | Status & Verdict |
 |---|---|---|---|

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # buildy.sh VARIANT MAP_CSV: as placement's new_variant.sh with exp/y2.json overrides (drivers 2.4 mm north, cathode vias over EPs), with board_y.py's anode-behind turns. 8 layers, U3 copper from u3fix.py.
-set -euo pipefail; cd /home/sequoia/pcb/round-pendant
+set -euo pipefail; cd "$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 V=$1; D=hw/round-pendant/$V; P=scripts/crunch/placement; B=scripts/crunch/orth/board_y.py
 [ -e "$D" ] && { echo "$D exists" >&2; exit 1; }
 mkdir -p $D/route; cp hw/round-pendant/c/*.kicad_sch hw/round-pendant/c/round-pendant.kicad_pro hw/round-pendant/c/round-pendant.kicad_dru hw/round-pendant/c/fp-lib-table hw/round-pendant/c/sym-lib-table $D/; cp -r hw/round-pendant/c/lib $D/lib; cp $2 $D/map.csv

@@ -15,7 +15,7 @@ Bare-metal dual-core Rust firmware and cycle-accurate board-level `picoem` (`rp2
 - **`p2-132-rom-shim/`** (`thumbv8m.main-none-eabihf`):
   - Pure-Thumb architectural RP2350 bootrom (`0x0000_0000`) implementing `PICOBIN` `0x1021` XIP validation on Core 0 and the 6-word `SIO_FIFO` + `WFE/SEV` multicore launch state machine on Core 1 (sidestepping silicon `bootrom-combined.bin`'s CP7 `rcp_*` canary traps in `rp2350-emu v0.2.6`).
 - **`p2-132-sim/`** (`x86_64-unknown-linux-gnu`):
-  - Links `/home/sequoia/Software/picoem/crates/rp2350-emu` and connects cycle-accurate open-drain models of `2× AW20198QNR` (`0x20`, `0x25`), `LIS2DW12TR` (`0x19`), `BQ24073` (`CHG`/`PGOOD`), `SW1`, and `VBAT`/`LIGHT` stimulus, exporting `design/sim/p2-132/results/picoem_run.json`.
+  - Links `~/Software/picoem/crates/rp2350-emu` and connects cycle-accurate open-drain models of `2× AW20198QNR` (`0x20`, `0x25`), `LIS2DW12TR` (`0x19`), `BQ24073` (`CHG`/`PGOOD`), `SW1`, and `VBAT`/`LIGHT` stimulus, exporting `design/sim/p2-132/results/picoem_run.json`.
 
 ## Verified `picoem` (`rp2350-emu v0.2.6`) Findings
 

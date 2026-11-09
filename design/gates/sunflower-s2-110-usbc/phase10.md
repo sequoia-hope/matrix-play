@@ -1,8 +1,8 @@
 # Gate 10: Sync and Release — Sunflower `s2-110-usbc`
 
-Status: **`awaiting_signoff`** (Gate 10 requires explicit user sign-off per [SKILL.md](file:///home/sequoia/pcb/round-pendant/.claude/skills/pcb-design/SKILL.md) and [sync-and-release.md](file:///home/sequoia/pcb/round-pendant/.claude/skills/pcb-design/references/sync-and-release.md); independent review recommends **holding `Rev S3C` for `Rev S3D`**, or ordering a conditional `5–10` board bench prototype lot only with explicit user sign-off on the waivers and assembly/firmware guards below).
+Status: **`awaiting_signoff`** (Gate 10 requires explicit user sign-off per [SKILL.md](../../../.claude/skills/pcb-design/SKILL.md) and [sync-and-release.md](../../../.claude/skills/pcb-design/references/sync-and-release.md); independent review recommends **holding `Rev S3C` for `Rev S3D`**, or ordering a conditional `5–10` board bench prototype lot only with explicit user sign-off on the waivers and assembly/firmware guards below).
 
-## Checklist ([sync-and-release.md](file:///home/sequoia/pcb/round-pendant/.claude/skills/pcb-design/references/sync-and-release.md), Phase 10)
+## Checklist ([sync-and-release.md](../../../.claude/skills/pcb-design/references/sync-and-release.md), Phase 10)
 
 | Item | Evidence | State |
 |---|---|---|
@@ -10,41 +10,41 @@ Status: **`awaiting_signoff`** (Gate 10 requires explicit user sign-off per [SKI
 | Sync check passes (`--bom` & `--cpl`) | `sync_check.py`: `206` symbols ↔ `206` footprints, `191` BOM/CPL placements (`0` errors, `0` warnings) | **PASS** |
 | DRC / ERC re-run on final files: clean | `kicad-cli sch erc --severity-all` = `0`; `kicad-cli pcb drc --severity-all --schematic-parity` = `0` (`0` opens) | **PASS** |
 | Stock re-checked at release | `jlc_parts.py show` (`2026-11-08`): **`34/34`** unique LCSC parts `lifecycle normal` & in stock (`min 531` on `U6`; `L1` = `1,520`) | **PASS** |
-| CPL rotation & origin verified for every polarized part / IC | Fixed Bottom-layer mirroring & EasyEDA origins in [export_and_cost.py](file:///home/sequoia/pcb/round-pendant/scripts/sunflower/export_and_cost.py); verified all `191` parts (`BT1` `110.00°`, `J1` `0.00°`, `0.000 mm` origin error) | **PASS** |
-| Gerbers reviewed in a separate viewer (`gerbonara` + Chrome) | All `12` layers rendered & reconciled in [gerbers/](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/gerbers/); caught `0` paste on `J1`'s `4` PTH slots in `sunflower-B_Paste.gbp` | **FAIL** (`J1` PTH `B.Paste` + `U3.61`/`U5.17` EP paste vias) |
+| CPL rotation & origin verified for every polarized part / IC | Fixed Bottom-layer mirroring & EasyEDA origins in [export_and_cost.py](../../../scripts/sunflower/export_and_cost.py); verified all `191` parts (`BT1` `110.00°`, `J1` `0.00°`, `0.000 mm` origin error) | **PASS** |
+| Gerbers reviewed in a separate viewer (`gerbonara` + Chrome) | All `12` layers rendered & reconciled in [gerbers/](../../renders/sunflower-s2-110-usbc/gerbers); caught `0` paste on `J1`'s `4` PTH slots in `sunflower-B_Paste.gbp` | **FAIL** (`J1` PTH `B.Paste` + `U3.61`/`U5.17` EP paste vias) |
 | `U3` (`RP2350A`) `+1V1` ring & `+3V3` band whole-piece zone check | `+1V1` `RP2350 ring` = **`1` piece (`6.0625 mm²`)** (`0` spokes to `Zone 11`); `+3V3` `RP2350 band` = **`4` pieces (`9.7561 mm²`)** | **FAIL** (`4`-piece `+3V3` band + `0`-spoke `COUT`) |
 | Final independent review: no blocking findings | Fresh-context `agy` reviewer (`2026-11-08`): **HOLD for `Rev S3D`** (or conditional `5`-board bench proto with waivers); all doc/bring-up findings fixed | **FAIL** (copper/DFM blockers held for user decision) |
-| Bring-up plan written & linked from `index.html` | [bringup-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/bringup-s2-110-usbc.md) + [bringup-map-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/bringup-map-bottom.png), linked in [index.html](file:///home/sequoia/pcb/round-pendant/index.html) | **PASS** |
+| Bring-up plan written & linked from `index.html` | [bringup-s2-110-usbc.md](../../study/sunflower/bringup-s2-110-usbc.md) + [bringup-map-bottom.png](../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png), linked in [index.html](../../../index.html) | **PASS** |
 | Git tagged (`sunflower-s2-110-usbc-revS3C`) | Deferred until supervising commit + user release sign-off (per workspace rules: do not commit/tag yet) | deferred |
-| **User approves release** | Listed in §7 below and in [status.json](file:///home/sequoia/pcb/round-pendant/design/status.json) (`s2-110-usbc-release`) | **`awaiting_signoff`** |
+| **User approves release** | Listed in §7 below and in [status.json](../../status.json) (`s2-110-usbc-release`) | **`awaiting_signoff`** |
 
 ### Summary of Earlier Gates (`0`–`9`)
 
 | Gate | File | State | Summary |
 |---|---|---|---|
-| 0 — Intent | [phase0.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase0.md) | `awaiting_signoff` | [intent-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/intent-s2-110-usbc.md) complete; awaits user sign-off on `BT1` spacer, `403535` C-rate, `ADC4` `GCC` caps, `B.SilkS` identity |
-| 1 — Parts | [phase1.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase1.md) | `passed` | `34/34` unique LCSC parts audited, `lifecycle normal`, in stock (`sources.csv` passive rows waived for `Rev S3C`) |
-| 2 — Schematic | [phase2.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase2.md) | `passed` | `0` ERC violations across 5 sheets; `Q2`/`U8` polarity proven; `sch_gen.py` style, `C35 = 100 nF`, `BT1` `MP` nails waived |
-| 3 — Net Spec | [phase3.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase3.md) | `passed` | `nets_check.py --routed` `PASS` (`0` errors, `109` rows in [nets-sunflower-s2-110-usbc.csv](file:///home/sequoia/pcb/round-pendant/design/nets-sunflower-s2-110-usbc.csv)) |
-| 4 — Board Brief | [phase4.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase4.md) | `awaiting_signoff` | [brief-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/brief-s2-110-usbc.md) + exact `B.Fab` [floorplan-s2-110-usbc.svg](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/floorplan-s2-110-usbc.svg); awaits user sign-off |
-| 5 — Stackup & Rules | [phase5.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase5.md) | `failed` | `In1.Cu` `GND` (`1.29 mm` from `B.Cu`) vs `In2.Cu` signals (`0.21 mm` from `B.Cu`); `LX cutout L2` on `In1.Cu`; `netclass_assignments: null` |
-| 6 — Placement | [phase6.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase6.md) | `failed` | `U4.8` `8.56 mm` from `C14` (`C22` misplaced); `U3.61` (`1`) & `U5.17` (`2`) vias in `B.Paste`; `29` vias in `BT1` Molex keepout; `U8` `29.1 mm` from `BT1` |
-| 7 — Routing | [phase7.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase7.md) | `failed` | `0` opens / `0` DRC / `0` `copper_audit` / `0` `pad_joints`, **but** `Zone 11` (`COUT`) `0` spokes (`+1V1` via `U3.50` `VREG_FB`), shared `CFILT`/`PGND` via, `4`-piece `+3V3` band, `0.107 mm` `VBAT` via to `BT1.2` |
-| 8 — Simulation | [phase8.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase8.md) | `failed` | [sim/README.md](file:///home/sequoia/pcb/round-pendant/design/sim/sunflower-s2-110-usbc/README.md): `U4.8` `312–554 mV` 4-bit QSPI SSO droop (`1x/2x` SPI safe); `ADC_AVDD` `19–48 mV_pk` `LX` spike; `71.7–93 °C` uncapped thermal rise |
-| 9 — Silkscreen | [phase9.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase9.md) | `failed` | `0` silk-over-pad errors, **but** `BT1` `+`/`-` & `J1` `USB 5V` hidden under connector bodies, `5` QFNs/LGAs missing `B.SilkS` pin-1 dots, silk over open vias |
+| 0 — Intent | [phase0.md](phase0.md) | `awaiting_signoff` | [intent-s2-110-usbc.md](../../study/sunflower/intent-s2-110-usbc.md) complete; awaits user sign-off on `BT1` spacer, `403535` C-rate, `ADC4` `GCC` caps, `B.SilkS` identity |
+| 1 — Parts | [phase1.md](phase1.md) | `passed` | `34/34` unique LCSC parts audited, `lifecycle normal`, in stock (`sources.csv` passive rows waived for `Rev S3C`) |
+| 2 — Schematic | [phase2.md](phase2.md) | `passed` | `0` ERC violations across 5 sheets; `Q2`/`U8` polarity proven; `sch_gen.py` style, `C35 = 100 nF`, `BT1` `MP` nails waived |
+| 3 — Net Spec | [phase3.md](phase3.md) | `passed` | `nets_check.py --routed` `PASS` (`0` errors, `109` rows in [nets-sunflower-s2-110-usbc.csv](../../nets-sunflower-s2-110-usbc.csv)) |
+| 4 — Board Brief | [phase4.md](phase4.md) | `awaiting_signoff` | [brief-s2-110-usbc.md](../../study/sunflower/brief-s2-110-usbc.md) + exact `B.Fab` [floorplan-s2-110-usbc.svg](../../study/sunflower/floorplan-s2-110-usbc.svg); awaits user sign-off |
+| 5 — Stackup & Rules | [phase5.md](phase5.md) | `failed` | `In1.Cu` `GND` (`1.29 mm` from `B.Cu`) vs `In2.Cu` signals (`0.21 mm` from `B.Cu`); `LX cutout L2` on `In1.Cu`; `netclass_assignments: null` |
+| 6 — Placement | [phase6.md](phase6.md) | `failed` | `U4.8` `8.56 mm` from `C14` (`C22` misplaced); `U3.61` (`1`) & `U5.17` (`2`) vias in `B.Paste`; `29` vias in `BT1` Molex keepout; `U8` `29.1 mm` from `BT1` |
+| 7 — Routing | [phase7.md](phase7.md) | `failed` | `0` opens / `0` DRC / `0` `copper_audit` / `0` `pad_joints`, **but** `Zone 11` (`COUT`) `0` spokes (`+1V1` via `U3.50` `VREG_FB`), shared `CFILT`/`PGND` via, `4`-piece `+3V3` band, `0.107 mm` `VBAT` via to `BT1.2` |
+| 8 — Simulation | [phase8.md](phase8.md) | `failed` | [sim/README.md](../../sim/sunflower-s2-110-usbc/README.md): `U4.8` `312–554 mV` 4-bit QSPI SSO droop (`1x/2x` SPI safe); `ADC_AVDD` `19–48 mV_pk` `LX` spike; `71.7–93 °C` uncapped thermal rise |
+| 9 — Silkscreen | [phase9.md](phase9.md) | `failed` | `0` silk-over-pad errors, **but** `BT1` `+`/`-` & `J1` `USB 5V` hidden under connector bodies, `5` QFNs/LGAs missing `B.SilkS` pin-1 dots, silk over open vias |
 
 ---
 
 ## 1. Release Outputs & Order Specification
 
 - **Current release set (`hw/sunflower/s2-110-usbc/fab/`):**
-  - [sunflower-s2-110-usbc-gerbers.zip](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/fab/sunflower-s2-110-usbc-gerbers.zip) (11 Gerber X2 files + `sunflower.drl` + `sunflower-job.gbrjob`)
-  - [bom-jlcpcb.csv](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/fab/bom-jlcpcb.csv) (`35` BOM lines = `34` unique LCSC PNs, `191` placements)
-  - [cpl-jlcpcb.csv](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/fab/cpl-jlcpcb.csv) (`191` placements: `111` `Top`, `80` `Bottom`, Bottom-mirrored & EasyEDA origin-corrected)
+  - [sunflower-s2-110-usbc-gerbers.zip](../../../hw/sunflower/s2-110-usbc/fab/sunflower-s2-110-usbc-gerbers.zip) (11 Gerber X2 files + `sunflower.drl` + `sunflower-job.gbrjob`)
+  - [bom-jlcpcb.csv](../../../hw/sunflower/s2-110-usbc/fab/bom-jlcpcb.csv) (`35` BOM lines = `34` unique LCSC PNs, `191` placements)
+  - [cpl-jlcpcb.csv](../../../hw/sunflower/s2-110-usbc/fab/cpl-jlcpcb.csv) (`191` placements: `111` `Top`, `80` `Bottom`, Bottom-mirrored & EasyEDA origin-corrected)
   - Stale `01:37` `2026-11-07` KiCad Fabrication Toolkit folder moved aside to `hw/sunflower/s2-110-usbc/production-stale-2026-11-07-0137/`.
 - **Drawings, renders & 3D (`design/renders/sunflower-s2-110-usbc/` & `viewer/`):**
-  - [schematic.pdf](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/schematic.pdf), [assembly-top.pdf](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/assembly-top.pdf) (≈4:1 on A4), [assembly-bottom.pdf](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/assembly-bottom.pdf) (≈4:1 on A4), [3d-top.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/3d-top.png), [3d-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/3d-bottom.png), [cpl-check-top.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/cpl-check-top.png), [cpl-check-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/cpl-check-bottom.png), and `viewer/sunflower-s2-110-usbc/board.glb`.
-- **Mandatory JLCPCB order settings ([stackup-4l.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/stackup-4l.md)):**
+  - [schematic.pdf](../../renders/sunflower-s2-110-usbc/schematic.pdf), [assembly-top.pdf](../../renders/sunflower-s2-110-usbc/assembly-top.pdf) (≈4:1 on A4), [assembly-bottom.pdf](../../renders/sunflower-s2-110-usbc/assembly-bottom.pdf) (≈4:1 on A4), [3d-top.png](../../renders/sunflower-s2-110-usbc/3d-top.png), [3d-bottom.png](../../renders/sunflower-s2-110-usbc/3d-bottom.png), [cpl-check-top.png](../../renders/sunflower-s2-110-usbc/cpl-check-top.png), [cpl-check-bottom.png](../../renders/sunflower-s2-110-usbc/cpl-check-bottom.png), and `viewer/sunflower-s2-110-usbc/board.glb`.
+- **Mandatory JLCPCB order settings ([stackup-4l.md](../../study/sunflower/stackup-4l.md)):**
   - Stackup code: **`JLC04161H-7628`** (`4` layers, `1.6 mm`, `1 oz` outer / `0.5 oz` inner)
   - Surface finish: **`ENIG 1U"`** (overrides `.gbrjob` default `HAL SnPb` for `0.40 mm`-pitch QFNs & `1.0 × 1.0 mm` X2-SON `U6`)
   - Solder mask: **Green LPI** (`0.10 mm` min dam; matte black violates `0.40 mm`-pitch QFN mask-bridge rules); vias: **Tented**
@@ -60,7 +60,7 @@ Status: **`awaiting_signoff`** (Gate 10 requires explicit user sign-off per [SKI
 $ python3 .claude/skills/pcb-design/scripts/sync_check.py hw/sunflower/s2-110-usbc \
     --bom hw/sunflower/s2-110-usbc/fab/bom-jlcpcb.csv \
     --cpl hw/sunflower/s2-110-usbc/fab/cpl-jlcpcb.csv
-sync_check: /home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc
+sync_check: hw/sunflower/s2-110-usbc
   schematic sunflower.kicad_sch: 206 symbols (0 excluded from board)
   board sunflower.kicad_pcb: 206 footprints (0 board-only)
   BOM bom-jlcpcb.csv: 191 designators
@@ -141,11 +141,11 @@ C20625731 ABM8-272-T3 (ABRACON, SMD3225-4P): extended, JLC stock 9607, lifecycle
 
 ### 3.1 Bug Caught & Fixed in `scripts/sunflower/export_and_cost.py`
 
-Auditing the previous `cpl-jlcpcb.csv` against all `34` LCSC EasyEDA footprint JSONs caught two silent PCBA assembly bugs in [export_and_cost.py](file:///home/sequoia/pcb/round-pendant/scripts/sunflower/export_and_cost.py#L185-L218):
+Auditing the previous `cpl-jlcpcb.csv` against all `34` LCSC EasyEDA footprint JSONs caught two silent PCBA assembly bugs in [export_and_cost.py](../../../scripts/sunflower/export_and_cost.py#L185-L218):
 1. **Missing Bottom-layer angle reflection:** `export_and_cost.py` computed `(rot_kicad + rot_off) % 360` on both sides instead of `(180.0 - rot_kicad + rot_off) % 360` on `Bottom`, mis-rotating `BT1` (`70°` vs **`110°`**), `J1` (`180°` vs **`0°`**), `U1/U2` (`270°` vs **`0°`**), `U4` (`270°` vs **`0°`**), `Q1` (`90°` vs **`270°`**), `U9` (`90°` vs **`270°`**), and `SW1/SW2` (`291°/69°` vs **`249°/111°`**).
 2. **Missing EasyEDA pick-origin offsets on `BT1` and `J1`:** EasyEDA `C177225` (`BT1`) places its origin `+0.950 mm` in local `+Y` from KiCad's `Molex_PicoBlade_53261-0271` origin (`Δ = (-0.8927, -0.3249) mm` at `-110°`), and EasyEDA `C165948` (`J1`) places its origin `+1.571 mm` in local `+Y` from KiCad's `HRO_TYPE-C-31-M-12` origin (`Δ = (0.0000, +1.5710) mm` at `180°`).
 
-Updated [export_and_cost.py](file:///home/sequoia/pcb/round-pendant/scripts/sunflower/export_and_cost.py), re-exported [fab/](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/fab), verified pad-for-pad across all `191` parts, and rendered visual overlays in [cpl-check-top.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/cpl-check-top.png) and [cpl-check-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/cpl-check-bottom.png):
+Updated [export_and_cost.py](../../../scripts/sunflower/export_and_cost.py), re-exported [fab/](../../../hw/sunflower/s2-110-usbc/fab), verified pad-for-pad across all `191` parts, and rendered visual overlays in [cpl-check-top.png](../../renders/sunflower-s2-110-usbc/cpl-check-top.png) and [cpl-check-bottom.png](../../renders/sunflower-s2-110-usbc/cpl-check-bottom.png):
 
 ```text
 CPL total rows: 191
@@ -235,12 +235,12 @@ T2C0.600
 T3C0.650
 ```
 
-- **Layer-by-layer object reconciliation ([gerbers/](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/gerbers/)):**
+- **Layer-by-layer object reconciliation ([gerbers/](../../renders/sunflower-s2-110-usbc/gerbers)):**
   - `outline` (`2` objects): Closed `Ø38.000 mm` circle (`2 × 180°` arcs), `0` gaps.
   - `drill_sunflower` (`643` objects): `637` vias (`T1C0.150` PTH) + `4` `J1` shield slots (`T2C0.600` PTH) + `2` `J1` locating pegs (`T3C0.650` explicitly tagged `NonPlated,NPTH,ComponentDrill`).
   - `top_paste` (`442`) & `top_mask` (`448`): `110 × 4 (LEDs) + 2 (Q2) = 442` SMD paste pads + `4` `J1` PTH + `2` `J1` NPTH = `448` mask openings; all `637` vias tented.
   - `bottom_mask` (`387`) & `bottom_paste` (`379`): `387` mask openings minus `20` paste-free openings (`14` `TP*`, `4` `J1` PTH slots, `2` `J1` NPTH pegs) plus `12` (`2×2` split EP paste windows on `U1`, `U2`, `U3`, `U5`) = `379` paste apertures (`0` mask/paste on `NT1`).
-  - **New Gate 10 Gerber DFM catch (`J1` PTH slots missing `B.Paste`):** [bottom_paste.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/gerbers/bottom_paste.png) has **`0` paste apertures** on `J1`'s `4` PTH shield slots (`±4.32, +12.47/+16.65`), while `J1`'s `F.Cu` annular rings sit **`0.18–0.29 mm`** from `D10`, `D104`, and `D110`. Post-SMT `F.Cu` wave/hand soldering would melt adjacent LEDs, whereas SMT-only reflow leaves `J1`'s mechanical shield legs unsoldered unless manually tacked on the outer `B.Cu` slot edges (`Rev S3C`) or replaced by full-SMT `TYPE-C-31-M-22` (`C530612`) / `B.Paste` pin-in-paste (`Rev S3D`).
+  - **New Gate 10 Gerber DFM catch (`J1` PTH slots missing `B.Paste`):** [bottom_paste.png](../../renders/sunflower-s2-110-usbc/gerbers/bottom_paste.png) has **`0` paste apertures** on `J1`'s `4` PTH shield slots (`±4.32, +12.47/+16.65`), while `J1`'s `F.Cu` annular rings sit **`0.18–0.29 mm`** from `D10`, `D104`, and `D110`. Post-SMT `F.Cu` wave/hand soldering would melt adjacent LEDs, whereas SMT-only reflow leaves `J1`'s mechanical shield legs unsoldered unless manually tacked on the outer `B.Cu` slot edges (`Rev S3C`) or replaced by full-SMT `TYPE-C-31-M-22` (`C530612`) / `B.Paste` pin-in-paste (`Rev S3D`).
 
 ---
 
@@ -267,7 +267,7 @@ Checked directly on `sunflower.kicad_pcb` via `pcbnew` (`scratch/checks/pcbnew_r
 
 ## 6. Final Independent Review (`2026-11-08`, fresh-context `agy` reviewer)
 
-Reviewer inspected only [intent-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/intent-s2-110-usbc.md), [brief-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/brief-s2-110-usbc.md), [stackup-4l.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/stackup-4l.md), [bringup-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/bringup-s2-110-usbc.md), [sim/README.md](file:///home/sequoia/pcb/round-pendant/design/sim/sunflower-s2-110-usbc/README.md), `design/parts/*.md`, [nets-sunflower-s2-110-usbc.csv](file:///home/sequoia/pcb/round-pendant/design/nets-sunflower-s2-110-usbc.csv), `fab/{bom,cpl}-jlcpcb.csv`, all renders/gerbers, ERC/DRC/sync/stock outputs, `phase0.md`..`phase9.md`, and [sync-and-release.md](file:///home/sequoia/pcb/round-pendant/.claude/skills/pcb-design/references/sync-and-release.md).
+Reviewer inspected only [intent-s2-110-usbc.md](../../study/sunflower/intent-s2-110-usbc.md), [brief-s2-110-usbc.md](../../study/sunflower/brief-s2-110-usbc.md), [stackup-4l.md](../../study/sunflower/stackup-4l.md), [bringup-s2-110-usbc.md](../../study/sunflower/bringup-s2-110-usbc.md), [sim/README.md](../../sim/sunflower-s2-110-usbc/README.md), `design/parts/*.md`, [nets-sunflower-s2-110-usbc.csv](../../nets-sunflower-s2-110-usbc.csv), `fab/{bom,cpl}-jlcpcb.csv`, all renders/gerbers, ERC/DRC/sync/stock outputs, `phase0.md`..`phase9.md`, and [sync-and-release.md](../../../.claude/skills/pcb-design/references/sync-and-release.md).
 
 ### Reviewer Answers to the Three Phase 10 Release Questions
 
@@ -284,12 +284,12 @@ Reviewer inspected only [intent-s2-110-usbc.md](file:///home/sequoia/pcb/round-p
 
 | ID | Severity | Finding | Resolution |
 |---|---|---|---|
-| `BLOCKER-1` | BLOCKER | `sunflower-B_Paste.gbp` omits paste on `J1`'s `4` PTH shield slots while `F.Cu` rings sit `0.18–0.29 mm` from `D10`/`D104`/`D110` | Documented in [brief-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/brief-s2-110-usbc.md), [intent-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/intent-s2-110-usbc.md), [bringup-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/bringup-s2-110-usbc.md), and §7 below (`Rev S3C`: forbid `F.Cu` soldering + microscope-tack outer `B.Cu` slot edges; `Rev S3D`: switch to full-SMT `TYPE-C-31-M-22` `C530612`) |
+| `BLOCKER-1` | BLOCKER | `sunflower-B_Paste.gbp` omits paste on `J1`'s `4` PTH shield slots while `F.Cu` rings sit `0.18–0.29 mm` from `D10`/`D104`/`D110` | Documented in [brief-s2-110-usbc.md](../../study/sunflower/brief-s2-110-usbc.md), [intent-s2-110-usbc.md](../../study/sunflower/intent-s2-110-usbc.md), [bringup-s2-110-usbc.md](../../study/sunflower/bringup-s2-110-usbc.md), and §7 below (`Rev S3C`: forbid `F.Cu` soldering + microscope-tack outer `B.Cu` slot edges; `Rev S3D`: switch to full-SMT `TYPE-C-31-M-22` `C530612`) |
 | `BLOCKER-2..4` | BLOCKER | Upheld Gate 5–9 copper/placement/DFM blockers (`U4.8` `C22`, `COUT` `0` spokes, `CFILT`/`PGND` via, `In2.Cu` under `LX`, `4`-piece `+3V3` band, `U3.61`/`U5.17` EP paste vias, `BT1`/`U8` hazards) | Held (`phase5`–`phase9` remain `failed`); user chooses `Rev S3C` bench waivers vs `Rev S3D` respin in §7 |
-| `BLOCKER-5` | BLOCKER | `intent-s2-110-usbc.md` `R19` (L36) & `Environment` (L77) still said `GCC ≤ 115–128` / `≤ 48` on `~{CHG} = 0`, contradicting Phase 8 thermal sim (`GCC ≤ 105` / `≤ 9` CC / `≤ 24` CV on `PGOOD == 0 \|\| CHG == 0`) | Fixed in [intent-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/intent-s2-110-usbc.md), [brief-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/brief-s2-110-usbc.md), and [phase0.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase0.md) |
-| `MAJOR-1` | MAJOR | `bringup-s2-110-usbc.md` specified `TP1` (`VSYS`) USB window as `4.35–4.45 V` instead of `BQ24073` datasheet `4.30–4.50 V` (`charger.md`) | Fixed in [bringup-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/bringup-s2-110-usbc.md) (`4.30–4.50 V`, `4.40 V` typ) |
-| `MAJOR-2` | MAJOR | `bringup-s2-110-usbc.md` Step 1.2 instructed cold-probing `0.40 mm`-pitch QFN pad `U3.31` (`GPIO19`) | Fixed in [bringup-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/bringup-s2-110-usbc.md): removed QFN pin probe (`NT1` is verified cleanly in firmware Smoke-Test Step 1 `ID = 6`) |
-| `MINOR-1..4` | MINOR | `XL-1615RGBC-RF` called `MSL-5a` instead of `MSL-3`; `R17` (`≤ 85 µA` typ sleep) bench check missing; `TP2` silk landmark (`under LIPO 403535, N of 1V1`) & `B.Cu` X-mirror handedness note; `phase9.md` L86 `GND`/`VM` bar wording | Fixed across [intent-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/intent-s2-110-usbc.md), [brief-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/brief-s2-110-usbc.md), [bringup-s2-110-usbc.md](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/bringup-s2-110-usbc.md), and [phase9.md](file:///home/sequoia/pcb/round-pendant/design/gates/sunflower-s2-110-usbc/phase9.md) |
+| `BLOCKER-5` | BLOCKER | `intent-s2-110-usbc.md` `R19` (L36) & `Environment` (L77) still said `GCC ≤ 115–128` / `≤ 48` on `~{CHG} = 0`, contradicting Phase 8 thermal sim (`GCC ≤ 105` / `≤ 9` CC / `≤ 24` CV on `PGOOD == 0 \|\| CHG == 0`) | Fixed in [intent-s2-110-usbc.md](../../study/sunflower/intent-s2-110-usbc.md), [brief-s2-110-usbc.md](../../study/sunflower/brief-s2-110-usbc.md), and [phase0.md](phase0.md) |
+| `MAJOR-1` | MAJOR | `bringup-s2-110-usbc.md` specified `TP1` (`VSYS`) USB window as `4.35–4.45 V` instead of `BQ24073` datasheet `4.30–4.50 V` (`charger.md`) | Fixed in [bringup-s2-110-usbc.md](../../study/sunflower/bringup-s2-110-usbc.md) (`4.30–4.50 V`, `4.40 V` typ) |
+| `MAJOR-2` | MAJOR | `bringup-s2-110-usbc.md` Step 1.2 instructed cold-probing `0.40 mm`-pitch QFN pad `U3.31` (`GPIO19`) | Fixed in [bringup-s2-110-usbc.md](../../study/sunflower/bringup-s2-110-usbc.md): removed QFN pin probe (`NT1` is verified cleanly in firmware Smoke-Test Step 1 `ID = 6`) |
+| `MINOR-1..4` | MINOR | `XL-1615RGBC-RF` called `MSL-5a` instead of `MSL-3`; `R17` (`≤ 85 µA` typ sleep) bench check missing; `TP2` silk landmark (`under LIPO 403535, N of 1V1`) & `B.Cu` X-mirror handedness note; `phase9.md` L86 `GND`/`VM` bar wording | Fixed across [intent-s2-110-usbc.md](../../study/sunflower/intent-s2-110-usbc.md), [brief-s2-110-usbc.md](../../study/sunflower/brief-s2-110-usbc.md), [bringup-s2-110-usbc.md](../../study/sunflower/bringup-s2-110-usbc.md), and [phase9.md](phase9.md) |
 
 ---
 

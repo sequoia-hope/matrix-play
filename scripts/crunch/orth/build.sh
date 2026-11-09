@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # build.sh VARIANT MAP_CSV: new c-orth variant, unrouted: same stages as scripts/build_board_b.sh with place_c, using board_orth.py (anode-behind turns when ORTH_MAP is set). Refuses an existing variant.
 set -euo pipefail
-R=/home/sequoia/pcb/round-pendant; cd $R
+R="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"; cd $R
 export PENDANT_VARIANT=$1 PENDANT_MAP=$2 PENDANT_PLACE=place_c
 [ "${ORTH_ANY:-}" ] || export ORTH_MAP=$2
 D=hw/round-pendant/$1; S=hw/round-pendant/c; B=scripts/crunch/orth/board_orth.py

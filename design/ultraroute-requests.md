@@ -4,7 +4,7 @@ Compiled from intensive real-world usage of `ultraroute` (`vendor/ultraroute` @ 
 - **`round-pendant` Variants D & E (8-layer, 2 mm pitch sunflower matrix):** `235` RGB LEDs, `5× IS31FL3745` WLCSP-36, `RP2350A`, `879` vias, **`0` open, `0` DRC errors/warnings**.
 - **`parallelogram` 4-layer low-cost density-limit family (`p1-66` .. `p4-264`, `25 × 70 mm`, `17.75°` skew, `1–4× AW20198QNR` QFN-40 `0.4 mm` pitch with solid `3.4 × 3.4 mm` GND EPs):** `475` to `1,329` connections on JLCPCB 4-layer standard rules (`0.10/0.10 mm` trace/space, `0.30/0.15 mm` via, `--planes In1.Cu`, `--cell 0.025`).
 
-Repro inputs and raw post-router outputs are archived at `/home/sequoia/Software/ultraroute-lab/repro/round-pendant-parallelogram/`, and a copy of this report is placed in `/home/sequoia/Software/ultraroute/docs/research/round-pendant-user-notes-2026-11.md`.
+Repro inputs and raw post-router outputs are archived at `~/Software/ultraroute-lab/repro/round-pendant-parallelogram/`, and a copy of this report is placed in `~/Software/ultraroute/docs/research/round-pendant-user-notes-2026-11.md`.
 
 ---
 

@@ -1,7 +1,7 @@
 # Bench Bring-Up & Smoke-Test Plan — Sunflower `s2-110-usbc` (Rev S3C)
 
-Board: [sunflower.kicad_pcb](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_pcb) (`Ø38.0 mm`, 4-layer, `110× XL-1615RGBC-RF` + `2× AW20198QNR` + `RP2350A`).
-Probe map: [bringup-map-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/bringup-map-bottom.png) and [assembly-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/assembly-bottom.png).
+Board: [sunflower.kicad_pcb](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_pcb) (`Ø38.0 mm`, 4-layer, `110× XL-1615RGBC-RF` + `2× AW20198QNR` + `RP2350A`).
+Probe map: [bringup-map-bottom.png](../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png) and [assembly-bottom.png](../../renders/sunflower-s2-110-usbc/assembly-bottom.png).
 
 > [!IMPORTANT]
 > **Perform all Steps 1–7 BEFORE bonding a `403535` LiPo pouch to `B.Cu`.** Thirteen of the `14` bare `Ø1.0 mm` test pads lie inside the `Ø35 mm` battery envelope; once bring-up passes, apply **`0.05 mm` Kapton tape** over `B.Cu` exposed test pads (`TP1..TP7`, `TP14..TP16`) and provide a **`≥ 2.4 mm` insulating foam/carrier standoff** so the pouch clears `J1` (`3.26 mm`) and mated `BT1` (`3.40 mm`).
@@ -10,7 +10,7 @@ Probe map: [bringup-map-bottom.png](file:///home/sequoia/pcb/round-pendant/desig
 
 ## 1. Test-Pad & Probe Reference (`B.Cu`, Board-Centre `(0, 0)` Coordinates)
 
-Note: `TP9` and `TP10` do not exist in this variant (`14` test pads total: `TP1..TP8`, `TP11..TP16`). Coordinates `(x, y)` below are KiCad top-view (`F.Cu`) board-centre coordinates; **when looking directly at the back (`B.Cu`) as in [bringup-map-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/bringup-map-bottom.png), horizontal X is mirrored so KiCad `NW` (`BT1`, `SW2`, `TP8`) appears on the right and KiCad `NE` (`SW1`, `TP14..TP16`) appears on the left.** Because `TP8` (`GND`) sits on the `NW`/`W` rim, you may also clip/probe `GND` on **`J1`'s metal USB-C shield shell** at the South rim (`(0.0, +15.6 mm)`).
+Note: `TP9` and `TP10` do not exist in this variant (`14` test pads total: `TP1..TP8`, `TP11..TP16`). Coordinates `(x, y)` below are KiCad top-view (`F.Cu`) board-centre coordinates; **when looking directly at the back (`B.Cu`) as in [bringup-map-bottom.png](../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png), horizontal X is mirrored so KiCad `NW` (`BT1`, `SW2`, `TP8`) appears on the right and KiCad `NE` (`SW1`, `TP14..TP16`) appears on the left.** Because `TP8` (`GND`) sits on the `NW`/`W` rim, you may also clip/probe `GND` on **`J1`'s metal USB-C shield shell** at the South rim (`(0.0, +15.6 mm)`).
 
 | Ref | Net | Silk Landmark | `(x, y)` (`mm`) | Expected Unpowered Resistance to `GND` | Expected Powered Voltage / Signal |
 |---|---|---|---|---|---|

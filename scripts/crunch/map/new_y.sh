@@ -2,7 +2,7 @@
 # new_y.sh VARIANT JSON MAP_CSV: placement's new_variant.sh recipe (overrides, 8 layers, U3 fix) using this folder's board_y.py, which honours a map's turn column.
 # Env as board_y.py reads: PREF_STUB, ANODE_FIRST, PROBE_OUT. Refuses an existing variant; with PROBE_OUT set, stops after the probe.
 set -euo pipefail
-cd /home/sequoia/pcb/round-pendant
+cd "$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 V=$1; D=hw/round-pendant/$V; P=scripts/crunch/placement; B=scripts/crunch/map/board_y.py
 [ -e "$D/round-pendant.kicad_pcb" ] && { echo "$D exists" >&2; exit 2; }
 mkdir -p $D/route; cp hw/round-pendant/c/*.kicad_sch hw/round-pendant/c/round-pendant.kicad_pro hw/round-pendant/c/round-pendant.kicad_dru hw/round-pendant/c/fp-lib-table hw/round-pendant/c/sym-lib-table $D/; cp -r hw/round-pendant/c/lib $D/lib

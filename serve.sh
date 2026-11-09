@@ -9,7 +9,7 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-PROJ="$(command -v proj || echo "/home/sequoia/Software/overseer/core/proj")"
+PROJ="$(command -v proj)" || { echo "serve.sh: proj not found on PATH" >&2; exit 1; }
 PORT="${PORT:-$("$PROJ" port)}"
 
 exec python3 -m http.server "$PORT" --bind 0.0.0.0

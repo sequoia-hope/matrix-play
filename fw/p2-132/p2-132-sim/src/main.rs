@@ -11,7 +11,7 @@
 //!   - `SW1`: Tactile mode-cycle button on GPIO11
 
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::sync::atomic::Ordering;
 use std::time::Instant;
 
@@ -627,7 +627,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../..")
         .canonicalize()?;
-    let picoem_root = Path::new("/home/sequoia/Software/picoem");
+    // $PICOEM_ROOT, else the checkout the rp2350-emu path dependency points at.
+    let picoem_root = match std::env::var_os("PICOEM_ROOT") {
+        Some(p) => PathBuf::from(p),
+        None => PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../../../../Software/picoem")
+            .canonicalize()?,
+    };
     let bootrom_path = picoem_root.join("roms/rp2350/bootrom-combined.bin");
     let rom_shim_path = repo_root
         .join("fw/p2-132/p2-132-rom-shim/target/thumbv8m.main-none-eabihf/release/p2-132-rom-shim.bin");

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # build.sh VARIANT MAP_CSV LAYERS PLANES : unrouted two-board LED board. Env: STACK_U1, STACK_U2 (x,y,rot; default both SW sides north), and board_stack's CATHODE_VIAS, EP_VIAS, PREF_STUB. LAYERS 4 or 6; PLANES gnd1|none|6ref.
 set -euo pipefail
-R=/home/sequoia/pcb/round-pendant; cd $R
+R="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"; cd $R
 export PENDANT_VARIANT=$1 PENDANT_MAP=$(realpath $2) PENDANT_PLACE=place_c PLANES=$4
 export STACK_U1=${STACK_U1:--9,8,0} STACK_U2=${STACK_U2:-8,8,0}
 D=hw/round-pendant/$1; S=hw/round-pendant/c; B=scripts/crunch/stack/board_stack.py

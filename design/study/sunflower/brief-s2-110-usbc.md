@@ -1,8 +1,8 @@
 # Mechanical and layout brief: Sunflower `s2-110-usbc` (Rev S3C)
 
 Phase 4 layout brief for `hw/sunflower/s2-110-usbc/sunflower.kicad_pcb`.
-Floorplan drawing: [floorplan-s2-110-usbc.svg](file:///home/sequoia/pcb/round-pendant/design/study/sunflower/floorplan-s2-110-usbc.svg) (rendered PNG: [floorplan.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/floorplan.png)).
-Generator geometry: [config.py](file:///home/sequoia/pcb/round-pendant/scripts/sunflower/config.py) (`VARIANTS["s2-110-usbc"]`).
+Floorplan drawing: [floorplan-s2-110-usbc.svg](floorplan-s2-110-usbc.svg) (rendered PNG: [floorplan.png](../../renders/sunflower-s2-110-usbc/floorplan.png)).
+Generator geometry: [config.py](../../../scripts/sunflower/config.py) (`VARIANTS["s2-110-usbc"]`).
 
 All coordinates `(x, y)` below are in millimetres relative to the board centre `(100.000, 100.000)` (`+x` East, `+y` South, `−y` North / 12-o'clock top rim when worn).
 
@@ -40,7 +40,7 @@ All coordinates `(x, y)` below are in millimetres relative to the board centre `
 - **No-POFV / signal-pad DFM discipline:** `.kicad_dru` forbids via holes in all `793` SMD signal pads (`no POFV`), allowing standard `0.30/0.15 mm` non-filled through vias only inside the `4` exposed `GND` thermal pads (`U5.17`: `2` in-pad, `U3.61`: `1` in-pad, `U2.41`: `1` in-pad, `U1.41`: `0` in-pad + `5` perimeter). *(Gate 7 audit notes `U5.17` `B.Paste` overlaps its `2` open vias and `U3.61` has `2` total `GND` vias vs `9` on the RPi reference.)*
 
 ## 7. Block floorplan and signal/power flow
-Ordered from the South/North-West power connectors inward ([floorplan.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/floorplan.png)):
+Ordered from the South/North-West power connectors inward ([floorplan.png](../../renders/sunflower-s2-110-usbc/floorplan.png)):
 1. **USB-C input & ESD (`South`, `(0, +15.6)` → `(+7.0, +10.7)`):** `J1` at `(0.0, +15.6)` feeds `VBUS` (`C1`, `R1/R2` `5.1 kΩ` `CC1/CC2`) and `USB_D±` into `U7` (`USBLC6-2P6` at `(+7.03, +10.68)`), then north-west through `27 Ω` series resistors (`R14/R15`) into `U3`'s south-facing USB pins (`51/52`, `34.55 / 35.87 mm` total routed copper).
 2. **Cell protection & switched `VBAT` divider (`SE / SW`, `(+6.5, +12.8)` & `(−8.2, +12.4)`):** `BT1` at `(−11.4, −10.2)` routes `VBAT` and isolated `BAT_N` (`0.25 mm` `BATTERY` class) across the disc (`29.1 mm` Euclidean) to `U8` (`XB9901A` at `(+6.45, +12.79)`, `R8`, `C6`) and `Q1` (`NTZD3155C` at `(−8.20, +12.40)`, `R9..R12`, `C7`). *(Audit note: co-locating `U8` beside `BT1` in NW is flagged as a `Rev S3D` improvement at Gates 4/6.)*
 3. **Power-path charger & `+3V3` LDO (`South-Centre`, `(+3.4, +6.0)` & `(−6.1, +0.4)`):** `U5` (`BQ24073` at `(+3.40, +6.00)`) sits north of `J1`, regulating `VSYS` (`3.55–4.4 V`) to feed both LED drivers east/west and `U6` (`TPS7A0233` LDO at `(−6.10, +0.40)`).
@@ -61,7 +61,7 @@ Ordered from the South/North-West power connectors inward ([floorplan.png](file:
 - **Back (`B.SilkS`):** Functional callouts only (`0` decorative art zones).
 
 ## 10. Silkscreen policy
-- **Hobby / wearable prototype policy (`design/checks.toml`):** Footprint reference designators hidden on both sides; `28` `B.SilkS` primitives (`5` pin-1 dots + `23` callouts for `PWR`, `BOOT`, `BATT +/-`, `USB 5V`, `LIPO 403535`, `8` ICs, and `8` test pads), supplemented by [bringup-map-bottom.png](file:///home/sequoia/pcb/round-pendant/design/renders/sunflower-s2-110-usbc/bringup-map-bottom.png) (`BOARD_ID = 6` via `NT1`; back board-title omission flagged for user sign-off).
+- **Hobby / wearable prototype policy (`design/checks.toml`):** Footprint reference designators hidden on both sides; `28` `B.SilkS` primitives (`5` pin-1 dots + `23` callouts for `PWR`, `BOOT`, `BATT +/-`, `USB 5V`, `LIPO 403535`, `8` ICs, and `8` test pads), supplemented by [bringup-map-bottom.png](../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png) (`BOARD_ID = 6` via `NT1`; back board-title omission flagged for user sign-off).
 
 ## 11. Keepouts and rule areas
 1. **Front LED keepouts (`config.py` `front_keepouts`):** `6` discs (`r = 1.75–2.35 mm`) around `J1`'s `6` holes + `r = 2.50 mm` around `Q2`.
