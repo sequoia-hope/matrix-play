@@ -40,19 +40,20 @@ nav.top{font-size:.92rem;margin-bottom:.5rem}
 <li>[x] <strong>DRC / ERC / copper / pad-joint / parity checks re-run on final files:</strong></li>
 <li><code>kicad-cli pcb drc --severity-all --schematic-parity</code>: <strong><code>0</code> violations, <code>0</code> unconnected items, <code>0</code> schematic parity issues</strong></li>
 <li><code>kicad-cli sch erc --severity-all</code>: <strong><code>0</code> violations across all <code>5</code> sheets</strong></li>
-<li><code>scripts/bga/copper_audit.py</code>: <strong><code>rc == 0</code></strong> (<code>tracks=4921 vias=729 | 0</code> dangling, <code>0</code> cap_gap, <code>0</code> mid_graze/stubs, <code>0</code> off_via, <code>0</code> morph_necks, <code>0</code> acute_slivers, <code>0</code> collinear_dups, <code>0</code> zone_intrusions)</li>
+<li><code>scripts/bga/copper_audit.py</code>: <strong><code>rc == 0</code></strong> (<code>tracks=5416 vias=719 | 0</code> dangling, <code>0</code> cap_gap, <code>0</code> mid_graze/stubs, <code>0</code> off_via, <code>0</code> morph_necks, <code>0</code> acute_slivers, <code>0</code> collinear_dups, <code>0</code> zone_intrusions)</li>
 <li><code>pad_joints.py</code>: <strong><code>PASS: 0 thin pad joints</code></strong> across <code>913</code> SMD pads</li>
-<li>[x] <strong>Stock &amp; qty-10 BOM cost checked on <code>2026-11-08</code>:</strong></li>
-<li><code>export_and_cost.py --cost --qty 10</code>: <strong><code>$13.25 / board</code> @ qty 10</strong> (<code>+$0.39</code> over live <code>p2-132-usb</code> <code>$12.86</code>, <code>35</code> unique LCSC part codes, <code>223</code> assembled parts)</li>
-<li>Live JLCPCB PCBA SMT assembly API (<code>selectSmtComponentList/v2</code>): <strong><code>40/40</code> BOM lines (<code>35/35</code> unique LCSC parts) <code>100%</code> in stock</strong> for a <code>10</code>-board build (<code>min stock = 529</code> on <code>TPS7A0233PDQNR</code>, <code>6,887</code> on <code>EVQP7J01P</code> <code>C2828254</code>, <code>1,439</code> on <code>AOTA-B201610S3R3-101-T</code> <code>C42411119</code>)</li>
-<li>[x] <strong>CPL rotation &amp; pick-origin verified for every polarized part, IC, connector, &amp; switch (including new <code>SW5</code>/<code>SW6</code>):</strong> Mirrored-Bottom visual overlay <code>design/renders/parallelogram-p2-132-usb6/cpl-overlay.png</code> (matching <code>3d-bottom.png</code> &amp; JLCPCB Bottom PCBA viewer) + complete table below with both <code>KiCad Rot</code> and <code>CPL Rot</code></li>
-<li>[x] <strong>Gerbers independently parsed &amp; rendered (<code>gerber_render.py</code> via <code>gerbonara</code>) + Assembly PDFs + 3D STEP:</strong></li>
-<li><code>hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6-gerbers.zip</code> (<code>13</code> files)</li>
-<li><code>hw/parallelogram/p2-132-usb6/fab/{assembly-bottom.pdf,assembly-top.pdf}</code> + <code>design/renders/parallelogram-p2-132-usb6/assembly-bottom.png</code></li>
-<li><code>hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6.step</code> (<code>147</code> 3D STEP/WRL models embedded)</li>
-<li>[x] <strong>Bring-up plan written with part-audit expected values, probe coordinates, &amp; firmware guards:</strong> <code>design/gates/parallelogram-p2-132-usb6/bringup.md</code> (linked from <code>index.html</code> card)</li>
-<li>[x] <strong>Other variants proven byte-identical (<code>run_bytecheck.py</code>):</strong> <code>53</code> raw byte-identical files + <code>2</code> canonical-identical <code>.kicad_pcb</code> files (<code>0</code> mismatches across <code>p2-132-usb</code> and <code>p1-66-usb</code>)</li>
-<li>[ ] <strong>Git tag (<code>parallelogram-p2-132-usb6-revP1U6</code>) &amp; User release approval:</strong> Deferred per workspace rule (<em>"Do not commit or push. The supervising agent will review and commit"</em>) and awaiting user sign-off below.</li>
+<li>[x] <strong>Stock, qty-10 BOM cost, &amp; 4L <code>ENIG + POFV</code> bare-PCB fab cost checked on <code>2026-11-09</code>:</strong></li>
+<li><code>export_and_cost.py --cost --qty 10</code>: <strong><code>$13.26 / board</code> @ qty 10</strong> (<code>+$0.40</code> over live <code>p2-132-usb</code> <code>$12.86</code>, <code>41</code> BOM rows / <code>36</code> unique LCSC part codes, <code>223</code> assembled parts; includes <code>C307331</code> <code>100 nF 50 V X7R</code> on <code>C71</code>/<code>C72</code>)</li>
+<li>Live JLCPCB PCBA SMT stock (<code>jlc_parts.py</code> / JLCPCB PCBA warehouse): <strong><code>41/41</code> BOM rows (<code>36/36</code> unique LCSC parts) <code>100%</code> in stock</strong> for a <code>10</code>-board build (<code>min stock = 528</code> on <code>TPS7A0233PDQNR</code> <code>C2860046</code>, <code>747</code> on <code>BQ24073RGTR</code> <code>C15220</code>, <code>1,460</code> on <code>AOTA-B201610S3R3-101-T</code> <code>C42411119</code>, <code>6,590</code> on <code>EVQP7J01P</code> <code>C2828254</code>, <code>920,115</code> on <code>CL05A475MP5NRNC</code> <code>C23733</code> in JLCPCB PCBA basic stock vs <code>0</code> on LCSC retail <code>wmsc.lcsc.com</code>)</li>
+<li><strong>Bare-PCB 4L <code>POFV = Yes</code> cost note:</strong> Because this 4-layer layout has <code>124</code> non-EP via-in-pad sites (<code>164</code> total via-in-paste overlaps across <code>89</code> <code>F.Paste</code> + <code>75</code> <code>B.Paste</code> pads), <strong><code>Via Covering = Epoxy Filled &amp; Capped (POFV = Yes)</code></strong> (IPC-4761 Type VII VIPPO) + <strong><code>ENIG 1U"</code></strong> is mandatory; unlike JLCPCB's 6-layer <code>0.15 mm</code> via promotion where <code>ENIG + POFV</code> is bundled free, 4-layer <code>ENIG + 0.15 mm via + POFV = Yes</code> carries an estimated <strong><code>~$70–$95</code> bare-PCB fabrication surcharge</strong> across a 5–10 pc prototype lot (<code>~$7–$10 / board</code> @ qty 10)</li>
+<li>[x] <strong>CPL rotation &amp; pick-origin verified for every polarized part, IC, connector, &amp; switch (including rotated <code>BT1</code>, bezel-aligned <code>SW4</code>, relocated <code>C1/R5/R45</code>, and <code>SW5</code>/<code>SW6</code>):</strong> Mirrored-Bottom visual overlay <code>design/renders/parallelogram-p2-132-usb6/cpl-overlay.png</code> (matching <code>3d-bottom.png</code> &amp; JLCPCB Bottom PCBA viewer) + complete table below with both <code>KiCad Rot</code> and <code>CPL Rot</code></li>
+<li>[x] <strong>Gerbers independently parsed &amp; rendered (<code>gerber_render.py</code> via <code>gerbonara</code>) + Split PTH/NPTH Drills + Collision-Free Assembly PDFs + Schematic PDF + 3D STEP (<code>0</code> stale files vs <code>.kicad_pcb</code>):</strong></li>
+<li><code>hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6-gerbers.zip</code> (<code>14</code> files: <code>11</code> Gerber layers + separate <code>parallelogram-PTH.drl</code> [<code>719</code> vias] + <code>parallelogram-NPTH.drl</code> [<code>2</code> <code>J1</code> boss holes] + <code>parallelogram-job.gbrjob</code>)</li>
+<li><code>hw/parallelogram/p2-132-usb6/fab/{assembly-bottom.pdf,assembly-top.pdf,schematic.pdf}</code> (<code>98/98</code> <code>B.Fab</code> + <code>133/133</code> <code>F.Fab</code> single-instance <code>0</code>-overlap designators) + <code>design/renders/parallelogram-p2-132-usb6/{assembly-bottom.png,assembly-top.png}</code></li>
+<li><code>hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6.step</code> (<code>231</code> footprints exported)</li>
+<li>[x] <strong>Bring-up plan written with part-audit expected values, probe coordinates, &amp; firmware guards:</strong> <code>design/gates/parallelogram-p2-132-usb6/bringup.md</code> (linked together with <code>design/sim/p2-132-usb6/README.md</code> from <code>index.html</code>)</li>
+<li>[x] <strong>Other variants proven byte-identical (<code>run_bytecheck.py</code>):</strong> <code>40</code> raw byte-identical lib/dru/table files + <code>2</code> canonical-identical <code>.kicad_pcb</code> files (<code>0</code> mismatches across <code>p2-132-usb</code> <code>225/225</code> footprints and <code>p1-66-usb</code> <code>152/152</code> footprints)</li>
+<li>[ ] <strong>Git tag (<code>parallelogram-p2-132-usb6-revP1U6</code>) &amp; User release approval:</strong> Awaiting user sign-off on Gates 4 &amp; 10 below before tagging release.</li>
 </ul>
 <hr />
 <h2>1. Verbatim Release Check Outputs</h2>
@@ -74,31 +75,32 @@ Found 0 schematic parity issues
 ERC sheets: 5 total violations: 0
 </code></pre>
 <h3>C. Fab Export &amp; Independent Gerber Object-Count Audit (<code>gerber_render.py</code>)</h3>
-<pre><code class="language-text">Exported hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6-gerbers.zip (13 files), bom-jlcpcb.csv (40 lines), cpl-jlcpcb.csv (223 parts)
+<pre><code class="language-text">Exported hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6-gerbers.zip (14 files), bom-jlcpcb.csv (41 lines), cpl-jlcpcb.csv (223 parts)
 
 gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
-  top_silk             parallelogram-F_Silkscreen.gto     827 objects
-  top_paste            parallelogram-F_Paste.gtp          530 objects
-  top_mask             parallelogram-F_Mask.gts           532 objects
-  top_copper           parallelogram-F_Cu.gtl            3747 objects
-  inner_1_copper       parallelogram-In1_Cu.g1            730 objects
-  inner_2_copper       parallelogram-In2_Cu.g2           1692 objects
-  bottom_copper        parallelogram-B_Cu.gbl            2608 objects
-  bottom_mask          parallelogram-B_Mask.gbs           405 objects
-  bottom_paste         parallelogram-B_Paste.gbp          407 objects
-  bottom_silk          parallelogram-B_Silkscreen.gbo    1936 objects
-  drill_parallelogram  parallelogram.drl                  731 objects
-  outline              parallelogram-Edge_Cuts.gm1          8 objects
-  12 layer images in design/renders/parallelogram-p2-132-usb6/gerbers
+  top_silk                  parallelogram-F_Silkscreen.gto     827 objects
+  top_paste                 parallelogram-F_Paste.gtp          530 objects
+  top_mask                  parallelogram-F_Mask.gts           532 objects
+  top_copper                parallelogram-F_Cu.gtl            3942 objects
+  inner_1_copper            parallelogram-In1_Cu.g1            720 objects
+  inner_2_copper            parallelogram-In2_Cu.g2           1914 objects
+  bottom_copper             parallelogram-B_Cu.gbl            2656 objects
+  bottom_mask               parallelogram-B_Mask.gbs           405 objects
+  bottom_paste              parallelogram-B_Paste.gbp          407 objects
+  bottom_silk               parallelogram-B_Silkscreen.gbo    1966 objects
+  drill_parallelogram-PTH   parallelogram-PTH.drl              719 objects
+  drill_parallelogram-NPTH  parallelogram-NPTH.drl               2 objects
+  outline                   parallelogram-Edge_Cuts.gm1          8 objects
+  13 layer images in design/renders/parallelogram-p2-132-usb6/gerbers
 </code></pre>
 <p><strong>Gerber structural cross-check:</strong>
 - <code>outline = 8 objects</code>: <code>4</code> straight edges + <code>4</code> <code>R = 1.00 mm</code> tangent corner arcs (watertight closed loop).
-- <code>drill_parallelogram = 731 objects</code>: <code>729</code> plated through vias + <code>2</code> <code>Ø 0.65 mm</code> <code>J1</code> NPTH locating holes (<code>729 + 2 = 731</code> exact).
-- <code>top_paste = 530 objects</code>: <code>132</code> <code>XL-1615RGBC</code> LEDs × <code>4</code> pads (<code>528</code>) + <code>1</code> <code>Q2</code> <code>XYC-PT19C-L1</code> × <code>2</code> pads (<code>2</code>) = <code>530</code> exact (<code>0</code> paste on vias).
+- <code>drill_parallelogram-PTH = 719 objects</code> &amp; <code>drill_parallelogram-NPTH = 2 objects</code>: cleanly separated via <code>--excellon-separate-th</code> into <code>719</code> plated <code>Ø 0.15 mm</code> VIPPO vias and <code>2</code> unplated <code>Ø 0.65 mm</code> <code>J1</code> boss holes (<code>719 + 2 = 721</code> exact).
+- <code>top_paste = 530 objects</code>: <code>132</code> <code>XL-1615RGBC</code> LEDs × <code>4</code> pads (<code>528</code>) + <code>1</code> <code>Q2</code> <code>XYC-PT19C-L1</code> × <code>2</code> pads (<code>2</code>) = <code>530</code> exact.
 - <code>top_mask = 532 objects</code>: <code>530</code> top SMD pads + <code>2</code> <code>J1</code> NPTH clearances = <code>532</code> exact (<code>100%</code> tented/capped vias).
-- <code>inner_1_copper = 730 objects</code>: <code>1</code> unbroken <code>plane GND</code> polygon (<code>1,309.17 mm²</code>) + <code>729</code> via pads/antipads = <code>730</code> exact.
-- <code>bottom_paste = 407 objects</code> vs <code>bottom_mask = 405 objects</code>: <code>U6</code> (<code>X2SON-4</code>) splits its central pad paste into small sub-apertures while <strong>all <code>17</code> <code>GND</code> thermal vias in <code>U1/U2/U3/U5</code> solid EPs (<code>5 + 5 + 5 + 2</code>) have <code>0</code> <code>B.Paste</code> overlap</strong>.
-- <strong>JLCPCB Order Form Specification:</strong> <strong><code>JLC04161H-7628</code></strong> (<code>1.6 mm</code>, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG 1U"</code></strong> surface finish, <strong><code>Via Covering = Epoxy Filled &amp; Capped (POFV = Yes)</code></strong> for the <code>118</code> SMD via-in-pad sites, double-sided PCBA with <code>Pass 1 = B.Cu</code> and <code>Pass 2 = F.Cu &lt;= 245 °C</code> peak for <code>Q2</code> <code>XYC-PT19C-L1</code>).</p>
+- <code>inner_1_copper = 720 objects</code>: <code>1</code> unbroken <code>plane GND</code> polygon (<code>1,310.45 mm²</code>) + <code>719</code> via pads/antipads = <code>720</code> exact.
+- <code>bottom_paste = 407 objects</code> vs <code>bottom_mask = 405 objects</code>: <code>U6</code> (<code>X2SON-4</code>) splits its central pad paste into small sub-apertures while <strong>all <code>18</code> <code>GND</code> thermal vias in <code>U1/U2/U3/U5</code> solid EPs (<code>5 + 6 + 5 + 2</code>) keep their <code>Ø 0.15 mm</code> drills inside solder-paste-free crossbars</strong>, and all <code>164</code> non-EP via-in-paste overlaps (<code>89</code> <code>F.Paste</code> + <code>75</code> <code>B.Paste</code>) are plugged and copper-plated flat prior to stencil printing via <strong><code>POFV = Yes</code></strong>.
+- <strong>JLCPCB Order Form Specification:</strong> <strong><code>JLC04161H-7628</code></strong> (<code>1.6 mm</code>, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG 1U"</code></strong> surface finish, <strong><code>Via Covering = Epoxy Filled &amp; Capped (POFV = Yes)</code></strong> [IPC-4761 Type VII VIPPO], double-sided PCBA with <code>Pass 1 = B.Cu</code> and <code>Pass 2 = F.Cu &lt;= 245 °C</code> peak for <code>Q2</code> <code>XYC-PT19C-L1</code>).</p>
 <hr />
 <h2>2. CPL Rotation &amp; Pick-Origin Verification (<code>hw/parallelogram/p2-132-usb6/fab/cpl-jlcpcb.csv</code> + Mirrored-Bottom <code>cpl-overlay.png</code>)</h2>
 <p><em>(Coordinate convention: in Mirrored <code>B.Cu</code> view — matching <code>3d-bottom.png</code>, <code>bottom.png</code>, and JLCPCB's Bottom PCBA viewer — <code>+X</code> East is Left, <code>-X</code> West is Right, <code>-Y</code> North is Top, and <code>+Y</code> South is Bottom. Every LCSC part's EasyEDA zero-orientation was cross-checked pad-for-pad against <code>pcbnew</code> and <code>sunflower-s2-110-usbc/phase10.md</code>: </em><em><code>0.00°</code> rotation error across all <code>223</code> parts</em><em>.)</em></p>
@@ -162,15 +164,26 @@ gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
 <td>Inherited East-mid (<code>PWR</code>): <code>+0.325 mm</code> shift -&gt; <code>Mid X = 111.175</code>, <code>270°</code> (<code>180°</code> opposite <code>SW2/5/6</code>), plunger projects <code>+X</code> East (Left in Mirrored <code>B.Cu</code>).</td>
 </tr>
 <tr>
-<td><code>SW3, SW4</code></td>
+<td><code>SW3</code></td>
 <td><code>C318884</code></td>
 <td><code>TS-1187A-B-A-B</code></td>
 <td><code>Bottom</code></td>
 <td style="text-align: right;"><code>+90.0</code></td>
-<td><code>90.85 / 109.15</code></td>
-<td><code>-71.35 / -128.65</code></td>
+<td><code>90.8500mm</code></td>
+<td><code>-71.3500mm</code></td>
 <td style="text-align: right;"><code>90.00</code></td>
-<td>Symmetric <code>6.00 × 3.75 mm</code> flat-face SPST (<code>90°</code>).</td>
+<td>NW wing symmetric <code>6.00 × 3.75 mm</code> flat-face SPST (<code>90°</code>).</td>
+</tr>
+<tr>
+<td><strong><code>SW4</code></strong></td>
+<td><strong><code>C318884</code></strong></td>
+<td><strong><code>TS-1187A-B-A-B</code></strong></td>
+<td><strong><code>Bottom</code></strong></td>
+<td style="text-align: right;"><strong><code>162.26</code></strong></td>
+<td><strong><code>108.1500mm</code></strong></td>
+<td><strong><code>-130.5500mm</code></strong></td>
+<td style="text-align: right;"><strong><code>17.74</code></strong></td>
+<td><strong>Option 1 SE wing (<code>USER_B</code>):</strong> bezel-aligned parallel to <code>J1</code> (<code>CPL = 17.74°</code>), symmetric <code>180°</code> SPST.</td>
 </tr>
 <tr>
 <td><code>J1</code></td>
@@ -184,15 +197,15 @@ gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
 <td>Slanted South edge (<code>162.26°</code> + <code>c_origin</code> shift): mouth faces South-West perpendicular to <code>17.74°</code> edge; <code>2 × Ø 0.65 mm</code> NPTH pegs align cleanly.</td>
 </tr>
 <tr>
-<td><code>BT1</code></td>
-<td><code>C225111</code></td>
-<td><code>A1251WR-S-2P</code></td>
-<td><code>Bottom</code></td>
-<td style="text-align: right;"><code>+90.0</code></td>
-<td><code>108.6000mm</code></td>
-<td><code>-120.0500mm</code></td>
-<td style="text-align: right;"><code>90.00</code></td>
-<td>Horizontal JST <code>1.25</code>: <code>+0.20 mm</code> X-shift, mouth faces <code>-X</code> West; <code>Pad 1</code> (<code>+</code> <code>VBAT</code>) South (<code>y = +20.675</code>), <code>Pad 2</code> (<code>-</code> <code>BAT_N</code>) North (<code>y = +19.425</code>).</td>
+<td><strong><code>BT1</code></strong></td>
+<td><strong><code>C225111</code></strong></td>
+<td><strong><code>A1251WR-S-2P</code></strong></td>
+<td><strong><code>Bottom</code></strong></td>
+<td style="text-align: right;"><strong><code>0.0</code></strong></td>
+<td><strong><code>107.9700mm</code></strong></td>
+<td><strong><code>-123.2000mm</code></strong></td>
+<td style="text-align: right;"><strong><code>180.00</code></strong></td>
+<td><strong>Option 1 rotated <code>90°</code> CCW:</strong> <code>+0.20 mm</code> Y-shift -&gt; <code>Mid Y = -123.20</code>; mouth faces straight North (<code>-Y</code>, <code>6.03 mm</code> clear to <code>R8</code>); <code>Pad 1</code> (<code>+</code> <code>VBAT</code>) West (<code>(+7.345, +25.400)</code>), <code>Pad 2</code> (<code>-</code> <code>BAT_N</code>) East (<code>(+8.595, +25.400)</code>).</td>
 </tr>
 <tr>
 <td><code>U1</code></td>
@@ -338,26 +351,38 @@ gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
 <td><code>132</code> top RGB LEDs: <code>KiCad = 0° + 180° = 180.00°</code> per EasyEDA <code>C965840</code> tape orientation.</td>
 </tr>
 <tr>
+<td><code>C1, R5, R45</code></td>
+<td><code>C52923</code> / <code>C25891</code> / <code>C11702</code></td>
+<td><code>0402</code> C / R</td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180 / -90 / -90</code></td>
+<td><code>102.65 / 105.70 / 110.70</code></td>
+<td><code>-123.65 / -116.95 / -127.10</code></td>
+<td style="text-align: right;"><code>0 / 270 / 270</code></td>
+<td>Option 1 relocated <code>0402</code> passives (<code>VBUS</code> decap, <code>ILIM</code>, <code>SW4</code> ESD).</td>
+</tr>
+<tr>
 <td><code>R46, R47, C71, C72</code></td>
-<td><code>C11702</code> / <code>C1525</code></td>
-<td><code>0402</code> R / C</td>
+<td><code>C11702</code> / <code>C307331</code></td>
+<td><code>0402</code> R / <code>50V</code> X7R C</td>
 <td><code>Bottom</code></td>
 <td style="text-align: right;"><code>180.0</code></td>
 <td><code>92.6000mm</code></td>
 <td><code>-79.0..-119.8</code></td>
 <td style="text-align: right;"><code>0.00</code></td>
-<td>Non-polarized <code>0402</code> passives paired east of <code>SW5</code>/<code>SW6</code>.</td>
+<td>Non-polarized <code>0402</code> passives paired east of <code>SW5</code>/<code>SW6</code> (<code>C307331</code> <code>CL05B104KB54PNC</code> <code>100 nF 50 V X7R</code>, basic).</td>
 </tr>
 </tbody>
 </table></div>
 <hr />
-<h2>3. Qty-10 BOM Cost (<code>export_and_cost.py --cost --qty 10</code>) &amp; Live JLCPCB PCBA Stock (<code>2026-11-08</code>)</h2>
+<h2>3. Qty-10 BOM Cost (<code>export_and_cost.py --cost --qty 10</code>), Live PCBA Stock, &amp; 4L <code>POFV = Yes</code> Fab Disclosure (<code>2026-11-09</code>)</h2>
 <ul>
-<li><strong><code>p2-132-usb6</code> BOM @ qty 10:</strong> <strong><code>$13.25 / board</code></strong> (<code>+$0.39</code> over live <code>p2-132-usb</code> <code>$12.86</code>; <code>35</code> unique LCSC parts, <code>223</code> placed parts).</li>
-<li><strong>Live JLCPCB PCBA SMT stock (<code>selectSmtComponentList/v2</code>):</strong> <strong><code>40/40</code> BOM lines (<code>100%</code>) in stock</strong> (<code>C2828254</code> <code>EVQP7J01P</code> = <code>6,887</code>; <code>C42411118</code> <code>RP2350A</code> = <code>3,100</code>; <code>C5137654</code> <code>AW20198QNR</code> = <code>6,055</code>; <code>C42411119</code> <code>L1</code> = <code>1,439</code>; <code>C23733</code> <code>4.7 µF</code> = <code>1,012,436</code>; <code>C2860046</code> <code>TPS7A0233</code> = <code>529</code>).</li>
+<li><strong><code>p2-132-usb6</code> BOM @ qty 10:</strong> <strong><code>$13.26 / board</code></strong> (<code>+$0.40</code> over live <code>p2-132-usb</code> <code>$12.86</code>; <code>41</code> BOM rows / <code>36</code> unique LCSC parts, <code>223</code> placed parts).</li>
+<li><strong>Live JLCPCB PCBA SMT stock (<code>jlc_parts.py</code>):</strong> <strong><code>41/41</code> BOM rows (<code>100%</code>) in stock</strong> (<code>C307331</code> <code>100 nF 50 V X7R</code> = <code>21,978,030</code>; <code>C965840</code> <code>XL-1615RGBC</code> = <code>693,500</code>; <code>C23733</code> <code>4.7 µF</code> = <code>920,115</code> in JLCPCB PCBA basic stock; <code>C225111</code> <code>A1251WR-S-2P</code> = <code>73,795</code>; <code>C318884</code> <code>TS-1187A</code> = <code>668,740</code>; <code>C2828254</code> <code>EVQP7J01P</code> = <code>6,590</code>; <code>C5137654</code> <code>AW20198QNR</code> = <code>6,055</code>; <code>C42411118</code> <code>RP2350A</code> = <code>3,094</code>; <code>C42411119</code> <code>L1</code> = <code>1,460</code>; <code>C15220</code> <code>BQ24073RGTR</code> = <code>747</code>; <code>C2860046</code> <code>TPS7A0233PDQNR</code> = <code>528</code>).</li>
+<li><strong>4-Layer Bare-PCB <code>ENIG + POFV = Yes</code> Surcharge Note:</strong> <code>POFV = Yes</code> (Type VII epoxy-filled &amp; copper-capped via-in-pad) is mandatory for the <code>164</code> via-in-paste overlaps (<code>124</code> non-EP via-in-pads). On JLCPCB 4-layer <code>JLC04161H-7628</code>, selecting <code>ENIG 1U"</code> + <code>0.15 mm</code> drill + <code>POFV = Yes</code> adds <strong><code>~$70–$95</code> to the bare-PCB lot price</strong> (5–10 pcs, i.e. <code>~$7–$10 / board</code> @ qty 10, vs JLCPCB's 6-layer <code>0.15 mm</code> via promotion where <code>ENIG + POFV</code> is bundled at <code>$0</code> extra).</li>
 </ul>
 <hr />
-<h2>4. Independent Fresh-Context Release Review (<code>agy</code> <code>gemini-4-argon-high</code>) &amp; Dispositions</h2>
+<h2>4. Independent Fresh-Context Release Audits (<code>agy</code> <code>gemini-4-argon-high</code>, incl. <code>2026-11-09</code> Option-1 Audit) &amp; Dispositions</h2>
 <div class=tbl><table>
 <thead>
 <tr>
@@ -371,30 +396,53 @@ gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
 <tr>
 <td><code>B1</code></td>
 <td>BLOCKER</td>
-<td>Earlier <code>cpl-overlay.png</code> plotted <code>B.Cu</code> in Top-Through coords (<code>+X</code> Right) while <code>3d-bottom.png</code> is Mirrored Bottom (<code>+X</code> Left), making <code>U1/U2</code> (<code>KiCad +90°</code>, <code>CPL 0°</code>) appear mismatched against <code>U3/U5</code> (<code>KiCad 0°</code>, <code>CPL 180°</code>).</td>
-<td><strong>Fixed &amp; Proven</strong>: Re-plotted all <code>B.Cu</code> panels in <code>cpl-overlay.png</code> in <strong>Mirrored Bottom view (<code>+X</code> Left, <code>-X</code> Right)</strong> with explicit <code>K:&lt;KiCad°&gt; C:&lt;CPL°&gt;</code> labels and added <code>KiCad Rot</code> column above (<code>U1/U2</code> <code>KiCad = +90°</code> + EasyEDA <code>-BL</code> -&gt; <code>CPL = 0.00°</code>; <code>U3/U5</code> <code>KiCad = 0°</code> + EasyEDA <code>-TL</code> -&gt; <code>CPL = 180.00°</code>, <code>0.00°</code> error across all <code>223</code> parts).</td>
+<td><code>164</code> via-in-paste overlaps (<code>89</code> <code>F.Paste</code> + <code>75</code> <code>B.Paste</code>, <code>124</code> non-EP via-in-pad sites) require mandatory IPC-4761 Type VII <code>POFV = Yes</code> + transparent 4L bare-PCB surcharge disclosure (<code>~$70–$95</code> vs 6L promo).</td>
+<td><strong>Fixed &amp; Disclosed</strong> across <code>stackup.md</code>, <code>brief.md</code> §5, <code>phase7.md</code>, and <code>phase10.md</code> §3 &amp; §5.1.</td>
 </tr>
 <tr>
 <td><code>B2</code></td>
 <td>BLOCKER</td>
-<td><code>phase10.md</code> previously omitted <code>POFV = Yes</code> for the <code>118</code> SMD via-in-pad sites and <code>1</code> <code>U2</code> EP via touched <code>B.Paste</code>.</td>
-<td><strong>Fixed</strong>: Specified <strong><code>POFV = Yes</code> (VIPPO) + <code>ENIG 1U"</code></strong> in §1.C &amp; User Decision #3 below, and removed the redundant 6th <code>U2</code> EP via (<code>729</code> vias, <strong><code>0</code> EP paste overlaps</strong>).</td>
+<td><code>EVQP7J01P</code> max body height is <code>1.35 + 0.20 = 1.55 mm</code> (<code>|x| &gt;= 9.40 mm</code>), exceeding <code>1.5 mm</code> foam tape under a <code>20 × 35 mm</code> cell.</td>
+<td><strong>Fixed</strong> across <code>brief.md</code> §3, <code>floorplan.png</code>, <code>phase4.md</code> §4, and <code>bringup.md</code> §4: <code>&lt;= 18.0 mm</code> cell on <code>1.0 mm</code> tape OR <code>&gt;= 1.8–2.0 mm</code> double-layer VHB/foam standoff (<code>0.25–0.45 mm</code> margin above <code>1.55 mm</code> max switch body).</td>
 </tr>
 <tr>
-<td><code>M1–M4</code></td>
+<td><code>B3</code></td>
+<td>BLOCKER</td>
+<td><code>C71</code>/<code>C72</code> (<code>C1525</code>) was <code>16 V</code>-rated despite <code>50 V</code> X7R simulation claim; <code>SW1..SW4</code> <code>1 kΩ</code>-only scope needed explicit disposition.</td>
+<td><strong>Fixed</strong>: Upgraded <code>C71</code>/<code>C72</code> in schematic/PCB/BOM to <strong><code>C307331</code> (<code>CL05B104KB54PNC</code>, <code>100 nF 50 V X7R 0402</code>, basic)</strong> with nonlinear DC-bias ESD model (<code>13.65 V</code> peak = <code>36.35 V</code> margin); logged inherited <code>SW1..SW4</code> scope (<code>SW2</code> shares <code>/MCU/QSPI_SS</code>) in <code>decisions.md</code>.</td>
+</tr>
+<tr>
+<td><code>B4</code></td>
+<td>BLOCKER</td>
+<td><code>bringup.md</code> §3 <code>1 ms</code> <code>VBAT_SENSE</code> wait gave <code>39.3%</code> reading (<code>τ = 5.0 ms</code>), and <code>RP2350-E9</code> requires <code>IE = 0, PDE = 0</code> on <code>GPIO26</code>/<code>GPIO27</code>.</td>
+<td><strong>Fixed</strong> in <code>bringup.md</code> §3–§4: specified <strong><code>&gt;= 30 ms</code> (<code>&gt;= 6τ</code>, <code>&lt; 0.25%</code> error)</strong> settling wait and <code>PADS_BANK0: IE = 0, PDE = 0, PUE = 0, OD = 1</code>.</td>
+</tr>
+<tr>
+<td><code>B5</code></td>
+<td>BLOCKER</td>
+<td>Custom footprints lacked <code>F.Fab</code>/<code>B.Fab</code> <code>${REFERENCE}</code> texts and stock <code>SW4</code>/<code>TP*</code> <code>B.Fab</code> refs overlapped neighboring <code>0402</code>s in <code>assembly-bottom.pdf</code>.</td>
+<td><strong>Fixed</strong> in <code>pcb_gen.py</code> &amp; <code>parallelogram.kicad_pcb</code>: <code>133/133</code> <code>F.Fab</code> + <code>98/98</code> <code>B.Fab</code> single-instance <code>0</code>-overlap designators (<code>assembly-{top,bottom}.{png,pdf}</code> + <code>schematic.pdf</code> in <code>fab/</code>, <code>0</code> stale files).</td>
+</tr>
+<tr>
+<td><code>M1–M3</code></td>
 <td>MAJOR</td>
-<td><code>bringup.md</code> had swapped <code>C1.1</code> coords / <code>R4 = 3.0 kΩ</code> / <code>15 ms</code> debounce and lacked <code>GCC</code>/<code>SRCR</code> guards; <code>fab/</code> lacked <code>assembly-*.pdf</code> &amp; <code>.step</code>; zip named <code>gerbers-jlcpcb.zip</code>.</td>
-<td><strong>Fixed</strong>: Corrected <code>bringup.md</code> (<code>C1.1 = (+4.55, +21.27)</code>, <code>R4 = 3.0 kΩ</code>, <code>&gt;= 20 ms</code> debounce, <code>SRCR = 0x07</code>, <code>GCC &lt;= 0x74</code>/<code>0x44</code>, JST polarity + <code>1.28 mm</code> <code>BT1</code> gap), exported <code>assembly-bottom.pdf</code>, <code>assembly-top.pdf</code>, &amp; <code>parallelogram-p2-132-usb6.step</code>, and exported <code>parallelogram-p2-132-usb6-gerbers.zip</code>.</td>
+<td>Still-air + rear-LiPo-insulated <code>θ_BA = 33.3 °C/W</code> thermal ceiling (<code>0.541 W</code> / <code>165 mA</code> <code>GCC &lt;= 0x40</code> continuous worn + <code>ADC4</code> foldback), full <code>273.8 / 370.3 mΩ</code> battery-path + <code>3 mΩ</code> via PDN down to <code>V_BAT = 3.50 V</code> (<code>V(U6.4) = 3.375 V &gt;= 3.355 V</code> with analog <code>GCC</code>), native <code>fp.Reference()</code> <code>B.SilkS</code> designators (<code>0</code> <code>[association]</code>), and <strong><code>8/8</code> <code>B.SilkS</code> TP labels</strong> (<code>VSYS</code>, <code>VB</code> added).</td>
+<td><strong>Fixed &amp; Verified</strong> in <code>sim_buttons.py</code>, <code>pcb_gen.py</code>, <code>parallelogram.kicad_pcb</code>, <code>brief.md</code>, <code>bringup.md</code>, <code>phase8.md</code>, and <code>phase9.md</code>.</td>
+</tr>
+<tr>
+<td><code>M4–M9, m1–m6</code></td>
+<td>MAJOR / MINOR</td>
+<td>Inherited 4L lumped-regime USB/decap routing waivers logged in <code>decisions.md</code>, <code>0</code> orphan netclasses in <code>.kicad_pro</code>, synced <code>route/preroute_4L.{kicad_pro,kicad_dru}</code>, split <code>PTH</code>/<code>NPTH</code> drills (<code>14</code> zip files), <code>50/50</code> JST 1.25 harness polarity DMM check in <code>bringup.md</code> §3, and both <code>bringup.md</code> + <code>sim/README.md</code> linked on <code>index.html</code>.</td>
+<td><strong>Fixed &amp; Verified</strong>.</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Independent Fresh-Context Re-Review Verdict:</strong> <strong>VERDICT: PASS (ready for user sign-off)</strong> (all technical release checks verified; awaiting user sign-off in §5).</p>
 <hr />
 <h2>5. Decisions Requiring User Sign-Off (Phase 10 Release)</h2>
 <ol>
-<li><strong>Approve fab release package (<code>hw/parallelogram/p2-132-usb6/fab/{parallelogram-p2-132-usb6-gerbers.zip,bom-jlcpcb.csv,cpl-jlcpcb.csv,assembly-bottom.pdf,assembly-top.pdf,parallelogram-p2-132-usb6.step}</code>):</strong>
-   - <code>4</code>-layer <code>JLC04161H-7628</code> (<code>1.6 mm</code> FR-4, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG 1U"</code></strong> finish, <strong><code>POFV = Yes</code> (epoxy-filled &amp; copper-capped vias)</strong>, double-sided PCBA with <code>Pass 2 F.Cu &lt;= 245 °C</code> for <code>Q2</code>), qty-10 BOM <strong><code>$13.25 / board</code></strong>, <code>40/40</code> BOM rows in JLCPCB PCBA stock (<code>223</code> assembled parts).</li>
-<li><strong>Confirm CPL orientation &amp; <code>0.45 mm</code> West-edge actuator overhang on <code>SW5</code> (<code>USER_C</code>) and <code>SW6</code> (<code>USER_D</code>):</strong>
-   - Verified in Mirrored-Bottom <code>cpl-overlay.png</code> and <code>3d-bottom.png</code>: <code>SW5</code> (<code>88.825, -78.000</code>, <code>Rot = 90°</code>) and <code>SW6</code> (<code>88.825, -122.800</code>, <code>Rot = 90°</code>) match <code>SW2</code>'s <code>90°</code> West-facing plunger orientation (<code>0.25 mm</code> proud at <code>0.20 mm</code> full stroke), while <code>J1</code> remains untouched at its inherited <code>17.74°</code> (<code>KiCad = 162.26°</code>) South-edge angle.</li>
-<li><strong>Confirm git release tag (<code>parallelogram-p2-132-usb6-revP1U6</code>) upon commit.</strong></li>
+<li><strong>Approve fab release package (<code>hw/parallelogram/p2-132-usb6/fab/{parallelogram-p2-132-usb6-gerbers.zip,bom-jlcpcb.csv,cpl-jlcpcb.csv,assembly-bottom.pdf,assembly-top.pdf,schematic.pdf,parallelogram-p2-132-usb6.step}</code>):</strong>
+   - <code>4</code>-layer <code>JLC04161H-7628</code> (<code>1.6 mm</code> FR-4, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG 1U"</code></strong> finish, mandatory <strong><code>POFV = Yes</code> [IPC-4761 Type VII epoxy-filled &amp; copper-capped vias]</strong> — adds <code>~$70–$95</code> 4L bare-PCB lot surcharge across 5–10 pcs — double-sided PCBA with <code>Pass 2 F.Cu &lt;= 245 °C</code> for <code>Q2</code>), qty-10 BOM <strong><code>$13.26 / board</code></strong>, <code>41/41</code> BOM rows (<code>100%</code>) in live JLCPCB PCBA stock (<code>223</code> assembled parts).</li>
+<li><strong>Confirm CPL orientation for rotated <code>BT1</code>, bezel-aligned <code>SW4</code>, and West-edge switches <code>SW5</code>/<code>SW6</code>:</strong>
+   - Verified in Mirrored-Bottom <code>cpl-overlay.png</code> and <code>3d-bottom.png</code>: <strong><code>BT1</code></strong> (<code>107.970, -123.200</code>, <code>Rot = 180.00°</code>, mouth facing straight <code>-Y</code> North with <code>6.03 mm</code> clear runway, <code>+</code> West / <code>-</code> East — verify off-the-shelf LiPo harness polarity with DMM before plugging in!), <strong><code>SW4</code></strong> (<code>108.150, -130.550</code>, <code>Rot = 17.74°</code> parallel to <code>J1</code>), and <strong><code>SW5</code>/<code>SW6</code></strong> (<code>88.825, -78.000 / -122.800</code>, <code>Rot = 90.00°</code>, <code>0.45 mm</code> rest overhang / <code>0.25 mm</code> proud at full <code>0.20 mm</code> stroke).</li>
+<li><strong>Confirm git release tag (<code>parallelogram-p2-132-usb6-revP1U6</code>) upon user sign-off.</strong></li>
 </ol></div></body></html>

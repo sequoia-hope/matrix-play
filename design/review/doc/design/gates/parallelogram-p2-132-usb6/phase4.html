@@ -34,7 +34,9 @@ nav.top{font-size:.92rem;margin-bottom:.5rem}
 </style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/parallelogram-p2-132-usb6/phase4.md'>design/gates/parallelogram-p2-132-usb6/phase4.md</a></p><h1>Gate 4: mechanical and layout brief (<code>parallelogram-p2-132-usb6</code>)</h1>
 <p>Status: <strong>awaiting_signoff</strong></p>
 <h2>Scope &amp; Inherited Earlier Artifacts</h2>
-<p><code>parallelogram-p2-132-usb6</code> (<code>hw/parallelogram/p2-132-usb6/</code>) diverges from its parent <code>parallelogram-p2-132-usb</code> (<code>hw/parallelogram/p2-132-usb/</code>) at Phase 4 by adding two peg-less side-actuated Panasonic <code>EVQP7J01P</code> (<code>C2828254</code>) tactile buttons (<code>SW5</code> North <code>USER_C</code>, <code>SW6</code> South <code>USER_D</code>) on one <code>62.0 mm</code> vertical long edge, wired active-low to <code>GND</code> with internal RP2350 pull-ups, <code>1 kΩ</code> series protection resistors (<code>R46</code>, <code>R47</code>), and <code>100 nF</code> debounce capacitors (<code>C71</code>, <code>C72</code>). Everything else on <code>p2-132-usb</code> — including <code>J1</code>'s slanted position <code>(-1.24, +26.82)</code> and rotation <code>162.2553°</code> (<code>usb_s = -2.45</code>, <code>usb_ye = 3.60</code>) — stays unchanged.</p>
+<p><code>parallelogram-p2-132-usb6</code> (<code>hw/parallelogram/p2-132-usb6/</code>) diverges from its parent <code>parallelogram-p2-132-usb</code> (<code>hw/parallelogram/p2-132-usb/</code>) at Phase 4 in two clean, user-directed mechanical/layout ways while keeping <strong>all active ICs (<code>U1..U9</code>, <code>L1</code>, <code>Y1</code>, <code>Q1</code>, <code>Q2</code>), <code>J1</code> (<code>(-1.24, +26.82)</code>, <code>rot = 162.2553°</code>), <code>SW1..SW3</code>, and all <code>132</code> front LEDs (<code>D1..D132</code>) 100% untouched</strong>:
+1. <strong>West long-edge buttons (<code>SW5</code>, <code>SW6</code>):</strong> Adds two peg-less side-actuated Panasonic <code>EVQP7J01P</code> (<code>C2828254</code>) tactile buttons (<code>SW5</code> North <code>USER_C</code>, <code>SW6</code> South <code>USER_D</code>) on the <code>62.0 mm</code> West vertical edge, wired active-low to <code>GND</code> with internal RP2350 pull-ups, <code>1 kΩ</code> series protection resistors (<code>R46</code>, <code>R47</code>), and <code>100 nF</code> debounce capacitors (<code>C71</code>, <code>C72</code>).
+2. <strong>SE wing battery &amp; switch clearance ("Option 1 — move the switch"):</strong> Rotates right-angle battery receptacle <strong><code>BT1</code></strong> (<code>CJT A1251WR-S-2P</code> <code>C225111</code>) <strong><code>90°</code> CCW</strong> from <code>(+8.40, +20.05, +90.0°)</code> to <strong><code>(+7.97, +23.00, 0.0°)</code></strong> so its mating mouth (<code>y = +20.70</code>) faces straight North (<code>-Y</code>) toward board center / LiPo pocket with <strong><code>6.03 mm</code> unobstructed plug-entry runway</strong> to <code>0402</code> <code>R8</code> (<code>7.20 mm</code> to <code>U8</code>), eliminating the old <code>1.28 mm</code> tilted-plug gap to <code>U5</code>, while shifting SE wing button <strong><code>SW4</code></strong> (<code>XKB TS-1187A-B-A-B</code> <code>C318884</code>, <code>USER_B</code>) deeper into the SE corner at <strong><code>(+8.15, +30.55)</code>, <code>rot = 162.2553°</code></strong> (bezel-aligned parallel to <code>J1</code> and the <code>17.7447°</code> South slanted bezel) and relocating three <code>0402</code> passives (<code>C1</code>, <code>R5</code>, <code>R45</code>) + nudged bare test pads <code>TP1</code>/<code>TP3</code>.</p>
 <p>Earlier phases inherited from parent &amp; verified for the delta:
 - <strong>Phase 0 (Intent):</strong> <code>design/intent.md</code> &amp; <code>design/study/parallelogram/README.md</code> §5 (parallelogram family divergences logged in <code>design/decisions.md</code>).
 - <strong>Phase 1 (Datasheets &amp; Parts):</strong> <code>design/parts/{rp2350-core.md,buttons.md,parallelogram-io.md,passives.md}</code> and <code>design/datasheets/evqp7j01p.pdf</code> (<code>EVQP7J01P</code>: <code>3.50 × 2.90 × 1.35 mm</code> SMD side-actuated without boss/pegs, <code>1.70 mm</code> knob, push travel <code>0.20 mm</code>, rating <code>10 µA 2 V DC to 50 mA 12 V DC</code>, max ON/OFF bounce <code>10 ms</code>).
@@ -46,29 +48,47 @@ nav.top{font-size:.92rem;margin-bottom:.5rem}
 <li>Dimensioned floorplan render (with true rotated polygons, <code>R = 1.00 mm</code> corner fillets, <code>2 × Ø 0.65 mm</code> <code>J1</code> NPTH holes, and <code>LiPo</code> envelopes): <code>design/renders/parallelogram-p2-132-usb6/floorplan.svg</code> and <code>design/renders/parallelogram-p2-132-usb6/floorplan.png</code>.</li>
 <li>Saved outline + connector/placed snapshot: <code>hw/parallelogram/p2-132-usb6/route/preroute_4L.kicad_pcb</code> (with companion <code>preroute_4L.kicad_pro</code>, <code>preroute_4L.kicad_dru</code>, <code>fp-lib-table</code>, <code>lib</code>).</li>
 </ul>
-<h2>Measured Mechanical &amp; Clearance Evidence (<code>pcbnew</code> on <code>preroute_4L.kicad_pcb</code>)</h2>
-<pre><code class="language-text">SW5  pos=(-10.85,-22.00) rot= 90.00 crtyd_x=[-13.05, -9.31] crtyd_y=[-24.59,-19.41] copper_x=[-12.10, -9.60]
-R46  pos=( -7.40,-21.00) rot=180.00 crtyd_x=[ -8.33, -6.47] crtyd_y=[-21.47,-20.53] copper_x=[ -8.18, -6.62]
-C71  pos=( -7.40,-22.20) rot=180.00 crtyd_x=[ -8.31, -6.50] crtyd_y=[-22.66,-21.75] copper_x=[ -8.16, -6.64]
-SW6  pos=(-10.85,+22.80) rot= 90.00 crtyd_x=[-13.05, -9.31] crtyd_y=[+20.20,+25.39] copper_x=[-12.10, -9.60]
-R47  pos=( -7.40,+21.00) rot=180.00 crtyd_x=[ -8.33, -6.47] crtyd_y=[+20.53,+21.47] copper_x=[ -8.18, -6.62]
-C72  pos=( -7.40,+19.80) rot=180.00 crtyd_x=[ -8.31, -6.50] crtyd_y=[+19.34,+20.25] copper_x=[ -8.16, -6.64]
-SW1  pos=(+10.85, +1.50) rot=-90.00 crtyd_x=[ +9.31,+13.05] crtyd_y=[ -1.09, +4.09] copper_x=[ +9.60,+12.10]
-SW2  pos=(-10.85, -3.50) rot= 90.00 crtyd_x=[-13.05, -9.31] crtyd_y=[ -6.09, -0.91] copper_x=[-12.10, -9.60]
-SW3  pos=( -9.15,-28.65) rot= 90.00 crtyd_x=[-11.94, -6.36] crtyd_y=[-32.39,-24.91] copper_x=[-11.40, -6.90]
-SW4  pos=( +9.15,+28.65) rot= 90.00 crtyd_x=[ +6.36,+11.94] crtyd_y=[+24.91,+32.40] copper_x=[ +6.90,+11.40]
-J1   pos=( -1.24,+26.82) rot=162.26 crtyd_x=[ -8.22, +5.68] crtyd_y=[+22.10,+31.77] copper_x=[ -8.06, +5.41]
-BT1  pos=( +8.40,+20.05) rot= 90.00 crtyd_x=[ +5.31,+12.09] crtyd_y=[+15.33,+24.78] copper_x=[ +6.40,+11.60]
-U4   pos=( -3.65,+17.60) rot= 90.00 crtyd_x=[ -6.39, -0.91] crtyd_y=[+14.28,+20.92] copper_x=[ -5.81, -1.50]
-Q1   pos=( +9.20, +7.60) rot=180.00 crtyd_x=[ +8.00,+10.39] crtyd_y=[ +6.66, +8.55] copper_x=[ +8.15,+10.25]
-U8   pos=(+10.00,+12.60) rot=180.00 crtyd_x=[ +9.11,+10.89] crtyd_y=[+11.75,+13.44] copper_x=[ +9.35,+10.65]
---- True Rotated Polygon Courtyard Clearances ---
-SW5 &lt;-&gt; SW3 : 0.310 mm (stroke-bbox +0.210 mm)
-SW5 &lt;-&gt; SW2 : 13.310 mm
-SW6 &lt;-&gt; J1  : 1.806 mm
-SW6 &lt;-&gt; U4  : 2.910 mm
-R46 &lt;-&gt; U1  : 3.680 mm
-R47 &lt;-&gt; U4  : 0.080 mm
+<h2>Measured Mechanical &amp; Clearance Evidence (<code>pcbnew</code> on <code>preroute_4L.kicad_pcb</code> &amp; <code>parallelogram.kicad_pcb</code>)</h2>
+<pre><code class="language-text">SW5  pos=(-10.85,-22.00) rot= 90.00 crtyd_x=[-13.05, -9.31] crtyd_y=[-24.59,-19.41] copper_x=[-12.10, -9.60] copper_y=[-24.50,-19.50] locked=True
+R46  pos=( -7.40,-21.00) rot=180.00 crtyd_x=[ -8.33, -6.47] crtyd_y=[-21.47,-20.53] copper_x=[ -8.18, -6.62] copper_y=[-21.32,-20.68] locked=False
+C71  pos=( -7.40,-22.20) rot=180.00 crtyd_x=[ -8.31, -6.50] crtyd_y=[-22.66,-21.75] copper_x=[ -8.16, -6.64] copper_y=[-22.51,-21.89] locked=False
+SW6  pos=(-10.85,+22.80) rot= 90.00 crtyd_x=[-13.05, -9.31] crtyd_y=[+20.20,+25.39] copper_x=[-12.10, -9.60] copper_y=[+20.30,+25.30] locked=True
+R47  pos=( -7.40,+21.00) rot=180.00 crtyd_x=[ -8.33, -6.47] crtyd_y=[+20.53,+21.47] copper_x=[ -8.18, -6.62] copper_y=[+20.68,+21.32] locked=False
+C72  pos=( -7.40,+19.80) rot=180.00 crtyd_x=[ -8.31, -6.50] crtyd_y=[+19.34,+20.25] copper_x=[ -8.16, -6.64] copper_y=[+19.49,+20.11] locked=False
+SW1  pos=(+10.85, +1.50) rot=-90.00 crtyd_x=[ +9.31,+13.05] crtyd_y=[ -1.09, +4.09] copper_x=[ +9.60,+12.10] copper_y=[ -1.00, +4.00] locked=True
+SW2  pos=(-10.85, -3.50) rot= 90.00 crtyd_x=[-13.05, -9.31] crtyd_y=[ -6.09, -0.91] copper_x=[-12.10, -9.60] copper_y=[ -6.00, -1.00] locked=True
+SW3  pos=( -9.15,-28.65) rot= 90.00 crtyd_x=[-11.84, -6.45] crtyd_y=[-32.30,-25.00] copper_x=[-11.40, -6.90] copper_y=[-32.15,-25.15] locked=True
+SW4  pos=( +8.15,+30.55) rot=162.26 crtyd_x=[ +3.95,+12.35] crtyd_y=[+27.16,+33.94] copper_x=[ +4.13,+12.17] copper_y=[+27.34,+33.76] locked=True
+J1   pos=( -1.24,+26.82) rot=162.26 crtyd_x=[ -8.22, +5.68] crtyd_y=[+22.10,+31.77] copper_x=[ -8.06, +5.41] copper_y=[+22.55,+31.65] locked=True
+BT1  pos=( +7.97,+23.00) rot=  0.00 crtyd_x=[ +3.71,+12.23] crtyd_y=[+20.20,+26.34] copper_x=[ +3.75,+12.19] copper_y=[+21.00,+26.20] locked=True
+C1   pos=( +2.65,+23.65) rot=180.00 crtyd_x=[ +1.75, +3.56] crtyd_y=[+23.19,+24.11] copper_x=[ +1.89, +3.41] copper_y=[+23.34,+23.96] locked=False
+R5   pos=( +5.70,+16.95) rot=-90.00 crtyd_x=[ +5.23, +6.17] crtyd_y=[+16.03,+17.88] copper_x=[ +5.38, +6.02] copper_y=[+16.17,+17.73] locked=False
+R45  pos=(+10.70,+27.10) rot=-90.00 crtyd_x=[+10.23,+11.17] crtyd_y=[+26.17,+28.03] copper_x=[+10.38,+11.02] copper_y=[+26.32,+27.88] locked=False
+TP1  pos=( +6.25,+14.30) rot=180.00 crtyd_x=[ +5.25, +7.24] crtyd_y=[+13.30,+15.30] copper_x=[ +5.75, +6.75] copper_y=[+13.80,+14.80] locked=False
+TP3  pos=( +6.55,+12.19) rot=180.00 crtyd_x=[ +5.55, +7.54] crtyd_y=[+11.19,+13.18] copper_x=[ +6.05, +7.05] copper_y=[+11.69,+12.68] locked=False
+U4   pos=( -3.65,+17.60) rot= 90.00 crtyd_x=[ -6.39, -0.91] crtyd_y=[+14.28,+20.92] copper_x=[ -5.81, -1.50] copper_y=[+14.53,+20.67] locked=False
+U5   pos=( +3.02,+18.55) rot=  0.00 crtyd_x=[ +0.89, +5.14] crtyd_y=[+16.42,+20.67] copper_x=[ +1.14, +4.89] copper_y=[+16.67,+20.42] locked=False
+U7   pos=( +2.20,+21.95) rot=180.00 crtyd_x=[ +0.70, +3.69] crtyd_y=[+20.86,+23.05] copper_x=[ +0.95, +3.45] copper_y=[+21.22,+22.67] locked=False
+Q1   pos=( +9.20, +7.60) rot=180.00 crtyd_x=[ +8.00,+10.39] crtyd_y=[ +6.66, +8.55] copper_x=[ +8.15,+10.25] copper_y=[ +6.92, +8.28] locked=False
+U8   pos=(+10.00,+12.60) rot=180.00 crtyd_x=[ +9.11,+10.89] crtyd_y=[+11.75,+13.44] copper_x=[ +9.35,+10.65] copper_y=[+11.70,+13.50] locked=False
+--- True Rotated Polygon Courtyard &amp; Copper Clearances ---
+BT1 &lt;-&gt; U5  : crtyd=0.230 mm  copper=0.596 mm
+BT1 &lt;-&gt; J1  : crtyd=1.115 mm  copper=1.526 mm
+BT1 &lt;-&gt; SW4 : crtyd=0.897 mm  copper=1.584 mm
+BT1 &lt;-&gt; R5  : crtyd=2.330 mm  copper=3.270 mm
+BT1 &lt;-&gt; R45 : crtyd=1.090 mm  copper=1.448 mm
+SW4 &lt;-&gt; J1  : crtyd=0.115 mm  copper=0.355 mm
+SW4 &lt;-&gt; R45 : crtyd=0.345 mm  copper=1.329 mm
+C1  &lt;-&gt; J1  : crtyd=0.554 mm  copper=0.848 mm
+C1  &lt;-&gt; U7  : crtyd=0.150 mm  copper=0.665 mm
+C1  &lt;-&gt; U5  : crtyd=2.520 mm  copper=2.915 mm
+SW5 &lt;-&gt; SW3 : crtyd=0.410 mm  copper=0.650 mm
+SW5 &lt;-&gt; SW2 : crtyd=13.310 mm copper=13.500 mm
+SW6 &lt;-&gt; J1  : crtyd=1.806 mm  copper=2.258 mm
+SW6 &lt;-&gt; U4  : crtyd=2.910 mm  copper=3.795 mm
+R47 &lt;-&gt; U4  : crtyd=0.080 mm  copper=0.851 mm
+BT1 &lt;-&gt; Edge.Cuts: copper=0.305 mm
+SW4 &lt;-&gt; Edge.Cuts: copper=0.331 mm
 </code></pre>
 <h3>Netlist Proof that <code>GPIO9</code> and <code>GPIO0</code> Are Spare (<code>kicad-cli sch export netlist</code>)</h3>
 <pre><code class="language-text">NET /MCU/USER_C: [('C71', '1', ''), ('R46', '1', ''), ('U3', '13', 'GPIO9')]
@@ -109,8 +129,8 @@ NET Net-(R47-Pad2): [('R47', '2', ''), ('SW6', '1', '1')]
 <tr>
 <td><code>M1</code></td>
 <td>MAJOR</td>
-<td><code>SW1</code>, <code>SW2</code>, and <code>SW5</code> (<code>1.35 mm</code> body to <code>|x| = 9.40 mm</code>; <code>SW5</code> <code>y_max = -20.25 mm</code>) encroach into a <code>20 × 35 mm</code> (<code>x ∈ [-10, +10]</code>) cell on <code>1.0 mm</code> foam tape.</td>
-<td><strong>Fixed</strong> in <code>brief.md</code> §3, <code>floorplan.png</code>, and User Decision #3 below: <code>501035</code> (<code>10 × 35 mm</code>) or <code>&lt;= 18.5 mm</code> cell fits on <code>1.0 mm</code> tape (<code>4.40 mm</code> clear); <code>20 × 35 mm</code> cell requires <code>&gt;= 1.5 mm</code> foam tape.</td>
+<td><code>SW1</code>, <code>SW2</code>, and <code>SW5</code> (<code>1.35 mm</code> nom / <code>1.55 mm</code> max body height to <code>|x| = 9.40 mm</code>; <code>SW5</code> <code>y_max = -20.25 mm</code>) encroach into a <code>20 × 35 mm</code> (<code>x ∈ [-10, +10]</code>) cell on <code>1.0 mm</code> foam tape.</td>
+<td><strong>Fixed</strong> in <code>brief.md</code> §3, <code>floorplan.png</code>, and User Decision #4 below: <code>&lt;= 18.0 mm</code>-wide cell (e.g. <code>501035</code> <code>10 × 35 mm</code>) fits on <code>1.0 mm</code> tape (<code>4.40 mm</code> clear); <code>20 × 35 mm</code> cell requires <code>&gt;= 1.8–2.0 mm</code> double-layer VHB/foam standoff (<code>0.25–0.45 mm</code> above <code>1.55 mm</code> max switch body).</td>
 </tr>
 <tr>
 <td><code>M2</code></td>
@@ -127,8 +147,8 @@ NET Net-(R47-Pad2): [('R47', '2', ''), ('SW6', '1', '1')]
 <tr>
 <td><code>M4</code></td>
 <td>MAJOR</td>
-<td><code>1 kΩ + 100 nF</code> (<code>t_rise = 3.59–8.83 ms</code>) requires <code>&gt;= 20 ms</code> firmware debounce for <code>10 ms</code> max OFF bounce + slow-corner rise (<code>18.83 ms</code>); RP2350 <code>POWMAN</code> (<code>P1.7</code>) has <code>4</code> hardware GPIO wake generators (<code>PWRUP0..3</code>, <code>2</code> left after <code>SW1</code> + <code>ACC_INT</code>).</td>
-<td><strong>Fixed</strong> in <code>brief.md</code> §7, <code>bringup.md</code> §3, <code>design/sim/p2-132-usb6/sim_buttons.py</code>, and User Decision #2 below (<code>&gt;= 20 ms</code> press+release SW debounce).</td>
+<td><code>1 kΩ + 100 nF</code> (<code>C307331</code> <code>50 V</code> X7R, <code>t_rise = 3.59–8.83 ms</code>) requires <code>&gt;= 20 ms</code> firmware debounce for <code>10 ms</code> max OFF bounce + slow-corner rise (<code>18.83 ms</code>); RP2350 <code>POWMAN</code> (<code>P1.7</code>) has <code>4</code> hardware GPIO wake generators (<code>PWRUP0..3</code>, <code>2</code> left after <code>SW1</code> + <code>ACC_INT</code>).</td>
+<td><strong>Fixed</strong> in <code>brief.md</code> §7, <code>bringup.md</code> §3, <code>design/sim/p2-132-usb6/sim_buttons.py</code>, and User Decision #3 below (<code>&gt;= 20 ms</code> press+release SW debounce; <code>C71</code>/<code>C72</code> upgraded to <code>C307331</code> <code>50 V</code> X7R).</td>
 </tr>
 <tr>
 <td><code>M5</code></td>
@@ -146,13 +166,13 @@ NET Net-(R47-Pad2): [('R47', '2', ''), ('SW6', '1', '1')]
 <td><code>m2</code></td>
 <td>MINOR</td>
 <td>Stackup thickness (<code>1.6 mm</code> vs <code>1.0 mm</code>), surface finish, &amp; POFV statement needed alignment in <code>brief.md</code> §5.</td>
-<td><strong>Fixed</strong> in <code>brief.md</code> §5 &amp; <code>stackup.md</code>: locked to <code>1.6 mm</code> <code>JLC04161H-7628</code>, <strong>ENIG 1U"</strong>, and <strong><code>POFV = Yes</code> (VIPPO)</strong> per <code>design/study/parallelogram/README.md</code> §2 (<code>118</code> through-vias in SMD pads vs <code>134</code> on parent <code>p2-132-usb</code>; <code>0</code> EP paste overlap).</td>
+<td><strong>Fixed</strong> in <code>brief.md</code> §5 &amp; <code>stackup.md</code>: locked to <code>1.6 mm</code> <code>JLC04161H-7628</code>, <strong>ENIG 1U"</strong>, and <strong><code>POFV = Yes</code> (Type VII VIPPO)</strong> per <code>design/study/parallelogram/README.md</code> §2 (<code>124</code> non-EP via-in-pads / <code>164</code> via-in-paste overlaps; <code>0</code> EP paste overlap).</td>
 </tr>
 <tr>
 <td><code>m3</code></td>
 <td>MINOR</td>
-<td><code>brief.md</code> §10 omitted repo-URL policy (<code>intent.md</code> §Open source) and <code>BT1</code> <code>+</code> South / <code>-</code> North pin orientation.</td>
-<td><strong>Fixed</strong> in <code>brief.md</code> §3 &amp; §10 (<code>Pad 1</code> South = <code>+</code> <code>VBAT</code>, <code>Pad 2</code> North = <code>-</code> <code>BAT_N</code>; contiguous 3-column repo URL <code>github.com/sequoia-hope/round-pendant</code> on <code>B.SilkS</code>).</td>
+<td><code>brief.md</code> §10 omitted repo-URL policy (<code>intent.md</code> §Open source) and <code>BT1</code> <code>+</code> West / <code>-</code> East pin orientation.</td>
+<td><strong>Fixed</strong> in <code>brief.md</code> §3 &amp; §10 (<code>Pad 1</code> West = <code>+</code> <code>VBAT</code> <code>(+7.345, +25.400)</code>, <code>Pad 2</code> East = <code>-</code> <code>BAT_N</code> <code>(+8.595, +25.400)</code>; contiguous 3-column repo URL <code>github.com/sequoia-hope/round-pendant</code> on <code>B.SilkS</code>).</td>
 </tr>
 <tr>
 <td><code>N1–N3</code></td>
@@ -160,17 +180,26 @@ NET Net-(R47-Pad2): [('R47', '2', ''), ('SW6', '1', '1')]
 <td>Confirmed <code>0</code> courtyard overlaps, <code>LX cutout L2</code> shape, <code>.kicad_dru</code> rule areas, inherited top-side <code>Q2</code> (<code>R12</code>), and stale <code>README.md</code> §5 text.</td>
 <td><strong>Noted</strong> (<code>README.md</code> §5 subsection &amp; <code>"For the project memory"</code> updated; inherited divergences logged in <code>decisions.md</code>).</td>
 </tr>
+<tr>
+<td><code>2026-11-09</code></td>
+<td>AUDIT</td>
+<td>Independent Option-1 Release Audit (<code>B1–B3, M1–M3, M8.2</code>): verified <code>C71</code>/<code>C72</code> <code>50 V</code> X7R (<code>C307331</code>), <code>&gt;= 1.8–2.0 mm</code> foam tape for <code>20 × 35 mm</code> LiPo over <code>1.55 mm</code> max <code>EVQP7J01P</code>, <code>0.54 W</code> continuous worn thermal ceiling (<code>GCC &lt;= 0x40</code>, <code>ADC4</code> foldback on <code>0.95 W</code> bursts), <code>8/8</code> <code>B.SilkS</code> TP labels, and rotated <code>BT1</code> <code>+</code> West / <code>-</code> East polarity.</td>
+<td><strong>Resolved</strong> across <code>mcu.kicad_sch</code>, <code>parallelogram.kicad_pcb</code>, <code>brief.md</code>, <code>floorplan.png</code>, <code>bringup.md</code>, and <code>sim_buttons.py</code>.</td>
+</tr>
 </tbody>
 </table></div>
 <h2>Decisions Requiring User Sign-Off (Phase 4)</h2>
 <ol>
+<li><strong>Confirm Option 1 SE wing battery &amp; switch placement (<code>BT1</code> rotated <code>90°</code> CCW + bezel-aligned <code>SW4</code>):</strong>
+   - <code>BT1</code> (<code>CJT A1251WR-S-2P</code>) at <code>(+7.97, +23.00) mm</code>, <code>rot = 0.0°</code> on <code>B.Cu</code>: mating mouth at <code>y = +20.70 mm</code> opens straight North (<code>-Y</code>) toward the LiPo pocket with <strong><code>6.03 mm</code> unobstructed plug runway</strong> to <code>0402</code> <code>R8</code> (<code>7.20 mm</code> to <code>U8</code>), <code>0.305 mm</code> copper-to-edge margin, <code>Pad 1</code> (<code>+</code> <code>VBAT</code>) West <code>(+7.345, +25.400)</code> and <code>Pad 2</code> (<code>-</code> <code>BAT_N</code>) East <code>(+8.595, +25.400)</code>.
+   - <code>SW4</code> (<code>USER_B</code> <code>TS-1187A</code>) at <code>(+8.15, +30.55) mm</code>, <code>rot = 162.26°</code> (parallel to <code>J1</code> and the <code>17.74°</code> South slanted bezel; <code>1.584 mm</code> copper to <code>BT1</code>, <code>0.355 mm</code> copper to <code>J1</code>, <code>0.331 mm</code> copper to <code>Edge.Cuts</code>), plus relocated <code>0402</code> passives <code>C1</code> <code>(+2.65, +23.65, 180°)</code>, <code>R5</code> <code>(+5.70, +16.95, -90°)</code>, <code>R45</code> <code>(+10.70, +27.10, -90°)</code> and nudged test pads <code>TP1</code>/<code>TP3</code> (<code>0</code> IC or front-LED moves).</li>
 <li><strong>Approve West long-edge button locations, <code>0.20 mm</code> stroke, &amp; bezel stop:</strong>
-   - <code>SW5</code> (<code>USER_C</code>) at <code>(-10.85, -22.00) mm</code>, <code>rot = +90°</code> (West edge North, <code>0.31 mm</code> courtyard-clear south of <code>SW3</code>, <code>18.50 mm</code> center-to-center north of <code>SW2</code>).
+   - <code>SW5</code> (<code>USER_C</code>) at <code>(-10.85, -22.00) mm</code>, <code>rot = +90°</code> (West edge North, <code>0.41 mm</code> courtyard-clear south of <code>SW3</code>, <code>18.50 mm</code> center-to-center north of <code>SW2</code>).
    - <code>SW6</code> (<code>USER_D</code>) at <code>(-10.85, +22.80) mm</code>, <code>rot = +90°</code> (West edge South, <code>26.30 mm</code> center-to-center south of <code>SW2</code>, <code>1.81 mm</code> rotated-courtyard clear of <code>J1</code>, <code>1.12 mm</code> terminal / <code>0.97 mm</code> pad north of SW <code>R = 1.00 mm</code> fillet tangent <code>y = +26.270 mm</code>).
    - Both actuators sit at <code>x = -12.95 mm</code> at rest (<code>0.45 mm</code> overhang past <code>x = -12.50 mm</code>, identical to <code>SW1</code>/<code>SW2</code>) and reach <code>x = -12.75 mm</code> (<code>0.25 mm</code> proud of <code>Edge.Cuts</code>) at full <code>0.20 mm</code> push travel; any enclosure bezel must stop <code>&gt;= 0.25 mm</code> proud of <code>x = ±12.50 mm</code>. <code>J1</code> remains untouched at <code>(-1.24, +26.82)</code>, <code>rot = 162.26°</code>.</li>
 <li><strong>Approve firmware GPIO assignment, RC + software debounce, &amp; <code>POWMAN</code> wake allocation:</strong>
-   - <code>SW5</code> (<code>USER_C</code>) -&gt; <code>U3</code> <code>GPIO9</code> (<code>Pin 13</code>), <code>SW6</code> (<code>USER_D</code>) -&gt; <code>U3</code> <code>GPIO0</code> (<code>Pin 2</code>), internal RP2350 pull-up (<code>50–80 kΩ</code>), <code>1 kΩ</code> series protection (<code>R46</code>/<code>R47</code>) + <code>100 nF</code> capacitor (<code>C71</code>/<code>C72</code>) to <code>GND</code>, paired with a <strong><code>&gt;= 20 ms</code> symmetrical press + release firmware debounce window</strong> across <code>SW1..SW6</code> (<code>10 ms</code> max <code>EVQP7J01P</code> OFF bounce + <code>8.83 ms</code> slow-corner RC rise = <code>18.83 ms</code>).
+   - <code>SW5</code> (<code>USER_C</code>) -&gt; <code>U3</code> <code>GPIO9</code> (<code>Pin 13</code>), <code>SW6</code> (<code>USER_D</code>) -&gt; <code>U3</code> <code>GPIO0</code> (<code>Pin 2</code>), internal RP2350 pull-up (<code>50–80 kΩ</code>), <code>1 kΩ</code> series protection (<code>R46</code>/<code>R47</code>) + <code>100 nF</code> <code>50 V</code> X7R capacitor (<code>C71</code>/<code>C72</code>, <code>C307331</code>) to <code>GND</code>, paired with a <strong><code>&gt;= 20 ms</code> symmetrical press + release firmware debounce window</strong> across <code>SW1..SW6</code> (<code>10 ms</code> max <code>EVQP7J01P</code> OFF bounce + <code>8.83 ms</code> slow-corner RC rise = <code>18.83 ms</code>).
    - Because RP2350 <code>POWMAN</code> (<code>P1.7</code>) deep sleep has <code>4</code> hardware GPIO wake slots (<code>PWRUP0..3</code>) and <code>SW1</code> (<code>GPIO11</code>) + <code>ACC_INT</code> (<code>GPIO10</code>) use <code>2</code>, confirm which <code>2</code> of <code>{SW3, SW4, SW5, SW6}</code> (if any) should wake <code>P1.7</code> deep sleep in firmware (all <code>6</code> buttons work simultaneously in active and <code>dormant</code> modes).</li>
 <li><strong>Confirm LiPo cell width / mounting tape thickness:</strong>
-   - <code>1.35 mm</code>-tall side switches (<code>SW1</code>, <code>SW2</code>, <code>SW5</code>) have plastic bodies reaching <code>|x| = 9.40 mm</code> (<code>18.80 mm</code> clear span). Confirm either using a <code>&lt;= 18.5 mm</code>-wide cell (e.g. <code>501035</code> <code>10 × 35 mm</code> on <code>1.0 mm</code> foam tape) or <code>&gt;= 1.5 mm</code> foam tape when mounting a <code>20 × 35 mm</code> (<code>802035</code>/<code>102035</code>) cell.</li>
+   - Side switches (<code>SW1</code>, <code>SW2</code>, <code>SW5</code>, <code>1.35 + 0.20 = 1.55 mm</code> max height) reach <code>|x| = 9.40 mm</code> (<code>18.80 mm</code> clear span). Confirm either using a <code>&lt;= 18.0 mm</code>-wide cell (e.g. <code>501035</code> <code>10 × 35 mm</code> on <code>1.0 mm</code> foam tape) or <code>&gt;= 1.8–2.0 mm</code> double-layer VHB/foam standoff when mounting a <code>20 × 35 mm</code> (<code>802035</code>/<code>102035</code>) cell (<code>0.25–0.45 mm</code> clearance above max switch body).</li>
 </ol></div></body></html>

@@ -1,6 +1,6 @@
 {
  "board": "parallelogram.kicad_pcb",
- "generated": "2026-11-08",
+ "generated": "2026-11-09",
  "view_mm": [
   86.115,
   63.982,
@@ -16,13 +16,13 @@
  "thickness": 1.5862,
  "plate": "#c8c8c8",
  "body": "body.svg",
- "vias": 729,
+ "vias": 719,
  "nets": 138,
  "footprints": 231,
  "front": 133,
  "back": 98,
- "tracks": 4921,
- "length_mm": 4261.8,
+ "tracks": 5416,
+ "length_mm": 4343.7,
  "layers": [
   {
    "name": "F.Cu",
@@ -31,8 +31,8 @@
    "file": "f.svg",
    "color": "#C83434",
    "note": "Top copper, 35 \u00b5m (1 oz).",
-   "tracks": 2488,
-   "length_mm": 1464.2,
+   "tracks": 2693,
+   "length_mm": 1544.5,
    "pads": 530,
    "zones": []
   },
@@ -57,8 +57,8 @@
    "file": "in2.svg",
    "color": "#CE7D2C",
    "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-   "tracks": 963,
-   "length_mm": 1573.0,
+   "tracks": 1195,
+   "length_mm": 1572.0,
    "pads": 0,
    "zones": []
   },
@@ -69,14 +69,14 @@
    "file": "b.svg",
    "color": "#4D7FC4",
    "note": "Bottom copper, 35 \u00b5m (1 oz).",
-   "tracks": 1470,
-   "length_mm": 1224.6,
+   "tracks": 1528,
+   "length_mm": 1227.2,
    "pads": 403,
    "zones": [
+    "+3V3",
     "GND",
     "+1V1",
-    "/MCU/VREG_LX",
-    "+3V3"
+    "/MCU/VREG_LX"
    ]
   },
   {

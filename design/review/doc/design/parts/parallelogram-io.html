@@ -1,0 +1,219 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Parallelogram Board-Mounted I/O: USB-C (J1), Micro-JST 1.25 (BT1), Wing Flat-Face Buttons (SW3, SW4)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/parallelogram-io.md'>design/parts/parallelogram-io.md</a></p><h1>Parallelogram Board-Mounted I/O: USB-C (<code>J1</code>), Micro-JST 1.25 (<code>BT1</code>), Wing Flat-Face Buttons (<code>SW3</code>, <code>SW4</code>)</h1>
+<p>Datasheet audits for the three surface-mount connectors/controls added across all five <code>-usb</code> parallelogram variants (<code>p1-66-usb</code>, <code>p2-132-usb</code>, <code>p3-162-usb</code>, <code>p3-198-usb</code>, <code>p4-264-usb</code>).</p>
+<hr />
+<h2>1. <code>J1</code> — Korean Hroparts <code>TYPE-C-31-M-22</code>, 16-Pin Full-SMT USB-C Receptacle</h2>
+<ul>
+<li><strong>Datasheet:</strong> <code>design/datasheets/type-c-31-m-22.pdf</code> (rev A, 2025-08-25, 1 page). Read: all (including 400 DPI verification of land pattern).</li>
+<li><strong>Supplier:</strong> <code>C530612 TYPE-C-31-M-22 (Korean Hroparts Elec, SMD): extended, JLC stock 2565, lifecycle normal, checked 2026-11-06</code> ($0.36 @ qty 10).</li>
+<li><strong>Drop-in land-pattern alternate:</strong> <code>C5143397 USB4110-GF-A</code> (<code>design/datasheets/usb4110-gf-a.pdf</code>, stock 2,783, lifecycle <code>normal</code>).</li>
+</ul>
+<h3>Why <code>TYPE-C-31-M-22</code> Instead of <code>TYPE-C-31-M-12</code></h3>
+<p>Standard horizontal 16-pin receptacles with through-hole shell stakes (<code>TYPE-C-31-M-12</code>, <code>C165948</code>) punch four plated oval slots all the way through <code>In1.Cu</code> and <code>F.Cu</code> (<code>±4.32 mm</code>), colliding with <code>F.Cu</code> LEDs along the <code>17.75°</code> slanted South bezel. <code>TYPE-C-31-M-22</code> replaces the four through-hole shell stakes with <strong>four gull-wing SMD shell pads (<code>2.50 × 1.80 mm</code>) on <code>B.Cu</code> only</strong> (zero copper holes through <code>F.Cu</code>), plus two short <code>0.70 mm</code> plastic locating pegs (<code>Ø0.50 mm</code> peg in <code>Ø0.65 mm</code> NPTH drill at <code>±2.89 mm</code>) that terminate inside the lower half of the <code>1.6 mm</code> FR-4 core and sit cleanly in the column gaps between <code>F.Cu</code> LED pads (<code>≥ 0.28 mm</code> hole-to-copper clearance vs <code>0.20 mm</code> DRC across all five LED densities without altering the <code>25.0 × 70.0 mm</code> outline or LED lattice).</p>
+<h3>Electrical &amp; Mechanical Ratings (p. 1)</h3>
+<ul>
+<li><strong>Rating:</strong> <code>20 V</code>, <code>5 A</code> (<code>VBUS</code> / <code>GND</code>), <code>100 MΩ</code> min insulation, <code>100 VAC</code> dielectric withstand, <code>40 mΩ</code> max initial contact resistance.</li>
+<li><strong>Durability:</strong> <code>10,000</code> mating cycles (<code>5–20 N</code> insertion, <code>8–20 N</code> extraction), <code>-30 °C</code> to <code>+85 °C</code>.</li>
+<li><strong>Body:</strong> <code>8.94 mm</code> shell width (<code>11.44 mm</code> across gull-wing SMD tabs) × <code>7.35 mm</code> depth × <code>3.26 mm</code> height above <code>B.Cu</code> (<code>4.85 mm</code> plug insertion depth, leaving <code>1.80 mm</code> clearance ahead of a standard <code>6.65 mm</code> USB-C plug tongue shoulder).</li>
+</ul>
+<h3>Verified Single-Row 12-Pad Land Pattern (Component Top View, p. 1)</h3>
+<p>Left-to-right across the rear contact row (<code>y = -2.24 mm</code>, <code>Product Edge</code> at <code>y = +5.12 mm</code>):</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Pad #</th>
+<th>X (mm)</th>
+<th>Size (mm)</th>
+<th>Contact(s)</th>
+<th>Function</th>
+<th>Board Net</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A1B12</code></td>
+<td><code>-3.20</code></td>
+<td><code>0.60 × 1.15</code></td>
+<td><code>A1 / B12</code></td>
+<td>Ground</td>
+<td><code>GND</code></td>
+</tr>
+<tr>
+<td><code>A4B9</code></td>
+<td><code>-2.40</code></td>
+<td><code>0.60 × 1.15</code></td>
+<td><code>A4 / B9</code></td>
+<td>Power</td>
+<td><code>VBUS</code></td>
+</tr>
+<tr>
+<td><code>B8</code></td>
+<td><code>-1.75</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>B8</code></td>
+<td><code>SBU2</code></td>
+<td>NC (<code>no_connect</code>)</td>
+</tr>
+<tr>
+<td><code>A5</code></td>
+<td><code>-1.25</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>A5</code></td>
+<td><code>CC1</code></td>
+<td><code>/Power/CC1</code> (<code>5.1 kΩ</code> <code>R1</code> to <code>GND</code>)</td>
+</tr>
+<tr>
+<td><code>B7</code></td>
+<td><code>-0.75</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>B7</code></td>
+<td><code>DN2</code></td>
+<td><code>/Power/USB_DM_C</code></td>
+</tr>
+<tr>
+<td><code>A6</code></td>
+<td><code>-0.25</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>A6</code></td>
+<td><code>DP1</code></td>
+<td><code>/Power/USB_DP_C</code></td>
+</tr>
+<tr>
+<td><code>A7</code></td>
+<td><code>+0.25</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>A7</code></td>
+<td><code>DN1</code></td>
+<td><code>/Power/USB_DM_C</code></td>
+</tr>
+<tr>
+<td><code>B6</code></td>
+<td><code>+0.75</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>B6</code></td>
+<td><code>DP2</code></td>
+<td><code>/Power/USB_DP_C</code></td>
+</tr>
+<tr>
+<td><code>A8</code></td>
+<td><code>+1.25</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>A8</code></td>
+<td><code>SBU1</code></td>
+<td>NC (<code>no_connect</code>)</td>
+</tr>
+<tr>
+<td><code>B5</code></td>
+<td><code>+1.75</code></td>
+<td><code>0.30 × 1.15</code></td>
+<td><code>B5</code></td>
+<td><code>CC2</code></td>
+<td><code>/Power/CC2</code> (<code>5.1 kΩ</code> <code>R2</code> to <code>GND</code>)</td>
+</tr>
+<tr>
+<td><code>B4A9</code></td>
+<td><code>+2.40</code></td>
+<td><code>0.60 × 1.15</code></td>
+<td><code>B4 / A9</code></td>
+<td>Power</td>
+<td><code>VBUS</code></td>
+</tr>
+<tr>
+<td><code>B1A12</code></td>
+<td><code>+3.20</code></td>
+<td><code>0.60 × 1.15</code></td>
+<td><code>B1 / A12</code></td>
+<td>Ground</td>
+<td><code>GND</code></td>
+</tr>
+<tr>
+<td><code>S1</code> (×4)</td>
+<td><code>±5.07</code></td>
+<td><code>2.50 × 1.80</code></td>
+<td>Shell</td>
+<td>Shield (<code>y = -1.66, +2.24</code>)</td>
+<td><code>GND</code></td>
+</tr>
+<tr>
+<td>NPTH (×2)</td>
+<td><code>±2.89</code></td>
+<td><code>Ø0.65</code> drill</td>
+<td>Locating pegs</td>
+<td><code>y = -1.17</code>, <code>0.70 mm</code> peg</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>Critical pin-order note:</strong> At <code>x = +1.25 mm</code> and <code>+1.75 mm</code>, <strong><code>A8</code> (<code>SBU1</code>) is inner (<code>+1.25</code>) and <code>B5</code> (<code>CC2</code>) is outer (<code>+1.75</code>)</strong> — verified at 400 DPI on <code>type-c-31-m-22.pdf</code> p. 1. Both <code>A6/B6</code> (<code>DP1/DP2</code>) and <code>A7/B7</code> (<code>DN1/DN2</code>) are joined right at <code>U7</code> (<code>USBLC6-2P6</code>) for reversible USB 2.0 FS operation, and <code>A5</code>/<code>B5</code> each have dedicated <code>5.1 kΩ</code> Rd pull-downs (<code>R1</code>, <code>R2</code>) for USB-C 5 V sink negotiation in both cable orientations.</p>
+</blockquote>
+<hr />
+<h2>2. <code>BT1</code> — CJT <code>A1251WR-S-2P</code> / Molex <code>53261-0271</code>, Micro-JST 1.25 / MX1.25 Right-Angle SMT Battery Header</h2>
+<ul>
+<li><strong>Datasheets:</strong></li>
+<li><code>design/datasheets/cjt-a1251.pdf</code> (pp. 1–5, <code>A1251WR-S-2P</code> 90° SMT wafer on p. 5). Read: all.</li>
+<li><code>design/datasheets/molex-53261-0271.pdf</code> (pp. 1–5, <code>53261-0271</code> PicoBlade 1.25 mm 90° SMT on pp. 1–2). Read: all.</li>
+<li><strong>Primary supplier:</strong> <code>C225111 A1251WR-S-2P (CJT, SMD,P=1.25mm,Surface Mount,Right Angle): extended, JLC stock 75387, lifecycle normal, checked 2026-11-06</code> ($0.087 @ qty 10).</li>
+<li><strong>Exact drop-in second source:</strong> <code>C177225 532610271 (MOLEX, SMD,P=1.25mm,Surface Mount,Right Angle): extended, JLC stock 27222, lifecycle normal, checked 2026-11-06</code> ($0.14 @ qty 10).</li>
+</ul>
+<h3>Electrical &amp; Mechanical Ratings (<code>cjt-a1251.pdf</code> pp. 1, 5; <code>molex-53261-0271.pdf</code> pp. 1–2)</h3>
+<ul>
+<li><strong>Rating:</strong> <code>1.0 A</code> AC/DC continuous (<code>&gt; 3×</code> our <code>340 mA</code> avg discharge / <code>297 mA</code> charge), <code>125 V</code> (<code>CJT</code>) / <code>125 V</code> (<code>Molex</code>), <code>20 mΩ</code> max contact resistance, <code>-40 °C</code> to <code>+105 °C</code>.</li>
+<li><strong>Profile:</strong> <code>7.75 mm</code> wide across solder tabs (<code>4.30 mm</code> housing width) × <code>4.70 mm</code> depth × <strong><code>3.20 mm</code> height above <code>B.Cu</code></strong> — ultra-low profile (shorter than <code>USB-C</code> at <code>3.26 mm</code> and less than half the thickness of an <code>802035</code> / <code>102035</code> prismatic LiPo cell), <strong>100% SMD (0 through-holes)</strong>.</li>
+<li><strong>Mating housing:</strong> Friction-fit 2-pin <code>1.25 mm</code> Micro-JST / MX1.25 / Molex <code>51021-0200</code> / CJT <code>A1251H-2P</code> LiPo plug.</li>
+<li><strong>Land pattern:</strong> KiCad standard <code>Connector_Molex:Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal</code>:</li>
+<li>Signal pads <code>1</code> (<code>x = -0.625</code>, <code>y = -2.40</code>) and <code>2</code> (<code>x = +0.625</code>, <code>y = -2.40</code>): <code>0.80 × 1.60 mm</code> (<code>1.25 mm</code> pitch).</li>
+<li>Mechanical solder nails <code>MP</code> (<code>x = ±3.175</code>, <code>y = +0.50</code>): <code>2.10 × 3.00 mm</code> tied to <code>GND</code> for mechanical peel strength (isolated from <code>/Power/BAT_N</code>).</li>
+<li><strong>Polarity &amp; Protection:</strong></li>
+<li>Pin <code>1</code> = <strong><code>VBAT</code> (<code>+</code>)</strong>, Pin <code>2</code> = <strong><code>/Power/BAT_N</code> (<code>-</code>, cell minus to <code>U8</code> <code>XB9901A</code> pins 4/5/EP)</strong>.</li>
+<li>Because aftermarket <code>1.25 mm</code> LiPo packs exist in both Red/Black orientations, <code>B.SilkS</code> prints explicit <strong><code>+</code></strong> and <strong><code>-</code></strong> markers right next to the corresponding sides of <code>BT1</code> (and crimp pins in <code>1.25 mm</code> housings swap in seconds by lifting the plastic latch tab if a pack arrives reversed; <code>U8</code> <code>XB9901A</code> also includes reverse-charger/cell protection).</li>
+</ul>
+<hr />
+<h2>3. <code>SW3</code>, <code>SW4</code> — XKB <code>TS-1187A-B-A-B</code>, Ultra-Low-Profile Flat-Face Wing Tactile Switches</h2>
+<ul>
+<li><strong>Datasheet:</strong> <code>design/datasheets/ts-1187a-b-a-b.pdf</code> (rev A0, 1 page). Read: all.</li>
+<li><strong>Supplier:</strong> <code>C318884 TS-1187A-B-A-B (XKB Connection, SMD): basic, JLC stock 968777, lifecycle normal, checked 2026-11-06</code> (<strong>JLCPCB Basic Part</strong>, $0.02 @ qty 20).</li>
+</ul>
+<h3>Electrical &amp; Mechanical Ratings (p. 1)</h3>
+<ul>
+<li><strong>Dimensions:</strong> <code>5.1 × 5.1 mm</code> body (<code>6.4 mm</code> across gull-wing leads) × <strong><code>1.5 mm</code> total height</strong> (<code>Code A = 1.5 mm</code> flat circular brass actuator face), <strong>zero plastic boss pegs (100% SMD)</strong>.</li>
+<li><strong>Force &amp; Travel:</strong> <code>Code B = 260 gf</code> operating force (crisp tactile click that resists accidental pocket/chest presses while worn), <code>0.25 mm</code> travel, <code>100,000</code> cycles durability, <code>12 VDC 50 mA</code> rating.</li>
+<li><strong>Internal contact bridging (p. 1 Circuit Diagram):</strong></li>
+<li>Pads <code>(1, 2)</code> at <code>y = -1.875 mm</code> (<code>x = ±3.00 mm</code>, <code>1.00 × 0.75 mm</code>) are internally shorted (<code>Pin 1</code> in KiCad <code>Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A</code>).</li>
+<li>Pads <code>(3, 4)</code> at <code>y = +1.875 mm</code> (<code>x = ±3.00 mm</code>, <code>1.00 × 0.75 mm</code>) are internally shorted (<code>Pin 2</code> in KiCad).</li>
+<li><strong>Placement &amp; Circuit:</strong></li>
+<li>Placed symmetrically on <code>B.Cu</code> in the <strong>North-West (<code>SW3</code>)</strong> and <strong>South-East (<code>SW4</code>)</strong> acute wings, completely outside the <code>20 × 35 mm</code> LiPo cell envelope (<code>y ∈ [-21.5, +13.5]</code>), giving natural two-thumb / index-finger tactile interaction on the back of both wings alongside the existing side tactile buttons (<code>SW1</code> USER/WAKE, <code>SW2</code> BOOTSEL).</li>
+<li>Wired active-low to <code>GND</code> through <code>1 kΩ</code> <code>0402</code> series ESD/pin-conflict resistors (<code>R44</code>, <code>R45</code>, Basic Part <code>C11702</code>) into free <code>RP2350A</code> GPIOs (<code>GPIO7</code> for <code>BTN_NW</code> / <code>SW3</code>, <code>GPIO19</code> for <code>BTN_SE</code> / <code>SW4</code>; firmware enables RP2350 internal pull-ups).</li>
+</ul></div></body></html>

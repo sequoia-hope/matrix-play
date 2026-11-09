@@ -1,9 +1,9 @@
 {
  "board": "parallelogram.kicad_pcb",
- "generated": "2026-11-08",
+ "generated": "2026-11-09",
  "glb": "board.glb",
- "bytes": 12955144,
- "kicad_bytes": 39042320,
+ "bytes": 12923084,
+ "kicad_bytes": 39132264,
  "parts": 231,
  "modelled": 223,
  "no_model": [
@@ -35,6 +35,6 @@
   "legacy": 2,
   "found": 0
  },
- "triangles": 891529,
+ "triangles": 888034,
  "primitives": 1051
 }
