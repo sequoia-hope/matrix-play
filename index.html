@@ -458,7 +458,7 @@ footer {
                 <td>8L ENIG</td>
                 <td>235&times; XL-1010RGB</td>
                 <td>5&times; IS31FL3745 (WLCSP-36 BGA)</td>
-                <td><b>100% routed</b> &middot; 879 vias &middot; 0 DRC</td>
+                <td><b>100% routed</b> &middot; 879 vias &middot; 0 DRC &middot; 34 copper-audit defects (fixed in F)</td>
                 <td>~$26.47</td>
               </tr>
               <tr>
@@ -805,10 +805,10 @@ const ROUND_CARDS = [
   {
     id: "round-pendant-e",
     title: "Round Pendant — Sunflower (WLCSP-36)",
-    badge: "100% Routed · 0 DRC",
-    badgeKind: "ok",
+    badge: "0 DRC · Superseded by F",
+    badgeKind: "",
     specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "5× WLCSP-36 + ALS"],
-    desc: "Golden-angle sunflower matrix with 5× IS31FL3745 WLCSP-36 BGA drivers (zero driver thermal pads blocking vias), solid RP2350/charger pads, top-rim ALS-PT19 light sensor, and Voronoi seed-web silk (879 vias).",
+    desc: "Golden-angle sunflower matrix with 5× IS31FL3745 WLCSP-36 BGA drivers (zero driver thermal pads blocking vias), solid RP2350/charger pads, top-rim ALS-PT19 light sensor, and Voronoi seed-web silk (879 vias). 0 DRC, but the copper audit's later checks flag 34 defects (27 thin pin-to-decap zones, 7 intrusions, including the RP2350 FB finger cut in two); F fixes them with locked tracks.",
     silkF: true, silkB: true
   },
   {
