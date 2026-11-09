@@ -12,9 +12,9 @@ from pathlib import Path
 
 import numpy as np
 
-OPENEMS_PY = Path("/home/sequoia/micromamba/envs/openems/bin/python")
-FASTHENRY_BIN = Path("/home/sequoia/opt/FastHenry2/bin/fasthenry")
-FASTCAP_BIN = Path("/home/sequoia/opt/FastCap2/bin/fastcap")
+OPENEMS_PY = Path(os.environ.get("OPENEMS_PY", Path.home() / "micromamba/envs/openems/bin/python"))
+FASTHENRY_BIN = Path(os.environ.get("FASTHENRY_BIN", Path.home() / "opt/FastHenry2/bin/fasthenry"))
+FASTCAP_BIN = Path(os.environ.get("FASTCAP_BIN", Path.home() / "opt/FastCap2/bin/fastcap"))
 NGSPICE_SO = "/usr/lib/x86_64-linux-gnu/libngspice.so.0"
 
 SIGMA_CU = 5.8e7         # S/m annealed copper

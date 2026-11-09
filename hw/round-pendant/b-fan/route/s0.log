@@ -1,18 +1,18 @@
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: rule "SW scan width" (line 32): '=' in "A.NetName == '/Driver 1 and matrix/SW1_1' || A.NetName =~ '*/SW?_?'"; not applied
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SCLK length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD0 length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD1 length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD2 length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD3 length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SS length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) no vias": via_count checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) no vias": via_count checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) length": length checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) no vias": via_count checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "USB_DM no vias": via_count checked after routing, not routed to
-warning: /home/sequoia/pcb/round-pendant/hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "USB_DP no vias": via_count checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: rule "SW scan width" (line 32): '=' in "A.NetName == '/Driver 1 and matrix/SW1_1' || A.NetName =~ '*/SW?_?'"; not applied
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SCLK length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD0 length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD1 length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD2 length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SD3 length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "/MCU/QSPI_SS length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(C24-Pad1) no vias": via_count checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XIN) no vias": via_count checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) length": length checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "Net-(U3-XOUT) no vias": via_count checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "USB_DM no vias": via_count checked after routing, not routed to
+warning: hw/round-pendant/b-fan/round-pendant.kicad_dru: custom rule "USB_DP no vias": via_count checked after routing, not routed to
 warning: stackup thickness 0.980000 mm differs from general thickness 1.000000 mm; using the stackup
 memory: 687 MB estimated (3456486 nodes at 0.05 mm, 8 classes, 1 searching the whole board), 12288 MB allowed by its cgroup's memory.max
 prefanout: 7 parts, 17 inward, 168 of 179 escaped (11 failed), 125 vias, skipped 0 no-net 0 pth 13 exposed 180 escaped, 25.1 s

@@ -1,6 +1,6 @@
 # Stackup and design rules: Sunflower `s2-110-usbc` (4-layer)
 
-Phase 5 stackup and constraint specification for [sunflower.kicad_pcb](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_pcb), [sunflower.kicad_pro](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_pro), and [sunflower.kicad_dru](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_dru).
+Phase 5 stackup and constraint specification for [sunflower.kicad_pcb](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_pcb), [sunflower.kicad_pro](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_pro), and [sunflower.kicad_dru](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_dru).
 
 ## 1. Stackup (`JLC04161H-7628`, `1.6 mm` 4-layer)
 - **Fabricator & stackup code:** JLCPCB standard 4-layer stackup **`JLC04161H-7628`** (`1.6 mm ± 10%` finished thickness, `1 oz` outer / `0.5 oz` inner copper, 1-ply `7628` prepreg outer dielectrics).
@@ -25,7 +25,7 @@ Phase 5 stackup and constraint specification for [sunflower.kicad_pcb](file:///h
 > **Stackup reference-plane & `LX` cutout audit note (`Rev S3C` finding → `Rev S3D` fix):** On `s2-110-usbc`, all active ICs (`U1..U9`), `75 MHz` QSPI, `12 MHz` crystal `Y1`, buck inductor `L1`, and USB-C (`J1`/`U7`) sit on **`B.Cu` (L4)**, whose adjacent inner layer (`0.2104 mm` across `dielectric 3`) is **`In2.Cu` (L3)** — while **`In1.Cu` (L2)** is `1.2906 mm` away across the `1.065 mm` core (`0.2104 mm` under `F.Cu`). Putting `GND` on `In1.Cu` and `RuleArea 18` (`LX cutout L2`) on `In1.Cu` instead of `In2.Cu` leaves unshielded `In2.Cu` routing (`VSYS` and `+3V3` `ADC_AVDD`) `0.2104 mm` directly beneath `B.Cu` `VREG_LX`/`L1` and increases `B.Cu` return-via loop height `6.1×` (logged in Gate 5 `B1`/`B2` and Gate 7 `B3`; swap `GND` plane + `LX` cutout to `In2.Cu` in `Rev S3D`).
 
 ## 2. Impedance analysis (`DIFF_HS` & `SE_HS`)
-[nets-sunflower-s2-110-usbc.csv](file:///home/sequoia/pcb/round-pendant/design/nets-sunflower-s2-110-usbc.csv) explicitly specifies uncontrolled Full-Speed USB (`uncontrolled FS (27R damped; ~134R diff)`) and short-run QSPI (`uncontrolled (<=13.85 mm; <10% l_crit)`), matching `(dielectric_constraints no)` (`decisions.md` 2026-11-04 relaxation 5). Analytical Kirschning–Jansen / Hammerstad microstrip values on `B.Cu` (`t = 0.035 mm`) over `h = 0.2104 mm` (`7628` prepreg, if `In2.Cu` is `GND` in `Rev S3D` or at local `In2.Cu` copper crossovers) vs `h = 1.2906 mm` (actual `In1.Cu` `GND`, $\varepsilon_{r,\text{eff}} \approx 4.57$) are:
+[nets-sunflower-s2-110-usbc.csv](../../nets-sunflower-s2-110-usbc.csv) explicitly specifies uncontrolled Full-Speed USB (`uncontrolled FS (27R damped; ~134R diff)`) and short-run QSPI (`uncontrolled (<=13.85 mm; <10% l_crit)`), matching `(dielectric_constraints no)` (`decisions.md` 2026-11-04 relaxation 5). Analytical Kirschning–Jansen / Hammerstad microstrip values on `B.Cu` (`t = 0.035 mm`) over `h = 0.2104 mm` (`7628` prepreg, if `In2.Cu` is `GND` in `Rev S3D` or at local `In2.Cu` copper crossovers) vs `h = 1.2906 mm` (actual `In1.Cu` `GND`, $\varepsilon_{r,\text{eff}} \approx 4.57$) are:
 
 | Class / Net | Routed Width / Gap | Ref `h = 0.2104 mm` (`7628`, $\varepsilon_r = 4.4 / 4.6$) + Reference `50 Ω` / `90 Ω` Recipe | Actual `Rev S3C` Ref `h = 1.2906 mm` (`In1.Cu` `GND`) | Actual Routed Length vs Electrical Rise-Time Knee |
 |---|---|---|---|---|
@@ -52,7 +52,7 @@ Phase 5 stackup and constraint specification for [sunflower.kicad_pcb](file:///h
 
 ## 4. Net classes (`sunflower.kicad_pro` vs `design/nets-sunflower-s2-110-usbc.csv`)
 
-All `108` net rows in [nets-sunflower-s2-110-usbc.csv](file:///home/sequoia/pcb/round-pendant/design/nets-sunflower-s2-110-usbc.csv) map via `108` `netclass_patterns` in [sunflower.kicad_pro](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_pro) (`0` nets left in `Default` inside `pcbnew`):
+All `108` net rows in [nets-sunflower-s2-110-usbc.csv](../../nets-sunflower-s2-110-usbc.csv) map via `108` `netclass_patterns` in [sunflower.kicad_pro](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_pro) (`0` nets left in `Default` inside `pcbnew`):
 
 | Net Class | Track Width (mm) | Clearance (mm) | Via `Ø / Drill` (mm) | Diff `W / Gap` (mm) | Assigned Nets & Engineering Source |
 |---|---:|---:|---:|---:|---|
@@ -71,7 +71,7 @@ All `108` net rows in [nets-sunflower-s2-110-usbc.csv](file:///home/sequoia/pcb/
 
 ## 5. Custom `.kicad_dru` rules and sources (`sunflower.kicad_dru`)
 
-Custom rules in [sunflower.kicad_dru](file:///home/sequoia/pcb/round-pendant/hw/sunflower/s2-110-usbc/sunflower.kicad_dru) (`48` rules total; add inline `# source` comments, diff-pair skew rules, and `BT1` Molex `53261-0271` `RESTRICTED AREA` keepout in `Rev S3D`):
+Custom rules in [sunflower.kicad_dru](../../../hw/sunflower/s2-110-usbc/sunflower.kicad_dru) (`48` rules total; add inline `# source` comments, diff-pair skew rules, and `BT1` Molex `53261-0271` `RESTRICTED AREA` keepout in `Rev S3D`):
 
 1. **Per-rail minimum track widths:**
    - `VBUS >= 0.25 mm`, `VBAT >= 0.25 mm`, `/Power/BAT_N >= 0.25 mm` — current capacity + IR drop (`nets-sunflower-s2-110-usbc.csv`; restrict `VBUS` to outer `1 oz` `B.Cu` or widen inner trunks in `Rev S3D`).
