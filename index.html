@@ -426,6 +426,15 @@ footer {
                 <td><b>$13.06</b></td>
               </tr>
               <tr>
+                <td><a href="viewer/parallelogram-p2-132-usb6.html"><b>Parallelogram p2-132-usb6</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;2.60&thinsp;mm)</td>
+                <td>4L ENIG (POFV), USB-C + JST 1.25 + 6 buttons</td>
+                <td>132&times; XL-1615RGBC</td>
+                <td>2&times; AW20198QNR (QFN-40 EP)</td>
+                <td><b>795/795 (100%)</b> &middot; 729 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>$13.25</b></td>
+              </tr>
+              <tr>
                 <td><a href="viewer/parallelogram-p3-198.html"><b>Parallelogram p3-198</b></a></td>
                 <td>25&times;70&thinsp;mm, 17.75&deg; skew (2.55&times;2.60&thinsp;mm)</td>
                 <td>4L std</td>
@@ -740,6 +749,16 @@ const PARALLELOGRAM_CARDS = [
     specs: ["4 layers", "132× XL-1615 LEDs", "USB-C + JST 1.25", "$13.06 BOM"],
     desc: "p2-132 with USB-C (HRO TYPE-C-31-M-22) on the slanted south edge, its locating bosses threaded between the LED rows, a Micro-JST 1.25 battery socket and NW/SE wing user buttons clear of the LiPo pocket. 771/771 connections, 727 vias, 0 DRC, copper audit clean; fab files exported.",
     silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p2-132-usb6",
+    title: "Parallelogram p2-132 — USB-C (6 Buttons)",
+    badge: "0 Open · 0 DRC",
+    badgeKind: "ok",
+    specs: ["4 layers", "132× XL-1615 LEDs", "USB-C + 6 buttons", "$13.25 BOM"],
+    desc: "p2-132-usb plus two peg-less EVQP7J01P side-actuated user switches near the north and south ends of the West long edge (SW5 USER_C on GPIO9, SW6 USER_D on GPIO0, each with 1 kΩ + 100 nF); J1 and all parent parts kept unchanged (ENIG + POFV). 795/795 pad connections, 4,921 tracks, 729 vias, 0 DRC, copper audit clean; fab files exported.",
+    silkF: true, silkB: true,
+    extraLinks: [{ href: "design/gates/parallelogram-p2-132-usb6/bringup.md", label: "Bring-Up Guide" }]
   },
   {
     id: "parallelogram-p3-162",
