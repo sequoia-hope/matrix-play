@@ -144,6 +144,7 @@ def main():
     if not args.continue_plough:
         if args.fresh or not pre.exists():
             shutil.copy2(pcb, pre)
+            (route_dir / "routed_raw_4L.kicad_pcb").unlink(missing_ok=True)
         else:
             shutil.copy2(pre, pcb)
             pro.write_bytes(pro_bytes)
@@ -299,6 +300,9 @@ def main():
             cmd_p3 += ["--rip-region", rr]
     print(f"[{args.variant}] Stage 3 --adopt region-plough ({args.plough_timeout} s) ...", flush=True)
     p3 = subprocess.run(gov + cmd_p3, capture_output=True, text=True)
+    if spec.extra_side_buttons:
+        plough_in.with_suffix(".kicad_pro").unlink(missing_ok=True)
+        plough_in.with_suffix(".kicad_dru").unlink(missing_ok=True)
     (route_dir / "plough.log").write_text(p3.stdout + p3.stderr)
     for ln in (p3.stdout + p3.stderr).splitlines():
         if any(ln.startswith(k) for k in ("negotiated", "rip-up:", "shove pass", "vias:", "pulled tight:", "routed ", "open ", "blame:", "deadline:", "memory:")):

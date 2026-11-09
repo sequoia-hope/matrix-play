@@ -431,8 +431,8 @@ footer {
                 <td>4L ENIG (POFV), USB-C + JST 1.25 + 6 buttons</td>
                 <td>132&times; XL-1615RGBC</td>
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
-                <td><b>795/795 (100%)</b> &middot; 729 vias &middot; 0 DRC &middot; fab files</td>
-                <td><b>$13.25</b></td>
+                <td><b>795/795 (100%)</b> &middot; 719 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>$13.26</b></td>
               </tr>
               <tr>
                 <td><a href="viewer/parallelogram-p3-198.html"><b>Parallelogram p3-198</b></a></td>
@@ -755,10 +755,13 @@ const PARALLELOGRAM_CARDS = [
     title: "Parallelogram p2-132 — USB-C (6 Buttons)",
     badge: "0 Open · 0 DRC",
     badgeKind: "ok",
-    specs: ["4 layers", "132× XL-1615 LEDs", "USB-C + 6 buttons", "$13.25 BOM"],
-    desc: "p2-132-usb plus two peg-less EVQP7J01P side-actuated user switches near the north and south ends of the West long edge (SW5 USER_C on GPIO9, SW6 USER_D on GPIO0, each with 1 kΩ + 100 nF); J1 and all parent parts kept unchanged (ENIG + POFV). 795/795 pad connections, 4,921 tracks, 729 vias, 0 DRC, copper audit clean; fab files exported.",
+    specs: ["4 layers", "132× XL-1615 LEDs", "USB-C + 6 buttons", "$13.26 BOM"],
+    desc: "p2-132-usb plus two peg-less EVQP7J01P side-actuated user switches on the West long edge (SW5 USER_C on GPIO9, SW6 USER_D on GPIO0, each with 1 kΩ + 100 nF 50 V X7R), right-angle BT1 rotated 90° CCW to face straight North toward the LiPo pocket (6.03 mm clear runway to R8), and SE button SW4 aligned parallel to J1 (4L JLC04161H-7628 ENIG + POFV). 795/795 pad connections, 5,416 tracks, 719 vias, 0 DRC, copper audit clean; fab files exported.",
     silkF: true, silkB: true,
-    extraLinks: [{ href: "design/gates/parallelogram-p2-132-usb6/bringup.md", label: "Bring-Up Guide" }]
+    extraLinks: [
+      { href: "design/gates/parallelogram-p2-132-usb6/bringup.md", label: "Bring-Up Guide" },
+      { href: "design/sim/p2-132-usb6/README.md", label: "Button, PDN & Thermal Sim" }
+    ]
   },
   {
     id: "parallelogram-p3-162",

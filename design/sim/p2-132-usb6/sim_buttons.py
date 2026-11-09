@@ -124,23 +124,30 @@ def simulate_press_bounce(
 
 def simulate_esd_regimes(dt: float = 5e-11) -> dict:
     """Model both (a) <=450 V sub-sparkover secondary strike after outboard Pin 2 GND air-gap interception
-    and (b) direct 8 kV IEC 61000-4-2 contact strike to Pin 1 with 0402 pad-gap flashover (~450 V arc)."""
+    and (b) direct 8 kV IEC 61000-4-2 contact strike to Pin 1 with 0402 pad-gap flashover (450 V arc)
+    into genuine 50 V X7R 0402 C71/C72 (Samsung CL05B104KB54PNC, LCSC C307331) with nonlinear DC-bias derating."""
     c_esd, r_esd = 150e-12, 330.0
-    r_ser, c_deb = 1000.0, 100e-9
+    r_ser, c_nom = 1000.0, 100e-9
     v_clamp, r_clamp = 3.85, 5.0
 
-    # Regime A: 400 V residual strike on Pin 1 (below 0402 ~450 V sparkover; R46/R47 intact at 1 kOhm)
+    def c_inc_50v_x7r(v_bias: float) -> float:
+        # 50 V X7R 0402 incremental capacitance derating curve (stiffer than 16 V X7R; ~72 nF at 15 V, ~61 nF at 20 V)
+        return c_nom / (1.0 + (abs(v_bias) / 25.5) ** 2)
+
+    # Regime A: 400 V residual strike on Pin 1 (below 0402 450 V sparkover; R46/R47 intact at 1 kOhm)
     v_e, v_g, i_pk_a, v_pk_a = 400.0, 3.3, 0.0, 3.3
     for _ in range(int(1.5e-6 / dt)):
         i_in = (v_e - v_g) / (r_esd + r_ser)
         i_cl = max(0.0, (v_g - v_clamp) / r_clamp)
         i_pk_a = max(i_pk_a, i_cl)
         v_e -= (i_in / c_esd) * dt
-        v_g += ((i_in - i_cl) / c_deb) * dt
+        v_g += ((i_in - i_cl) / c_inc_50v_x7r(v_g)) * dt
         v_pk_a = max(v_pk_a, v_g)
 
     # Regime B: Direct 8 kV contact strike onto bare Pin 1 where >450 V across 0.5 mm 0402 gap arcs (R_arc ~ 2 Ohm)
     v_e, v_g, i_pk_b, v_pk_b = 8000.0, 3.3, 0.0, 3.3
+    v_oc = 3.3
+    v_e_oc = 8000.0
     trace_b = []
     steps = int(2.0e-6 / dt)
     for k in range(steps):
@@ -150,12 +157,19 @@ def simulate_esd_regimes(dt: float = 5e-11) -> dict:
         i_cl = max(0.0, (v_g - v_clamp) / r_clamp)
         i_pk_b = max(i_pk_b, i_cl)
         v_e -= (i_in / c_esd) * dt
-        v_g += ((i_in - i_cl) / c_deb) * dt
+        v_g += ((i_in - i_cl) / c_inc_50v_x7r(v_g)) * dt
         v_pk_b = max(v_pk_b, v_g)
+        # Open-circuit (no MCU clamp conduction) nonlinear 50 V X7R charge-sharing ceiling
+        v_drop_oc = abs(v_e_oc - v_oc) * (r_ser / (r_esd + r_ser))
+        i_oc = (v_e_oc - v_oc) / (r_esd + (2.0 if v_drop_oc > 450.0 else r_ser))
+        v_e_oc -= (i_oc / c_esd) * dt
+        v_oc += (i_oc / c_inc_50v_x7r(v_oc)) * dt
         if k % 200 == 0:
             trace_b.append((k * dt * 1e9, v_g, i_cl))
 
     return {
+        "c71_c72_part": "Samsung CL05B104KB54PNC (LCSC C307331, 100 nF 50 V X7R 0402, basic part)",
+        "sparkover_threshold_0402_V": 450.0,
         "mechanical_shielding_evqp7j01p": (
             "Plunger is insulating engineering plastic; outboard terminal nearest PCB edge (|x|=12.10 mm) is "
             "Pin 2 = GND tied to unbroken In1.Cu plane GND, intercepting edge air-discharge arcs before inboard Pin 1."
@@ -164,17 +178,19 @@ def simulate_esd_regimes(dt: float = 5e-11) -> dict:
             "v_gpio_peak_V": round(v_pk_a, 3),
             "i_clamp_peak_mA": round(i_pk_a * 1e3, 2),
         },
-        "direct_8kV_pin1_with_0402_flashover": {
-            "open_circuit_charge_share_delta_V": round(8000.0 * c_esd / (c_esd + c_deb), 2),
+        "direct_8kV_pin1_with_450V_0402_flashover": {
+            "open_circuit_dc_biased_peak_V": round(v_oc, 2),
             "v_gpio_peak_with_clamp_V": round(v_pk_b, 2),
             "i_clamp_peak_A": round(i_pk_b, 2),
             "unbuffered_iec_peak_A": round(8000.0 / r_esd, 2),
             "current_attenuation_pct": round(100.0 * (1.0 - i_pk_b / (8000.0 / r_esd)), 2),
             "c71_c72_50V_x7r_margin_V": round(50.0 - v_pk_b, 2),
+            "c71_c72_open_circuit_50V_margin_V": round(50.0 - v_oc, 2),
         },
-        "inherited_sw3_sw4_note": (
-            "SW3/SW4 (TS-1187A) inherit 1 kOhm series R44/R45 without 100 nF cap; use 20 ms SW debounce and "
-            "avoid direct >2 kV metal-stem contact without grounded bezel."
+        "inherited_sw1_sw4_note": (
+            "SW1..SW4 inherit parent p2-132-usb 1 kOhm series resistors (R18, R16, R44, R45) without shunt caps "
+            "(SW2 shares /MCU/QSPI_SS so 100 nF is prohibited; SW1/SW2 use insulating plastic plungers with outboard "
+            "Pin 2 = GND at |x|=12.10 mm; SW3/SW4 ground outer metal brackets and carry a <=450 V sub-sparkover bare-stem rating)."
         ),
         "_trace": trace_b,
     }
@@ -209,7 +225,7 @@ def solve_vsys_nodal_pdn() -> dict:
             u_i2 = nid("In2.Cu", vx, vy)
             u_b = nid("B.Cu", vx, vy)
             for a, c in ((u_f, u_i1), (u_i1, u_i2), (u_i2, u_b)):
-                edges.append((a, c, 0.4e-3))
+                edges.append((a, c, 1.0e-3))  # 3.0 mOhm total Ø0.15 mm × 1.59 mm barrel resistance
         else:
             ln = b.GetLayerName(t.GetLayer())
             ax, ay = um(t.GetStart().x), um(t.GetStart().y)
@@ -330,46 +346,101 @@ def solve_vsys_nodal_pdn() -> dict:
             "dv_u1_pin5_mV": round(float(v_drop[u1_p5]) * 1e3, 2),
         }
 
+    worn_cont_165mA = run_case(0.165, 0.025)
     wearable_300mA = run_case(0.300, 0.025)
     unthrottled_656mA = run_case(0.656, 0.025)
-    # Effective R from U5.OUT to U1.5 and U6.4
+    pwm_peak_840mA = run_case(0.840, 0.025)
+
+    # Full upstream battery-path series resistance from cell leads -> BT1 -> BAT_N -> U8 -> VBAT -> U5.OUT:
+    # BT1 (2 x 20 mOhm = 40 mOhm) + BAT_N trace (27.3 mOhm) + U8 XB9901A (11.5 mOhm typ / 18.0 mOhm hot) +
+    # VBAT trace (~35.0 mOhm across B.Cu/In2.Cu) + U5 BQ24073 BatFET (160 mOhm typ / 250 mOhm max)
+    r_bat_path_typ = 0.040 + 0.0273 + 0.0115 + 0.0350 + 0.1600  # 0.2738 Ohm typ
+    r_bat_path_max = 0.040 + 0.0273 + 0.0180 + 0.0350 + 0.2500  # 0.3703 Ohm worst-case hot/max
+    # TPS7A0233PDQNR at actual I_OUT = 25 mA: V_OUT,min = 3.267 V (3.30 V - 1%), V_DO,max(25 mA) = 55 mV -> 3.355 V nominal floor
+    v_u6_min_req_25mA = 3.355
+
+    v_u6_worn_3p50_typ = 3.50 - 0.190 * r_bat_path_typ + worn_cont_165mA["dv_u6_in_mV"] * 1e-3
+    v_u6_worn_3p50_max = 3.50 - 0.190 * r_bat_path_max + worn_cont_165mA["dv_u6_in_mV"] * 1e-3
+    v_u6_300_3p50_typ = 3.50 - 0.325 * r_bat_path_typ + wearable_300mA["dv_u6_in_mV"] * 1e-3
+    v_u6_300_3p50_max = 3.50 - 0.325 * r_bat_path_max + wearable_300mA["dv_u6_in_mV"] * 1e-3
+    v_u6_pwm840_3p50_max = 3.50 - 0.865 * r_bat_path_max + pwm_peak_840mA["dv_u6_in_mV"] * 1e-3
+
     return {
         "extracted_from": str(PCB_PATH.relative_to(ROOT)),
+        "battery_series_path_ohm": {
+            "bt1_2pin_max_mOhm": 40.0,
+            "bat_n_trace_mOhm": 27.3,
+            "u8_xb9901a_typ_max_mOhm": [11.5, 18.0],
+            "vbat_trace_mOhm": 35.0,
+            "u5_bq24073_batfet_typ_max_mOhm": [160.0, 250.0],
+            "total_upstream_typ_mOhm": round(r_bat_path_typ * 1e3, 1),
+            "total_upstream_worst_mOhm": round(r_bat_path_max * 1e3, 1),
+        },
+        "worn_continuous_165mA_GCC_0x40": {
+            **worn_cont_165mA,
+            "v_u6_in_at_vbat_3p50V_typ": round(v_u6_worn_3p50_typ, 3),
+            "v_u6_in_at_vbat_3p50V_worst": round(v_u6_worn_3p50_max, 3),
+            "tps7a0233_25mA_headroom_ok": v_u6_worn_3p50_max >= v_u6_min_req_25mA,
+        },
         "wearable_budget_300mA_GCC_0x74": {
             **wearable_300mA,
             "v_u6_in_on_usb_4p40V": round(4.40 + wearable_300mA["dv_u6_in_mV"] * 1e-3, 3),
-            "v_u6_in_at_vbat_3p55V": round(3.55 - 0.325 * 0.16 + wearable_300mA["dv_u6_in_mV"] * 1e-3, 3),
-            "tps7a0233_vout_min_headroom_ok": (3.55 - 0.325 * 0.16 + wearable_300mA["dv_u6_in_mV"] * 1e-3) >= 3.42,
+            "v_u6_in_at_vbat_3p50V_typ": round(v_u6_300_3p50_typ, 3),
+            "v_u6_in_at_vbat_3p50V_worst": round(v_u6_300_3p50_max, 3),
+            "tps7a0233_vout_min_headroom_ok": v_u6_300_3p50_max >= v_u6_min_req_25mA,
         },
         "unthrottled_all_white_656mA_GCC_0xFF": unthrottled_656mA,
+        "pwm_only_dimming_840mA_peak_hazard_GCC_0xFF": {
+            **pwm_peak_840mA,
+            "v_u6_in_at_vbat_3p50V_worst": round(v_u6_pwm840_3p50_max, 3),
+            "enters_ldo_dropout_if_gcc_left_0xFF": v_u6_pwm840_3p50_max < v_u6_min_req_25mA,
+        },
         "firmware_guard": (
-            "Cap AW20198 GCC <= 0x74 (<= 300 mA total LED current per intent.md R19; <= 0x44 = 175 mA while CHG==0 "
-            "charging) and fold back brightness below VBAT = 3.50 V so U6 (+3V3 LDO) never enters dropout."
+            "Scale brightness via AW20198 analog GCC register (never leave GCC=0xFF with PWM-only dimming, which "
+            "draws 840 mA row pulses): GCC <= 0x40 (~165 mA) continuous worn ceiling, GCC <= 0x74 (300 mA) burst/handheld "
+            "cap, GCC <= 0x44 while CHG==0 charging, and fold back below VBAT = 3.50 V."
         ),
     }
 
 
 def compute_thermal_and_crosstalk() -> tuple[dict, dict]:
-    """Spreadsheet whole-board + U5 (BQ24073) thermal budget & aggressor-victim crosstalk audit."""
-    # 1. Thermal: 25 x 70 mm 4L PCB (area ~ 1680 mm^2, 1309 mm^2 solid In1.Cu GND plane -> whole-board h*2A ~ 0.085 W/K)
+    """Natural-convection whole-board + U5 (BQ24073) thermal budget & aggressor-victim crosstalk audit."""
+    # 1. Thermal: 25 x 62 mm (1,549 mm^2) 4L PCB in still air (h ~ 10.5 W/(m^2*K)) with rear LiPo insulating ~45% of back:
+    # Effective whole-board conductance h*A_eff = 0.030 W/K (theta_BA = 33.3 C/W, matching round-pendant-f-usbc 32.4 C/W).
+    h_eff_W_per_K = 0.030
     p_mcu_W = 0.055
     p_ldo_W = (3.70 - 3.30) * 0.025
+
+    # Mode A: Continuous worn ceiling (GCC <= 0x40, ~165 mA total LED current -> <= 45 C touch limit at 25 C ambient)
+    p_drv_165mA_each_W = 0.058
+    p_leds_165mA_W = 0.165 * 2.18
+    p_total_worn_cont_W = p_mcu_W + p_ldo_W + 2 * p_drv_165mA_each_W + p_leds_165mA_W
+    dt_board_worn_cont_C = p_total_worn_cont_W / h_eff_W_per_K
+
+    # Mode B: Burst / handheld peak budget (intent.md R19 300 mA, GCC <= 0x74; governed by RP2350 ADC4 thermal foldback)
     p_drv_each_W = 0.105
-    p_leds_300mA_W = 0.300 * 2.25  # thermal share after optical emission at 300 mA total
+    p_leds_300mA_W = 0.300 * 2.25
     p_total_wearable_W = p_mcu_W + p_ldo_W + 2 * p_drv_each_W + p_leds_300mA_W
-    dt_board_wearable_C = p_total_wearable_W / 0.085
+    dt_board_wearable_C = p_total_wearable_W / h_eff_W_per_K
 
     # Depleted cell (VBAT = 3.1 V) charging on USB500 (I_IN = 0.472 A: 0.297 A charge + 0.175 A system @ GCC=0x44)
     p_u5_charge_W = (5.00 - 4.40) * 0.472 + (4.40 - 3.10) * 0.297
-    theta_ja_u5_C_per_W = 52.0  # QFN-16 3x3 with 2 solid-EP vias into 1309 mm^2 In1.Cu GND plane
+    theta_ja_u5_C_per_W = 52.0  # QFN-16 3x3 with 2 solid-EP vias into 1310 mm^2 In1.Cu GND plane
     tj_u5_25C_amb = 25.0 + p_u5_charge_W * theta_ja_u5_C_per_W
 
     thermal = {
-        "wearable_battery_300mA_mode": {
+        "still_air_theta_ba_C_per_W": round(1.0 / h_eff_W_per_K, 1),
+        "worn_continuous_165mA_GCC_0x40": {
+            "p_total_W": round(p_total_worn_cont_W, 3),
+            "board_avg_rise_C": round(dt_board_worn_cont_C, 1),
+            "t_surface_at_25C_amb_C": round(25.0 + dt_board_worn_cont_C, 1),
+            "wearable_touch_limit_45C_ok": (25.0 + dt_board_worn_cont_C) < 45.0,
+        },
+        "burst_handheld_300mA_GCC_0x74_with_ADC4_foldback": {
             "p_total_W": round(p_total_wearable_W, 3),
-            "board_avg_rise_C": round(dt_board_wearable_C, 1),
-            "t_surface_at_25C_amb_C": round(25.0 + dt_board_wearable_C, 1),
-            "wearable_touch_limit_45C_ok": (25.0 + dt_board_wearable_C) < 45.0,
+            "unthrottled_steady_state_rise_C": round(dt_board_wearable_C, 1),
+            "unthrottled_t_surface_at_25C_amb_C": round(25.0 + dt_board_wearable_C, 1),
+            "adc4_closed_loop_foldback_target_C": 45.0,
         },
         "usb500_depleted_cell_charge_plus_GCC_0x44": {
             "vbus_V": 5.0,
@@ -525,8 +596,9 @@ def main():
             f"PASS (hardware RC suppresses 10 ms ON chatter + crosstalk; >= 20 ms press+release FW debounce covers "
             f"{slow_corner['t_worst_10ms_off_bounce_plus_rise_ms']:.2f} ms slow-corner OFF bounce+rise; VSYS nodal drop = "
             f"{pdn['wearable_budget_300mA_GCC_0x74']['dv_u6_in_mV']:.2f} mV at U6.4 & "
-            f"{pdn['wearable_budget_300mA_GCC_0x74']['dv_u1_pin5_mV']:.2f} mV at U1.5 @ 300 mA GCC<=0x74; "
-            f"thermal {thermal['wearable_battery_300mA_mode']['t_surface_at_25C_amb_C']:.1f} C wearable / "
+            f"{pdn['wearable_budget_300mA_GCC_0x74']['dv_u1_pin5_mV']:.2f} mV at U1.5 @ 300 mA GCC<=0x74 "
+            f"(V_U6.4={pdn['wearable_budget_300mA_GCC_0x74']['v_u6_in_at_vbat_3p50V_worst']:.3f} V worst-case at VBAT=3.50 V); "
+            f"still-air thermal {thermal['worn_continuous_165mA_GCC_0x40']['t_surface_at_25C_amb_C']:.1f} C @ 0.54 W continuous worn / "
             f"{thermal['usb500_depleted_cell_charge_plus_GCC_0x44']['u5_tj_est_at_25C_amb_C']:.1f} C U5 Tj charging)"
         ),
     }
@@ -534,7 +606,9 @@ def main():
     assert res["contact_rating_evqp7j01p"]["within_rating"]
     assert fast_corner["stays_below_vih_2p0V_during_10ms_on_chatter"]
     assert slow_corner["t_worst_10ms_off_bounce_plus_rise_ms"] < 20.0
+    assert pdn["worn_continuous_165mA_GCC_0x40"]["tps7a0233_25mA_headroom_ok"]
     assert pdn["wearable_budget_300mA_GCC_0x74"]["tps7a0233_vout_min_headroom_ok"]
+    assert thermal["worn_continuous_165mA_GCC_0x40"]["wearable_touch_limit_45C_ok"]
     (out_dir / "results.json").write_text(json.dumps(res, indent=2) + "\n")
     print(json.dumps(res, indent=2))
 

@@ -72,48 +72,93 @@
     }
   },
   "esd_verification": {
+    "c71_c72_part": "Samsung CL05B104KB54PNC (LCSC C307331, 100 nF 50 V X7R 0402, basic part)",
+    "sparkover_threshold_0402_V": 450.0,
     "mechanical_shielding_evqp7j01p": "Plunger is insulating engineering plastic; outboard terminal nearest PCB edge (|x|=12.10 mm) is Pin 2 = GND tied to unbroken In1.Cu plane GND, intercepting edge air-discharge arcs before inboard Pin 1.",
     "sub_sparkover_400V_pin1": {
-      "v_gpio_peak_V": 3.874,
-      "i_clamp_peak_mA": 4.8
+      "v_gpio_peak_V": 3.88,
+      "i_clamp_peak_mA": 6.04
     },
-    "direct_8kV_pin1_with_0402_flashover": {
-      "open_circuit_charge_share_delta_V": 11.98,
-      "v_gpio_peak_with_clamp_V": 12.71,
-      "i_clamp_peak_A": 1.77,
+    "direct_8kV_pin1_with_450V_0402_flashover": {
+      "open_circuit_dc_biased_peak_V": 17.38,
+      "v_gpio_peak_with_clamp_V": 13.65,
+      "i_clamp_peak_A": 1.96,
       "unbuffered_iec_peak_A": 24.24,
-      "current_attenuation_pct": 92.69,
-      "c71_c72_50V_x7r_margin_V": 37.29
+      "current_attenuation_pct": 91.92,
+      "c71_c72_50V_x7r_margin_V": 36.35,
+      "c71_c72_open_circuit_50V_margin_V": 32.62
     },
-    "inherited_sw3_sw4_note": "SW3/SW4 (TS-1187A) inherit 1 kOhm series R44/R45 without 100 nF cap; use 20 ms SW debounce and avoid direct >2 kV metal-stem contact without grounded bezel."
+    "inherited_sw1_sw4_note": "SW1..SW4 inherit parent p2-132-usb 1 kOhm series resistors (R18, R16, R44, R45) without shunt caps (SW2 shares /MCU/QSPI_SS so 100 nF is prohibited; SW1/SW2 use insulating plastic plungers with outboard Pin 2 = GND at |x|=12.10 mm; SW3/SW4 ground outer metal brackets and carry a <=450 V sub-sparkover bare-stem rating)."
   },
   "vsys_nodal_pdn": {
     "extracted_from": "hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb",
+    "battery_series_path_ohm": {
+      "bt1_2pin_max_mOhm": 40.0,
+      "bat_n_trace_mOhm": 27.3,
+      "u8_xb9901a_typ_max_mOhm": [
+        11.5,
+        18.0
+      ],
+      "vbat_trace_mOhm": 35.0,
+      "u5_bq24073_batfet_typ_max_mOhm": [
+        160.0,
+        250.0
+      ],
+      "total_upstream_typ_mOhm": 273.8,
+      "total_upstream_worst_mOhm": 370.3
+    },
+    "worn_continuous_165mA_GCC_0x40": {
+      "i_led_total_mA": 165.0,
+      "i_3v3_ldo_mA": 25.0,
+      "dv_u6_in_mV": -3.29,
+      "dv_u2_pin5_mV": -17.59,
+      "dv_u1_pin5_mV": -28.96,
+      "v_u6_in_at_vbat_3p50V_typ": 3.445,
+      "v_u6_in_at_vbat_3p50V_worst": 3.426,
+      "tps7a0233_25mA_headroom_ok": true
+    },
     "wearable_budget_300mA_GCC_0x74": {
       "i_led_total_mA": 300.0,
       "i_3v3_ldo_mA": 25.0,
-      "dv_u6_in_mV": -60.72,
-      "dv_u2_pin5_mV": -113.31,
-      "dv_u1_pin5_mV": -114.5,
-      "v_u6_in_on_usb_4p40V": 4.339,
-      "v_u6_in_at_vbat_3p55V": 3.437,
+      "dv_u6_in_mV": -4.64,
+      "dv_u2_pin5_mV": -31.78,
+      "dv_u1_pin5_mV": -52.46,
+      "v_u6_in_on_usb_4p40V": 4.395,
+      "v_u6_in_at_vbat_3p50V_typ": 3.406,
+      "v_u6_in_at_vbat_3p50V_worst": 3.375,
       "tps7a0233_vout_min_headroom_ok": true
     },
     "unthrottled_all_white_656mA_GCC_0xFF": {
       "i_led_total_mA": 656.0,
       "i_3v3_ldo_mA": 25.0,
-      "dv_u6_in_mV": -126.74,
-      "dv_u2_pin5_mV": -242.27,
-      "dv_u1_pin5_mV": -244.88
+      "dv_u6_in_mV": -8.19,
+      "dv_u2_pin5_mV": -69.2,
+      "dv_u1_pin5_mV": -114.41
     },
-    "firmware_guard": "Cap AW20198 GCC <= 0x74 (<= 300 mA total LED current per intent.md R19; <= 0x44 = 175 mA while CHG==0 charging) and fold back brightness below VBAT = 3.50 V so U6 (+3V3 LDO) never enters dropout."
+    "pwm_only_dimming_840mA_peak_hazard_GCC_0xFF": {
+      "i_led_total_mA": 840.0,
+      "i_3v3_ldo_mA": 25.0,
+      "dv_u6_in_mV": -10.02,
+      "dv_u2_pin5_mV": -88.54,
+      "dv_u1_pin5_mV": -146.43,
+      "v_u6_in_at_vbat_3p50V_worst": 3.17,
+      "enters_ldo_dropout_if_gcc_left_0xFF": true
+    },
+    "firmware_guard": "Scale brightness via AW20198 analog GCC register (never leave GCC=0xFF with PWM-only dimming, which draws 840 mA row pulses): GCC <= 0x40 (~165 mA) continuous worn ceiling, GCC <= 0x74 (300 mA) burst/handheld cap, GCC <= 0x44 while CHG==0 charging, and fold back below VBAT = 3.50 V."
   },
   "thermal_budget": {
-    "wearable_battery_300mA_mode": {
-      "p_total_W": 0.95,
-      "board_avg_rise_C": 11.2,
-      "t_surface_at_25C_amb_C": 36.2,
+    "still_air_theta_ba_C_per_W": 33.3,
+    "worn_continuous_165mA_GCC_0x40": {
+      "p_total_W": 0.541,
+      "board_avg_rise_C": 18.0,
+      "t_surface_at_25C_amb_C": 43.0,
       "wearable_touch_limit_45C_ok": true
+    },
+    "burst_handheld_300mA_GCC_0x74_with_ADC4_foldback": {
+      "p_total_W": 0.95,
+      "unthrottled_steady_state_rise_C": 31.7,
+      "unthrottled_t_surface_at_25C_amb_C": 56.7,
+      "adc4_closed_loop_foldback_target_C": 45.0
     },
     "usb500_depleted_cell_charge_plus_GCC_0x44": {
       "vbus_V": 5.0,
@@ -136,5 +181,5 @@
       "ADC1_LIGHT_oversampling": "16x sample average"
     }
   },
-  "verdict": "PASS (hardware RC suppresses 10 ms ON chatter + crosstalk; >= 20 ms press+release FW debounce covers 18.83 ms slow-corner OFF bounce+rise; VSYS nodal drop = -60.72 mV at U6.4 & -114.50 mV at U1.5 @ 300 mA GCC<=0x74; thermal 36.2 C wearable / 59.8 C U5 Tj charging)"
+  "verdict": "PASS (hardware RC suppresses 10 ms ON chatter + crosstalk; >= 20 ms press+release FW debounce covers 18.83 ms slow-corner OFF bounce+rise; VSYS nodal drop = -4.64 mV at U6.4 & -52.46 mV at U1.5 @ 300 mA GCC<=0x74 (V_U6.4=3.375 V worst-case at VBAT=3.50 V); still-air thermal 43.0 C @ 0.54 W continuous worn / 59.8 C U5 Tj charging)"
 }

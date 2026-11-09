@@ -532,15 +532,53 @@ def generate_libs(variant_name: str):
     (pretty / "LED_XL-1010RGB.kicad_mod").write_text(fp_led())
     (pretty / "LED_XL-1615RGBC.kicad_mod").write_text(fp_led_xl1615())
     (pretty / "BatteryPads.kicad_mod").write_text(battery())
-    shutil.copy(
-        Path("/usr/share/kicad/footprints/Connector_Molex.pretty/Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod"),
-        pretty / "Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod",
-    )
+    if spec.extra_side_buttons:
+        import re as _re
+
+        molex_txt = Path(
+            "/usr/share/kicad/footprints/Connector_Molex.pretty/Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod"
+        ).read_text()
+        molex_txt = _re.sub(
+            r'\t\(fp_line\s+\(start [^)]+\)\s+\(end [^)]+\)\s+\(stroke\s+\(width [^)]+\)\s+\(type [^)]+\)\s*\)\s+\(layer "F\.CrtYd"\)(?:\s+\(uuid "[^"]+"\))?\s*\)\n',
+            "",
+            molex_txt,
+        )
+        bt_cy_pts = [
+            (-2.30, 2.80), (2.30, 2.80), (2.30, 2.10),
+            (4.265, 2.10), (4.265, -1.15), (2.30, -1.15),
+            (2.30, -1.75), (1.18, -1.75), (1.18, -3.35),
+            (-1.18, -3.35), (-1.18, -1.75), (-2.30, -1.75),
+            (-2.30, -1.15), (-4.265, -1.15), (-4.265, 2.10),
+            (-2.30, 2.10), (-2.30, 2.80),
+        ]
+        bt_cy = "".join(line(a, b, "F.CrtYd", 0.05) for a, b in zip(bt_cy_pts, bt_cy_pts[1:]))
+        molex_txt = molex_txt.replace('\t(attr smd)\n', '\t(attr smd)\n' + bt_cy, 1)
+        (pretty / "Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod").write_text(molex_txt)
+    else:
+        shutil.copy(
+            Path("/usr/share/kicad/footprints/Connector_Molex.pretty/Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod"),
+            pretty / "Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod",
+        )
     sw_ts = Path("/usr/share/kicad/footprints/Button_Switch_SMD.pretty/SW_Push_1P1T_XKB_TS-1187A.kicad_mod").read_text()
     sw_ts = sw_ts.replace(
         "${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_Push_1P1T_XKB_TS-1187A.step",
         "${KIPRJMOD}/../../../3dmodels/SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5.step",
     )
+    if spec.extra_side_buttons:
+        sw_ts = _re.sub(
+            r'\t\(fp_line\s+\(start [^)]+\)\s+\(end [^)]+\)\s+\(stroke\s+\(width [^)]+\)\s+\(type [^)]+\)\s*\)\s+\(layer "F\.CrtYd"\)(?:\s+\(uuid "[^"]+"\))?\s*\)\n',
+            "",
+            sw_ts,
+        )
+        sw_cy_pts = [
+            (-2.70, -2.70), (2.70, -2.70), (2.70, -2.40), (3.65, -2.40), (3.65, -1.35),
+            (2.70, -1.35), (2.70, 1.35), (3.65, 1.35), (3.65, 2.40), (2.70, 2.40),
+            (2.70, 2.70), (-2.70, 2.70), (-2.70, 2.40), (-3.65, 2.40), (-3.65, 1.35),
+            (-2.70, 1.35), (-2.70, -1.35), (-3.65, -1.35), (-3.65, -2.40), (-2.70, -2.40),
+            (-2.70, -2.70),
+        ]
+        sw_cy = "".join(line(a, b, "F.CrtYd", 0.05) for a, b in zip(sw_cy_pts, sw_cy_pts[1:]))
+        sw_ts = sw_ts.replace('\t(attr smd)\n', '\t(attr smd)\n' + sw_cy, 1)
     (pretty / "SW_Push_1P1T_XKB_TS-1187A.kicad_mod").write_text(sw_ts)
     for name in ("L_pol_2016", "C_0402_1005Metric_small_pads"):
         shutil.copy(VENDOR / f"{name}.kicad_mod", pretty / f"{name}.kicad_mod")

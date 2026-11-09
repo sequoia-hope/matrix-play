@@ -218,6 +218,8 @@ def generate_rules(variant_name: str):
     d["net_settings"]["classes"] = []
     cls_map = dict(CLASSES)
     if spec.extra_side_buttons:
+        for orphan in ("SW_SCAN", "BATTERY", "USB_POWER"):
+            cls_map.pop(orphan, None)
         cls_map["POWER_HI"] = (0.25, 0.10, 0.35, 0.15)
     for n, (w, c, vd, vh) in cls_map.items():
         k = dict(

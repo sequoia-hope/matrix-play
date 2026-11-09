@@ -164,10 +164,13 @@ def export_fab(variant: str):
         ],
         check=True,
     )
+    if spec.extra_side_buttons:
+        (gdir / "parallelogram.drl").unlink(missing_ok=True)
     subprocess.run(
         [
             "kicad-cli", "pcb", "export", "drill",
             "--format", "excellon",
+            *(["--excellon-separate-th"] if spec.extra_side_buttons else []),
             "--drill-origin", "absolute",
             "--excellon-units", "mm",
             "-o", str(gdir) + "/",

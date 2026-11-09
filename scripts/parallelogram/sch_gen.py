@@ -65,11 +65,11 @@ class Sheet(Schematic):
             libs=libs,
         )
 
-    def cap(self, ref, value, top, fp=C0402, text_left=False, decouples=None):
+    def cap(self, ref, value, top, fp=C0402, text_left=False, decouples=None, extra_fields=None):
         x, y = top
         dx = -2.54 if text_left else 2.54
         j = "right" if text_left else "left"
-        f = fields(value) | ({"Decouples": decouples} if decouples else {})
+        f = fields(value) | ({"Decouples": decouples} if decouples else {}) | (extra_fields or {})
         c = self.symbol(
             "Device:C", ref, value, (x, y + 3.81), footprint=fp, fields=f,
             ref_at=(x + dx, y + 2.54), value_at=(x + dx, y + 5.08), justify=j,
@@ -634,7 +634,10 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         ):
             s.label(net, (281.94, y_sw), rot=180)
             s.wire((281.94, y_sw), (294.64, y_sw))
-            s.cap(cref, "100n", (288.29, y_sw), text_left=True)
+            s.cap(
+                cref, "100n", (288.29, y_sw), text_left=True,
+                extra_fields={"LCSC": "C307331", "MPN": "CL05B104KB54PNC", "Manufacturer": "Samsung Electro-Mechanics"},
+            )
             r_sw = s.res_h(rref, "1k", (294.64, y_sw))
             sw_sym = s.symbol(
                 "Switch:SW_Push", swref, swval, (316.23, y_sw),

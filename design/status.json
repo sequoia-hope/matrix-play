@@ -61,10 +61,10 @@
       "kind": "signoff",
       "gate": 10,
       "options": [
-        "Approve p2-132-usb6 Phase 4 & 10 release (4L JLC04161H-7628, ENIG 1U\", POFV=Yes, $13.25 BOM @10, SW5 GPIO9 + SW6 GPIO0 on West edge, J1 unchanged)",
-        "Adjust West-edge button y-coordinates or POWMAN deep-sleep wake allocation before ordering"
+        "Approve p2-132-usb6 Phase 4 & 10 release (4L JLC04161H-7628, ENIG 1U\", POFV=Yes, $13.26 BOM @10, Option 1 North-facing BT1 + SE bezel-aligned SW4 + West-edge SW5/SW6)",
+        "Adjust SE/West button coordinates, LiPo foam thickness, or POWMAN deep-sleep wake allocation before ordering"
       ],
-      "text": "Parallelogram p2-132-usb6 Gates 4 & 10 sign-off (design/gates/parallelogram-p2-132-usb6/phase4.md & phase10.md): confirm (1) West long-edge EVQP7J01P positions SW5 (-10.85, -22.00, USER_C on GPIO9) & SW6 (-10.85, +22.80, USER_D on GPIO0) with 0.45 mm rest / 0.25 mm full-stroke overhang and >=0.25 mm bezel stop (J1 untouched at 162.26 deg), (2) >=20 ms FW debounce & which 2 of {SW3..SW6} share POWMAN P1.7 deep-sleep wake alongside SW1+ACC_INT, (3) <=18.5 mm LiPo on 1.0 mm tape or >=1.5 mm foam tape for a 20x35 mm cell, and (4) 4L JLC04161H-7628 ENIG + POFV=Yes release package & tag parallelogram-p2-132-usb6-revP1U6."
+      "text": "Parallelogram p2-132-usb6 Gates 4 & 10 sign-off (design/gates/parallelogram-p2-132-usb6/phase4.md & phase10.md): confirm (1) Option 1 SE placement — BT1 rotated 90 deg CCW to (+7.97, +23.00, 0 deg) facing -Y North toward LiPo pocket (6.03 mm clear runway to R8, 7.20 mm to U8; Pad 1 + VBAT West, Pad 2 - BAT_N East) + bezel-aligned SW4 at (+8.15, +30.55, 162.26 deg) + West-edge SW5 (-10.85, -22.00, GPIO9) & SW6 (-10.85, +22.80, GPIO0, C71/C72 50V X7R C307331), (2) <=18.0 mm LiPo on 1.0 mm tape OR >=1.8-2.0 mm VHB/foam standoff for a 20x35 mm cell over 1.55 mm max EVQP7J01P housings, (3) >=20 ms FW debounce, GCC <= 0x40 (0.54 W) continuous worn thermal cap + ADC4 foldback, and which 2 of {SW3..SW6} share POWMAN P1.7 wake, and (4) 4L JLC04161H-7628 ENIG 1U\" + POFV=Yes (~$70-$95 4L bare-PCB POFV lot surcharge) & tag parallelogram-p2-132-usb6-revP1U6."
     }
   ],
   "checks": {
@@ -139,12 +139,12 @@
       "gate": 10
     },
     "p2-132-usb6: ERC, DRC & audits": {
-      "result": "PASS: 0 ERC violations across 5 sheets; 795/795 routed (0 open), 4,921 tracks, 729 vias, 0 locked copper, 0 KiCad DRC errors/warnings/parity (--severity-all), 0 copper_audit defects, 0 thin pad joints (913 SMD pads), plane GND / RP2350 ring / RP2350 band each 1 piece, 0 foreign EP vias, 0 EP paste overlaps",
+      "result": "PASS: 0 ERC violations across 5 sheets; 795/795 routed (0 open), 5,416 tracks, 719 vias, 0 KiCad DRC errors/warnings/parity (--severity-all), 0 copper_audit defects, 0 thin pad joints (913 SMD pads), plane GND / RP2350 ring / RP2350 band each 1 piece, 0 foreign EP vias, 164 via-in-paste overlaps capped flat via POFV=Yes",
       "ok": true,
       "gate": 7
     },
     "p2-132-usb6: sync, stock, CPL & bytecheck": {
-      "result": "PASS: 231 symbols <-> 231 footprints <-> 223 BOM/CPL parts ($13.25/bd @10, 40/40 BOM rows in JLCPCB PCBA stock); Mirrored-Bottom CPL verified 0.00 deg error incl. SW5/SW6 (90 deg); p2-132-usb & p1-66-usb 100% byte-identical (0 mismatches)",
+      "result": "PASS: 231 symbols <-> 231 footprints <-> 223 BOM/CPL parts ($13.26/bd @10, 41/41 BOM rows in JLCPCB PCBA stock incl. C307331 50V X7R); Mirrored-Bottom CPL verified 0.00 deg error incl. rotated BT1 (180 deg, -Y North), SW4 (17.74 deg), SW5/SW6 (90 deg); split PTH (719) + NPTH (2) drills + 98/98 B.Fab & 133/133 F.Fab PDFs; p2-132-usb & p1-66-usb 100% byte-identical",
       "ok": true,
       "gate": 10
     }
@@ -279,7 +279,7 @@
       "href": "viewer/parallelogram-p1-66.html"
     },
     {
-      "label": "Parallelogram p2-132-usb6 (4L, 132x XL-1615 LEDs, USB-C + 6 buttons, $13.25 BOM — 100% routed, 0 DRC) viewer",
+      "label": "Parallelogram p2-132-usb6 (4L, 132x XL-1615 LEDs, USB-C + 6 buttons, $13.26 BOM — 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p2-132-usb6.html"
     },
     {
