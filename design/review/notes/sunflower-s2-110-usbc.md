@@ -1,0 +1,1 @@
+**This is Rev S3C, the parent of S3D.** S3D (above) is being built to fix S3C's failed gates 5–9. If you go with S3D, these S3C sign-offs lapse. Answer them only if you want to order S3C as-is with waivers.
