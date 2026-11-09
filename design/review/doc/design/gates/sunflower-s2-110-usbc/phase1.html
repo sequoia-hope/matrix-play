@@ -1,0 +1,204 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 1: Architecture and Parts — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase1.md'>design/gates/sunflower-s2-110-usbc/phase1.md</a></p><h1>Gate 1: Architecture and Parts — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>passed</code></strong> (<code>100%</code> of <code>34</code> unique BOM LCSC parts <code>lifecycle normal</code> and in stock at JLCPCB; audit bugs fixed in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/drivers-aw20198.md">drivers-aw20198.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/passives.md">passives.md</a>; shared-audit notes &amp; waivers logged in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/datasheet-audit.md">datasheet-audit.md</a>, Phase 1)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block diagram &amp; GPIO map; every block maps to parts</td>
+<td><a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/architecture-s2-110-usbc.md">architecture-s2-110-usbc.md</a> (<code>36</code> BOM lines, <code>34</code> unique LCSC PNs)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Every part audited against its datasheet</td>
+<td>Shared Round Pendant / Parallelogram audits in <code>design/parts/*.md</code> + <code>.claude/skills/pcb-design/chips/rp2350.md</code>, verified against all <code>s2-110-usbc</code> datasheets</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Abs max vs worst-case operating envelope</td>
+<td>Audited across all ICs/LEDs/passives; thermal ceiling synchronized with <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> <code>R19</code></td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Chosen passive/register values calculated</td>
+<td>Fixed <code>AW20198</code> <code>GCR = 0xB9</code> &amp; <code>255/3168</code> duty in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/drivers-aw20198.md">drivers-aw20198.md</a> and <code>≥ 30 ms</code> (<code>6 τ</code>) <code>Q1</code> settle + <code>RP2350-E9</code> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/passives.md">passives.md</a></td>
+<td>passed</td>
+</tr>
+<tr>
+<td>MLCC DC-bias derating</td>
+<td>Verified (<code>22 µF 10 V 0603</code> → <code>~5.5–7.5 µF</code> @ <code>4.4 V</code>; <code>4.7 µF 10 V 0402</code> → <code>~2.1–2.6 µF</code>; <code>1 µF 25 V 0402</code> → <code>~0.60 µF</code>)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Footprints match package mechanical drawings</td>
+<td>All custom footprints in <code>hw/sunflower/s2-110-usbc/lib/round_pendant.pretty/</code> verified against datasheet drawings &amp; EasyEDA models</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Sourcing (<code>jlc_parts.py show</code>)</td>
+<td>Verbatim output below: all <code>34</code> parts <code>lifecycle normal</code>, min stock <code>531</code> (<code>U6</code>), <code>L1</code> (<code>C42411119</code>) = <strong><code>1,520</code></strong></td>
+<td>passed</td>
+</tr>
+<tr>
+<td><a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/datasheets/sources.csv">sources.csv</a></td>
+<td>Present for active/connector/LED parts (passive/family-ID note in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>)</td>
+<td>passed</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Sourcing Check (<code>jlc_parts.py show</code>, <code>2026-11-08</code>)</h2>
+<p>Command:
+<code>python3 .claude/skills/pcb-design/scripts/jlc_parts.py show C177225 C52923 C19702 C1525 C86295 C23733 C1548 C965840 C165948 C42411119 C236117 C2693594 C25905 C25744 C25784 C25891 C25741 C25076 C25105 C25100 C11702 C25900 C25776 C25768 C2828254 C5137654 C42411118 C190862 C15220 C2860046 C15999 C669687 C189624 C20625731</code></p>
+<pre><code class="language-text">C177225 532610271 (MOLEX, SMD,P=1.25mm,Surface Mount,Right Angle): extended, JLC stock 25082, lifecycle normal, checked 2026-11-08
+C52923 CL05A105KA5NQNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 11491606, lifecycle normal, checked 2026-11-08
+C19702 CL10A106KP8NNNC (Samsung Electro-Mechanics, 0603): basic, JLC stock 10270954, lifecycle normal, checked 2026-11-08
+C1525 CL05B104KO5NNNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 34153332, lifecycle normal, checked 2026-11-08
+C86295 CL10A226MP8NUNE (Samsung Electro-Mechanics, 0603): extended, JLC stock 629382, lifecycle normal, checked 2026-11-08
+C23733 CL05A475MP5NRNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 1028445, lifecycle normal, checked 2026-11-08
+C1548 0402CG150J500NT (FH, 0402): basic, JLC stock 1201609, lifecycle normal, checked 2026-11-08
+C965840 XL-1615RGBC-RF (XINGLIGHT, SMD-4P,1.6x1.5mm): extended, JLC stock 715016, lifecycle normal, checked 2026-11-08
+C165948 TYPE-C-31-M-12 (Korean Hroparts Elec, SMD): extended, JLC stock 317338, lifecycle normal, checked 2026-11-08
+C42411119 AOTA-B201610S3R3-101-T (ABRACON, 0806): extended, JLC stock 1520, lifecycle normal, checked 2026-11-08
+C236117 NTZD3155CT1G (onsemi, SOT-563): extended, JLC stock 7923, lifecycle normal, checked 2026-11-08
+C2693594 XYC-PT19C-L1 (NEWOPTO, 0603): extended, JLC stock 25178, lifecycle normal, checked 2026-11-08
+C25905 0402WGF5101TCE (UNI-ROYAL, 0402): basic, JLC stock 4484430, lifecycle normal, checked 2026-11-08
+C25744 0402WGF1002TCE (UNI-ROYAL, 0402): basic, JLC stock 22730938, lifecycle normal, checked 2026-11-08
+C25784 0402WGF3001TCE (UNI-ROYAL, 0402): extended, JLC stock 646716, lifecycle normal, checked 2026-11-08
+C25891 0402WGF3601TCE (UNI-ROYAL, 0402): extended, JLC stock 494270, lifecycle normal, checked 2026-11-08
+C25741 0402WGF1003TCE (UNI-ROYAL, 0402): basic, JLC stock 8749932, lifecycle normal, checked 2026-11-08
+C25076 0402WGF1000TCE (UNI-ROYAL, 0402): basic, JLC stock 11718120, lifecycle normal, checked 2026-11-08
+C25105 0402WGF330JTCE (UNI-ROYAL, 0402): basic, JLC stock 3816349, lifecycle normal, checked 2026-11-08
+C25100 0402WGF270JTCE (UNI-ROYAL, 0402): extended, JLC stock 704950, lifecycle normal, checked 2026-11-08
+C11702 0402WGF1001TCE (UNI-ROYAL, 0402): basic, JLC stock 33681427, lifecycle normal, checked 2026-11-08
+C25900 0402WGF4701TCE (UNI-ROYAL, 0402): basic, JLC stock 15717176, lifecycle normal, checked 2026-11-08
+C25776 0402WGF3002TCE (UNI-ROYAL, 0402): extended, JLC stock 5297459, lifecycle normal, checked 2026-11-08
+C25768 0402WGF2202TCE (UNI-ROYAL, 0402): basic, JLC stock 1043891, lifecycle normal, checked 2026-11-08
+C2828254 EVQP7J01P (PANASONIC, SMD,3.6x3.5mm): extended, JLC stock 6887, lifecycle normal, checked 2026-11-08
+C5137654 AW20198QNR (AWINIC(Shanghai Awinic Tech), QFN-40L(5x5)): extended, JLC stock 6055, lifecycle normal, checked 2026-11-08
+C42411118 RP2350A (Raspberry Pi, QFN-60-EP(7x7)): extended, JLC stock 3225, lifecycle normal, checked 2026-11-08
+C190862 W25Q128JVPIQ (Winbond, WSON-8-EP(5x6)): extended, JLC stock 12788, lifecycle normal, checked 2026-11-08
+C15220 BQ24073RGTR (TI, QFN-16-EP(3x3)): extended, JLC stock 862, lifecycle normal, checked 2026-11-08
+C2860046 TPS7A0233PDQNR (TI, X2-SON-4-EP(1x1)): extended, JLC stock 531, lifecycle normal, checked 2026-11-08
+C15999 USBLC6-2P6 (ST, SOT-666-6): extended, JLC stock 20214, lifecycle normal, checked 2026-11-08
+C669687 XB9901A (XySemi, DFNFC-6(1.4x1.8)): extended, JLC stock 2947, lifecycle normal, checked 2026-11-08
+C189624 LIS2DW12TR (ST, LGA-12(2x2)): extended, JLC stock 51888, lifecycle normal, checked 2026-11-08
+C20625731 ABM8-272-T3 (ABRACON, SMD3225-4P): extended, JLC stock 9607, lifecycle normal, checked 2026-11-08
+</code></pre>
+<h2>Independent Reviews (<code>2026-11-08</code>, two fresh-context <code>agy</code> reviewers: <code>1A</code> Drivers/LEDs, <code>1B</code> Variant I/O &amp; Passives)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Reviewer</th>
+<th>Severity</th>
+<th>Finding</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1A-B1</code>, <code>1B-MAJOR-3</code></td>
+<td>BLOCKER / MAJOR</td>
+<td>Uncapped <code>300 mA</code> (<code>95 °C</code> @ <code>40 °C</code> ambient) violates <code>EVQP7J01P</code> (<code>+70 °C</code>), <code>J1</code> (<code>+80 °C</code>), and <code>+85 °C</code> LED/driver/X5R limits</td>
+<td>Fixed in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> (<code>0–35 °C</code> ambient + <code>ADC4</code> <code>GCC</code> thermal caps keeping board <code>≤ 48–50 °C</code> battery / <code>≤ 45 °C</code> charging)</td>
+</tr>
+<tr>
+<td><code>1B-BLOCKER-1</code></td>
+<td>BLOCKER</td>
+<td><code>Q2</code> (<code>XYC-PT19C-L1</code>, <code>xyc-pt19c-l1.pdf</code> p. 8) mislabels pins <code>(1) Anode / (2) Cathode</code>, leaving Collector/Emitter polarity ambiguous</td>
+<td><strong>Disputed with proof (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>):</strong> Rendered internal leadframe die-paddle drawings in <code>xyc-pt19c-l1.pdf</code> p. 8 (<code>xyc_pt19-08.png</code>) vs <code>als-pt19.pdf</code> p. 3 (<code>als_pt19-03.png</code>) plus EasyEDA <code>C2693594</code> pad map: both mount the NPN silicon substrate (Collector) on <strong>Pin 1 (<code>Mark</code> side)</strong> and bond the top emitter wire to <strong>Pin 2</strong>, matching <code>mcu.kicad_sch</code> (<code>1 = LIGHT_PWR</code>, <code>2 = LIGHT</code>) with <code>0.000 mm</code> CPL error</td>
+</tr>
+<tr>
+<td><code>1A-M1</code></td>
+<td>MAJOR</td>
+<td><a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/drivers-aw20198.md">drivers-aw20198.md</a> cited <code>GCR.LGC</code> as bit 7 (<code>0x81</code> disables <code>SW10–SW11</code> and leaves <code>LGC = 0</code>!) instead of bit 3 (<code>0xB9</code>)</td>
+<td><strong>Fixed</strong> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/drivers-aw20198.md#L32">drivers-aw20198.md</a>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a>, and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>: mandated <code>12 mA</code> pad drive on <code>GPIO4/5</code> followed by <strong><code>GCR = 0xB9</code></strong></td>
+</tr>
+<tr>
+<td><code>1B-MAJOR-6</code></td>
+<td>MAJOR</td>
+<td><a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/passives.md">passives.md</a> specified <code>≥ 5 ms</code> (<code>1 τ</code>) settle for <code>Q1</code> <code>VBAT</code> divider (<code>36.8%</code> / <code>1.55 V</code> error!)</td>
+<td><strong>Fixed</strong> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/passives.md#L24">passives.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>: mandated <strong><code>≥ 30 ms</code> (<code>6 τ</code>)</strong> + <code>PDE = 0, IE = 0</code> on <code>GPIO26/27</code></td>
+</tr>
+<tr>
+<td><code>1A-M4</code>, <code>1B-MAJOR-1</code></td>
+<td>MAJOR</td>
+<td><code>Q2</code> <strong>1× reflow limit</strong> (<code>235–245 °C</code>) &amp; <code>XL-1615</code> <code>240 ± 5 °C</code> rec peak vs double-sided PCBA</td>
+<td>Fixed in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> &amp; <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md">brief-s2-110-usbc.md</a>: <code>Pass 1 = B.Cu</code>, <code>Pass 2 = F.Cu</code> (<code>≤ 245 °C</code>, zero mechanical touch on hot LED epoxy)</td>
+</tr>
+<tr>
+<td><code>1A-M2</code></td>
+<td>MAJOR</td>
+<td><code>SW</code> PMOS drop is <code>208 mV</code> @ <code>200 mA</code> (<code>3.81–3.91 V</code> max-bin G/B compliance knee)</td>
+<td>Fixed in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> Risk #5 and quantified in Phase 8 (<a href="../../sim/sunflower-s2-110-usbc/pdn_headroom.png">pdn_headroom.png</a>)</td>
+</tr>
+<tr>
+<td><code>1A-M3</code></td>
+<td>MAJOR</td>
+<td>Shared <code>C35 = 100 nF</code> on <code>LED_SDB</code> (<code>GPIO6</code>) vs datasheet <code>1 µF</code> per <code>EN</code> pin</td>
+<td>Waived for <code>Rev S3C</code> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>): <code>EN</code> is a digital CMOS enable (<code>R31 = 100 kΩ</code> pull-down); <code>100 nF</code> (<code>τ ≈ 2.5 ns</code> pad-limited) filters noise cleanly without excessive <code>GPIO6</code> capacitive surge</td>
+</tr>
+<tr>
+<td><code>1A-M5</code></td>
+<td>MAJOR</td>
+<td><a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/drivers-aw20198.md">drivers-aw20198.md</a> duty formula (<code>244/275.5</code> typo) &amp; MLCC derating notes</td>
+<td>Fixed exact <code>15.9375 / 198 = 255 / 3168 = 0.08049</code> formula in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/drivers-aw20198.md#L30">drivers-aw20198.md</a>; MLCC derating verified in Phase 8</td>
+</tr>
+<tr>
+<td><code>1B-MAJOR-2</code></td>
+<td>MAJOR</td>
+<td><code>Q2</code> (<code>850 nm</code> NIR) saturates <code>R43 = 22 kΩ</code> at <code>293–439 lx</code></td>
+<td>Updated <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> <code>R6</code>; drop-in <code>ALS-PT19</code> (<code>C146233</code>) or <code>R43 = 10 kΩ</code> noted if daylight range needed</td>
+</tr>
+<tr>
+<td><code>1B-MAJOR-4, 5</code></td>
+<td>MAJOR</td>
+<td><code>molex-53261-0271.pdf</code> defers electricals to <code>PS-51021-024</code>; <code>BT1</code> symbol <code>Conn_01x02</code> leaves mechanical <code>MP</code> nails un-netted</td>
+<td>Recorded in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>: Molex PicoBlade <code>53261</code> series rating (<code>1.0 A</code> w/ <code>#26 AWG</code>, <code>-40..+85 °C</code>) exceeds <code>328 mA</code> charge / <code>220 mA</code> capped cont. load; <code>MP</code> solder nails are mechanically isolated from pins 1–2</td>
+</tr>
+<tr>
+<td><code>1A-m1..m4</code>, <code>1B-MINOR-1..6</code></td>
+<td>MINOR</td>
+<td><code>AW20198</code> <code>0.60 mm</code> pad length (<code>0.30 mm</code> EP gap, passes DRC), <code>2 ms</code> POR wait, <code>RP2350-E9</code> <code>IE=0</code> list, <code>Q1</code> <code>2 µA</code> max <code>IDSS</code>, shared-audit <code>s2-110-usbc</code> pin deltas</td>
+<td>Documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/architecture-s2-110-usbc.md">architecture-s2-110-usbc.md</a>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>, and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a></td>
+</tr>
+</tbody>
+</table></div></div></body></html>

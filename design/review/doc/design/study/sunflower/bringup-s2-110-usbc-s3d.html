@@ -1,0 +1,212 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Bench Bring-Up &amp; Smoke-Test Plan — Sunflower s2-110-usbc-s3d (Rev S3D)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc-s3d.md'>design/study/sunflower/bringup-s2-110-usbc-s3d.md</a></p><h1>Bench Bring-Up &amp; Smoke-Test Plan — Sunflower <code>s2-110-usbc-s3d</code> (Rev S3D)</h1>
+<p>Board: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc-s3d/sunflower.kicad_pcb">sunflower.kicad_pcb</a> (<code>Ø38.0 mm</code>, 4-layer <code>In2.Cu</code> <code>GND</code>, <code>ENIG</code>, <code>110× XL-1615RGBC-RF</code> + <code>2× AW20198QNR</code> + <code>RP2350A</code> + full-SMT <code>TYPE-C-31-M-22</code>).
+Parent plan: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a> (<code>Rev S3C</code>).
+Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc-s3d/bringup-map-bottom.png">bringup-map-bottom.png</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc-s3d/assembly-bottom.png">assembly-bottom.png</a>.</p>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Perform all Steps 1–7 BEFORE bonding a <code>403535</code> LiPo pouch to <code>B.Cu</code>.</strong> Thirteen of the <code>14</code> bare <code>Ø1.0 mm</code> test pads lie inside the <code>Ø35 mm</code> battery envelope; once bring-up passes, apply <strong><code>0.05 mm</code> Kapton tape</strong> over <code>B.Cu</code> exposed test pads and provide a <strong><code>≥ 2.4 mm</code> insulating foam/carrier standoff</strong> so the pouch clears <code>J1</code> (<code>3.26 mm</code>) and mated <code>BT1</code> (<code>3.40 mm</code>).</p>
+</blockquote>
+<hr />
+<h2>What <code>Rev S3D</code> Simplifies vs <code>Rev S3C</code> During Bring-Up</h2>
+<ol>
+<li><strong>Zero manual soldering on <code>J1</code>:</strong> <code>J1</code> (<code>TYPE-C-31-M-22</code>, <code>C530612</code>) has four gull-wing SMD shell pads reflowed automatically in Pass 1 (<code>B.Cu</code>) with <code>0</code> PTH slots near <code>F.Cu</code> LEDs — no microscope hand-tacking is required before plugging in USB-C.</li>
+<li><strong>Unoccluded <code>B.SilkS</code> polarity &amp; net labels:</strong> <code>BT1</code>'s <code>"+"</code>, <code>"-"</code>, and <code>"BATT 3.7V"</code> markers and <code>J1</code>'s <code>"USB 5V"</code> marker sit clearly outside the assembled connector housings, and Molex's restricted housing area + <code>0.20 mm</code> <code>BATTERY</code> clearance eliminate <code>Rev S3C</code>'s <code>0.107 mm</code> <code>VBAT</code>-to-<code>BT1.2</code> via hazard.</li>
+<li><strong>Full <code>4</code>-bit Quad-SPI (<code>0xEB</code>) XIP at up to <code>75 MHz</code>:</strong> Moving <code>C22</code> (<code>100 nF</code>) right beside <code>U4.8</code> (<code>1.40 mm</code> pad-to-pad over <code>0.2104 mm</code> <code>In2.Cu</code> <code>GND</code>) eliminates <code>Rev S3C</code>'s <code>1x/2x</code> SPI XIP fallback.</li>
+<li><strong>Hardware Board ID = <code>4</code> (<code>0b100</code>):</strong> <code>NT1</code> (<code>GPIO19 → GND</code>) and <code>NT2</code> (<code>GPIO20 → GND</code>) strap <code>s2-110-usbc-s3d</code> to <strong><code>ID = 4</code></strong> (<code>S3C = 6</code>, <code>pn-dense = 5</code>, <code>pn-dense-1d = 3</code>).</li>
+</ol>
+<hr />
+<h2>1. Test-Pad &amp; Probe Reference (<code>B.Cu</code>, Board-Centre <code>(0, 0)</code> Coordinates)</h2>
+<p>Note: <code>TP9</code> and <code>TP10</code> do not exist (<code>14</code> test pads total: <code>TP1..TP8</code>, <code>TP11..TP16</code>). Coordinates <code>(x, y)</code> below are KiCad top-view (<code>F.Cu</code>) board-centre coordinates; <strong>when viewing <code>B.Cu</code> directly as in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc-s3d/bringup-map-bottom.png">bringup-map-bottom.png</a>, horizontal X is mirrored (<code>-x</code> appears on the right, <code>+x</code> on the left).</strong> You may clip <code>GND</code> either on <code>TP8</code> or on <strong><code>J1</code>'s SMD metal USB-C shield shell</strong> at <code>(0.0, +14.17 mm)</code>.</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Net</th>
+<th><code>(x, y)</code> (<code>mm</code>)</th>
+<th>Expected Unpowered Resistance to <code>GND</code></th>
+<th>Expected Powered Voltage / Signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TP8</code></td>
+<td><code>GND</code></td>
+<td><code>(-16.30, +0.79)</code></td>
+<td><code>0.0 Ω</code> (<code>&lt; 0.2 Ω</code> to <code>J1</code> shell)</td>
+<td><code>0.000 V</code> reference</td>
+</tr>
+<tr>
+<td><code>TP13</code></td>
+<td><code>VBUS</code></td>
+<td><code>(+7.20, +16.00)</code></td>
+<td><code>&gt; 100 kΩ</code> (<code>C1</code> <code>1 µF</code>)</td>
+<td><strong><code>4.75–5.25 V</code></strong> on USB-C attach (<code>0.0 V</code> battery-only)</td>
+</tr>
+<tr>
+<td><code>TP3</code></td>
+<td><code>VBAT</code></td>
+<td><code>(+8.11, +8.95)</code></td>
+<td><code>&gt; 1 MΩ</code> (<code>Q1</code> off; <code>C5</code> <code>10 µF</code>)</td>
+<td><strong><code>3.55–4.20 V</code></strong> with LiPo (<code>~0–4.2 V</code> charger float without LiPo)</td>
+</tr>
+<tr>
+<td><code>TP1</code></td>
+<td><code>VSYS</code></td>
+<td><code>(+7.40, +4.30)</code></td>
+<td><code>&gt; 50 kΩ</code> (<code>~68 µF</code> MLCC ramp)</td>
+<td><strong><code>4.30–4.50 V</code></strong> (<code>4.40 V</code> typ) on USB; <strong><code>VBAT - &lt;0.05 V</code></strong> on battery</td>
+</tr>
+<tr>
+<td><code>TP2</code></td>
+<td><code>+3V3</code></td>
+<td><code>(+6.23, -6.55)</code></td>
+<td><code>&gt; 50 kΩ</code> (<code>~20 µF</code> MLCC ramp)</td>
+<td><strong><code>3.250–3.350 V</code></strong> (<code>TPS7A0233</code> <code>±1.5%</code>)</td>
+</tr>
+<tr>
+<td><code>TP4</code></td>
+<td><code>+1V1</code></td>
+<td><code>(+6.25, -4.40)</code></td>
+<td><code>&gt; 10 kΩ</code> (<code>~19 µF</code> MLCC ramp)</td>
+<td><strong><code>1.067–1.133 V</code></strong> (<code>RP2350A</code> internal buck <code>1.10 V ±3%</code>)</td>
+</tr>
+<tr>
+<td><code>TP5</code></td>
+<td><code>/MCU/RUN</code></td>
+<td><code>(+3.07, -17.07)</code></td>
+<td><code>&gt; 100 kΩ</code></td>
+<td><strong><code>3.25–3.33 V</code></strong> (pull to <code>GND</code> to reset <code>RP2350A</code>)</td>
+</tr>
+<tr>
+<td><code>TP6</code></td>
+<td><code>/MCU/SWCLK</code></td>
+<td><code>(+6.90, -13.80)</code></td>
+<td>High-Z</td>
+<td>SWD clock (<code>RP2350</code> debug)</td>
+</tr>
+<tr>
+<td><code>TP7</code></td>
+<td><code>/MCU/SWDIO</code></td>
+<td><code>(+9.07, -14.41)</code></td>
+<td>High-Z</td>
+<td>SWD data (<code>RP2350</code> debug)</td>
+</tr>
+<tr>
+<td><code>TP11</code></td>
+<td><code>I2C_SDA</code></td>
+<td><code>(+8.85, +15.05)</code></td>
+<td><strong><code>~1.0 kΩ</code></strong> to <code>TP2</code> (<code>+3V3</code> via <code>R21</code>)</td>
+<td><strong><code>3.30 V</code> idle</strong>; <code>1 MHz</code> Fm+ I2C (<code>0x20</code> <code>U1</code>, <code>0x25</code> <code>U2</code>)</td>
+</tr>
+<tr>
+<td><code>TP12</code></td>
+<td><code>I2C_SCL</code></td>
+<td><code>(+10.50, +13.80)</code></td>
+<td><strong><code>~1.0 kΩ</code></strong> to <code>TP2</code> (<code>+3V3</code> via <code>R22</code>)</td>
+<td><strong><code>3.30 V</code> idle</strong>; <code>1 MHz</code> Fm+ I2C clock</td>
+</tr>
+<tr>
+<td><code>TP14</code></td>
+<td><code>/MCU/UART_TX</code></td>
+<td><code>(+10.50, -4.60)</code></td>
+<td>High-Z</td>
+<td><code>GPIO24</code> UART1 TX (<code>3.3 V</code> logic)</td>
+</tr>
+<tr>
+<td><code>TP15</code></td>
+<td><code>/MCU/UART_RX</code></td>
+<td><code>(+10.90, -6.90)</code></td>
+<td>High-Z</td>
+<td><code>GPIO25</code> UART1 RX (<code>3.3 V</code> logic)</td>
+</tr>
+<tr>
+<td><code>TP16</code></td>
+<td><code>/MCU/GPIO29_TP</code></td>
+<td><code>(+10.75, -9.75)</code></td>
+<td>High-Z</td>
+<td><code>GPIO29 / ADC3</code> spare</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>2. Unpowered Visual &amp; Ohmmeter Inspection (Step 1)</h2>
+<ol>
+<li><strong>Microscope visual check (<code>B.Cu</code> &amp; <code>F.Cu</code>):</strong>
+   - Confirm <strong><code>J1</code> (<code>TYPE-C-31-M-22</code>)</strong> overhangs the South rim by <code>~0.33 mm</code> with clean fillets on all <code>12</code> rear signal/power pads and all <strong><code>4</code> <code>B.Cu</code> gull-wing SMD shell tabs</strong>.
+   - Confirm <strong><code>BT1</code></strong> (<code>NW</code> rim) has clean fillets and visible <code>"+"</code> (North/NE pad <code>1</code> = <code>VBAT</code>) and <code>"-"</code> (South/SW pad <code>2</code> = <code>/Power/BAT_N</code>) silkscreen markers outside its body.
+   - Confirm <strong><code>L1</code></strong> (<code>3.3 µH</code>) polarity mark faces <strong>West</strong> (<code>+1V1</code> / <code>C18</code> side, pad 1), and all QFNs (<code>U1, U2, U3, U5</code>) sit flat on their paste-free thermal-via pads.</li>
+<li><strong>Cold continuity &amp; resistance checks (<code>&lt; 0.5 V</code> DMM resistance mode on <code>Ø1.0 mm</code> test pads &amp; <code>0402</code> pads only — never probe <code>0.40 mm</code>-pitch QFN pins):</strong>
+   - Verify <strong>no rail shorts</strong> between <code>TP8</code>/<code>J1-shell</code> (<code>GND</code>) and <code>TP13</code> (<code>VBUS</code>), <code>TP3</code> (<code>VBAT</code>), <code>TP1</code> (<code>VSYS</code>), <code>TP2</code> (<code>+3V3</code>), and <code>TP4</code> (<code>+1V1</code>).
+   - Verify <code>BT1.1</code> ↔ <code>BT1.2</code> resistance is <code>&gt; 1 MΩ</code>.
+   - Verify USB-C <code>Rd</code> pull-downs: <code>R1 = 5.1 kΩ ±1%</code> and <code>R2 = 5.1 kΩ ±1%</code> to <code>GND</code>.</li>
+</ol>
+<hr />
+<h2>3. Current-Limited USB-C First Power-Up (No Battery Attached, Steps 2–4)</h2>
+<ol>
+<li><strong>Step 2 — Current-limited <code>5.0 V / 100 mA</code> apply via USB-C breakout:</strong> Expect <strong><code>12–28 mA</code></strong> in blank-flash ROM USB boot (<code>U5</code> cold-starts in <code>USB100</code> until <code>+3V3</code> enables <code>EN1</code>).</li>
+<li><strong>Step 3 — Rail &amp; clock verification:</strong>
+   - <code>TP13</code> (<code>VBUS</code>) = <strong><code>4.90–5.05 V</code></strong>
+   - <code>TP1</code> (<code>VSYS</code>) = <strong><code>4.30–4.50 V</code></strong> (<code>4.40 V</code> typ)
+   - <code>TP2</code> (<code>+3V3</code>) = <strong><code>3.250–3.350 V</code></strong> (<code>&lt; 10 mVpp</code> ripple)
+   - <code>TP4</code> (<code>+1V1</code>) = <strong><code>1.067–1.133 V</code></strong> (<code>&lt; 20 mVpp</code> ripple)
+   - <code>C24</code> pad <code>1</code> (<code>10×</code> <code>&lt; 10 pF</code> probe): <strong><code>12.000 MHz</code></strong> oscillation (<code>~0.8–1.8 Vpp</code>).</li>
+<li><strong>Step 4 — USB Full-Speed enumeration &amp; <code>SW2</code> (<code>BOOTSEL</code>):</strong> Verify <code>2e8a:000f Raspberry Pi RP2350 Boot</code> on host PC, and confirm holding <code>SW2</code> (<code>"BOOT"</code>) while pulsing <code>TP5</code> (<code>RUN</code>) low re-enters USB boot mode.</li>
+</ol>
+<hr />
+<h2>4. Firmware Smoke-Test Sequence &amp; Mandatory Register Rules (Steps 5–6)</h2>
+<blockquote>
+<p>[!CAUTION]
+<strong>Mandatory firmware rules on <code>s2-110-usbc-s3d</code>:</strong>
+1. <strong><code>GPIO4</code> / <code>GPIO5</code> (<code>I2C0</code>) pad drive = <code>12 mA</code> BEFORE first <code>AW20198</code> write</strong> (<code>VOL ≤ 0.14 V</code> across <code>1 kΩ</code> <code>R21/R22</code>, meeting POR <code>LGC = 0</code> <code>VIL ≤ 0.40 V</code>).
+2. <strong><code>AW20198</code> <code>GCR</code> (<code>0x00</code>, Page 0) = <code>0xB9</code></strong> (<code>LGC = 1</code> bit 3 for <code>3.3 V</code> thresholds, <code>SWSEL = 1011</code> for <code>SW1..SW11</code>, <code>CHIPEN = 1</code>).
+3. <strong>ADC &amp; sleep pad hygiene:</strong> Set <code>OD = 1, IE = 0, PDE = 0, PUE = 0</code> on <code>GPIO26</code> (<code>ADC0</code>) and <code>GPIO27</code> (<code>ADC1</code>), clear <code>PDE = 0, PUE = 0, IE = 0</code> on unused/strapped GPIOs (<code>GPIO0, 7..9, 14..23</code>, erratum <code>RP2350-E9</code>), drive <code>GPIO6</code> (<code>LED_SDB</code>) actively low/high, and wait <strong><code>≥ 30 ms</code> (<code>6 τ</code>)</strong> after asserting <code>GPIO28 = 1</code> (<code>VBAT_EN</code>) before sampling <code>ADC0</code>.
+4. <strong>Active <code>ADC4</code> thermal cap:</strong> Cap continuous full-white <strong><code>GCC ≤ 105</code></strong> on pouch-backed battery (<code>R_th ≈ 35 K/W → ≤ 48 °C</code> skin / <code>&lt; 60 °C</code> LiPo / <code>&lt; 70 °C</code> <code>EVQP7J01P</code>) and <strong><code>GCC ≤ 9</code> CC (<code>0</code> at low-bat CC, <code>≤ 24</code> CV taper)</strong> whenever <strong><code>(GPIO13 ~{PGOOD} == 0) || (GPIO12 ~{CHG} == 0)</code></strong> (<code>≤ 45 °C</code> LiPo charge limit with fixed <code>10 kΩ</code> <code>TS</code>). <em>(Note: <code>4</code>-bit Quad-SPI <code>0xEB</code> XIP up to <code>75 MHz</code> is fully supported in hardware on <code>Rev S3D</code> thanks to <code>C22</code> at <code>U4.8</code>.)</em></p>
+</blockquote>
+<h3>Smoke-Test Checklist</h3>
+<ol>
+<li><strong>Board ID (<code>GPIO19..21</code> with internal pull-ups enabled at boot):</strong> Read <code>(GPIO21&lt;&lt;2)|(GPIO20&lt;&lt;1)|GPIO19</code> → expect <strong><code>4</code> (<code>0b100</code>)</strong>, then disable pull-ups and clear <code>IE = 0</code> on <code>GPIO19..21</code>.</li>
+<li><strong><code>I2C1</code> (<code>GPIO2/3</code>, <code>400 kHz</code>) accelerometer (<code>U9</code> <code>LIS2DW12</code> at <code>0x19</code>):</strong> Read <code>WHO_AM_I</code> (<code>0x0F</code>) → <strong><code>0x44</code></strong>.</li>
+<li><strong><code>I2C0</code> (<code>GPIO4/5</code>, <code>1 MHz</code>; <code>GPIO6 LED_SDB = 1</code>, wait <code>2 ms</code>):</strong> Confirm ACK at <code>0x20</code> (<code>U1</code>) and <code>0x25</code> (<code>U2</code>), write <code>GCR = 0xB9, GCC = 0x40</code>, and walk R/G/B across <code>D1..D110</code> (<code>330</code> dies).</li>
+<li><strong>Button <code>SW1</code> (<code>"USER"</code>, <code>GPIO11</code>) &amp; light sensor <code>Q2</code> (<code>GPIO1</code> → <code>GPIO27/ADC1</code>, <code>15 ms</code> settle):</strong> Confirm active-low press on <code>SW1</code> and dark <code>&lt; 0.15 V</code> vs lamp <code>1.0–2.9 V</code> response on <code>ADC1</code>.</li>
+</ol>
+<hr />
+<h2>5. LiPo Battery Attach, <code>XB9901A</code> Wake &amp; Deep-Sleep Check (Step 7)</h2>
+<ol>
+<li><strong>Verify plug polarity against <code>B.SilkS</code> <code>"+"</code> / <code>"-"</code> markers:</strong> Red (<code>+</code>) to <code>BT1</code> Pin 1 (<code>"+"</code>, North/NE pad); Black (<code>-</code>) to <code>BT1</code> Pin 2 (<code>"-"</code>, South/SW pad).</li>
+<li><strong>First-attach <code>XB9901A</code> (<code>U8</code>) wake:</strong> Attach USB-C (<code>J1</code>) briefly (<code>1–2 s</code>) if <code>TP3</code> initially reads <code>0.0 V</code> on first cell mate; verify <code>TP3</code> holds <code>VBAT</code> (<code>3.7–4.2 V</code>) after USB unplug.</li>
+<li><strong>Charge current (<code>263–328 mA</code> via <code>R4 = 3.0 kΩ</code>) &amp; <code>ADC0</code> telemetry (<code>±50 mV</code> vs <code>TP3</code>):</strong> Verify on USB <code>5.0 V / 500 mA</code> with <code>LED_SDB = 0</code>.</li>
+<li><strong>Deep-sleep current (<code>intent</code> <code>R17</code>):</strong> Feed <code>3.70 V</code> via µA meter / PPK2 into <code>BT1</code>, wake <code>U8</code>, unplug USB-C, enter dormant sleep → confirm <strong><code>≤ 85 µA</code> typ (<code>68–85 µA</code> expected, <code>≤ 135 µA</code> max)</strong>.</li>
+</ol></div></body></html>

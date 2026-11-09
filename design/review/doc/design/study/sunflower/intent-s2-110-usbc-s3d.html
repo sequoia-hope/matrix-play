@@ -1,0 +1,341 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Design intent: Sunflower s2-110-usbc-s3d (Rev S3D)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc-s3d.md'>design/study/sunflower/intent-s2-110-usbc-s3d.md</a></p><h1>Design intent: Sunflower <code>s2-110-usbc-s3d</code> (Rev S3D)</h1>
+<p>Phase 0 specification for <code>hw/sunflower/s2-110-usbc-s3d/</code>. Every item has a concrete number or an explicit <strong>"don't care"</strong>.
+Parent design: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> (<code>Rev S3C</code>), <code>design/intent.md</code> (Round Pendant), and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/README.md">README.md</a>. Items marked <strong>(open — user sign-off)</strong> require user confirmation at Gate 0.</p>
+<h2>Purpose</h2>
+<p><code>Rev S3D</code> respin of the low-cost 4-layer, <code>38.0 mm</code> round wearable RGB LED display (<code>s2-110-usbc</code>), resolving all Gate 5–10 findings from <code>Rev S3C</code> while replacing the hybrid through-hole-shell USB-C receptacle with the <strong>full-SMT HRO <code>TYPE-C-31-M-22</code> (<code>C530612</code>)</strong>. Built exclusively from parts in local JLCPCB PCBA stock with standard non-filled through vias (no POFV). The front carries <code>110</code> <code>XL-1615RGBC-RF</code> RGB LEDs in a golden-angle Vogel spiral starting with <code>D1</code> at <code>(0, 0)</code> plus a 12-o'clock top-rim ambient light sensor (<code>Q2</code>). All control, power, charging, motion sensing, bring-up test pads, and connectors sit on <code>B.Cu</code>, backed by a <code>35 mm</code> round <code>403535</code> LiPo cell plugged into a right-angle Molex PicoBlade <code>1.25 mm</code> socket (<code>BT1</code>). Charges and takes firmware over <code>J1</code>, runs animations from an <code>RP2350A</code> with full <code>4</code>-bit Quad-SPI XIP (<code>≤ 75 MHz</code>), and sleeps at <code>≤ 85 µA</code> typ (<code>≤ 135 µA</code> worst-case max in standby, or <code>≤ 95 µA</code> with <code>W25Q128JV</code> <code>0xB9</code> deep power-down) until woken by a side button (<code>SW1</code>) or accelerometer motion (<code>U9</code>). Intended for personal use and small prototype runs.</p>
+<h2>Open source or confidential</h2>
+<p>Open source (<code>CERN-OHL-P-2.0</code>), public GitHub repository <code>https://github.com/sequoia-hope/round-pendant</code>, KiCad 9, Boardroom project layout. Front display carries no text; board revision/repo identity on back silkscreen is <strong>don't care</strong> where displaced by functional connector/test-pad labels (tracked via schematic/PCB title block and <strong><code>BOARD_ID = 4</code></strong> hardware strap via <code>NT1</code> on <code>GPIO19</code> and <code>NT2</code> on <code>GPIO20</code>; <strong>(open — user sign-off)</strong>).</p>
+<h2>Requirements</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Requirement</th>
+<th>Value</th>
+<th>Checked at</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1</td>
+<td>Outline</td>
+<td>Circle, <code>38.0 mm</code> diameter (<code>±0.2 mm</code> fab tolerance), zero mounting holes</td>
+<td><code>Edge.Cuts</code>, Gate 4</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>LED count &amp; spiral</td>
+<td><code>110</code> RGB LEDs (<code>D1</code>–<code>D110</code>) on <code>F.Cu</code> in a golden-angle (<code>137.508°</code>) Vogel spiral within <code>r ≤ 17.211 mm</code> (<code>D44</code> outermost at <code>17.211 mm</code>, <code>D110</code> at <code>16.461 mm</code>; <code>0.626 mm</code> min rotated pad-corner clearance to <code>Edge.Cuts</code>), <code>D1</code> at exact centre <code>(0.00, 0.00 mm)</code>, courtyard-relaxed (<code>2.0 × 1.9 mm</code> courtyards, <code>1.951 mm</code> min / <code>2.688 mm</code> mean nearest-neighbour centre spacing), clearing <code>J1</code>'s <code>2 × Ø0.65 mm</code> NPTH locating holes (<code>0.317 mm</code> to <code>D7.4</code>, <code>0.585 mm</code> to <code>D107.2</code>) and <code>Q2</code>'s top-rim keepout (<code>r = 2.50 mm</code> around <code>(0, −18.20 mm)</code>)</td>
+<td><code>config.py</code>, Gate 4, Gate 6</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>LED part</td>
+<td>XINGLIGHT <code>XL-1615RGBC-RF</code>, <code>1.6 × 1.5 × 0.6 mm</code> (<code>0.60 ± 0.25 mm</code> height) SMD-4, LCSC <code>C965840</code> (<code>Pin 2 = Anode</code>, <code>1 = R</code>, <code>3 = G</code>, <code>4 = B</code>; CPL rotation <code>+180°</code> vs datasheet top view)</td>
+<td><code>parts/leds-xl1615.md</code>, Gate 1, Gate 10</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>LED drivers</td>
+<td><code>2 ×</code> Shanghai Awinic <code>AW20198QNR</code>, QFN-40 <code>5 × 5 mm</code> (<code>3.4 × 3.4 mm</code> solid exposed <code>GND</code> pad with <code>5</code> paste-free thermal vias each), LCSC <code>C5137654</code>. Each drives <code>5</code> wedges × <code>11</code> SW = <code>55</code> RGB LEDs (<code>15 CS × 11 SW = 165</code> dots; <code>CS16</code>–<code>CS18</code> unused <code>NC</code>)</td>
+<td><code>parts/drivers-aw20198.md</code>, Gate 1, Gate 2, Gate 7</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>Driver control</td>
+<td>Shared <code>I2C0</code> (<code>GPIO4</code> SDA, <code>GPIO5</code> SCL) at up to <code>1 MHz</code> (<code>1 kΩ</code> pull-ups <code>R21</code>, <code>R22</code> to <code>+3V3</code>). 7-bit addresses <code>0x20</code> (<code>U1</code>: <code>AD1 = AD0 = GND</code>) and <code>0x25</code> (<code>U2</code>: <code>AD1 = AD0 = VSYS</code>). Shared active-high <code>EN</code> (<code>LED_SDB</code> on <code>GPIO6</code>, <code>100 kΩ</code> pull-down <code>R31</code> + <code>100 nF</code> <code>C35</code>); <code>SYNC</code> floating (<code>NC</code>, internal <code>1 MΩ</code> pull-down). Full 2-driver PWM update (<code>2 × 200</code> to <code>2 × 203</code> bytes incl. page write) takes <code>≈ 3.63–3.84 ms</code> at <code>1 MHz</code> (<code>≥ 60 fps</code> at <code>~23%</code> bus load). Firmware sets <code>GPIO4/5</code> pad drive to <strong><code>12 mA</code></strong> (<code>VOL ≤ 0.14 V</code> at <code>3.4 mA</code>, meeting <code>LGC = 0</code> <code>VIL ≤ 0.40 V</code> at boot) <strong>before</strong> writing <strong><code>GCR = 0xB9</code></strong> (<code>LGC = 1</code> bit 3: <code>VIL = 0.6 V</code>, <code>VIH = 2.4 V</code>; <code>SWSEL = 1011</code>; <code>CHIPEN = 1</code>)</td>
+<td>Gate 1, Gate 2, firmware</td>
+</tr>
+<tr>
+<td>R6</td>
+<td>Ambient light sensor</td>
+<td>Newopto <code>XYC-PT19C-L1</code> (<code>0603</code> unfiltered silicon phototransistor, <code>λp = 850 nm</code> NIR, LCSC <code>C2693594</code>; land-pattern compatible with photopic <code>ALS-PT19</code> <code>C146233</code>, with Gate 10 JLCPCB 3D/DFM + first-article DMM illumination check required to verify <code>Pin 1 = Collector</code> orientation per <code>xyc-pt19c-l1.pdf</code> pp. 6, 8) on <code>F.Cu</code> at 12-o'clock rim <code>(0.00, −18.20 mm, 0°)</code>. Collector driven by <code>GPIO1</code> (<code>LIGHT_PWR</code>, <code>0 µA</code> sleep draw); emitter to <code>GPIO27/ADC1</code> (<code>LIGHT</code>) with <code>R43 = 22 kΩ</code> and <code>C70 = 100 nF</code> (<code>τ = 2.2 ms</code>, linear range <code>~5–293 lx</code> min / <code>~440 lx</code> typ under <code>2856 K</code> tungsten or <code>~1500–3000 lx</code> under NIR-free white LEDs before <code>VCE(sat)</code>)</td>
+<td><code>parts/drivers-aw20198.md</code>, <code>parts/light-sensor.md</code>, Gate 1, Gate 6, Gate 10</td>
+</tr>
+<tr>
+<td>R7</td>
+<td>MCU</td>
+<td><code>RP2350A</code> QFN-60 (<code>C42411118</code>), <code>12 MHz</code> crystal <code>Y1</code> (<code>ABM8-272-T3</code>, <code>C20625731</code>, <code>CL = 10 pF</code>, <code>15 pF</code> load caps <code>C23/C24</code> + <code>1 kΩ</code> <code>R17</code> damping), <code>3.3 µH</code> core inductor <code>L1</code> (<code>AOTA-B201610S3R3-101-T</code>, <code>C42411119</code>), and mandatory <strong><code>27 Ω</code> USB series termination resistors (<code>R14</code>, <code>R15</code>)</strong> between <code>U7</code> and <code>U3.51/52</code>. Regulator/ring/band layout strictly follows <code>.claude/skills/pcb-design/chips/rp2350.md</code>: <code>COUT</code> (<code>vendor +1V1</code>) tied directly to <code>RP2350 ring</code> via <code>2</code> vias + <code>0.50 mm</code> <code>In1.Cu</code> power spoke (<code>U3.50</code> <code>VREG_FB</code> pure <code>0 mA</code> Kelvin sense), dedicated <code>CFILT</code> (<code>C17.2</code>) <code>GND</code> via isolated from <code>PGND</code>'s <code>2</code> vias, <code>LX cutout L3</code> on adjacent <code>In2.Cu</code> (<code>0.2104 mm</code> under <code>B.Cu</code>) with <code>0</code> supply/analog copper under <code>LX</code> on <code>In1.Cu</code>, <code>5</code> paste-free <code>GND</code> vias in <code>U3.61</code>, and <code>1</code>-piece <code>RP2350 band</code> (<code>+3V3</code>) + <code>1</code>-piece <code>RP2350 ring</code> (<code>+1V1</code>) with <code>0</code> foreign vias inside</td>
+<td><code>parts/rp2350-core.md</code>, <code>chips/rp2350.md</code>, Gate 6, Gate 7</td>
+</tr>
+<tr>
+<td>R8</td>
+<td>Flash</td>
+<td>Winbond <code>W25Q128JVPIQ</code> <code>128 Mbit</code> (<code>16 MB</code>) QSPI, WSON-8 <code>6 × 5 mm</code> (<code>C190862</code>), <code>4</code>-bit Quad-SPI XIP (<code>0xEB</code>) up to <code>75 MHz</code> (<code>QMI.M0_TIMING.RXDELAY = 1..2</code>), <code>≤ 25 mm</code> trace length, decoupled right at <code>U4.8</code> (<code>VCC</code>) by <code>C22</code> (<code>100 nF</code>, <code>1.40 mm</code> pad-to-pad)</td>
+<td><code>parts/flash.md</code>, Gate 5, Gate 6, Gate 7, Gate 8</td>
+</tr>
+<tr>
+<td>R9</td>
+<td>Debug, bring-up &amp; ID</td>
+<td><code>14</code> <code>Ø1.0 mm</code> SMD test pads on <code>B.Cu</code> (unpopulated): <code>VSYS</code> (<code>TP1</code>), <code>+3V3</code> (<code>TP2</code>), <code>VBAT</code> (<code>TP3</code>), <code>+1V1</code> (<code>TP4</code>), <code>RUN</code> (<code>TP5</code>), <code>SWCLK</code> (<code>TP6</code>), <code>SWDIO</code> (<code>TP7</code>), <code>GND</code> (<code>TP8</code>), <code>I2C_SDA</code> (<code>TP11</code>), <code>I2C_SCL</code> (<code>TP12</code>), <code>VBUS</code> (<code>TP13</code>), <code>UART1 TX</code> (<code>GPIO24</code>, <code>TP14</code>), <code>UART1 RX</code> (<code>GPIO25</code>, <code>TP15</code>), and spare ADC <code>GPIO29</code> (<code>TP16</code>). 3-bit hardware board ID on <code>GPIO19..21</code> (read at boot with internal pull-ups, tied = <code>0</code>, open = <code>1</code>): <code>GPIO19</code> tied to <code>GND</code> via <code>NT1</code> and <code>GPIO20</code> tied to <code>GND</code> via <code>NT2</code> so <strong><code>Rev S3D</code> reads <code>ID = 4</code> (<code>0b100</code>)</strong> (distinct from <code>S3C = 6</code>, <code>pn-dense = 5</code>, <code>pn-dense-1d = 3</code>)</td>
+<td>Gate 2, Gate 4, Gate 6</td>
+</tr>
+<tr>
+<td>R10</td>
+<td>Buttons</td>
+<td>Two peg-less side-actuated buttons (<code>Panasonic EVQP7J01P</code>, <code>C2828254</code>) on <code>B.Cu</code> at NE (<code>+21°</code>, <code>SW1</code> <code>USER/WAKE</code> → <code>1 kΩ</code> <code>R18</code> → <code>GPIO11</code>) and NW (<code>−21°</code>, <code>SW2</code> <code>BOOTSEL</code> → <code>1 kΩ</code> <code>R16</code> → <code>~{QSPI_SS}</code>), plunger <code>~0.40 mm</code> proud of rim nominally (<code>0.20 mm</code> pressed; <code>0.00 to −0.20 mm</code> worst-case tolerance <strong>(open — user sign-off)</strong>)</td>
+<td><code>parts/drivers-aw20198.md</code>, Gate 4, Gate 6</td>
+</tr>
+<tr>
+<td>R11</td>
+<td>Accelerometer</td>
+<td><code>LIS2DW12TR</code> LGA-12 (<code>C189624</code>) on dedicated <code>400 kHz</code> <code>I2C1</code> (<code>GPIO2</code> SDA, <code>GPIO3</code> SCL, <code>4.7 kΩ</code> pull-ups <code>R20</code>, <code>R19</code>), address <code>0x19</code> (<code>SA0 = CS = +3V3</code>), motion-wake <code>INT1</code> on <code>GPIO10</code>, <code>LP1</code> <code>12.5 Hz</code> (<code>~1.0–1.5 µA</code> typ, <code>≤ 80 ms</code> motion wake <code>&lt; 100 ms</code> bound; or <code>25 Hz</code> at <code>~2.0–2.5 µA</code> typ for <code>≤ 40 ms</code>)</td>
+<td><code>parts/accel.md</code>, Gate 1, Gate 2</td>
+</tr>
+<tr>
+<td>R12</td>
+<td>Assembly</td>
+<td>Pure 100%-SMT double-sided PCBA at JLCPCB (<code>0</code> PTH slots or hand-soldering needed on <code>J1</code>), requiring an explicit <strong>PCBA engineering instruction</strong>: <strong><code>Pass 1 = B.Cu</code> (<code>80</code> parts), <code>Pass 2 = F.Cu</code> (<code>111</code> parts: <code>D1..D110</code> MSL-3 + <code>Q2</code> 24 h open-bag floor life) at <code>≤ 245 °C</code> peak</strong> with <code>≥ 3.5 mm</code> underside carrier clearance (and SMD adhesive on <code>J1</code> if requested by CAM) so <code>Q2</code> sees <strong>only 1 reflow pass</strong> per <code>xyc-pt19c-l1.pdf</code> p. 11 (<code>Y1</code> sees a benign <code>≤ 245 °C</code> 2nd pass). <code>191</code> total placements across <code>34</code> unique LCSC PNs (<code>100%</code> local JLCPCB stock). Battery plugged in by hand after PCBA</td>
+<td>Gate 1, Gate 4, Gate 10</td>
+</tr>
+<tr>
+<td>R13</td>
+<td>Layers, stackup &amp; vias</td>
+<td><code>4</code> copper layers (<code>JLC04161H-7628</code>, <code>1.6 mm</code> nominal FR-4, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG</code> finish</strong>): <code>F.Cu</code> (<code>L1</code>, LEDs + matrix routing), <code>In1.Cu</code> (<code>L2</code>, inner signal/power routing), <strong><code>In2.Cu</code> (<code>L3</code>, solid <code>GND</code> plane <code>0.2104 mm</code> directly beneath <code>B.Cu</code> ICs + <code>LX cutout L3</code>)</strong>, <code>B.Cu</code> (<code>L4</code>, active ICs/connectors/power zones). Standard <code>0.30/0.15 mm</code> through vias (<code>0.35/0.15 mm</code> on power classes), <strong>zero vias in SMD signal pads (no POFV)</strong>, solid exposed <code>GND</code> pads (<code>U1</code>, <code>U2</code>, <code>U3</code>, <code>U5</code>) with <code>17</code> thermal vias strictly inside paste-free cross channels (<code>0.000 mm²</code> <code>B.Paste</code> overlap)</td>
+<td><code>stackup-4l-s3d.md</code>, Gate 5, Gate 7</td>
+</tr>
+<tr>
+<td>R14</td>
+<td>Charger &amp; power path</td>
+<td><code>TI BQ24073RGTR</code> (<code>C15220</code>): <code>CE = GND</code>, <code>TD = GND</code>, <code>USB500</code> input limit (<code>450–500 mA</code> active once <code>+3V3</code> rises on <code>EN1 = +3V3</code>, <code>EN2 = GND</code>; cold-starts in <code>USB100</code> <code>90–100 mA</code>; <code>ILIM</code> fault resistor <code>R5 = 3.6 kΩ</code>), <code>VO(REG) = 4.4 V</code> typ (<code>4.3–4.5 V</code>) on USB, <code>6.6 V</code> input OVP, <code>297 mA</code> typ fast charge (<code>R4 = 3.0 kΩ ±1%</code> → <code>263–328 mA</code> <strong>(open — user sign-off)</strong>), <code>10 kΩ</code> fixed <code>TS</code> (<code>R3</code>), <code>5 h</code> default timer (<code>TMR</code> open), load-priority supplement mode</td>
+<td><code>parts/charger.md</code>, Gate 1</td>
+</tr>
+<tr>
+<td>R15</td>
+<td>Logic LDO</td>
+<td><code>TI TPS7A0233PDQNR</code> (<code>C2860046</code>), <code>3.3 V ±1.5%</code>, <code>200 mA</code> rated (<code>150 mA</code> budget), <code>25 nA</code> <code>IQ</code> (<code>~0.6 µA</code> sleep ground current), fed from <code>VSYS</code> (<code>VDO ≤ 203 mV</code> at <code>150 mA</code>; enters benign dropout <code>~3.19–3.24 V</code> near <code>VBAT = 3.50 V</code> peak load while keeping <code>RP2350</code> <code>≥ 3.135 V</code>)</td>
+<td><code>parts/ldo.md</code>, Gate 1</td>
+</tr>
+<tr>
+<td>R16</td>
+<td>Battery &amp; socket</td>
+<td><code>403535</code> round LiPo pouch cell (<code>35 mm</code> dia × <code>4.0 mm</code> thick, <code>~400–450 mAh</code> est., <code>3.7/3.85 V</code> nom, charged to <code>4.20 V</code>; cell C-rating &amp; linear-charger dissipation for <code>263–328 mA</code> ≈ <code>0.58–0.82C</code> <strong>(open — user sign-off)</strong>). Connects via <code>BT1</code> (<code>Molex 53261-0271</code>, <code>C177225</code>, <code>1.0 A</code> rated, <code>3.0 × 2.5 mm</code> Molex restricted copper keepout respected) on <code>B.Cu</code> NW rim <code>(−11.40, −10.20 mm, −110°)</code>. Protected locally in the NW pocket by co-located <code>U8</code> (<code>XB9901A</code>, <code>C669687</code>, at <code>(−12.10, −3.60 mm, 180°)</code> with <code>C6</code>/<code>R8</code> beside it and <code>3</code> parallel <code>0.35/0.15 mm</code> <code>GND</code> vias; <code>BAT_N</code> isolated from <code>GND</code> with <code>0.20 mm</code> clearance; requires initial USB attach to exit first-mate power-down)</td>
+<td><code>parts/parallelogram-io.md</code>, <code>parts/protection.md</code>, Gate 1, Gate 4, Gate 6</td>
+</tr>
+<tr>
+<td>R17</td>
+<td>Sleep current</td>
+<td><code>≤ 85 µA</code> typical (<code>~69–72 µA</code> de-duplicated typ; <code>≤ 135 µA</code> worst-case max in flash standby, or <code>≤ 95 µA</code> max if firmware sends <code>0xB9</code> deep power-down to <code>U4</code>) from cell at <code>25 °C</code>. Firmware clears RP2350 latched pull-downs (<code>§9.7</code>) on externally pulled-up <code>GPIO2, 3, 4, 5, 12, 13</code> and clears both <code>PUE = 0</code> and <code>IE = 0</code> (<code>RP2350-E9</code> on A2 stepping) on open/strapped/analog/test-pad <code>GPIO0, 7..9, 14..27, 29</code> before sleep (keeping <code>PUE = 1</code> on <code>GPIO25</code> whenever <code>UART1 RX</code> is enabled while awake)</td>
+<td><code>parts/</code>, firmware, bench</td>
+</tr>
+<tr>
+<td>R18</td>
+<td>LED current (hardware)</td>
+<td><code>R30 = R33 = 30.0 kΩ</code> (<code>1%</code>): <code>IOUT,max = 400 / 30 kΩ = 13.33 mA</code> typ (<code>12.54–14.14 mA</code> chip-level w/ <code>±1%</code> <code>REXT</code> &amp; <code>±5%</code> IC accuracy; <code>~11.9–14.8 mA</code> single-channel w/ <code>ΔILED = ±5%</code> skew, <code>aw20198qnr.pdf</code> pp. 7, 18), <code>11-SW</code> scan duty <code>15.9375 µs / 198 µs = 255 / 3168 = 0.08049</code>, <code>ILED,avg = 1.073 mA</code> per die at <code>GCC = SL = PWM = 255</code>. Hardware full-white total across <code>110</code> RGB LEDs (<code>330</code> dies): <strong><code>354.2 mA</code> typ</strong> (<code>332.9–375.6 mA</code> array sum, <code>≪ 20 mA</code> DC and <code>80 mA</code> pulsed LED abs max)</td>
+<td><code>parts/drivers-aw20198.md</code>, <code>parts/leds-xl1615.md</code>, Gate 1</td>
+</tr>
+<tr>
+<td>R19</td>
+<td>LED current &amp; thermal cap (firmware)</td>
+<td>Firmware closed-loop <code>ADC4</code> thermal cap (with 1-point room-temp <code>ADC4</code> trim or <code>-10 °C</code> derated trip threshold, active unconditionally on both battery and USB): continuous full-white capped at <strong><code>GCC ≤ 105</code> (<code>145.8 mA</code> avg LED current, <code>~189 mA</code> total <code>VSYS</code>, <code>~0.68 W</code> on battery)</strong> at <code>≤ 25 °C</code> battery ambient (<code>R_th ≈ 35 K/W → ΔT ≈ +23.8 K</code>, <code>≤ 49 °C</code> board), and at <strong><code>GCC ≤ 85</code> (<code>~158 mA</code> <code>VSYS</code>, <code>~0.79 W</code> total from <code>5 V</code> <code>VBUS</code>) when <code>~{PGOOD} == 0</code> on USB</strong> (where <code>VSYS = 4.4 V</code> linear drop raises <code>GCC = 105</code> heat to <code>~0.93 W</code>), actively throttled lower by <code>ADC4</code> up to <code>35 °C</code> ambient so the board stays <code>&lt; 55 °C</code> (<code>&lt; 60 °C</code> LiPo / <code>&lt; 70 °C</code> <code>EVQP7J01P</code>). During <strong>active battery charging (<code>~{CHG} == 0</code> debounced steady <code>≥ 1 s</code> to distinguish steady LOW from <code>2 Hz</code> timer-fault blink)</strong>, LEDs throttle to <strong><code>GCC ≤ 9</code> in CC (<code>0</code> at low-bat CC, <code>≤ 24</code> in CV taper)</strong> with charging restricted to <strong><code>0–25 °C</code> ambient</strong> (<code>P_U5 = 0.56 W</code> typ at <code>R4 = 3.0 kΩ</code>). <code>&lt; 15 s</code> bursts up to <code>300 mA</code> (<code>GCC = 216</code>) are allowed <strong>only on battery (<code>~{PGOOD} == 1</code>)</strong> when calibrated <code>T_MCU &lt; 45 °C</code> (preventing USB supplement-mode discharge below <code>VRCH = 4.10 V</code> into silent <code>Hi-Z</code> refresh charge per <code>bq24075.pdf</code> p. 25) <strong>(open — user sign-off)</strong>. Absolute lumen target: <strong>don't care</strong></td>
+<td>firmware, Gate 8</td>
+</tr>
+<tr>
+<td>R20</td>
+<td>Peak scan current</td>
+<td>Per driver (<code>15</code> active <code>CS</code> channels): <code>15 × 13.33 mA = 200.0 mA</code> per <code>SW</code> scan slot (<code>≤ 240 mA</code> if all <code>18</code> <code>CS</code> enabled, <code>≪ 990 mA</code> <code>AW20198</code> <code>SW</code> rating); <code>400.0 mA</code> typ (<code>424 mA</code> max) combined if both drivers' slots align (<code>561 mA</code> typ / <code>585 mA</code> max total <code>VSYS</code> slot load), decoupled locally by <code>22 µF + 2 × 1 µF + 2 × 100 nF</code> at each driver</td>
+<td><code>parts/drivers-aw20198.md</code>, Gate 1, Gate 8</td>
+</tr>
+<tr>
+<td>R21</td>
+<td>4L routing rules</td>
+<td>Standard JLCPCB 4-layer rules with fab margins: <code>0.10 / 0.10 mm</code> min track/clearance (<code>0.09 mm</code> min connection width, <code>0.10 mm</code> min solder mask bridge), <code>0.30 / 0.15 mm</code> min via (<code>0.06 mm</code> min annular width, <code>0.075 mm</code> actual; <code>0.35 / 0.15 mm</code> on power classes; microvias/buried vias disallowed), <code>0.20 mm</code> hole-to-copper, <code>0.25 mm</code> hole-to-hole, <code>0.30 mm</code> board copper-to-edge (<code>0.25 mm</code> floor for edge-mounted <code>SW1/SW2</code> pads at <code>0.282 mm</code>)</td>
+<td><code>stackup-4l-s3d.md</code>, Gate 5, Gate 7</td>
+</tr>
+<tr>
+<td>R22</td>
+<td>Battery monitoring</td>
+<td><code>VBAT</code> switched high-side divider (<code>Q1</code> <code>NTZD3155C</code>, <code>R11 = R12 = 100 kΩ</code>, <code>C7 = 100 nF</code>) read on <code>GPIO26/ADC0</code> after <strong><code>≥ 30 ms</code> (<code>6 τ</code>)</strong> settling and enabled by <strong><code>GPIO28</code> (<code>pin 42</code>)</strong> (<code>0 µA</code> sleep draw via <code>R9 = R10 = 100 kΩ</code>). Firmware shuts down LEDs and sleeps below <code>VBAT = 3.55 V</code></td>
+<td><code>parts/q1-divider-switch.md</code>, <code>parts/passives.md</code>, Gate 2, firmware</td>
+</tr>
+<tr>
+<td>R23</td>
+<td>Charge indication</td>
+<td><code>~{CHG}</code> (<code>GPIO12</code>) and <code>~{PGOOD}</code> (<code>GPIO13</code>) via <code>100 kΩ</code> pull-ups (<code>R7</code>, <code>R6</code>) to <code>+3V3</code>; displayed on main RGB LEDs, no separate indicator LED</td>
+<td>Gate 2</td>
+</tr>
+</tbody>
+</table></div>
+<h2>External interfaces</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Direction</th>
+<th>Signal</th>
+<th>Voltage (normal / worst case)</th>
+<th>Current (cont. / peak)</th>
+<th>Mates with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>J1</code> USB-C (<code>TYPE-C-31-M-22</code>, <code>C530612</code>), <code>B.Cu</code> south rim <code>(0, +14.17 mm, 180°)</code></td>
+<td>In / Bidir</td>
+<td><code>VBUS</code>, <code>D+/D−</code> (<code>USB_C_P/N</code>, USB 2.0 FS <code>12 Mb/s</code>), <code>CC1/CC2</code> (<code>5.1 kΩ</code> <code>Rd</code> sink), <code>4×</code> SMD <code>S1</code> shield pads to <code>GND</code></td>
+<td><code>VBUS</code>: <code>4.65–5.5 V</code> normal (<code>4.35–4.63 V</code> <code>VIN-DPM</code> throttles input); <code>BQ24073</code> <code>28 V</code> abs max / <code>6.6 V</code> OVP (<code>USBLC6-2P6</code> <code>VBR ≥ 6.0 V</code>: use standard compliant 5 V USB-C cables; <code>5 V</code> <code>VBUS</code>-to-<code>D+</code> miswire is not clamped below <code>6.0 V</code>). <code>D+/D−</code>: <code>0–3.3 V</code> FS (<code>USB_OTP_VDD = 3.135–3.63 V</code> abs max), <code>±8 kV</code> contact ESD clamped by inline <code>U7</code> with surge current limited into <code>U3.51/52</code> by mandatory <code>27 Ω</code> <code>R14/R15</code>. <code>CC1/CC2</code>: <code>0–5.5 V</code> (<code>5.1 kΩ</code> survives accidental <code>20 V</code> short at <code>80 mW</code>)</td>
+<td><code>≤ 500 mA</code> cont. (<code>USB500</code>; <code>90–100 mA</code> cold-start <code>USB100</code>); <code>~1.5 A</code> <code>&lt; 50 µs</code> hot-plug inrush into <code>1 µF</code> <code>C1</code></td>
+<td>Standard 5 V USB-C cable / PC host</td>
+</tr>
+<tr>
+<td><code>BT1</code> (<code>Molex 53261-0271</code>), <code>B.Cu</code> NW rim <code>(−11.40, −10.20 mm, −110°)</code></td>
+<td>In / Out</td>
+<td><code>Pin 1 = VBAT (+)</code>, <code>Pin 2 = /Power/BAT_N (−)</code></td>
+<td><code>3.0–4.20 V</code> normal (<code>4.35 V</code> <code>XB9901A</code> <code>VCU</code> max; <code>0 V</code> or absent cell allowed on USB). <strong>No reverse-battery FET:</strong> reverse-plugging exceeds <code>-0.3 V</code> abs max on <code>U8</code>/<code>U5</code> (<code>BAT</code>) and causes immediate IC damage — <strong>verify wire harness polarity (<code>Pin 1 = +</code>) with DMM before mating</strong> (<code>+ −</code> and <code>BATT 3.7V</code> marked outside <code>BT1</code> on <code>B.SilkS</code>)</td>
+<td><code>≤ 189 mA</code> thermally capped cont. discharge (<code>585 mA</code> max scan-slot peak), <code>≤ 328 mA</code> charge (<code>1.0 A</code> connector rating)</td>
+<td><code>403535</code> LiPo with polarity-verified 2-pin <code>1.25 mm</code> PicoBlade / MX1.25 plug</td>
+</tr>
+<tr>
+<td><code>SW1</code> (<code>USER/WAKE</code>), <code>SW2</code> (<code>BOOTSEL</code>)</td>
+<td>In</td>
+<td>Active-low tactile switches via <code>1 kΩ</code> series resistors</td>
+<td><code>0–3.3 V</code>; finger ESD current-limited via <code>1 kΩ</code> <code>R18</code>/<code>R16</code> into <code>RP2350</code> <code>2 kV</code> HBM pads</td>
+<td><code>38–103 µA</code> normal press (<code>3.3 mA</code> contention max)</td>
+<td>User finger</td>
+</tr>
+<tr>
+<td><code>Q2</code> (<code>XYC-PT19C-L1</code>), <code>F.Cu</code> top rim</td>
+<td>In (optical)</td>
+<td>Ambient illuminance (<code>~5–440 lx</code> tungsten / <code>~1500–3000 lx</code> white LED linear range)</td>
+<td><code>0–3.3 V</code> (<code>GPIO1</code> collector, <code>ADC1</code> emitter)</td>
+<td><code>≤ 150 µA</code> steady during <code>15 ms</code> sample (<code>~3 mA</code> <code>&lt; 10 µs</code> <code>C70</code> charge peak), <code>0 µA</code> sleep</td>
+<td>Ambient light through front window</td>
+</tr>
+<tr>
+<td><code>TP1</code>–<code>TP8</code>, <code>TP11</code>–<code>TP16</code> (<code>B.Cu</code>)</td>
+<td>Bidir / Test</td>
+<td>Rails, <code>SWD</code>, <code>RUN</code>, <code>I2C0</code>, <code>UART1</code>, <code>ADC3</code></td>
+<td><code>0–5.5 V</code> (<code>TP13</code> <code>VBUS</code>), <code>0–4.5 V</code> (<code>TP1/TP3</code>), <code>0–3.3 V</code> logic, <code>0–1.21 V</code> (<code>TP4</code> <code>+1V1</code>)</td>
+<td>Probe only (<code>don't care</code> in housing; insulated with Kapton under LiPo)</td>
+<td>Bench probes / pogo jig</td>
+</tr>
+</tbody>
+</table></div>
+<p>No RF / wireless interfaces.</p>
+<h2>Power</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Source</th>
+<th>Load</th>
+<th>Typ (Thermally Capped Cont.)</th>
+<th>Max (Peak Slot)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VBUS</code></td>
+<td><code>J1</code> USB-C (<code>4.65–5.5 V</code> full-rate)</td>
+<td><code>U5</code> (<code>BQ24073</code> <code>IN</code>)</td>
+<td><code>450 mA</code> (charging + system)</td>
+<td><code>500 mA</code> (<code>USB500</code> limit)</td>
+</tr>
+<tr>
+<td><code>VBAT</code></td>
+<td><code>BT1</code> cell via NW-co-located <code>U8</code> (<code>XB9901A</code>), <code>3.0–4.2 V</code></td>
+<td><code>U5</code> (<code>BAT</code>), <code>Q1</code> divider</td>
+<td><code>297 mA</code> charge / <code>~189 mA</code> capped discharge / <code>72 µA</code> sleep</td>
+<td><code>585 mA</code> scan-slot peak (<code>1.0 A</code> <code>BT1</code> rating)</td>
+</tr>
+<tr>
+<td><code>VSYS</code></td>
+<td><code>U5</code> <code>OUT</code> (<code>3.55–4.2 V</code> bat, <code>4.4 V</code> USB)</td>
+<td><code>U1/U2</code> <code>PVCC</code>+<code>VCC</code>, <code>U6</code> <code>IN</code></td>
+<td><code>8 mA</code> drv + <code>≤ 146 mA</code> capped LEDs (<code>GCC ≤ 105</code>) + <code>35 mA</code> <code>3V3</code> = <strong><code>~189 mA</code></strong> (<code>~150–170 mA</code> typ animation)</td>
+<td><code>561 mA</code> typ / <code>585 mA</code> max (<code>400–424 mA</code> combined scan slot + <code>11 mA</code> drv + <code>150 mA</code> <code>3V3</code>)</td>
+</tr>
+<tr>
+<td><code>+3V3</code></td>
+<td><code>U6</code> (<code>TPS7A0233</code> from <code>VSYS</code>), <code>3.3 V ±1.5%</code></td>
+<td><code>U3</code> <code>RP2350A</code>, <code>U4</code> flash, <code>U9</code> accel, <code>Q2</code>, pull-ups</td>
+<td><code>35–40 mA</code> active</td>
+<td><code>150 mA</code> (<code>200 mA</code> LDO rating)</td>
+</tr>
+<tr>
+<td><code>+1V1</code></td>
+<td><code>U3</code> internal buck (<code>L1 = 3.3 µH</code>)</td>
+<td><code>U3</code> <code>RP2350A</code> <code>DVDD</code> core</td>
+<td><code>~25 mA</code></td>
+<td><code>100 mA</code> internal</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Sequencing &amp; backfeed:</strong> <code>AW20198QNR</code> digital inputs (<code>SDA</code>, <code>SCL</code>, <code>EN</code>) have absolute maximum <strong><code>-0.3 V to VCC</code></strong> (<code>aw20198qnr.pdf</code> p. 6). Feeding <code>U6</code> (<code>+3V3</code> LDO) from <code>VSYS</code> guarantees <code>+3V3 ≤ VSYS</code> during normal startup, dropout, and shutdown (<code>R21/R22</code> <code>1 kΩ</code> limit <code>I2C0</code> fault current to <code>≤ 3.3 mA</code>, and firmware sets <code>GPIO6</code> <code>LED_SDB</code> to <code>2 mA</code> slew-limited drive when charging <code>C35</code>). SWD debug connects <code>SWCLK</code>/<code>SWDIO</code>/<code>RUN</code>/<code>GND</code> only — <strong>never back-power <code>+3V3</code> (<code>TP2</code>) externally without <code>VSYS</code> (<code>TP1</code> / <code>VBUS</code> / <code>VBAT</code>) present</strong>.</li>
+</ul>
+<h2>Performance targets</h2>
+<ul>
+<li><strong>System &amp; QSPI clock:</strong> <code>RP2350A</code> <code>150 MHz</code> max (<code>48–150 MHz</code> active), full <strong><code>4</code>-bit Quad-SPI (<code>0xEB</code>) XIP at up to <code>75 MHz</code></strong> (<code>13.3 ns</code> period with <code>RXDELAY = 1..2</code>, enabled by <code>C22</code> placed <code>1.40 mm</code> from <code>U4.8</code>).</li>
+<li><strong>Display refresh &amp; PWM:</strong> <code>≥ 60 fps</code> frame updates over <code>1 MHz</code> <code>I2C0</code>; <code>AW20198</code> <code>62.5 kHz</code> PWM / <code>5.05 kHz</code> 11-row scan (<code>SSCR.SSE = 1</code> spread-spectrum available).</li>
+<li><strong>ADC &amp; thermal-sensor accuracy:</strong> <code>VBAT</code> (<code>ADC0</code>) <code>±5%</code> uncalibrated (<code>±1.5%</code> after 1-point trim; clean <code>ADC_AVDD</code> reference with <code>In2.Cu</code> <code>LX cutout L3</code> and isolated <code>CFILT</code> via); <code>ADC4</code> internal temperature sensor uses a <strong>1-point room-temperature trim</strong> (or <code>-10 °C</code> conservative trip margin to bound <code>±1.5%</code> <code>TPS7A0233</code> / dropout <code>ADC_AVDD</code> shift at <code>-4.2 °C/%</code>); <code>LIGHT</code> (<code>ADC1</code>) monotonic <code>8-bit</code> indoor dimming bucket (<strong>don't care</strong> on absolute lux accuracy).</li>
+<li><strong>Wake latency &amp; runtime:</strong> <code>&lt; 50 ms</code> button wake (<code>SW1</code>) and <code>≤ 80 ms</code> motion wake (<code>U9</code> at <code>12.5 Hz</code> <code>LP1</code>, within <code>&lt; 100 ms</code> <strong>don't care</strong> bound); <code>≥ 2 h</code> typical animated runtime (<code>~160–189 mA</code> avg) on <code>400 mAh</code> cell, <code>≥ 4 months</code> shelf sleep at <code>~72 µA</code>.</li>
+</ul>
+<h2>Environment</h2>
+<ul>
+<li><strong>Temperature:</strong> <code>0–35 °C</code> discharge operating ambient; <strong><code>0–25 °C</code> USB battery-charging ambient</strong> with <code>R4 = 3.0 kΩ</code> (<code>0–30 °C</code> if user selects <code>R4 = 4.7 kΩ</code>; <code>-20 to +60 °C</code> storage without LiPo). Moisture/vibration/enclosure airflow: <strong>don't care</strong> (bare/open prototype in still air).</li>
+<li><strong>ESD:</strong> <code>±8 kV</code> contact on <code>J1</code> USB-C via inline <code>U7</code> (<code>USBLC6-2P6</code>) + <code>27 Ω</code> <code>R14/R15</code>; buttons and back test pads: <strong>don't care</strong> beyond <code>1 kΩ</code> series limiting and bench handling.</li>
+<li><strong>Thermal:</strong></li>
+<li><strong>Battery discharge (<code>0–35 °C</code> ambient):</strong> At <code>25 °C</code> ambient, <code>GCC ≤ 105</code> (<code>~189 mA</code> <code>VSYS</code>, <code>~0.68 W</code> total) at <code>R_th ≈ 35 K/W</code> gives <code>ΔT ≈ +23.8 K</code> (<code>~48.8 °C</code> board); as ambient rises toward <code>35 °C</code>, closed-loop calibrated <code>ADC4</code> throttles <code>GCC</code> linearly so the board stays <code>&lt; 55 °C</code> (<code>&lt; 60 °C</code> LiPo discharge limit, <code>&lt; 70 °C</code> <code>EVQP7J01P</code>, <code>&lt; 85 °C</code> <code>TYPE-C-31-M-22</code> / ICs).</li>
+<li><strong>USB active charging (<code>~{CHG} == 0</code> steady <code>≥ 1 s</code>, <code>0–25 °C</code> ambient) &amp; post-charge USB (<code>~{PGOOD} == 0, ~{CHG} = Hi-Z</code>):</strong> With <code>U5</code> (<code>BQ24073</code>) <code>CE = GND</code> and <code>TS = 10 kΩ</code> fixed, <code>U5</code> linearly drops <code>VBUS − VBAT</code> (<code>P_U5 = 0.56 W</code> typ at <code>5.0 V → 3.2 V, 297 mA</code>, <code>P_board ≈ 0.70–0.75 W</code> typ with LEDs at <code>GCC = 0..9</code>, <code>0.99 W</code> worst-case corner; <code>2</code> paste-free EP vias into <code>In2.Cu</code> <code>GND</code>). At <code>≤ 25 °C</code> indoor charging ambient, nominal CC peak stays <code>~49–51 °C</code> briefly near <code>3.2 V</code> and drops <code>≤ 45 °C</code> across the bulk <code>3.7–4.2 V</code> charge curve (<code>P_board ≤ 0.55 W</code>); selecting <code>R4 = 4.7 kΩ</code> (<code>189 mA</code>, Open Question #2) lowers <code>P_U5,typ</code> to <code>0.36 W</code> (<code>ΔT ≈ +16 K</code>, <code>≤ 41 °C</code> at <code>25 °C</code>). Once charging finishes (<code>~{CHG} = Hi-Z</code>, <code>~{PGOOD} == 0</code>), linear drop from <code>5.0 V</code> <code>VBUS</code> (<code>VO(REG) = 4.4 V</code>, <code>P_U5 ≈ 0.10–0.12 W</code>) caps static full-white at <code>GCC ≤ 85</code> (<code>~0.79 W</code> total; <code>~0.93 W</code> if <code>GCC = 105</code>), governed continuously by closed-loop <code>ADC4</code> (<code>&lt; 55 °C</code>) with <code>300 mA</code> bursts disabled on USB so <code>VBAT</code> never dips into silent <code>Hi-Z</code> refresh charge (<code>bq24075.pdf</code> p. 25).</li>
+</ul>
+<h2>Mechanical</h2>
+<ul>
+<li><strong>Outline &amp; mounting:</strong> <code>38.0 mm</code> circle, <code>0</code> mounting holes; held by rim/bezel outside <code>r &gt; 18.5 mm</code> in a future housing (<strong>don't care</strong> for this prototype revision; bezel notches <code>J1</code> (capturing its gull-wing SMD shell against cable peel), <code>SW1</code>, <code>SW2</code>, <code>BT1</code> rear solder tips (<code>r = 18.59 mm</code>), and leaves an optical window at <code>Q2</code>).</li>
+<li><strong>Heights:</strong> Front <code>≤ 0.95 mm</code> (<code>Q2</code> <code>0.80 ± 0.15 mm</code>, <code>D1</code>–<code>D110</code> <code>0.60 ± 0.25 mm</code>); PCB <code>1.60 ± 0.16 mm</code>; Back components <code>≤ 3.41 mm</code> (<code>BT1</code> <code>3.20 +0.20/−0.05 mm</code> unmated / <code>3.40 mm</code> mated; <code>J1</code> <code>TYPE-C-31-M-22</code> <code>3.26 ± 0.15 mm</code> height, <code>0.10 mm</code> tab coplanarity; <code>J1</code>'s two <code>Ø0.50 mm × 0.70 ± 0.05 mm</code> locating pegs leave <code>0.85–0.95 mm</code> nominal / <code>0.69 mm</code> worst-case FR-4 below <code>F.Cu</code> with <code>0.00 mm</code> front protrusion).</li>
+<li><strong>Battery stack &amp; harness:</strong> <code>35 mm × 4.0 mm</code> <code>403535</code> cell sits behind <code>B.Cu</code>. <code>BT1</code> <code>(−11.40, −10.20 mm, −110°)</code> faces inward toward <code>U3</code> (<code>1.0 mm</code> mated plug protrusion, <code>3.02 mm</code> unmated mouth clearance to <code>C9</code>, <code>4.04 mm</code> to <code>U3</code> body); the <code>1.25 mm</code> plug is polarity-verified and inserted <strong>before</strong> bonding the cell over <code>0.05 mm</code> Kapton tape + rear foam/carrier standoff. <strong>Geometry note for Gate 0 sign-off:</strong> because a <code>Ø35.0 mm</code> cell overlaps <code>J1</code> (<code>3.26 ± 0.15 mm</code>) and <code>BT1</code> (<code>3.20–3.40 mm</code>) in XY (<code>21.55 mm</code> chord between them), a flat <code>2.4 mm</code> foam disc would interfere by <code>0.81–0.96 mm</code> — the standoff must either be <strong><code>≥ 3.50 mm</code> thick (<code>~10.0 mm</code> total bare stack)</strong> with connector/harness relief cutouts, or a smaller cell (<code>≤ 30 mm</code> chord) must be used inside the <code>2.4 mm</code> central pocket (<strong>open — user sign-off</strong>).</li>
+<li><strong>Connector overhangs:</strong> <code>J1</code> (<code>TYPE-C-31-M-22</code> at <code>(0, +14.17 mm, 180°)</code>) mouth edge reaches <code>y = +19.290 mm</code> (<code>+0.290 mm</code> overhang past <code>R = 19.00 mm</code> on axis; <code>+0.823 mm</code> axial / <code>+0.801 mm</code> radial at <code>x = ±4.47 mm</code> mouth corners); <code>SW1</code>/<code>SW2</code> plungers overhang NE/NW rim by <code>+0.40 mm</code> nominal unpressed (<code>+0.20 mm</code> pressed; <code>0.00 to −0.20 mm</code> worst-case tolerance — <strong>open — user sign-off</strong>).</li>
+</ul>
+<h2>Manufacturing</h2>
+<ul>
+<li><strong>Fab &amp; PCBA:</strong> JLCPCB 4-layer standard FR-4 (<code>JLC04161H-7628</code>, <code>1.6 mm</code>, <strong><code>ENIG 1U"</code></strong> recorded directly in <code>.kicad_pcb</code>, green LPI solder mask, tented vias), <strong>100% surface-mount double-sided PCBA</strong> (<code>0</code> PTH solder joints or hand-tack steps!). <strong>Mandatory JLCPCB PCBA order instruction:</strong> <strong><code>Pass 1 = B.Cu</code>, <code>Pass 2 = F.Cu</code> at <code>≤ 245 °C</code> peak</strong> with <code>≥ 3.5 mm</code> underside carrier support (and red SMD glue on <code>J1</code> if required by CAM for inverted Pass 2 retention) so <code>Q2</code> (<code>24 h</code> open-bag floor life, <code>xyc-pt19c-l1.pdf</code> pp. 11, 13) undergoes <strong>only 1 reflow pass</strong>. Prototype quantity <code>5–10</code> boards (<code>&lt; $15/board</code> parts target; PCBA setup/feeder fees <strong>don't care</strong> for prototype).</li>
+<li><strong>Hand assembly:</strong> Verifying <code>BT1</code> harness polarity (<code>Pin 1 = +</code>), plugging in <code>BT1</code>, and applying <code>0.05 mm</code> Kapton + rear standoff (<code>≥ 3.50 mm</code> carrier/foam over <code>J1</code>/<code>BT1</code>, or <code>2.4 mm</code> with smaller cell) + LiPo cell after bench bring-up.</li>
+</ul>
+<h2>Serviceability</h2>
+<ul>
+<li>Hobby / prototype wearable, not field-repairable. <code>14</code> <code>B.Cu</code> test pads (<code>R9</code>, no <code>0 Ω</code> split jumpers, no SWD header) cover all rails, SWD, I2C0, UART1, and spare ADC (accessible before LiPo bonding). All <code>B.Cu</code> connectors (<code>J1</code>, <code>BT1</code>), switches (<code>SW1</code> <code>"USER"</code>, <code>SW2</code> <code>"BOOT"</code>), ICs, and accessible test pads carry clear via-free <code>B.SilkS</code> labels outside component bodies, supplemented by <code>bringup-map-bottom.png</code>, centered <code>F.Fab</code>/<code>B.Fab</code> designators, and <code>pcbview</code>.</li>
+</ul>
+<h2>Compliance</h2>
+<ul>
+<li>None formal (personal / prototype wearable, no radio).</li>
+</ul>
+<h2>Known risks and open questions for user sign-off</h2>
+<ol>
+<li><strong>Mechanical stack: <code>BT1</code> inward-mating corridor, rear battery spacer height (<code>2.4 mm</code> vs <code>≥ 3.5 mm</code>), &amp; <code>SW1/SW2</code> tolerance (open — user sign-off, preserved from S3C):</strong> <code>BT1</code> at <code>(−11.40, −10.20 mm, −110°)</code> points inward (<code>3.02–4.04 mm</code> mouth clearance to <code>C9</code>/<code>U3</code>) so its polarity-checked plug is pre-mated before installing the rear spacer + cell; because a <code>Ø35.0 mm</code> <code>403535</code> cell overlaps <code>J1</code> (<code>3.26 ± 0.15 mm</code>) and <code>BT1</code> (<code>3.20–3.40 mm</code>) in XY, confirm using a <strong><code>≥ 3.50 mm</code> pocketed foam/3D-printed carrier (<code>~10.0 mm</code> stack)</strong> (or smaller <code>≤ 30 mm</code> cell on <code>2.4 mm</code> foam), plus <code>SW1/SW2</code> <code>+0.40 mm</code> nominal (<code>0.00 to −0.20 mm</code> worst-case) plunger projection.</li>
+<li><strong>Charge current (<code>R4 = 3.0 kΩ</code>, <code>~297 mA</code>) &amp; linear-charger heat (open — user sign-off, preserved from S3C):</strong> <code>R4 = 3.0 kΩ ±1%</code> sets <code>263–328 mA</code> (<code>297 mA</code> typ, <code>~0.58–0.82C</code> on <code>400–450 mAh</code>, <code>P_U5 = 0.56 W</code> typ during low-bat CC requiring <code>≤ 25 °C</code> charge ambient). Confirm cell datasheet permits <code>≥ 0.8C</code> and <code>≤ 25 °C</code> ambient charging, or swap <code>R4</code> to <code>4.7 kΩ</code> (<code>189 mA</code> typ, <code>0.36 W</code>).</li>
+<li><strong>Back silkscreen identity policy &amp; variant firmware settings (open — user sign-off, preserved from S3C):</strong> Confirm omitting board name/rev/URL on <code>B.SilkS</code> (<code>BOARD_ID = 4</code> via <code>NT1</code>+<code>NT2</code> on <code>GPIO19..20</code>), keeping the via-clipped front <code>F.SilkS</code> Voronoi seed web, and enforcing calibrated firmware <code>ADC4</code> thermal caps (<code>GCC ≤ 105</code> battery/post-charge, <code>GCC ≤ 9</code> CC / <code>≤ 24</code> CV gated on <code>~{CHG} == 0</code>).</li>
+<li><strong>Low-<code>VBAT</code> green/blue headroom:</strong> At <code>13.33 mA</code> peak, <code>XL-1615</code> <code>G/B</code> <code>VF</code> (<code>2.9 V</code> typ / <code>3.4 V</code> max bin) + <code>AW20198</code> <code>SW</code> drop (<code>208 mV</code> typ at <code>200 mA</code>) + <code>CS</code> headroom (<code>250 mV</code>) ≈ <code>3.36 V</code> typ (<code>3.86 V</code> max bin); high-<code>VF</code> <code>G/B</code> bins compress gracefully near <code>3.55 V</code> cutoff.</li>
+</ol></div></body></html>

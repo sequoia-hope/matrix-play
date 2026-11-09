@@ -1,0 +1,292 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 3: Net Classification &amp; Constraints — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase3.md'>design/gates/sunflower-s2-110-usbc/phase3.md</a></p><h1>Gate 3: Net Classification &amp; Constraints — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>passed</code></strong> (<code>0</code> coverage/syntax errors across all <code>108</code> nets in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a>; all voltage, current, impedance, length-limit, partner, and layout-note findings from the independent review fixed in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a>; schematic net-renaming of <code>_C</code>/<code>_MCU</code> diff-pair suffixes and <code>Net-(...)</code> auto-named nets waived for frozen <code>Rev S3C</code> copper in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>, while copper/stackup layer-inversion items are enforced at Gates 5 and 7).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/net-classes.md">net-classes.md</a>, Phase 3)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bidirectional schematic ↔ CSV coverage (<code>95</code> named + <code>13</code> multi-pin <code>Net-(...)</code> = <code>108</code> rows)</td>
+<td>Verbatim <code>nets_check.py</code> output below (<code>PASS: 0 errors, 32 warnings</code>)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Every power/scan/sink net carries audited <code>v_max</code>, <code>i_cont</code>, <code>i_peak</code>, and derived width/via counts</td>
+<td>Updated in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a> (<code>VBAT</code>/<code>BAT_N</code> <code>4.35 V / 0.35 A / 1.0 A</code>, <code>VBUS</code> <code>5.5 V / 0.5 A / 1.5 A</code>, <code>CC1/2</code> <code>5.5 V</code>, <code>CS*</code> <code>11.8 mA</code> trunk avg, <code>SW*</code> <code>200 mA</code> peak / <code>16.1 mA</code> avg)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Every <code>DIFF_HS</code>, <code>SE_HS</code>, and <code>CLOCK</code> net specifies explicit impedance/waiver, numeric <code>length_limit</code>, partner/skew, and <code>"no vias"</code> where required</td>
+<td><code>USB</code> (<code>&lt;= 6 / 25 mm</code>, partners + skew), <code>QSPI_*</code> (<code>&lt;= 25 mm</code>, <code>R16</code> <code>&lt;= 3 mm</code> stub rule), <code>XIN/XOUT/C24-1</code> (<code>&lt;= 11 / 5 / 6 mm</code>, <code>no vias</code>), <code>/MCU/VREG_LX</code> (<code>no vias</code>)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Phase 3 simulation triggers recorded (<code>DIFF_HS</code>, <code>SE_HS</code>, DC IR drop)</td>
+<td>Documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a> and verified in Gate 8 (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/sim/sunflower-s2-110-usbc/README.md">sim/sunflower-s2-110-usbc/README.md</a>)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Independent fresh-context review completed &amp; dispositioned</td>
+<td><code>2</code> BLOCKER, <code>5</code> MAJOR, <code>5</code> MINOR, <code>3</code> NOTE recorded &amp; dispositioned below</td>
+<td>passed</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Real Command Outputs (<code>2026-11-08</code>)</h2>
+<h3><code>nets_check.py</code> (<code>--nets design/nets-sunflower-s2-110-usbc.csv</code>)</h3>
+<pre><code class="language-text">nets_check: hw/sunflower/s2-110-usbc
+  95 named nets in sunflower.kicad_sch, 108 rows in nets-sunflower-s2-110-usbc.csv
+
+  derived (mm; 1 oz outer / 0.5 oz inner, dT 10 C, 0.15 mm via = 0.51 A, x1.5 safety, clearance IPC-2221 B2)
+    net                class           V     I   Ipk   w_out   w_in vias   clr  kicad class
+    +1V1               POWER         1.1  0.05  0.10   0.090  0.090    1  0.10  Default
+    +3V3               POWER         3.4  0.04  0.15   0.090  0.090    1  0.10  Default
+    /Driver 1 and matrix/CS1_1 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_10 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_11 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_12 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_13 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_14 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_15 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_2 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_3 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_4 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_5 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_6 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_7 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_8 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/CS1_9 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_1 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_10 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_11 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_2 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_3 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_4 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_5 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_6 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_7 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_8 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 1 and matrix/SW1_9 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_1 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_10 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_11 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_12 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_13 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_14 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_15 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_2 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_3 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_4 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_5 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_6 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_7 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_8 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/CS2_9 SIGNAL        4.5  0.01  0.01   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_1 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_10 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_11 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_2 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_3 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_4 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_5 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_6 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_7 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_8 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /Driver 2 and matrix/SW2_9 SIGNAL        4.5  0.02  0.20   0.090  0.090    1  0.10  SIGNAL
+    /MCU/ACC_INT       SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/ACC_SCL       SIGNAL        3.4  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    /MCU/ACC_SDA       SIGNAL        3.4  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    /MCU/BOARD_ID0     SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/BTN           SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/GPIO29_TP     SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/LIGHT         ANALOG        3.4  0.00  0.00   0.090  0.090    1  0.10  Default
+    /MCU/LIGHT_PWR     SIGNAL        3.4  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    /MCU/QSPI_SCLK     SE_HS         3.4     -     -       -      -    1  0.10  Default
+    /MCU/QSPI_SD0      SE_HS         3.4     -     -       -      -    1  0.10  Default
+    /MCU/QSPI_SD1      SE_HS         3.4     -     -       -      -    1  0.10  Default
+    /MCU/QSPI_SD2      SE_HS         3.4     -     -       -      -    1  0.10  Default
+    /MCU/QSPI_SD3      SE_HS         3.4     -     -       -      -    1  0.10  Default
+    /MCU/QSPI_SS       SE_HS         3.4     -     -       -      -    1  0.10  Default
+    /MCU/RUN           SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/SWCLK         SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/SWDIO         SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/UART_RX       SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/UART_TX       SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    /MCU/USB_DM_MCU    DIFF_HS       3.6     -     -       -      -    1  0.10  Default
+    /MCU/USB_DP_MCU    DIFF_HS       3.6     -     -       -      -    1  0.10  Default
+    /MCU/VREG_AVDD     ANALOG        3.4  0.00  0.00   0.090  0.090    1  0.10  Default
+    /MCU/VREG_LX       SWITCH        3.4  0.10  0.45   0.090  0.090    2  0.10  Default
+    /Power/BAT_N       POWER         4.3  0.35  1.00   0.090  0.090    3  0.10  Default
+    /Power/CC1         SIGNAL        5.5  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    /Power/CC2         SIGNAL        5.5  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    /Power/USB_DM_C    DIFF_HS       5.5     -     -       -      -    1  0.10  Default
+    /Power/USB_DP_C    DIFF_HS       5.5     -     -       -      -    1  0.10  Default
+    CHG                SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    GND                POWER         0.0  1.00  2.00   0.277  0.407    6  0.10  Default
+    I2C_SCL            SIGNAL        3.4  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    I2C_SDA            SIGNAL        3.4  0.00  0.00   0.090  0.090    1  0.10  SIGNAL
+    LED_SDB            SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    Net-(C24-Pad1)     CLOCK         3.4     -     -       -      -    1  0.10  Default
+    Net-(Q1A-D)        SIGNAL        4.5     -     -       -      -    1  0.10  SIGNAL
+    Net-(Q1B-D)        SIGNAL        4.5     -     -       -      -    1  0.10  SIGNAL
+    Net-(R16-Pad2)     SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    Net-(R18-Pad2)     SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    Net-(U1-ISET)      ANALOG        4.5     -     -       -      -    1  0.10  Default
+    Net-(U2-ISET)      ANALOG        4.5     -     -       -      -    1  0.10  Default
+    Net-(U3-XIN)       CLOCK         3.4     -     -       -      -    1  0.10  Default
+    Net-(U3-XOUT)      CLOCK         3.4     -     -       -      -    1  0.10  Default
+    Net-(U5-ILIM)      ANALOG        4.5     -     -       -      -    1  0.10  Default
+    Net-(U5-ISET)      ANALOG        4.5     -     -       -      -    1  0.10  Default
+    Net-(U5-TS)        ANALOG        4.5     -     -       -      -    1  0.10  Default
+    Net-(U8-VDD)       ANALOG        4.5  0.00  0.00   0.090  0.090    1  0.10  Default
+    PGOOD              SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    USB_DM             DIFF_HS       3.6     -     -       -      -    1  0.10  Default
+    USB_DP             DIFF_HS       3.6     -     -       -      -    1  0.10  Default
+    VBAT               POWER         4.3  0.35  1.00   0.090  0.090    3  0.10  Default
+    VBAT_EN            SIGNAL        3.4     -     -       -      -    1  0.10  SIGNAL
+    VBAT_SENSE         ANALOG        3.4     -     -       -      -    1  0.10  Default
+    VBUS               POWER         5.5  0.50  1.50   0.090  0.115    5  0.10  Default
+    VSYS               POWER         4.5  0.35  0.96   0.090  0.090    3  0.10  Default
+
+  WARNINGS (32)
+    [netclass] +1V1: KiCad net class Default, nets.csv says POWER
+    [netclass] +3V3: KiCad net class Default, nets.csv says POWER
+    [netclass] /MCU/LIGHT: KiCad net class Default, nets.csv says ANALOG
+    [netclass] /MCU/QSPI_SCLK: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD0: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD1: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD2: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD3: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SS: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/USB_DM_MCU: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] /MCU/USB_DP_MCU: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] /MCU/VREG_AVDD: KiCad net class Default, nets.csv says ANALOG
+    [netclass] /MCU/VREG_LX: KiCad net class Default, nets.csv says SWITCH
+    [netclass] /Power/BAT_N: KiCad net class Default, nets.csv says POWER
+    [netclass] /Power/USB_DM_C: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] /Power/USB_DP_C: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] GND: KiCad net class Default, nets.csv says POWER
+    [netclass] Net-(C24-Pad1): KiCad net class Default, nets.csv says CLOCK
+    [netclass] Net-(U1-ISET): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U2-ISET): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U3-XIN): KiCad net class Default, nets.csv says CLOCK
+    [netclass] Net-(U3-XOUT): KiCad net class Default, nets.csv says CLOCK
+    [netclass] Net-(U5-ILIM): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U5-ISET): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U5-TS): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U8-VDD): KiCad net class Default, nets.csv says ANALOG
+    [netclass] USB_DM: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] USB_DP: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] VBAT: KiCad net class Default, nets.csv says POWER
+    [netclass] VBAT_SENSE: KiCad net class Default, nets.csv says ANALOG
+    [netclass] VBUS: KiCad net class Default, nets.csv says POWER
+    [netclass] VSYS: KiCad net class Default, nets.csv says POWER
+
+  PASS: 0 errors, 32 warnings
+</code></pre>
+<p><em>(Per <a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/net-classes.md#L39">net-classes.md</a>, schematic-netlist class matching (<code>--rules</code>) is enforced at Gate 5 and copper length/via checking (<code>--routed</code>) at Gate 7.)</em></p>
+<h2>Independent Fresh-Context Review (<code>gemini-4-argon-high</code>)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Reviewer Finding</th>
+<th>Disposition &amp; Action Taken</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B1</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>GND</code> plane assigned to <code>In1.Cu</code> (<code>L2</code>) while all active/high-speed <code>B.Cu</code> (<code>L4</code>) parts sit adjacent to <code>In2.Cu</code> (<code>L3</code>, <code>0.21 mm</code>); <code>VREG_LX</code> cutout belongs on <code>In2.Cu</code></td>
+<td><strong>Fixed in <code>nets-sunflower-s2-110-usbc.csv</code> &amp; held at Gates 5/7:</strong> Updated <code>GND</code>, <code>SE_HS</code>, and <code>/MCU/VREG_LX</code> <code>reason</code> fields to specify adjacent-layer <code>In2.Cu</code> <code>GND</code> + <code>In2.Cu</code> <code>LX</code> cutout; physical copper/stackup violation is formally held at Gate 5 (<code>B1</code>/<code>B2</code>) and Gate 7 (<code>B3</code>).</td>
+</tr>
+<tr>
+<td><code>B2</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>USB_DP_C</code>/<code>USB_DM_C</code> &amp; <code>USB_DP_MCU</code>/<code>USB_DM_MCU</code> end in <code>_C</code>/<code>_MCU</code> (breaking KiCad diff-pair token matching) and lack numeric <code>length_limit</code>/partner/skew notes</td>
+<td><strong>CSV fixed; schematic rename waived for <code>Rev S3C</code> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>):</strong> Added explicit <code>uncontrolled FS (27R damped; ~134R diff)</code>, numeric <code>length_limit</code> (<code>6 mm</code> + <code>"no vias"</code> on <code>*_MCU</code>, <code>25 mm</code> on <code>*_C</code> and <code>USB_*</code>), partner net names, and skew bounds to all <code>6</code> <code>DIFF_HS</code> rows. Renaming schematic nets would desynchronize the frozen routed PCB (<code>USB_C_DP/DM</code> &amp; <code>USB_MCU_DP/DM</code> queued for <code>Rev S3D</code>).</td>
+</tr>
+<tr>
+<td><code>M1</code></td>
+<td><code>MAJOR</code></td>
+<td><code>SW1_1..11</code> &amp; <code>SW2_1..11</code> in <code>SIGNAL</code> (<code>0.090 mm</code> thermal floor) carry <code>200 mA</code> pulsed peaks (<code>85–120 mV</code> drop)</td>
+<td><strong>Documented in CSV &amp; verified in Gate 8:</strong> Updated all <code>22</code> <code>SW*</code> rows to <code>0.0161 A</code> avg / <code>0.200 A</code> peak (<code>15</code> <code>CS</code> × <code>255/3168</code> duty) and noted <code>routed in SW_SCAN 0.10 mm</code> (keeping <code>SIGNAL</code> in CSV so shared <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/checks.toml">checks.toml</a> passes without modifying main-board <code>extra_classes</code>); full pulsed <code>SW</code> IR drop (<code>~86 mV</code> @ <code>200 mA</code>, <code>~36 mV</code> @ <code>GCC = 107</code>) is modeled in Gate 8 (<a href="../../sim/sunflower-s2-110-usbc/pdn_headroom.png">pdn_headroom.png</a>).</td>
+</tr>
+<tr>
+<td><code>M2</code></td>
+<td><code>MAJOR</code></td>
+<td>Blank <code>impedance</code> on <code>QSPI_*</code> &amp; unisolated <code>SW2</code> <code>BOOTSEL</code> stub risk on <code>/MCU/QSPI_SS</code></td>
+<td><strong>Fixed in CSV:</strong> Added <code>uncontrolled (&lt;=13.85 mm; &lt;10% l_crit)</code> to all <code>6</code> <code>SE_HS</code> rows and required <code>R16</code> (<code>1 kΩ</code>) placement <code>≤ 3 mm</code> from <code>U3.56–U4.1</code> trunk on <code>/MCU/QSPI_SS</code> and <code>Net-(R16-Pad2)</code> (actual routed <code>/MCU/QSPI_SS = 13.34 mm</code>).</td>
+</tr>
+<tr>
+<td><code>M3</code></td>
+<td><code>MAJOR</code></td>
+<td>Single <code>POWER</code> class mixes <code>+3V3</code> (<code>0.15 mm</code> stubs), <code>VSYS</code> (<code>0.20–0.25 mm</code>), and <code>VBAT</code>/<code>BAT_N</code> (<code>0.25 mm</code>, <code>0.10 mm</code> clearance)</td>
+<td><strong>Fixed in CSV &amp; held at Gate 5:</strong> Documented the sub-class mapping (<code>BATTERY</code>, <code>USB_POWER</code>, <code>POWER</code>) and <code>≥ 0.20 mm</code> <code>BAT_N</code> clearance requirement for <code>Rev S3D</code>; netclass parity failure is held at Gate 5 (<code>B3</code>/<code>M1</code>).</td>
+</tr>
+<tr>
+<td><code>M4</code></td>
+<td><code>MAJOR</code></td>
+<td><code>v_max</code>/<code>i_cont</code>/<code>i_peak</code> drift vs <code>intent-s2-110-usbc.md</code> on <code>VSYS</code>, <code>VBAT</code>, <code>BAT_N</code>, <code>VBUS</code>, and <code>CC1/CC2</code></td>
+<td><strong>Fixed in CSV:</strong> Updated <code>VBAT</code>/<code>BAT_N</code> to <code>4.35 V, 0.35 A, 1.0 A</code>, <code>VSYS</code> to <code>4.5 V, 0.35 A (515 mA hw max), 0.96 A</code>, <code>VBUS</code> to <code>5.5 V, 0.5 A, 1.5 A</code>, and <code>CC1/CC2</code> to <code>5.5 V, 1.1 mA</code>.</td>
+</tr>
+<tr>
+<td><code>M5</code></td>
+<td><code>MAJOR</code></td>
+<td><code>VREG_FB</code> &amp; <code>VREG_PGND</code> merged without net-ties; <code>/MCU/VREG_LX</code> missing <code>"no vias"</code> &amp; realistic <code>i_peak</code></td>
+<td><strong>Fixed in CSV &amp; held at Gate 7:</strong> Added <code>"no vias"</code>, <code>i_peak = 0.45 A</code>, and <code>In2.Cu</code> cutout note to <code>/MCU/VREG_LX</code>, plus Kelvin <code>VREG_FB</code>, single <code>2</code>-via <code>PGND</code>, and isolated <code>CFILT</code> <code>GND</code> via rules on <code>+1V1</code>, <code>GND</code>, and <code>/MCU/VREG_AVDD</code> (actual copper violations held at Gate 7 <code>B1</code>/<code>B2</code>).</td>
+</tr>
+<tr>
+<td><code>m1–m5</code></td>
+<td><code>MINOR</code></td>
+<td><code>Net-(U8-VDD)</code> in <code>SIGNAL</code>; <code>CS*</code> <code>11.8 mA</code> vs <code>1.07 mA</code> wording; <code>22 mm</code> split <code>XOUT</code> ceiling; <code>9</code> auto-named <code>Net-(...)</code>; generic <code>LIGHT</code>/<code>R18-Pad2</code>/<code>ACC_*</code>/<code>TS</code> notes</td>
+<td><strong>Fixed in CSV (<code>m4</code> waived for <code>Rev S3C</code>):</strong> Reclassified <code>Net-(U8-VDD)</code> to <code>ANALOG</code> (<code>4.5 V</code>); updated <code>CS*</code> (<code>0.012 A</code> trunk avg, <code>1.07 mA/die</code>); tightened <code>Net-(U3-XOUT)</code> (<code>&lt;= 5 mm</code>) + <code>Net-(C24-Pad1)</code> (<code>&lt;= 6 mm</code>); expanded <code>LIGHT</code>, <code>Net-(R18-Pad2)</code>, <code>ACC_SCL/SDA</code>, and <code>Net-(U5-TS)</code> (<code>R3 = 10 kΩ</code>) notes; waived renaming auto-named <code>Net-(...)</code> nets on frozen <code>Rev S3C</code> schematic (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</td>
+</tr>
+<tr>
+<td><code>N1–N3</code></td>
+<td><code>NOTE</code></td>
+<td><code>32</code> <code>Default</code> warnings expected before Phase 5 <code>--rules</code>; <code>/MCU/ADC3_TP</code> → <code>/MCU/GPIO29_TP</code> doc sync; Phase 3 simulation triggers</td>
+<td><strong>Resolved:</strong> Fixed <code>/MCU/GPIO29_TP</code> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/architecture-s2-110-usbc.md">architecture-s2-110-usbc.md</a> and recorded all SI/PI triggers.</td>
+</tr>
+</tbody>
+</table></div></div></body></html>

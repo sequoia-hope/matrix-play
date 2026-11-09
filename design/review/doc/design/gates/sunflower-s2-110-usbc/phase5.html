@@ -1,0 +1,186 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 5: Stackup &amp; Design Rules — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase5.md'>design/gates/sunflower-s2-110-usbc/phase5.md</a></p><h1>Gate 5: Stackup &amp; Design Rules — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>failed</code></strong> (held without modifying frozen <code>Rev S3C</code> PCB/project files: <code>nets_check.py --rules</code> fails with <code>32</code> <code>[netclass]</code> errors because <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/sunflower.kicad_pro">sunflower.kicad_pro</a> uses <code>"netclass_patterns"</code> with <code>"netclass_assignments": null</code>; <code>RuleArea 18</code> (<code>LX cutout L2</code>) is on <code>In1.Cu</code> instead of <code>In2.Cu</code> beneath <code>B.Cu</code>-mounted <code>U3</code>/<code>L1</code>; <code>VSYS</code> global rule is <code>0.16 mm</code> vs <code>0.25 mm</code>; <code>U5.17</code>/<code>U3.61</code> exempt open vias inside <code>B.Paste</code> without VIPPO; <code>solder_mask_min_width</code> is unset; and <code>14</code> <code>.kicad_pro</code> DRC severities are <code>"warning"</code>/<code>"ignore"</code> instead of <code>"error"</code>).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/stackup-and-rules.md">stackup-and-rules.md</a>, Phase 5)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stackup specification with source &amp; date (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a>)</td>
+<td><code>JLC04161H-7628</code> (<code>1.6 mm</code>, <code>1 oz</code> outer / <code>0.5 oz</code> <code>15.2 µm</code> inner); documents <code>B.Cu</code> ↔ <code>In2.Cu</code> vs <code>In1.Cu</code> reference-plane inversion</td>
+<td>failed (<code>B2</code>)</td>
+</tr>
+<tr>
+<td>Impedance widths computed (<code>DIFF_HS</code> &amp; <code>SE_HS</code>)</td>
+<td>Kirschning–Jansen <code>~134 Ω</code> diff (<code>0.15/0.15 mm</code> over <code>1.29 mm</code> <code>In1.Cu</code>) plus <code>50 Ω</code> SE (<code>w ≈ 0.36 mm</code>) &amp; <code>90 Ω</code> diff (<code>w ≈ 0.27/0.15 mm</code>) recipes over <code>0.2104 mm</code> <code>7628</code> documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a> §2</td>
+<td>passed (doc synced)</td>
+</tr>
+<tr>
+<td>Fab minimums entered with margin in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/sunflower.kicad_pro">sunflower.kicad_pro</a></td>
+<td><code>0.10 mm</code> track/space (<code>+11.1%</code>), <code>0.30/0.15 mm</code> via (<code>+50%</code> ring), <code>0.25 mm</code> edge (<code>+25%</code>); <code>0%</code> floor on <code>min_hole_to_hole</code>/<code>min_hole_clearance</code> and <code>solder_mask_min_width = 0.0</code></td>
+<td>failed (<code>M3</code>)</td>
+</tr>
+<tr>
+<td><code>nets_check.py --rules</code> (<code>0</code> errors)</td>
+<td>Verbatim output below: <strong><code>FAIL: 32 errors, 0 warnings</code></strong> (<code>"netclass_assignments": null</code> in <code>.kicad_pro</code> exports <code>Default</code> in schematic netlist) + <code>VSYS &gt;= 0.16 mm</code> DRU override</td>
+<td>failed (<code>B3</code>, <code>M1</code>)</td>
+</tr>
+<tr>
+<td>Custom rules in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/sunflower.kicad_dru">sunflower.kicad_dru</a> sourced &amp; complete</td>
+<td><code>48</code> valid <code>(version 1)</code> rules (<code>0</code> syntax errors), <strong>but <code>LX cutout L2</code> is on <code>In1.Cu</code> instead of <code>In2.Cu</code></strong>, <code>BT1</code> Molex <code>RESTRICTED AREA</code> keepout &amp; diff-pair skew rules are missing, <code>43/48</code> lack inline <code>#</code> source comments, and <code>U5.17</code>/<code>U3.61</code> exempt open vias inside paste</td>
+<td>failed (<code>B1</code>, <code>M2</code>, <code>M4</code>)</td>
+</tr>
+<tr>
+<td>DRC severities set in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/sunflower.kicad_pro">sunflower.kicad_pro</a></td>
+<td><code>43</code> <code>"error"</code>, <code>8</code> <code>"warning"</code>, <code>6</code> <code>"ignore"</code> (though <code>kicad-cli pcb drc --severity-all</code> reports <code>0</code> warnings and <code>0</code> exclusions on the board)</td>
+<td>failed (<code>M4</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Real Command Outputs (<code>2026-11-08</code>)</h2>
+<h3><code>nets_check.py --rules</code> (<code>--nets design/nets-sunflower-s2-110-usbc.csv --rules</code>)</h3>
+<pre><code class="language-text">nets_check: hw/sunflower/s2-110-usbc
+  95 named nets in sunflower.kicad_sch, 108 rows in nets-sunflower-s2-110-usbc.csv
+
+  ERRORS (32)
+    [netclass] +1V1: KiCad net class Default, nets.csv says POWER
+    [netclass] +3V3: KiCad net class Default, nets.csv says POWER
+    [netclass] /MCU/LIGHT: KiCad net class Default, nets.csv says ANALOG
+    [netclass] /MCU/QSPI_SCLK: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD0: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD1: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD2: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SD3: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/QSPI_SS: KiCad net class Default, nets.csv says SE_HS
+    [netclass] /MCU/USB_DM_MCU: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] /MCU/USB_DP_MCU: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] /MCU/VREG_AVDD: KiCad net class Default, nets.csv says ANALOG
+    [netclass] /MCU/VREG_LX: KiCad net class Default, nets.csv says SWITCH
+    [netclass] /Power/BAT_N: KiCad net class Default, nets.csv says POWER
+    [netclass] /Power/USB_DM_C: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] /Power/USB_DP_C: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] GND: KiCad net class Default, nets.csv says POWER
+    [netclass] Net-(C24-Pad1): KiCad net class Default, nets.csv says CLOCK
+    [netclass] Net-(U1-ISET): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U2-ISET): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U3-XIN): KiCad net class Default, nets.csv says CLOCK
+    [netclass] Net-(U3-XOUT): KiCad net class Default, nets.csv says CLOCK
+    [netclass] Net-(U5-ILIM): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U5-ISET): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U5-TS): KiCad net class Default, nets.csv says ANALOG
+    [netclass] Net-(U8-VDD): KiCad net class Default, nets.csv says ANALOG
+    [netclass] USB_DM: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] USB_DP: KiCad net class Default, nets.csv says DIFF_HS
+    [netclass] VBAT: KiCad net class Default, nets.csv says POWER
+    [netclass] VBAT_SENSE: KiCad net class Default, nets.csv says ANALOG
+    [netclass] VBUS: KiCad net class Default, nets.csv says POWER
+    [netclass] VSYS: KiCad net class Default, nets.csv says POWER
+
+  FAIL: 32 errors, 0 warnings
+</code></pre>
+<p><em>(Full <code>108</code>-row derived table identical to <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase3.md">phase3.md</a>; inside <code>pcbnew</code>, all <code>108</code> PCB nets match exact <code>netclass_patterns</code> in <code>sunflower.kicad_pro</code> with <code>0</code> unmatched nets.)</em></p>
+<h2>Independent Fresh-Context Review (<code>gemini-4-argon-high</code>)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Reviewer Finding</th>
+<th>Disposition &amp; Action Taken</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B1</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>RuleArea 18</code> (<code>LX cutout L2</code>) is on <code>In1.Cu</code> (<code>1.29 mm</code> away) instead of <code>In2.Cu</code> (<code>0.21 mm</code> directly beneath <code>B.Cu</code>-mounted <code>U3</code>/<code>L1</code>), allowing <code>VSYS</code> and <code>+3V3</code> routing under <code>L1</code>/<code>VREG_LX</code></td>
+<td><strong>Confirmed — Gate 5 held (<code>Rev S3D</code> fix):</strong> Documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a> §1 and coupled noise quantified (<code>19–48 mV_pk</code> on <code>ADC_AVDD</code>) in Gate 8.</td>
+</tr>
+<tr>
+<td><code>B2</code></td>
+<td><code>BLOCKER</code></td>
+<td>Inverted 4L <code>GND</code> plane (<code>In1.Cu</code> vs <code>In2.Cu</code> for <code>B.Cu</code> active ICs/QSPI/USB) &amp; stale <code>90 diff</code> / <code>14.1 mm</code> USB text in initial <code>stackup-4l.md</code></td>
+<td><strong>Doc fixed; stackup inversion held (<code>Rev S3D</code> fix):</strong> Synced <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a> §2 with exact Kirschning–Jansen <code>~134 Ω</code> diff impedance, <code>50 Ω</code>/<code>90 Ω</code> <code>7628</code> recipes, and actual <code>34.55 / 35.87 mm</code> routed USB lengths.</td>
+</tr>
+<tr>
+<td><code>B3</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>nets_check.py --rules</code> fails (<code>32</code> errors) because <code>.kicad_pro</code> uses <code>"netclass_patterns"</code> (<code>"netclass_assignments": null</code>), plus <code>SIGNAL</code> (<code>priority: 1</code>) overrides <code>SW_SCAN</code> (<code>priority: 3</code>)</td>
+<td><strong>Confirmed — Gate 5 held (<code>Rev S3D</code> fix):</strong> Corrected the mechanism explanation in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a> §4; populate <code>"netclass_assignments"</code> or schematic directives in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>M1</code></td>
+<td><code>MAJOR</code></td>
+<td><code>VSYS</code> width rule (<code>0.16 mm</code> global in <code>.kicad_dru</code>, <code>0.20 mm</code> in <code>POWER</code>) under-sizes <code>15.2 µm</code> <code>In2.Cu</code> trunks; <code>VBUS</code> not restricted to outer <code>1 oz</code> copper</td>
+<td><strong>Confirmed — Gate 5 held (<code>Rev S3D</code> fix):</strong> Scope <code>0.16 mm</code> strictly to QFN pad neckdowns and enforce <code>≥ 0.25–0.30 mm</code> on <code>VSYS</code>/<code>VBUS</code> trunks in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>M2</code></td>
+<td><code>MAJOR</code></td>
+<td><code>.kicad_dru</code> exempts open vias inside <code>U1.41</code>/<code>U2.41</code>/<code>U3.61</code>/<code>U5.17</code> without VIPPO/POFV (<code>U5.17</code> &amp; <code>U3.61</code> overlap <code>B.Paste</code>; <code>U1.41</code> has <code>0</code> thermal vias)</td>
+<td><strong>Confirmed — Gate 5 held (<code>Rev S3D</code> fix):</strong> Constrain EP thermal vias strictly to paste-free <code>+</code> cross channels (<code>5</code> vias on <code>U1.41</code>/<code>U2.41</code>/<code>U3.61</code>) in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>M3</code></td>
+<td><code>MAJOR</code></td>
+<td>Zero-margin drill/hole floors (<code>0.20 mm</code>), unset <code>solder_mask_min_width</code>, matte vs green LPI dam difference, and microvias not disallowed</td>
+<td><strong>Confirmed — Gate 5 held (<code>Rev S3D</code> fix):</strong> Updated <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a> §1/§3 to specify <strong>standard green LPI mask</strong> (<code>0.08–0.10 mm</code> QFN dam) and queued <code>solder_mask_min_width = 0.10 mm</code> + <code>(constraint disallow microvia buried_via)</code> for <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>M4</code></td>
+<td><code>MAJOR</code></td>
+<td><code>14</code> <code>.kicad_pro</code> DRC severities left at <code>"warning"</code>/<code>"ignore"</code>, missing diff-pair skew rules, and <code>43/48</code> <code>.kicad_dru</code> rules missing inline <code>#</code> source comments</td>
+<td><strong>Confirmed — Gate 5 held (<code>Rev S3D</code> fix):</strong> Verified <code>0</code> warnings/exclusions via <code>kicad-cli pcb drc --severity-all</code> on <code>Rev S3C</code>; promote severities, add targeted <code>J1</code>/<code>NT1</code> exclusions, and add <code>#</code> rule comments in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>m1–m3</code></td>
+<td><code>MINOR</code></td>
+<td><code>εr = 4.4</code> vs <code>4.6</code> on <code>7628</code>, <code>1.5862</code> vs <code>1.6062 mm</code> stack height, <code>43/8/6</code> severity count in <code>stackup-4l.md</code>, <code>29</code> vias under <code>BT1</code> (<code>0.10 mm</code> <code>BATTERY</code> clr), <code>0.10 mm</code> silk default</td>
+<td><strong>Doc fixed in <code>stackup-4l.md</code>; board rules queued for <code>Rev S3D</code>:</strong> Added <code>BT1</code> Molex <code>RESTRICTED AREA</code> keepout and <code>BATTERY</code> <code>≥ 0.20 mm</code> clearance to <code>Rev S3D</code> checklist.</td>
+</tr>
+<tr>
+<td><code>N1–N2</code></td>
+<td><code>NOTE</code></td>
+<td>All <code>48</code> <code>.kicad_dru</code> rules parse cleanly; recommend <code>ENIG</code> over <code>HAL SnPb</code> at order time</td>
+<td><strong>Noted:</strong> Added <code>ENIG 1U"</code> order recommendation in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a> §1.</td>
+</tr>
+</tbody>
+</table></div></div></body></html>

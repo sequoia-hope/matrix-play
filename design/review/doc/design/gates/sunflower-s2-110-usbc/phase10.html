@@ -1,0 +1,565 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 10: Sync and Release — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase10.md'>design/gates/sunflower-s2-110-usbc/phase10.md</a></p><h1>Gate 10: Sync and Release — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>awaiting_signoff</code></strong> (Gate 10 requires explicit user sign-off per <a href="../../../.claude/skills/pcb-design/SKILL.html">SKILL.md</a> and <a href="../../../.claude/skills/pcb-design/references/sync-and-release.html">sync-and-release.md</a>; independent review recommends <strong>holding <code>Rev S3C</code> for <code>Rev S3D</code></strong>, or ordering a conditional <code>5–10</code> board bench prototype lot only with explicit user sign-off on the waivers and assembly/firmware guards below).</p>
+<h2>Checklist (<a href="../../../.claude/skills/pcb-design/references/sync-and-release.html">sync-and-release.md</a>, Phase 10)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All earlier gates current (<code>0</code>–<code>9</code>)</td>
+<td><code>1–3</code> <code>passed</code>; <code>0, 4</code> <code>awaiting_signoff</code>; <code>5–9</code> <code>failed</code> on frozen <code>Rev S3C</code> copper/rules/silk (table below)</td>
+<td>current (<code>5–9</code> held unless waived for <code>Rev S3C</code> proto)</td>
+</tr>
+<tr>
+<td>Sync check passes (<code>--bom</code> &amp; <code>--cpl</code>)</td>
+<td><code>sync_check.py</code>: <code>206</code> symbols ↔ <code>206</code> footprints, <code>191</code> BOM/CPL placements (<code>0</code> errors, <code>0</code> warnings)</td>
+<td><strong>PASS</strong></td>
+</tr>
+<tr>
+<td>DRC / ERC re-run on final files: clean</td>
+<td><code>kicad-cli sch erc --severity-all</code> = <code>0</code>; <code>kicad-cli pcb drc --severity-all --schematic-parity</code> = <code>0</code> (<code>0</code> opens)</td>
+<td><strong>PASS</strong></td>
+</tr>
+<tr>
+<td>Stock re-checked at release</td>
+<td><code>jlc_parts.py show</code> (<code>2026-11-08</code>): <strong><code>34/34</code></strong> unique LCSC parts <code>lifecycle normal</code> &amp; in stock (<code>min 531</code> on <code>U6</code>; <code>L1</code> = <code>1,520</code>)</td>
+<td><strong>PASS</strong></td>
+</tr>
+<tr>
+<td>CPL rotation &amp; origin verified for every polarized part / IC</td>
+<td>Fixed Bottom-layer mirroring &amp; EasyEDA origins in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/sunflower/export_and_cost.py">export_and_cost.py</a>; verified all <code>191</code> parts (<code>BT1</code> <code>110.00°</code>, <code>J1</code> <code>0.00°</code>, <code>0.000 mm</code> origin error)</td>
+<td><strong>PASS</strong></td>
+</tr>
+<tr>
+<td>Gerbers reviewed in a separate viewer (<code>gerbonara</code> + Chrome)</td>
+<td>All <code>12</code> layers rendered &amp; reconciled in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc/gerbers">gerbers/</a>; caught <code>0</code> paste on <code>J1</code>'s <code>4</code> PTH slots in <code>sunflower-B_Paste.gbp</code></td>
+<td><strong>FAIL</strong> (<code>J1</code> PTH <code>B.Paste</code> + <code>U3.61</code>/<code>U5.17</code> EP paste vias)</td>
+</tr>
+<tr>
+<td><code>U3</code> (<code>RP2350A</code>) <code>+1V1</code> ring &amp; <code>+3V3</code> band whole-piece zone check</td>
+<td><code>+1V1</code> <code>RP2350 ring</code> = <strong><code>1</code> piece (<code>6.0625 mm²</code>)</strong> (<code>0</code> spokes to <code>Zone 11</code>); <code>+3V3</code> <code>RP2350 band</code> = <strong><code>4</code> pieces (<code>9.7561 mm²</code>)</strong></td>
+<td><strong>FAIL</strong> (<code>4</code>-piece <code>+3V3</code> band + <code>0</code>-spoke <code>COUT</code>)</td>
+</tr>
+<tr>
+<td>Final independent review: no blocking findings</td>
+<td>Fresh-context <code>agy</code> reviewer (<code>2026-11-08</code>): <strong>HOLD for <code>Rev S3D</code></strong> (or conditional <code>5</code>-board bench proto with waivers); all doc/bring-up findings fixed</td>
+<td><strong>FAIL</strong> (copper/DFM blockers held for user decision)</td>
+</tr>
+<tr>
+<td>Bring-up plan written &amp; linked from <code>index.html</code></td>
+<td><a href="../../study/sunflower/bringup-s2-110-usbc.html">bringup-s2-110-usbc.md</a> + <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a>, linked in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/index.html">index.html</a></td>
+<td><strong>PASS</strong></td>
+</tr>
+<tr>
+<td>Git tagged (<code>sunflower-s2-110-usbc-revS3C</code>)</td>
+<td>Deferred until supervising commit + user release sign-off (per workspace rules: do not commit/tag yet)</td>
+<td>deferred</td>
+</tr>
+<tr>
+<td><strong>User approves release</strong></td>
+<td>Listed in §7 below and in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/status.json">status.json</a> (<code>s2-110-usbc-release</code>)</td>
+<td><strong><code>awaiting_signoff</code></strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>Summary of Earlier Gates (<code>0</code>–<code>9</code>)</h3>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>File</th>
+<th>State</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 — Intent</td>
+<td><a href="phase0.html">phase0.md</a></td>
+<td><code>awaiting_signoff</code></td>
+<td><a href="../../study/sunflower/intent-s2-110-usbc.html">intent-s2-110-usbc.md</a> complete; awaits user sign-off on <code>BT1</code> spacer, <code>403535</code> C-rate, <code>ADC4</code> <code>GCC</code> caps, <code>B.SilkS</code> identity</td>
+</tr>
+<tr>
+<td>1 — Parts</td>
+<td><a href="phase1.html">phase1.md</a></td>
+<td><code>passed</code></td>
+<td><code>34/34</code> unique LCSC parts audited, <code>lifecycle normal</code>, in stock (<code>sources.csv</code> passive rows waived for <code>Rev S3C</code>)</td>
+</tr>
+<tr>
+<td>2 — Schematic</td>
+<td><a href="phase2.html">phase2.md</a></td>
+<td><code>passed</code></td>
+<td><code>0</code> ERC violations across 5 sheets; <code>Q2</code>/<code>U8</code> polarity proven; <code>sch_gen.py</code> style, <code>C35 = 100 nF</code>, <code>BT1</code> <code>MP</code> nails waived</td>
+</tr>
+<tr>
+<td>3 — Net Spec</td>
+<td><a href="phase3.html">phase3.md</a></td>
+<td><code>passed</code></td>
+<td><code>nets_check.py --routed</code> <code>PASS</code> (<code>0</code> errors, <code>109</code> rows in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a>)</td>
+</tr>
+<tr>
+<td>4 — Board Brief</td>
+<td><a href="phase4.html">phase4.md</a></td>
+<td><code>awaiting_signoff</code></td>
+<td><a href="../../study/sunflower/brief-s2-110-usbc.html">brief-s2-110-usbc.md</a> + exact <code>B.Fab</code> <a href="../../study/sunflower/floorplan-s2-110-usbc.svg">floorplan-s2-110-usbc.svg</a>; awaits user sign-off</td>
+</tr>
+<tr>
+<td>5 — Stackup &amp; Rules</td>
+<td><a href="phase5.html">phase5.md</a></td>
+<td><code>failed</code></td>
+<td><code>In1.Cu</code> <code>GND</code> (<code>1.29 mm</code> from <code>B.Cu</code>) vs <code>In2.Cu</code> signals (<code>0.21 mm</code> from <code>B.Cu</code>); <code>LX cutout L2</code> on <code>In1.Cu</code>; <code>netclass_assignments: null</code></td>
+</tr>
+<tr>
+<td>6 — Placement</td>
+<td><a href="phase6.html">phase6.md</a></td>
+<td><code>failed</code></td>
+<td><code>U4.8</code> <code>8.56 mm</code> from <code>C14</code> (<code>C22</code> misplaced); <code>U3.61</code> (<code>1</code>) &amp; <code>U5.17</code> (<code>2</code>) vias in <code>B.Paste</code>; <code>29</code> vias in <code>BT1</code> Molex keepout; <code>U8</code> <code>29.1 mm</code> from <code>BT1</code></td>
+</tr>
+<tr>
+<td>7 — Routing</td>
+<td><a href="phase7.html">phase7.md</a></td>
+<td><code>failed</code></td>
+<td><code>0</code> opens / <code>0</code> DRC / <code>0</code> <code>copper_audit</code> / <code>0</code> <code>pad_joints</code>, <strong>but</strong> <code>Zone 11</code> (<code>COUT</code>) <code>0</code> spokes (<code>+1V1</code> via <code>U3.50</code> <code>VREG_FB</code>), shared <code>CFILT</code>/<code>PGND</code> via, <code>4</code>-piece <code>+3V3</code> band, <code>0.107 mm</code> <code>VBAT</code> via to <code>BT1.2</code></td>
+</tr>
+<tr>
+<td>8 — Simulation</td>
+<td><a href="phase8.html">phase8.md</a></td>
+<td><code>failed</code></td>
+<td><a href="../../sim/sunflower-s2-110-usbc/README.html">sim/README.md</a>: <code>U4.8</code> <code>312–554 mV</code> 4-bit QSPI SSO droop (<code>1x/2x</code> SPI safe); <code>ADC_AVDD</code> <code>19–48 mV_pk</code> <code>LX</code> spike; <code>71.7–93 °C</code> uncapped thermal rise</td>
+</tr>
+<tr>
+<td>9 — Silkscreen</td>
+<td><a href="phase9.html">phase9.md</a></td>
+<td><code>failed</code></td>
+<td><code>0</code> silk-over-pad errors, <strong>but</strong> <code>BT1</code> <code>+</code>/<code>-</code> &amp; <code>J1</code> <code>USB 5V</code> hidden under connector bodies, <code>5</code> QFNs/LGAs missing <code>B.SilkS</code> pin-1 dots, silk over open vias</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>1. Release Outputs &amp; Order Specification</h2>
+<ul>
+<li><strong>Current release set (<code>hw/sunflower/s2-110-usbc/fab/</code>):</strong></li>
+<li><a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/fab/sunflower-s2-110-usbc-gerbers.zip">sunflower-s2-110-usbc-gerbers.zip</a> (11 Gerber X2 files + <code>sunflower.drl</code> + <code>sunflower-job.gbrjob</code>)</li>
+<li><a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/fab/bom-jlcpcb.csv">bom-jlcpcb.csv</a> (<code>35</code> BOM lines = <code>34</code> unique LCSC PNs, <code>191</code> placements)</li>
+<li><a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/fab/cpl-jlcpcb.csv">cpl-jlcpcb.csv</a> (<code>191</code> placements: <code>111</code> <code>Top</code>, <code>80</code> <code>Bottom</code>, Bottom-mirrored &amp; EasyEDA origin-corrected)</li>
+<li>Stale <code>01:37</code> <code>2026-11-07</code> KiCad Fabrication Toolkit folder moved aside to <code>hw/sunflower/s2-110-usbc/production-stale-2026-11-07-0137/</code>.</li>
+<li><strong>Drawings, renders &amp; 3D (<code>design/renders/sunflower-s2-110-usbc/</code> &amp; <code>viewer/</code>):</strong></li>
+<li><a href="../../renders/sunflower-s2-110-usbc/schematic.pdf">schematic.pdf</a>, <a href="../../renders/sunflower-s2-110-usbc/assembly-top.pdf">assembly-top.pdf</a> (≈4:1 on A4), <a href="../../renders/sunflower-s2-110-usbc/assembly-bottom.pdf">assembly-bottom.pdf</a> (≈4:1 on A4), <a href="../../renders/sunflower-s2-110-usbc/3d-top.png">3d-top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/3d-bottom.png">3d-bottom.png</a>, <a href="../../renders/sunflower-s2-110-usbc/cpl-check-top.png">cpl-check-top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/cpl-check-bottom.png">cpl-check-bottom.png</a>, and <code>viewer/sunflower-s2-110-usbc/board.glb</code>.</li>
+<li><strong>Mandatory JLCPCB order settings (<a href="../../study/sunflower/stackup-4l.html">stackup-4l.md</a>):</strong></li>
+<li>Stackup code: <strong><code>JLC04161H-7628</code></strong> (<code>4</code> layers, <code>1.6 mm</code>, <code>1 oz</code> outer / <code>0.5 oz</code> inner)</li>
+<li>Surface finish: <strong><code>ENIG 1U"</code></strong> (overrides <code>.gbrjob</code> default <code>HAL SnPb</code> for <code>0.40 mm</code>-pitch QFNs &amp; <code>1.0 × 1.0 mm</code> X2-SON <code>U6</code>)</li>
+<li>Solder mask: <strong>Green LPI</strong> (<code>0.10 mm</code> min dam; matte black violates <code>0.40 mm</code>-pitch QFN mask-bridge rules); vias: <strong>Tented</strong></li>
+<li>PCBA reflow order: <strong><code>Pass 1 = B.Cu</code> (Bottom), <code>Pass 2 = F.Cu</code> (Top, peak <code>≤ 245 °C</code>)</strong> (<code>Q2</code> <code>XYC-PT19C-L1</code> allows <strong>1× reflow pass max</strong>); <strong>NO <code>F.Cu</code> wave or hand soldering on <code>J1</code></strong> (<code>0.18–0.29 mm</code> from <code>D10</code>/<code>D104</code>/<code>D110</code>).</li>
+</ul>
+<hr />
+<h2>2. Sync, ERC, DRC &amp; Live Stock Verification</h2>
+<h3>2.1 Schematic ↔ PCB ↔ BOM ↔ CPL Sync (<code>sync_check.py</code>)</h3>
+<pre><code class="language-text">$ python3 .claude/skills/pcb-design/scripts/sync_check.py hw/sunflower/s2-110-usbc \
+    --bom hw/sunflower/s2-110-usbc/fab/bom-jlcpcb.csv \
+    --cpl hw/sunflower/s2-110-usbc/fab/cpl-jlcpcb.csv
+sync_check: hw/sunflower/s2-110-usbc
+  schematic sunflower.kicad_sch: 206 symbols (0 excluded from board)
+  board sunflower.kicad_pcb: 206 footprints (0 board-only)
+  BOM bom-jlcpcb.csv: 191 designators
+  CPL cpl-jlcpcb.csv: 191 placements
+  191 parts to build; required fields: LCSC
+  stock not checked: re-check every LCSC part at release (phase 10)
+
+  PASS: 0 errors, 0 warnings
+</code></pre>
+<p><em>(The <code>15</code> unplaced schematic/board footprints are the <code>14</code> bare test pads <code>TP1..TP8, TP11..TP16</code> plus net-tie <code>NT1</code>.)</em></p>
+<h3>2.2 Final ERC &amp; DRC (<code>kicad-cli --severity-all</code>)</h3>
+<pre><code class="language-text">$ kicad-cli sch erc --severity-all --format json -oerc-s2-110-usbc.json hw/sunflower/s2-110-usbc/sunflower.kicad_sch
+{
+    &quot;kicad_version&quot;: &quot;9.0.8&quot;,
+    &quot;sheets&quot;: [ &quot;/&quot;, &quot;/Power/&quot;, &quot;/MCU/&quot;, &quot;/Driver 1 and matrix/&quot;, &quot;/Driver 2 and matrix/&quot; ],
+    &quot;violations&quot;: 0 across all 5 sheets
+}
+
+$ ~/.claude/bin/reserve -c 4 -l &quot;s2-110-usbc gates&quot; -- \
+    kicad-cli pcb drc --severity-all --schematic-parity --format json \
+    -odrc-s2-110-usbc.json hw/sunflower/s2-110-usbc/sunflower.kicad_pcb
+{
+    &quot;kicad_version&quot;: &quot;9.0.8&quot;,
+    &quot;schematic_parity&quot;: [],
+    &quot;source&quot;: &quot;sunflower.kicad_pcb&quot;,
+    &quot;unconnected_items&quot;: [],
+    &quot;violations&quot;: []
+}
+</code></pre>
+<h3>2.3 Live JLCPCB Stock Re-Check (<code>2026-11-08</code>, <code>34/34</code> Unique LCSC Parts)</h3>
+<pre><code class="language-text">$ python3 .claude/skills/pcb-design/scripts/jlc_parts.py show C177225 C52923 C86295 C19702 C1525 C23733 C1548 C965840 C165948 C42411119 C236117 C2693594 C25905 C25744 C25784 C25891 C25741 C25076 C25105 C25100 C11702 C25900 C25776 C25768 C2828254 C5137654 C42411118 C190862 C15220 C2860046 C15999 C669687 C189624 C20625731
+C177225 532610271 (MOLEX, SMD,P=1.25mm,Surface Mount,Right Angle): extended, JLC stock 24078, lifecycle normal, checked 2026-11-08
+C52923 CL05A105KA5NQNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 11484815, lifecycle normal, checked 2026-11-08
+C86295 CL10A226MP8NUNE (Samsung Electro-Mechanics, 0603): extended, JLC stock 629210, lifecycle normal, checked 2026-11-08
+C19702 CL10A106KP8NNNC (Samsung Electro-Mechanics, 0603): basic, JLC stock 10258539, lifecycle normal, checked 2026-11-08
+C1525 CL05B104KO5NNNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 34141448, lifecycle normal, checked 2026-11-08
+C23733 CL05A475MP5NRNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 1027471, lifecycle normal, checked 2026-11-08
+C1548 0402CG150J500NT (FH, 0402): basic, JLC stock 1202179, lifecycle normal, checked 2026-11-08
+C965840 XL-1615RGBC-RF (XINGLIGHT, SMD-4P,1.6x1.5mm): extended, JLC stock 715082, lifecycle normal, checked 2026-11-08
+C165948 TYPE-C-31-M-12 (Korean Hroparts Elec, SMD): extended, JLC stock 312252, lifecycle normal, checked 2026-11-08
+C42411119 AOTA-B201610S3R3-101-T (ABRACON, 0806): extended, JLC stock 1520, lifecycle normal, checked 2026-11-08
+C236117 NTZD3155CT1G (onsemi, SOT-563): extended, JLC stock 7923, lifecycle normal, checked 2026-11-08
+C2693594 XYC-PT19C-L1 (NEWOPTO, 0603): extended, JLC stock 25178, lifecycle normal, checked 2026-11-08
+C25905 0402WGF5101TCE (UNI-ROYAL, 0402): basic, JLC stock 4483839, lifecycle normal, checked 2026-11-08
+C25744 0402WGF1002TCE (UNI-ROYAL, 0402): basic, JLC stock 22721767, lifecycle normal, checked 2026-11-08
+C25784 0402WGF3001TCE (UNI-ROYAL, 0402): extended, JLC stock 646696, lifecycle normal, checked 2026-11-08
+C25891 0402WGF3601TCE (UNI-ROYAL, 0402): extended, JLC stock 494270, lifecycle normal, checked 2026-11-08
+C25741 0402WGF1003TCE (UNI-ROYAL, 0402): basic, JLC stock 8748432, lifecycle normal, checked 2026-11-08
+C25076 0402WGF1000TCE (UNI-ROYAL, 0402): basic, JLC stock 11716767, lifecycle normal, checked 2026-11-08
+C25105 0402WGF330JTCE (UNI-ROYAL, 0402): basic, JLC stock 3819439, lifecycle normal, checked 2026-11-08
+C25100 0402WGF270JTCE (UNI-ROYAL, 0402): extended, JLC stock 704688, lifecycle normal, checked 2026-11-08
+C11702 0402WGF1001TCE (UNI-ROYAL, 0402): basic, JLC stock 33681035, lifecycle normal, checked 2026-11-08
+C25900 0402WGF4701TCE (UNI-ROYAL, 0402): basic, JLC stock 15709011, lifecycle normal, checked 2026-11-08
+C25776 0402WGF3002TCE (UNI-ROYAL, 0402): extended, JLC stock 5297189, lifecycle normal, checked 2026-11-08
+C25768 0402WGF2202TCE (UNI-ROYAL, 0402): basic, JLC stock 1043461, lifecycle normal, checked 2026-11-08
+C2828254 EVQP7J01P (PANASONIC, SMD,3.6x3.5mm): extended, JLC stock 6887, lifecycle normal, checked 2026-11-08
+C5137654 AW20198QNR (AWINIC(Shanghai Awinic Tech), QFN-40L(5x5)): extended, JLC stock 6055, lifecycle normal, checked 2026-11-08
+C42411118 RP2350A (Raspberry Pi, QFN-60-EP(7x7)): extended, JLC stock 3175, lifecycle normal, checked 2026-11-08
+C190862 W25Q128JVPIQ (Winbond, WSON-8-EP(5x6)): extended, JLC stock 12788, lifecycle normal, checked 2026-11-08
+C15220 BQ24073RGTR (TI, QFN-16-EP(3x3)): extended, JLC stock 762, lifecycle normal, checked 2026-11-08
+C2860046 TPS7A0233PDQNR (TI, X2-SON-4-EP(1x1)): extended, JLC stock 531, lifecycle normal, checked 2026-11-08
+C15999 USBLC6-2P6 (ST, SOT-666-6): extended, JLC stock 20214, lifecycle normal, checked 2026-11-08
+C669687 XB9901A (XySemi, DFNFC-6(1.4x1.8)): extended, JLC stock 2947, lifecycle normal, checked 2026-11-08
+C189624 LIS2DW12TR (ST, LGA-12(2x2)): extended, JLC stock 51892, lifecycle normal, checked 2026-11-08
+C20625731 ABM8-272-T3 (ABRACON, SMD3225-4P): extended, JLC stock 9607, lifecycle normal, checked 2026-11-08
+</code></pre>
+<hr />
+<h2>3. CPL Rotation &amp; Pick-Origin Audit (<code>191</code> Placements)</h2>
+<h3>3.1 Bug Caught &amp; Fixed in <code>scripts/sunflower/export_and_cost.py</code></h3>
+<p>Auditing the previous <code>cpl-jlcpcb.csv</code> against all <code>34</code> LCSC EasyEDA footprint JSONs caught two silent PCBA assembly bugs in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/sunflower/export_and_cost.py#L185-L218">export_and_cost.py</a>:
+1. <strong>Missing Bottom-layer angle reflection:</strong> <code>export_and_cost.py</code> computed <code>(rot_kicad + rot_off) % 360</code> on both sides instead of <code>(180.0 - rot_kicad + rot_off) % 360</code> on <code>Bottom</code>, mis-rotating <code>BT1</code> (<code>70°</code> vs <strong><code>110°</code></strong>), <code>J1</code> (<code>180°</code> vs <strong><code>0°</code></strong>), <code>U1/U2</code> (<code>270°</code> vs <strong><code>0°</code></strong>), <code>U4</code> (<code>270°</code> vs <strong><code>0°</code></strong>), <code>Q1</code> (<code>90°</code> vs <strong><code>270°</code></strong>), <code>U9</code> (<code>90°</code> vs <strong><code>270°</code></strong>), and <code>SW1/SW2</code> (<code>291°/69°</code> vs <strong><code>249°/111°</code></strong>).
+2. <strong>Missing EasyEDA pick-origin offsets on <code>BT1</code> and <code>J1</code>:</strong> EasyEDA <code>C177225</code> (<code>BT1</code>) places its origin <code>+0.950 mm</code> in local <code>+Y</code> from KiCad's <code>Molex_PicoBlade_53261-0271</code> origin (<code>Δ = (-0.8927, -0.3249) mm</code> at <code>-110°</code>), and EasyEDA <code>C165948</code> (<code>J1</code>) places its origin <code>+1.571 mm</code> in local <code>+Y</code> from KiCad's <code>HRO_TYPE-C-31-M-12</code> origin (<code>Δ = (0.0000, +1.5710) mm</code> at <code>180°</code>).</p>
+<p>Updated <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/sunflower/export_and_cost.py">export_and_cost.py</a>, re-exported <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/fab">fab/</a>, verified pad-for-pad across all <code>191</code> parts, and rendered visual overlays in <a href="../../renders/sunflower-s2-110-usbc/cpl-check-top.png">cpl-check-top.png</a> and <a href="../../renders/sunflower-s2-110-usbc/cpl-check-bottom.png">cpl-check-bottom.png</a>:</p>
+<pre><code class="language-text">CPL total rows: 191
+Max pad-to-pad overlay error across ALL 191 parts: 0.3127 mm
+
+Polarized / IC / Connector / LED sample CPL verification table:
+Ref    MPN                    LCSC      Layer    KiRot   CPL_MidX   CPL_MidY  CPLRot   PadErr
+BT1    PicoBlade 2P           C177225   Bottom  -110.0    87.7073   -89.4751  110.00   0.000mm
+C1     1u                     C52923    Bottom   180.0   102.9235  -109.6870    0.00   0.060mm
+C16    4.7u                   C23733    Bottom     0.0   100.6000   -98.0000  180.00   0.095mm
+D1     RGB                    C965840   Top        0.0   100.0000  -100.0000  180.00   0.135mm
+D2     RGB                    C965840   Top        0.0    98.9500  -103.9000  180.00   0.135mm
+D55    RGB                    C965840   Top        0.0    97.3000   -83.4000  180.00   0.135mm
+D56    RGB                    C965840   Top        0.0   100.2000   -97.7000  180.00   0.135mm
+D110   RGB                    C965840   Top        0.0   105.8500  -115.1500  180.00   0.135mm
+J1     USB-C                  C165948   Bottom   180.0   100.0000  -114.0290    0.00   0.000mm
+L1     3.3u                   C42411119 Bottom     0.0   100.6000  -100.6000  180.00   0.300mm
+Q1     NTZD3155C              C236117   Bottom   180.0    91.8000  -112.4000  270.00   0.010mm
+Q2     XYC-PT19C-L1           C2693594  Top        0.0   100.0000   -81.8000    0.00   0.000mm
+SW1    USER / WAKE            C2828254  Bottom   -69.0   116.1509   -93.8002  249.00   0.103mm
+SW2    BOOTSEL                C2828254  Bottom    69.0    83.8491   -93.8002  111.00   0.103mm
+U1     AW20198QNR             C5137654  Bottom    90.0    87.4000  -103.0000    0.00   0.199mm
+U2     AW20198QNR             C5137654  Bottom    90.0   112.6000  -103.0000    0.00   0.199mm
+U3     RP2350A                C42411118 Bottom     0.0    98.6000   -93.4000  180.00   0.138mm
+U4     W25Q128JVPIQ           C190862   Bottom    90.0    97.2000  -105.4000    0.00   0.313mm
+U5     BQ24073                C15220    Bottom     0.0   103.4000  -106.0000  180.00   0.037mm
+U6     TPS7A0233              C2860046  Bottom   180.0    93.9000  -100.4000    0.00   0.000mm
+U7     USBLC6-2P6             C15999    Bottom   180.0   107.0296  -110.6809  180.00   0.200mm
+U8     XB9901A                C669687   Bottom   180.0   106.4528  -112.7886    0.00   0.000mm
+U9     LIS2DW12               C189624   Bottom   180.0   104.4000   -86.2000  270.00   0.113mm
+Y1     12MHz                  C20625731 Bottom     0.0    97.3000   -85.2000  180.00   0.000mm
+</code></pre>
+<p><em>(Note: <code>PadErr = 0.300 mm</code> on <code>L1</code> and <code>0.313 mm</code> on <code>U4</code> are pure pad-toe length differences between KiCad and EasyEDA footprints; both parts have <code>(0.000, 0.000)</code> centroid offset and <code>0.00°</code> Pin-1 rotation error.)</em></p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref(s)</th>
+<th>LCSC</th>
+<th>Layer</th>
+<th>KiCad <code>(X, Y)</code> / Rot</th>
+<th>CPL <code>(Mid X, Mid Y)</code> / Rot</th>
+<th>Pin-1 / Polarity &amp; Origin Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BT1</code></td>
+<td><code>C177225</code></td>
+<td><code>Bottom</code></td>
+<td><code>(88.600, 89.800)</code> / <code>-110°</code> (<code>250°</code>)</td>
+<td><code>(87.7073, -89.4751)</code> / <strong><code>110.00°</code></strong></td>
+<td><strong>PASS (<code>0.000 mm</code>):</strong> <code>+0.950 mm</code> EasyEDA origin shift along <code>-110°</code> exact; mouth faces inward <code>+20°</code> toward <code>U3</code>; Pin 1 (<code>VBAT</code>) on upper/northerly signal pad <code>(86.56, 88.39)</code></td>
+</tr>
+<tr>
+<td><code>J1</code></td>
+<td><code>C165948</code></td>
+<td><code>Bottom</code></td>
+<td><code>(100.000, 115.600)</code> / <code>180°</code></td>
+<td><code>(100.0000, -114.0290)</code> / <strong><code>0.00°</code></strong></td>
+<td><strong>PASS (<code>0.000 mm</code>):</strong> <code>-1.5710 mm</code> Y-origin shift exact; tongue overhangs South <code>+Y</code> rim; all 12 SMD signal/power fingers match USB-C receptacle pinout (<code>A5/B5</code> <code>CC1/CC2</code>, <code>A4B9/B4A9</code> <code>VBUS</code>)</td>
+</tr>
+<tr>
+<td><code>D1..D110</code></td>
+<td><code>C965840</code></td>
+<td><code>Top</code></td>
+<td><code>(100.0, 100.0)..</code> / <code>0°</code></td>
+<td><code>(100.0, -100.0)..</code> / <strong><code>180.00°</code></strong></td>
+<td><strong>PASS:</strong> <code>+180°</code> EasyEDA offset aligns Pin 1 (<code>R</code>) Top-Left and Pin 2 (<code>Anode +</code>) Bottom-Left across all <code>110</code> RGB LEDs</td>
+</tr>
+<tr>
+<td><code>Q2</code></td>
+<td><code>C2693594</code></td>
+<td><code>Top</code></td>
+<td><code>(100.000, 81.800)</code> / <code>0°</code></td>
+<td><code>(100.0000, -81.8000)</code> / <strong><code>0.00°</code></strong></td>
+<td><strong>PASS (<code>0.000 mm</code>):</strong> Pin 1 (<code>Collector</code> = <code>/MCU/LIGHT_PWR</code>) on West (<code>-X</code>) pad matching <code>F.SilkS</code> dot</td>
+</tr>
+<tr>
+<td><code>U1</code>, <code>U2</code></td>
+<td><code>C5137654</code></td>
+<td><code>Bottom</code></td>
+<td><code>(87.4 / 112.6, 103.0)</code> / <code>90°</code></td>
+<td><code>(87.4 / 112.6, -103.0)</code> / <strong><code>0.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-BL</code> at <code>0°</code> places Pin 1 (<code>SW1</code>) Bottom-Left in <code>B.Cu</code> view</td>
+</tr>
+<tr>
+<td><code>U3</code></td>
+<td><code>C42411118</code></td>
+<td><code>Bottom</code></td>
+<td><code>(98.600, 93.400)</code> / <code>0°</code></td>
+<td><code>(98.6000, -93.4000)</code> / <strong><code>180.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-TL</code> at <code>180°</code> places <code>U3.1</code> Bottom-Right (<code>21/22</code> <code>Y1</code> North, <code>46..60</code> reg/USB/QSPI South)</td>
+</tr>
+<tr>
+<td><code>U4</code></td>
+<td><code>C190862</code></td>
+<td><code>Bottom</code></td>
+<td><code>(97.200, 105.400)</code> / <code>90°</code></td>
+<td><code>(97.2000, -105.4000)</code> / <strong><code>0.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-BL</code> at <code>0°</code> places <code>U4.1</code> (<code>~CS</code>) Bottom-Left and <code>U4.8</code> (<code>VCC</code>) Top-Left</td>
+</tr>
+<tr>
+<td><code>U5</code></td>
+<td><code>C15220</code></td>
+<td><code>Bottom</code></td>
+<td><code>(103.400, 106.000)</code> / <code>0°</code></td>
+<td><code>(103.4000, -106.0000)</code> / <strong><code>180.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-TL</code> at <code>180°</code> places <code>U5.1</code> (<code>TS</code>) Bottom-Right</td>
+</tr>
+<tr>
+<td><code>U6</code></td>
+<td><code>C2860046</code></td>
+<td><code>Bottom</code></td>
+<td><code>(93.900, 100.400)</code> / <code>180°</code></td>
+<td><code>(93.9000, -100.4000)</code> / <strong><code>0.00°</code></strong></td>
+<td><strong>PASS (<code>0.000 mm</code>):</strong> EasyEDA <code>-TL</code> at <code>0°</code> places <code>U6.1</code> (<code>OUT</code> → <code>C4</code>) Top-Left</td>
+</tr>
+<tr>
+<td><code>U7</code></td>
+<td><code>C15999</code></td>
+<td><code>Bottom</code></td>
+<td><code>(107.030, 110.681)</code> / <code>180°</code></td>
+<td><code>(107.0296, -110.6809)</code> / <strong><code>180.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-BR</code> at <code>180°</code> places <code>U7.1</code> Top-Left, matching <code>B.SilkS</code> dot</td>
+</tr>
+<tr>
+<td><code>U8</code></td>
+<td><code>C669687</code></td>
+<td><code>Bottom</code></td>
+<td><code>(106.453, 112.789)</code> / <code>180°</code></td>
+<td><code>(106.4528, -112.7886)</code> / <strong><code>0.00°</code></strong></td>
+<td><strong>PASS (<code>0.000 mm</code>):</strong> EasyEDA <code>-BL</code> at <code>0°</code> places <code>U8.1..3</code> (<code>VM</code>/<code>GND</code> bar) Bottom, <code>U8.4..5</code> (<code>BAT_N</code> bar) Top-Right, <code>U8.6</code> (<code>VDD</code>) Top-Left</td>
+</tr>
+<tr>
+<td><code>U9</code></td>
+<td><code>C189624</code></td>
+<td><code>Bottom</code></td>
+<td><code>(104.400, 86.200)</code> / <code>180°</code></td>
+<td><code>(104.4000, -86.2000)</code> / <strong><code>270.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-BL</code> at <code>270°</code> places <code>U9.1</code> (<code>SCL</code>) Top-Left</td>
+</tr>
+<tr>
+<td><code>Q1</code></td>
+<td><code>C236117</code></td>
+<td><code>Bottom</code></td>
+<td><code>(91.800, 112.400)</code> / <code>180°</code></td>
+<td><code>(91.8000, -112.4000)</code> / <strong><code>270.00°</code></strong></td>
+<td><strong>PASS:</strong> EasyEDA <code>-BL</code> at <code>270°</code> places <code>Q1.1</code> (<code>GND</code>) Top-Left</td>
+</tr>
+<tr>
+<td><code>L1</code>, <code>Y1</code></td>
+<td><code>C42411119</code>, <code>C20625731</code></td>
+<td><code>Bottom</code></td>
+<td><code>0°</code></td>
+<td><strong><code>180.00°</code></strong></td>
+<td><strong>PASS:</strong> <code>L1</code> start dot on West (<code>+1V1</code>) pad; <code>Y1.1</code> (<code>XIN</code>) Top-Right (<code>2, 4</code> <code>GND</code>)</td>
+</tr>
+<tr>
+<td><code>SW1</code>, <code>SW2</code></td>
+<td><code>C2828254</code></td>
+<td><code>Bottom</code></td>
+<td><code>−69° / +69°</code></td>
+<td><strong><code>249.00° / 111.00°</code></strong></td>
+<td><strong>PASS:</strong> Symmetric (<code>249° + 111° = 360°</code>), plungers project <code>+0.40 mm</code> outward past NE/NW rim</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>4. Independent Gerber &amp; Excellon Review (<code>gerber_render.py</code>)</h2>
+<pre><code class="language-text">$ python3 .claude/skills/pcb-design/scripts/gerber_render.py \
+    hw/sunflower/s2-110-usbc/fab/gerbers -o design/renders/sunflower-s2-110-usbc/gerbers
+gerber_render: hw/sunflower/s2-110-usbc/fab/gerbers (board sunflower)
+  top_silk             sunflower-F_Silkscreen.gto        1476 objects
+  top_paste            sunflower-F_Paste.gtp              442 objects
+  top_mask             sunflower-F_Mask.gts               448 objects
+  top_copper           sunflower-F_Cu.gtl                3034 objects
+  inner_1_copper       sunflower-In1_Cu.g1                642 objects
+  inner_2_copper       sunflower-In2_Cu.g2               1587 objects
+  bottom_copper        sunflower-B_Cu.gbl                2599 objects
+  bottom_mask          sunflower-B_Mask.gbs               387 objects
+  bottom_paste         sunflower-B_Paste.gbp              379 objects
+  bottom_silk          sunflower-B_Silkscreen.gbo        1052 objects
+  drill_sunflower      sunflower.drl                      643 objects
+  outline              sunflower-Edge_Cuts.gm1              2 objects
+  12 layer images in design/renders/sunflower-s2-110-usbc/gerbers
+</code></pre>
+<h3>Excellon X2 Drill Header (<code>sunflower.drl</code>)</h3>
+<pre><code class="language-text">M48
+; #@! TF.FileFunction,MixedPlating,1,4
+; #@! TA.AperFunction,Plated,PTH,ViaDrill
+T1C0.150
+; #@! TA.AperFunction,Plated,PTH,ComponentDrill
+T2C0.600
+; #@! TA.AperFunction,NonPlated,NPTH,ComponentDrill
+T3C0.650
+</code></pre>
+<ul>
+<li><strong>Layer-by-layer object reconciliation (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc/gerbers">gerbers/</a>):</strong></li>
+<li><code>outline</code> (<code>2</code> objects): Closed <code>Ø38.000 mm</code> circle (<code>2 × 180°</code> arcs), <code>0</code> gaps.</li>
+<li><code>drill_sunflower</code> (<code>643</code> objects): <code>637</code> vias (<code>T1C0.150</code> PTH) + <code>4</code> <code>J1</code> shield slots (<code>T2C0.600</code> PTH) + <code>2</code> <code>J1</code> locating pegs (<code>T3C0.650</code> explicitly tagged <code>NonPlated,NPTH,ComponentDrill</code>).</li>
+<li><code>top_paste</code> (<code>442</code>) &amp; <code>top_mask</code> (<code>448</code>): <code>110 × 4 (LEDs) + 2 (Q2) = 442</code> SMD paste pads + <code>4</code> <code>J1</code> PTH + <code>2</code> <code>J1</code> NPTH = <code>448</code> mask openings; all <code>637</code> vias tented.</li>
+<li><code>bottom_mask</code> (<code>387</code>) &amp; <code>bottom_paste</code> (<code>379</code>): <code>387</code> mask openings minus <code>20</code> paste-free openings (<code>14</code> <code>TP*</code>, <code>4</code> <code>J1</code> PTH slots, <code>2</code> <code>J1</code> NPTH pegs) plus <code>12</code> (<code>2×2</code> split EP paste windows on <code>U1</code>, <code>U2</code>, <code>U3</code>, <code>U5</code>) = <code>379</code> paste apertures (<code>0</code> mask/paste on <code>NT1</code>).</li>
+<li><strong>New Gate 10 Gerber DFM catch (<code>J1</code> PTH slots missing <code>B.Paste</code>):</strong> <a href="../../renders/sunflower-s2-110-usbc/gerbers/bottom_paste.png">bottom_paste.png</a> has <strong><code>0</code> paste apertures</strong> on <code>J1</code>'s <code>4</code> PTH shield slots (<code>±4.32, +12.47/+16.65</code>), while <code>J1</code>'s <code>F.Cu</code> annular rings sit <strong><code>0.18–0.29 mm</code></strong> from <code>D10</code>, <code>D104</code>, and <code>D110</code>. Post-SMT <code>F.Cu</code> wave/hand soldering would melt adjacent LEDs, whereas SMT-only reflow leaves <code>J1</code>'s mechanical shield legs unsoldered unless manually tacked on the outer <code>B.Cu</code> slot edges (<code>Rev S3C</code>) or replaced by full-SMT <code>TYPE-C-31-M-22</code> (<code>C530612</code>) / <code>B.Paste</code> pin-in-paste (<code>Rev S3D</code>).</li>
+</ul>
+<hr />
+<h2>5. <code>U3</code> (<code>RP2350A</code>) <code>+1V1</code> Ring &amp; <code>+3V3</code> Band Zone Piece-Count Check</h2>
+<p>Checked directly on <code>sunflower.kicad_pcb</code> via <code>pcbnew</code> (<code>scratch/checks/pcbnew_routing_audit.txt</code>):</p>
+<pre><code class="language-text">=== ZONE &amp; KEEPOUT AUDIT (pcbnew) ===
+  Zone 0: name='RP2350 ring' net='+1V1' layer=B.Cu prio=3 pieces=1 areas_mm2=[6.0625] total_mm2=6.0625
+  Zone 1: name='vendor GND' net='GND' layer=B.Cu prio=4 pieces=1 areas_mm2=[1.7578] total_mm2=1.7578
+  Zone 3: name='RP2350 band' net='+3V3' layer=B.Cu prio=1 pieces=4 areas_mm2=[1.9164, 4.6139, 0.2974, 2.9284] total_mm2=9.7561
+  Zone 5: name='vendor /MCU/VREG_LX' net='/MCU/VREG_LX' layer=B.Cu prio=5 pieces=1 areas_mm2=[2.1826] total_mm2=2.1826
+  Zone 11: name='vendor +1V1' net='+1V1' layer=B.Cu prio=6 pieces=1 areas_mm2=[2.6354] total_mm2=2.6354
+  Zone 13: name='vendor +3V3' net='+3V3' layer=B.Cu prio=7 pieces=1 areas_mm2=[0.5963] total_mm2=0.5963
+  RuleArea 18: name='LX cutout L2' layers=['In1.Cu'] bbox=(100.200,96.150)..(101.900,101.700) no_tracks=True no_vias=False no_pour=True
+  Zone 19: name='plane GND' net='GND' layer=In1.Cu prio=0 pieces=1 areas_mm2=[928.7825] total_mm2=928.7825
+</code></pre>
+<ul>
+<li><strong><code>+1V1</code> <code>RP2350 ring</code> (<code>Zone 0</code>):</strong> Fills as <strong><code>1</code> contiguous whole piece (<code>6.0625 mm²</code>)</strong> around <code>U3.61</code> with <code>0</code> foreign vias inside <code>RuleArea 2</code> — <strong>however</strong>, <code>Zone 11</code> (<code>vendor +1V1</code> on <code>C18</code> <code>COUT</code>, <code>2.6354 mm²</code>) has <strong><code>0</code> power spokes</strong> to <code>Zone 0</code>, forcing <code>100%</code> of core <code>+1V1</code> current through <code>U3.50</code> (<code>VREG_FB</code> sense finger; Gate 7 <code>BLOCKER</code>).</li>
+<li><strong><code>+3V3</code> <code>RP2350 band</code> (<code>Zone 3</code>):</strong> <strong>Splits into <code>4</code> disconnected <code>B.Cu</code> islands</strong> (<code>[1.9164, 4.6139, 0.2974, 2.9284] mm²</code>, <code>9.7561 mm²</code> total) carved by <code>11</code> foreign vias + signal escapes inside <code>U3 ring</code> (<code>0</code> opens only because <code>In2.Cu</code> routes stitch the islands, routing <code>C14</code> / <code>U3.44</code> <code>ADC_AVDD</code> across <code>In2.Cu</code> directly beneath <code>VREG_LX</code>/<code>L1</code>).</li>
+</ul>
+<hr />
+<h2>6. Final Independent Review (<code>2026-11-08</code>, fresh-context <code>agy</code> reviewer)</h2>
+<p>Reviewer inspected only <a href="../../study/sunflower/intent-s2-110-usbc.html">intent-s2-110-usbc.md</a>, <a href="../../study/sunflower/brief-s2-110-usbc.html">brief-s2-110-usbc.md</a>, <a href="../../study/sunflower/stackup-4l.html">stackup-4l.md</a>, <a href="../../study/sunflower/bringup-s2-110-usbc.html">bringup-s2-110-usbc.md</a>, <a href="../../sim/sunflower-s2-110-usbc/README.html">sim/README.md</a>, <code>design/parts/*.md</code>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-sunflower-s2-110-usbc.csv">nets-sunflower-s2-110-usbc.csv</a>, <code>fab/{bom,cpl}-jlcpcb.csv</code>, all renders/gerbers, ERC/DRC/sync/stock outputs, <code>phase0.md</code>..<code>phase9.md</code>, and <a href="../../../.claude/skills/pcb-design/references/sync-and-release.html">sync-and-release.md</a>.</p>
+<h3>Reviewer Answers to the Three Phase 10 Release Questions</h3>
+<ol>
+<li><strong>Would you send this to fab?</strong> <strong>HOLD for <code>Rev S3D</code></strong> (<code>7</code> of <code>10</code> prior gates are not passed, and all copper/DFM blockers are CAD-only fixes with zero new part lead time). If schedule-critical for a <code>5</code>-board firmware/mechanical bench bring-up, <code>Rev S3C</code> can be ordered <strong>only</strong> under the conditional waiver &amp; assembly/firmware guards in §7 Option A.</li>
+<li><strong>Highest-risk items on this board (ranked):</strong></li>
+<li>Thermal / LiPo charge runaway (<code>71.7 °C</code> battery / <code>86–93 °C</code> charging at <code>GCC = 255</code> with fixed <code>R3 = 10 kΩ</code> <code>TS</code>) unless firmware gates <code>GCC ≤ 105</code> (battery) and <code>GCC ≤ 9</code> CC / <code>≤ 24</code> CV on <code>(PGOOD == 0) || (CHG == 0)</code>.</li>
+<li>Unprotected LiPo short &amp; reverse-plugging hazards at <code>BT1</code> (<code>0.107 mm</code> tented <code>VBAT</code> via to <code>BT1.2</code> <code>BAT_N</code>, <code>29</code> vias in Molex keepout, occluded <code>+</code>/<code>-</code> silk, <code>U8</code> <code>29.1 mm</code> away).</li>
+<li><code>J1</code> PTH shield slots missing <code>B.Paste</code> vs <code>0.18–0.29 mm</code> <code>F.Cu</code> clearance to <code>D10</code>/<code>D104</code>/<code>D110</code>.</li>
+<li><code>U4</code> (<code>W25Q128JVPIQ</code>) <code>8.56 mm</code> decoupling loop (<code>312–554 mV</code> 4-bit QSPI SSO droop → cap <code>Rev S3C</code> XIP to <code>1x/2x</code> SPI <code>≤ 50–66 MHz</code>).</li>
+<li><code>Q2</code> (<code>XYC-PT19C-L1</code>) <code>1</code>-reflow-pass ceiling (<code>Pass 1 = B.Cu</code>, <code>Pass 2 = F.Cu ≤ 245 °C</code>).</li>
+<li><code>U5.17</code> (<code>2</code>) &amp; <code>U3.61</code> (<code>1</code>) open vias in <code>B.Paste</code> + <code>U3</code> regulator/plane coupling (<code>COUT</code> <code>0</code> spokes, shared <code>CFILT</code>/<code>PGND</code> via, <code>In2.Cu</code> <code>+3V3</code> under <code>L1</code>/<code>VREG_LX</code>).</li>
+<li>Rear mechanical stackup (<code>BT1</code> inward mating <code>3.02 mm</code> to <code>C9</code>, <code>0.05 mm</code> Kapton + <code>≥ 2.4 mm</code> spacer over <code>3.26 mm</code> <code>J1</code> &amp; <code>3.40 mm</code> mated <code>BT1</code>).</li>
+<li><strong>Anything in <code>intent-s2-110-usbc.md</code> or <code>bringup-s2-110-usbc.md</code> unmet or mismatched?</strong> All doc/bring-up discrepancies flagged by the reviewer were fixed immediately (table below); copper/CAD items (<code>R7</code>, <code>R8</code> 4-bit QSPI, <code>403535</code> datasheet) remain open for user decision.</li>
+</ol>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Finding</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BLOCKER-1</code></td>
+<td>BLOCKER</td>
+<td><code>sunflower-B_Paste.gbp</code> omits paste on <code>J1</code>'s <code>4</code> PTH shield slots while <code>F.Cu</code> rings sit <code>0.18–0.29 mm</code> from <code>D10</code>/<code>D104</code>/<code>D110</code></td>
+<td>Documented in <a href="../../study/sunflower/brief-s2-110-usbc.html">brief-s2-110-usbc.md</a>, <a href="../../study/sunflower/intent-s2-110-usbc.html">intent-s2-110-usbc.md</a>, <a href="../../study/sunflower/bringup-s2-110-usbc.html">bringup-s2-110-usbc.md</a>, and §7 below (<code>Rev S3C</code>: forbid <code>F.Cu</code> soldering + microscope-tack outer <code>B.Cu</code> slot edges; <code>Rev S3D</code>: switch to full-SMT <code>TYPE-C-31-M-22</code> <code>C530612</code>)</td>
+</tr>
+<tr>
+<td><code>BLOCKER-2..4</code></td>
+<td>BLOCKER</td>
+<td>Upheld Gate 5–9 copper/placement/DFM blockers (<code>U4.8</code> <code>C22</code>, <code>COUT</code> <code>0</code> spokes, <code>CFILT</code>/<code>PGND</code> via, <code>In2.Cu</code> under <code>LX</code>, <code>4</code>-piece <code>+3V3</code> band, <code>U3.61</code>/<code>U5.17</code> EP paste vias, <code>BT1</code>/<code>U8</code> hazards)</td>
+<td>Held (<code>phase5</code>–<code>phase9</code> remain <code>failed</code>); user chooses <code>Rev S3C</code> bench waivers vs <code>Rev S3D</code> respin in §7</td>
+</tr>
+<tr>
+<td><code>BLOCKER-5</code></td>
+<td>BLOCKER</td>
+<td><code>intent-s2-110-usbc.md</code> <code>R19</code> (L36) &amp; <code>Environment</code> (L77) still said <code>GCC ≤ 115–128</code> / <code>≤ 48</code> on <code>~{CHG} = 0</code>, contradicting Phase 8 thermal sim (<code>GCC ≤ 105</code> / <code>≤ 9</code> CC / <code>≤ 24</code> CV on <code>PGOOD == 0 \|\| CHG == 0</code>)</td>
+<td>Fixed in <a href="../../study/sunflower/intent-s2-110-usbc.html">intent-s2-110-usbc.md</a>, <a href="../../study/sunflower/brief-s2-110-usbc.html">brief-s2-110-usbc.md</a>, and <a href="phase0.html">phase0.md</a></td>
+</tr>
+<tr>
+<td><code>MAJOR-1</code></td>
+<td>MAJOR</td>
+<td><code>bringup-s2-110-usbc.md</code> specified <code>TP1</code> (<code>VSYS</code>) USB window as <code>4.35–4.45 V</code> instead of <code>BQ24073</code> datasheet <code>4.30–4.50 V</code> (<code>charger.md</code>)</td>
+<td>Fixed in <a href="../../study/sunflower/bringup-s2-110-usbc.html">bringup-s2-110-usbc.md</a> (<code>4.30–4.50 V</code>, <code>4.40 V</code> typ)</td>
+</tr>
+<tr>
+<td><code>MAJOR-2</code></td>
+<td>MAJOR</td>
+<td><code>bringup-s2-110-usbc.md</code> Step 1.2 instructed cold-probing <code>0.40 mm</code>-pitch QFN pad <code>U3.31</code> (<code>GPIO19</code>)</td>
+<td>Fixed in <a href="../../study/sunflower/bringup-s2-110-usbc.html">bringup-s2-110-usbc.md</a>: removed QFN pin probe (<code>NT1</code> is verified cleanly in firmware Smoke-Test Step 1 <code>ID = 6</code>)</td>
+</tr>
+<tr>
+<td><code>MINOR-1..4</code></td>
+<td>MINOR</td>
+<td><code>XL-1615RGBC-RF</code> called <code>MSL-5a</code> instead of <code>MSL-3</code>; <code>R17</code> (<code>≤ 85 µA</code> typ sleep) bench check missing; <code>TP2</code> silk landmark (<code>under LIPO 403535, N of 1V1</code>) &amp; <code>B.Cu</code> X-mirror handedness note; <code>phase9.md</code> L86 <code>GND</code>/<code>VM</code> bar wording</td>
+<td>Fixed across <a href="../../study/sunflower/intent-s2-110-usbc.html">intent-s2-110-usbc.md</a>, <a href="../../study/sunflower/brief-s2-110-usbc.html">brief-s2-110-usbc.md</a>, <a href="../../study/sunflower/bringup-s2-110-usbc.html">bringup-s2-110-usbc.md</a>, and <a href="phase9.html">phase9.md</a></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>7. Decisions Required From User for Gate 10 Sign-Off</h2>
+<ol>
+<li><strong>Release path (<code>Rev S3C</code> bench prototype vs <code>Rev S3D</code> layout respin):</strong>
+   - <strong>Option A — Order <code>5–10</code> <code>Rev S3C</code> bench prototypes from <code>hw/sunflower/s2-110-usbc/fab/</code>:</strong> Formally waive Gates 5–9 and Gate 10's <code>J1</code> paste finding for bench bring-up, ordering <strong><code>JLC04161H-7628</code> + <code>ENIG 1U"</code> + green LPI mask + tented vias</strong> with PCBA instruction <strong><code>Pass 1 = B.Cu</code>, <code>Pass 2 = F.Cu (≤ 245 °C)</code>, NO <code>F.Cu</code> wave/hand soldering on <code>J1</code></strong>, then manually tacking <code>J1</code>'s outer <code>B.Cu</code> slot edges under a microscope, verifying <code>BT1.1–BT1.2 &gt; 1 MΩ</code> before battery attach, pre-mating <code>BT1</code> upward (<code>30–45°</code>) + <code>0.05 mm</code> Kapton + <code>≥ 2.4 mm</code> rear spacer, and enforcing firmware guards (<code>1x/2x</code> SPI XIP <code>≤ 50–66 MHz</code>, <code>ADC4</code> <code>GCC ≤ 105</code> battery / <code>≤ 9</code> CC / <code>≤ 24</code> CV on <code>PGOOD == 0 || CHG == 0</code>, <code>GPIO4/5</code> <code>12 mA</code> + <code>GCR = 0xB9</code>).
+   - <strong>Option B — Hold PCBA order and spin <code>Rev S3D</code> first (Recommended by reviewer):</strong> Swap <code>J1</code> to full-SMT <code>TYPE-C-31-M-22</code> (<code>C530612</code>), tie <code>Zone 11</code> (<code>COUT</code>) directly to <code>+1V1</code> <code>RP2350 ring</code>, give <code>C17</code> (<code>CFILT</code>) a dedicated <code>GND</code> via, move <code>GND</code> + <code>LX cutout L2</code> to <code>In2.Cu</code> (<code>0.21 mm</code> under <code>B.Cu</code>), move <code>C22</code> beside <code>U4.8</code>, pull <code>U3.61</code>/<code>U5.17</code> vias out of <code>B.Paste</code>, enforce <code>BT1</code> copper keepout + co-locate <code>U8</code>, populate <code>.kicad_pro</code> <code>netclass_assignments</code>, and move <code>BT1</code>/<code>J1</code> polarity silk outside connector footprints.</li>
+<li><strong>Gate 0 &amp; Gate 4 design sign-offs (if not already approved on <code>phase0.md</code> / <code>phase4.md</code>):</strong>
+   - Confirm <code>403535</code> LiPo datasheet permits <code>263–328 mA</code> (<code>297 mA</code> typ, <code>~0.58–0.82C</code>) charge current, or change <code>R4</code> to <code>4.7 kΩ</code> (<code>189 mA</code>).
+   - Confirm <code>BT1</code> inward pre-mating + <code>0.05 mm</code> Kapton + <code>≥ 2.4 mm</code> spacer (<code>~9.6 mm</code> stack) and <code>SW1/SW2</code> <code>+0.40 mm</code> nominal (<code>0.00 to −0.20 mm</code> worst-case) rim projection.
+   - Confirm keeping Voronoi <code>F.SilkS</code> art (<code>4,631</code> clipped segments) and omitting board name/rev/URL on <code>B.SilkS</code> (<code>BOARD_ID = 6</code> via <code>NT1</code> on <code>GPIO19</code>).</li>
+</ol></div></body></html>

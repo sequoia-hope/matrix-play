@@ -1,0 +1,235 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 9: Silkscreen, Fab Layers, and Art — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase9.md'>design/gates/sunflower-s2-110-usbc/phase9.md</a></p><h1>Gate 9: Silkscreen, Fab Layers, and Art — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>failed</code></strong> (<code>silk_check.py</code> exits with <strong><code>240 errors, 1 warnings</code></strong>; <strong>held</strong> on <code>BT1</code> <code>+</code>/<code>-</code> and <code>J1</code> <code>USB 5V</code> labels occluded underneath their own assembled connector bodies, <code>U1</code>/<code>U4</code>/<code>U5</code>/<code>U6</code>/<code>U9</code> missing <code>B.SilkS</code> pin-1 marks and <code>U1</code> missing <code>B.Fab</code> orientation mark, <code>20</code> of <code>23</code> <code>B.SilkS</code> labels plus <code>F.SilkS</code> Voronoi art crossing open non-POFV vias, unlabeled <code>TP2/TP3/TP5/TP6/TP11/TP13</code> &amp; missing <code>F.Fab</code> LED designators, and unsigned <code>B.SilkS</code> identity omission — mitigated for <code>Rev S3C</code> bench bring-up by <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a>, see <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase10.md">phase10.md</a>).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/silkscreen-and-art.md">silkscreen-and-art.md</a>, Phase 9)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connector label table with reasoning &amp; assembled visibility</td>
+<td>Table below; <strong><code>BT1</code> <code>+</code>/<code>-</code> and <code>J1</code> <code>USB 5V</code> are covered by their own connector housings in <a href="../../renders/sunflower-s2-110-usbc/3d-bottom.png">3d-bottom.png</a></strong></td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>Pin-1 &amp; polarity marks visible after assembly</td>
+<td><code>U2</code>, <code>U3</code>, <code>Q1</code>, <code>Q2</code>, and <code>U8</code> (<code>B.SilkS</code> dot confirmed beside <code>U8.1</code>, see dispute note below) have visible dots, <strong>but</strong> <code>U1</code>, <code>U4</code>, <code>U5</code>, <code>U6</code>, <code>U9</code> have no <code>B.SilkS</code> pin-1 dots and <code>U1</code> has no <code>B.Fab</code> chamfer/dot</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>Board identity present (<code>name</code>, <code>rev</code>, <code>date</code>, <code>repo</code>, <code>CERN-OHL-P-2.0</code>)</td>
+<td>Omitted on <code>B.SilkS</code> (<code>3</code> identity errors in <code>silk_check.py</code>); waiver in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/intent-s2-110-usbc.md">intent-s2-110-usbc.md</a> <code>R3</code> requires user sign-off</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td><code>silk_check.py</code> passes (verbatim output pasted below)</td>
+<td><code>FAIL: 240 errors, 1 warnings</code> (<code>206</code> <code>[hidden]</code> under <code>policy: all</code>, <code>20</code> <code>[silk-over-via]</code> across <code>49</code> non-POFV vias, <code>11</code> <code>[pin1]</code>, <code>3</code> <code>[identity]</code>, <code>1</code> <code>[courtyard]</code> on <code>NT1</code>)</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>Top &amp; bottom silk and assembly renders reviewed by independent model (<a href="../../renders/sunflower-s2-110-usbc/top.png">top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/bottom.png">bottom.png</a>, <a href="../../renders/sunflower-s2-110-usbc/3d-top.png">3d-top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/3d-bottom.png">3d-bottom.png</a>, <a href="../../renders/sunflower-s2-110-usbc/assembly-top.png">assembly-top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/assembly-bottom.png">assembly-bottom.png</a>)</td>
+<td>Completed (<code>3 BLOCKER, 4 MAJOR, 2 MINOR, 3 NOTE</code>); <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a> generated for unambiguous bench probing</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>Art placed, via-clean, and user-approved</td>
+<td><code>1,027</code> <code>F.SilkS</code> Voronoi sunflower seed-web segments clear all <code>F.Cu</code> pads (<code>0</code> DRC silk-over-copper), <strong>but</strong> cross open through-vias and require user sign-off vs blank dark mask</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>User reviewed silk render in PCB view</td>
+<td>Deferred to user sign-off alongside Gates 0, 4, &amp; 10</td>
+<td>pending</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Connector &amp; User-Control Label Table</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Function &amp; Rating</th>
+<th>Current <code>B.SilkS</code> Text</th>
+<th>Assembled Visibility (<a href="../../renders/sunflower-s2-110-usbc/3d-bottom.png">3d-bottom.png</a>)</th>
+<th>Assessment &amp; Bench Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>J1</code> (<code>TYPE-C-31-M-12</code>)</td>
+<td>USB-C <code>5 V / 0.5 A</code> power + USB FS (<code>D±</code>)</td>
+<td><code>"USB 5V"</code> at <code>(102.47, 116.79)</code></td>
+<td><strong>Occluded (<code>0%</code> visible)</strong> — placed between <code>J1</code>'s <code>4</code> PTH shell slots directly underneath <code>J1</code>'s metal shell</td>
+<td><strong>Fail (<code>BLOCKER-1</code>):</strong> USB-C receptacle is mechanically self-evident &amp; reversible, so usability risk is low, but <code>"USB 5V"</code> must move north/side of <code>J1</code> shell in <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>BT1</code> (<code>Molex 53261-0271</code>)</td>
+<td><code>1S LiPo</code> (<code>3.7 V nom / 4.2 V max</code>, <code>300 mA</code> charge) — <code>Pin 1 = VBAT (+)</code>, <code>Pin 2 = BAT_N (-)</code></td>
+<td><code>"BATT"</code>, <code>"+"</code>, <code>"-"</code>, <code>"LIPO 403535"</code></td>
+<td><code>"BATT"</code> &amp; <code>"LIPO 403535"</code> visible, <strong>but <code>"+"</code> and <code>"-"</code> are occluded underneath <code>BT1</code>'s cream plastic housing</strong></td>
+<td><strong>Fail (<code>BLOCKER-1</code>, <code>MINOR-2</code>):</strong> High reverse-plugging risk on 2-pin <code>1.25 mm</code> LiPo header (<code>U8</code> <code>XB9901A</code> does not block reverse cell polarity cleanly). Bench mitigation in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a> &amp; <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a>: <strong>Pin 1 (<code>VBAT +</code>) = outer/NE pad <code>(-13.44, -11.61)</code> (toward <code>"BATT"</code> / top rim)</strong>; <strong>Pin 2 (<code>BAT_N -</code>) = SW pad <code>(-13.87, -10.43)</code> (toward <code>"BOOT"</code> / <code>SW2</code>)</strong></td>
+</tr>
+<tr>
+<td><code>SW1</code> (<code>EVQP7J01P</code>)</td>
+<td><code>GPIO11</code> user / wake tactile button (not a hard power switch)</td>
+<td><code>"PWR"</code> + <code>"SW1"</code></td>
+<td>Visible inside NE rim (<code>8</code> vias crossed)</td>
+<td><strong>Fail (<code>MAJOR-2</code>):</strong> <code>"PWR"</code> is misleading because <code>SW1</code> cannot hard-cut battery power (<code>"USER"</code> or <code>"WAKE"</code> recommended in <code>Rev S3D</code>)</td>
+</tr>
+<tr>
+<td><code>SW2</code> (<code>EVQP7J01P</code>)</td>
+<td><code>~{QSPI_SS}</code> RP2350 <code>BOOTSEL</code> tactile button</td>
+<td><code>"BOOT"</code></td>
+<td>Visible inside NW rim (<code>4</code> vias crossed)</td>
+<td>Functional meaning clear (<code>silk-over-via</code> flagged in <code>BLOCKER-3</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Verbatim <code>silk_check.py</code> Output (<code>2026-11-08</code>)</h2>
+<p>Command:
+<code>python3 .claude/skills/pcb-design/scripts/silk_check.py hw/sunflower/s2-110-usbc</code></p>
+<pre><code class="language-text">silk_check: hw/sunflower/s2-110-usbc
+  206 parts, 0 designators shown (policy: all), 1 connectors, 23 board silk texts
+  designator rotations: none
+
+  ERRORS (240)
+    [hidden] D1..D110, Q1..Q2, C1..C44, C70, R1..R22, R30..R33, R43, U1..U9, L1, Y1, J1, BT1, SW1..SW2, NT1, TP1..TP8, TP11..TP16: 206 designator(s) hidden or not on silk (policy: all)
+    [silk-over-via] bottom silk 'GND' over 2 via(s), first at (84.17, 99.44)
+    [silk-over-via] bottom silk 'U1' over 3 via(s), first at (84.02, 102.44)
+    [silk-over-via] bottom silk 'BOOT' over 4 via(s), first at (88.02, 96.06)
+    [silk-over-via] bottom silk '+' over 2 via(s), first at (90.92, 89.91)
+    [silk-over-via] bottom silk 'U6' over 2 via(s), first at (92.17, 100.21)
+    [silk-over-via] bottom silk 'Q1' over 2 via(s), first at (91.47, 110.99)
+    [silk-over-via] bottom silk 'BATT' over 1 via(s), first at (92.67, 84.39)
+    [silk-over-via] bottom silk 'U4' over 3 via(s), first at (93.14, 106.01)
+    [silk-over-via] bottom silk 'USB 5V' over 1 via(s), first at (102.47, 116.79)
+    [silk-over-via] bottom silk '1V1' over 2 via(s), first at (107.54, 96.71)
+    [silk-over-via] bottom silk 'U8' over 2 via(s), first at (108.07, 112.41)
+    [silk-over-via] bottom silk 'U7' over 2 via(s), first at (110.72, 110.64)
+    [silk-over-via] bottom silk '29' over 1 via(s), first at (113.19, 90.69)
+    [silk-over-via] bottom silk 'RX' over 1 via(s), first at (113.22, 92.26)
+    [silk-over-via] bottom silk 'PWR' over 3 via(s), first at (114.89, 95.11)
+    [silk-over-via] bottom silk 'SW1' over 5 via(s), first at (116.82, 96.99)
+    [silk-over-via] bottom silk 'U2' over 2 via(s), first at (116.14, 103.46)
+    [silk-over-via] bottom silk 'LIPO 403535' over 6 via(s), first at (107.39, 89.01)
+    [silk-over-via] bottom silk 'VSYS' over 4 via(s), first at (108.99, 104.26)
+    [silk-over-via] bottom silk 'DIO' over 1 via(s), first at (110.67, 87.86)
+    [pin1] D75 (LED_XL-1615RGBC): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] D10 (LED_XL-1615RGBC): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] D32 (LED_XL-1615RGBC): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] D98 (LED_XL-1615RGBC): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] D19 (LED_XL-1615RGBC): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] U6 (Texas_X2SON-4_1x1mm_P0.65mm): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] U9 (LGA-12_2x2mm_P0.5mm): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] U5 (QFN-16-1EP_3x3mm_P0.5mm_EP1.7x1.7mm): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] U8 (XySemi_DFN-6_1.8x1.4mm): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] U4 (WSON-8_6x5mm_P1.27mm_NoEPCopper): no pin-1 / polarity mark on the silk beside pad 1
+    [pin1] U1 (AW20198_QFN-40-1EP_5x5mm_P0.4mm_EP3.4x3.4mm): no pin-1 / polarity mark on the silk beside pad 1
+    [identity] board name 'sunflower (s2-110-usbc)' is not on the silkscreen
+    [identity] no rev on the silkscreen (looked for /(\brev\.?\s*[A-Z0-9]|\bv\d+(\.\d+)+)/)
+    [identity] no date on the silkscreen (looked for /\b20\d\d([-/.]\d\d)?\b/)
+
+  WARNINGS (1)
+    [courtyard] NT1 (NetTie:NetTie-2_SMD_Pad0.5mm) has no courtyard
+
+  FAIL: 240 errors, 1 warnings
+</code></pre>
+<p><em>(Note: <code>design/checks.toml</code> sits two directories above <code>hw/sunflower/s2-110-usbc/</code>; <code>silk_check.py</code> defaulted to <code>policy: all</code>, accounting for <code>206</code> <code>[hidden]</code> lines, while <code>34</code> errors — <code>20</code> <code>[silk-over-via]</code>, <code>11</code> <code>[pin1]</code>, <code>3</code> <code>[identity]</code> — remain even under <code>designators = "none"</code>.)</em></p>
+<h2>Independent Review (<code>2026-11-08</code>, fresh-context <code>agy</code> reviewer)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Finding</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BLOCKER-1</code></td>
+<td>BLOCKER</td>
+<td><code>BT1</code> <code>+</code>/<code>-</code> LiPo polarity marks and <code>J1</code> <code>USB 5V</code> label are covered underneath their own connector bodies when assembled (<a href="../../renders/sunflower-s2-110-usbc/3d-bottom.png">3d-bottom.png</a>)</td>
+<td><strong>Upheld — Gate 9 held (<code>failed</code>):</strong> Bench polarity map provided in <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>; move <code>+</code>/<code>-</code> and <code>USB 5V</code> outside connector bodies in <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>BLOCKER-2</code></td>
+<td>BLOCKER</td>
+<td><code>U1</code>, <code>U4</code>, <code>U5</code>, <code>U6</code>, <code>U9</code> lack <code>B.SilkS</code> pin-1 dots; <code>U1</code> lacks any <code>B.Fab</code> chamfer/dot; reviewer also claimed <code>U8</code> <code>B.SilkS</code> dot sits at <code>pad 3</code> instead of <code>pad 1</code></td>
+<td><strong>Upheld on <code>U1/U4/U5/U6/U9</code>; <code>U8</code> wrong-corner sub-claim disputed with proof (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>):</strong> Verified against <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/sunflower/s2-110-usbc/lib/round_pendant.pretty/XySemi_DFN-6_1.8x1.4mm.kicad_mod#L167-L231">XySemi_DFN-6_1.8x1.4mm.kicad_mod</a> and <a href="../../renders/sunflower-s2-110-usbc/cpl-check-bottom.png">cpl-check-bottom.png</a>: <code>U8</code> (<code>180°</code> on <code>B.Cu</code>) has its full-width <code>GND</code>/<code>VM</code> bar (<code>pads 1–3</code>) at the <strong>bottom</strong> and <code>pad 1</code> at <strong>bottom-left</strong>, right where the white <code>B.SilkS</code> dot sits (<code>silk_check.py</code> flagged <code>U8</code> only because of the merged bar pad <code>1</code> centroid <code>(0, 0.44)</code>, while the generic <code>.wrl</code> 3D model painted a cosmetic dot <code>180°</code> off on <code>pad 4</code>). Automated JLCPCB pick-and-place uses fixed <code>cpl-jlcpcb.csv</code> (<code>0.000 mm</code> pad error); add <code>B.SilkS</code>/<code>B.Fab</code> marks on <code>U1/U4/U5/U6/U9</code> in <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>BLOCKER-3</code></td>
+<td>BLOCKER</td>
+<td><code>silk_check.py</code> fails (<code>240</code> errors, <code>1</code> warning): <code>20/23</code> <code>B.SilkS</code> texts (<code>49</code> vias) plus front <code>F.SilkS</code> Voronoi segments cross open non-POFV vias</td>
+<td><strong>Upheld — Gate 9 held (<code>failed</code>):</strong> Cosmetic/legibility defect only (<code>0</code> silk-over-pad / solderability impact); fix via no-via silk reservations &amp; Voronoi via-clipping in <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>MAJOR-1</code></td>
+<td>MAJOR</td>
+<td>Front <code>1,027</code>-segment white <code>F.SilkS</code> Voronoi web lacks explicit <code>intent</code> specification and user aesthetic sign-off</td>
+<td>Added to user sign-off decisions in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase0.md">phase0.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase10.md">phase10.md</a> (approve Voronoi seed web vs bare dark solder mask)</td>
+</tr>
+<tr>
+<td><code>MAJOR-2</code></td>
+<td>MAJOR</td>
+<td><code>6/14</code> test pads (<code>TP2</code>, <code>TP3</code>, <code>TP5</code>, <code>TP6</code>, <code>TP11</code>, <code>TP13</code>) lack <code>B.SilkS</code> net labels; <code>"PWR"</code> on <code>SW1</code> (<code>GPIO11</code>) implies hard power-off</td>
+<td><strong>Upheld — Gate 9 held (<code>failed</code>):</strong> Mitigated for bench bring-up via <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a>; relabel <code>SW1</code> → <code>"USER"</code> and add missing TP labels in <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>MAJOR-3</code></td>
+<td>MAJOR</td>
+<td><a href="../../renders/sunflower-s2-110-usbc/assembly-top.png">assembly-top.png</a> omits <code>D1..D110</code>/<code>Q2</code> <code>F.Fab</code> designators; <a href="../../renders/sunflower-s2-110-usbc/assembly-bottom.png">assembly-bottom.png</a> omits <code>U1/U2/SW1/SW2/NT1</code> and overlaps <code>TP*</code> text</td>
+<td><strong>Upheld — Gate 9 held (<code>failed</code>):</strong> Mitigated for <code>B.Cu</code> probing via <a href="../../renders/sunflower-s2-110-usbc/bringup-map-bottom.png">bringup-map-bottom.png</a>; restore <code>F.Fab</code>/<code>B.Fab</code> designators in <code>pcb_gen.py</code> for <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>MAJOR-4</code></td>
+<td>MAJOR</td>
+<td>Open-source board identity (<code>name</code>, <code>rev</code>, <code>date</code>, <code>repo</code>, <code>CERN-OHL-P-2.0</code>) omitted on <code>B.SilkS</code> without confirmed user waiver</td>
+<td>Flagged for explicit user waiver sign-off in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase0.md">phase0.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase10.md">phase10.md</a></td>
+</tr>
+<tr>
+<td><code>MINOR-1, 2</code></td>
+<td>MINOR</td>
+<td><code>NT1</code> lacks courtyard (<code>1</code> warning); <code>BT1</code> silk omits <code>3.7V</code> voltage rating and <code>Ø35 mm</code> <code>B.Fab</code> circle is uncaptioned</td>
+<td>Tracked for <code>Rev S3D</code> polish</td>
+</tr>
+</tbody>
+</table></div></div></body></html>

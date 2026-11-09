@@ -1,0 +1,152 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Chip: RP2350 (RP2350A QFN-60, RP2350B QFN-80)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/chips/rp2350.md'>.claude/skills/pcb-design/chips/rp2350.md</a></p><h1>Chip: RP2350 (RP2350A QFN-60, RP2350B QFN-80)</h1>
+<p>Load this file on any board with an RP2350. Its power copper is not ours to invent. Raspberry Pi publishes a layout and says to follow it ("this should be placed first on any board design and these guidelines must be strictly followed", RP2350 datasheet §6.3.8). The user has had to say "use the reference design's power planes" more than once (bluebuzz-rm2, 2026-10-18). Treat that as a standing rule.</p>
+<h2>Sources (get them before placing anything)</h2>
+<ul>
+<li><strong>Vendor KiCad files:</strong> "RP2350A Minimal Board" (RP-006440-DD) and "RP2350B Minimal Board" (RP-006442-DD), from the <em>Hardware design with RP2350</em> page.</li>
+<li>Copy the <code>.kicad_pcb</code>, the <code>.kicad_pro</code> and the <code>.pretty</code> folder into the project's <code>design/reference/</code>.</li>
+<li><strong>Raspberry Pi Pico 2:</strong> the same regulator layout, in Allegro or KiCad.</li>
+<li><strong>RP2350 datasheet §6.3.8,</strong> "External components and PCB layout requirements": the regulator rules below.</li>
+<li><strong>Hardware design with RP2350,</strong> "Power" chapter: decoupling and the inductor's polarity.</li>
+</ul>
+<h2>What to copy, and how</h2>
+<p><strong>Transplant, don't redraw.</strong> Read the vendor <code>.kicad_pcb</code> by script and copy the power block relative to U1's centre:
+- footprint positions and rotations;
+- zone outlines with all their settings: priority, pad connection, clearance, minimum width, thermal gap and spoke;
+- the vias and tracks of the power nets.</p>
+<p>The QFN footprints match KiCad's stock QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm pin for pin, so the copied geometry fits by translation. A rotated U1 needs the rotation applied too.</p>
+<p>Map the parts by function, and check that pad 1 carries the same net as in the reference before reusing a rotation.</p>
+<p>Never let a router redistribute 1V1 or IOVDD as thin wires: that is the failure this note exists for. But don't lock copper either (LESSONS.md, [routing]): bring the vendor's <strong>zones</strong> across, placed relative to U1, and let the router lay the tracks and vias that join them. Zones survive a bare-board route (<code>--strip</code> takes tracks and vias), the router routes round them, and they follow U1 when it moves. easy2350's <code>board.py regzones</code> does this (2026-11-01, after a route with no pours gave 35 mm of 0.2 mm 1V1 wire and a 9 mm FB loop).</p>
+<h3>The power block on the RP2350A minimal board (relative to U1's centre, mm)</h3>
+<p><strong>Under the chip, top layer:</strong>
+- <strong>1V1 ring.</strong> Zone ±2.2 square, priority 3, thermal connection, minimum width 0.2. It fills the gap between the GND exposed pad and the pin row.
+- <strong>3V3 band.</strong> Zone ±2.8 square, priority 1, solid connection. It reaches the inner ends of the pads, so every IOVDD pin and VREG_VIN are joined under the chip.</p>
+<p><strong>1V1 spokes.</strong> Four 0.6/0.25 vias in the ring: N (0.49, −2.15), S (0.20, 2.15), W (−2.15, −0.80), E (2.15, −0.40). From each, a 0.6 mm wire runs on the far side to a via beside a DVDD pin or the regulator output:
+- N → (0.5, −5.8) and (0.5, −5.2), at COUT;
+- S → (0.2, 5.8), at pin 23 and its 4.7 µF;
+- W → (−5.2, −1.0), at pin 6;
+- E → (5.8, −0.4), at pin 39.</p>
+<p>Each DVDD pin then takes a 0.2 mm top-layer trace to its spoke via and its capacitor.</p>
+<p><strong>Regulator, above pins 46–50, all on the top side:</strong></p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Role</th>
+<th>Position</th>
+<th>Rotation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>3.3 µH, LX pad on the right</td>
+<td>(2.0, −7.2)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>C7</td>
+<td>COUT</td>
+<td>(2.0, −5.55)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>CIN</td>
+<td>(2.0, −4.6)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>C9</td>
+<td>CFILT</td>
+<td>(4.2, −5.05)</td>
+<td>−90</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>RFILT 33 Ω</td>
+<td>(4.2, −6.9)</td>
+<td>−90</td>
+</tr>
+</tbody>
+</table></div>
+<p>C6 and C7 use 0402 "small pads".</p>
+<p>The high-current paths are small top-layer zones:
+- VREG_LX from pin 48 to the inductor's LX pad (priority 5);
+- 1V1 from the inductor to COUT and the N spoke vias (priority 6);
+- 3V3 from pin 49 to CIN (priority 7);
+- PGND from pin 47 to the CIN/COUT grounds (priority 4), taken to the GND plane at ONE point through two adjacent vias at (3.1, −4.9) and (3.1, −5.5).</p>
+<p>VREG_FB runs from pin 50 to COUT, not under LX. VREG_AVDD runs from pin 46 to C9/R5.</p>
+<p><strong>USB, pins 51/52:</strong> the 27 Ω resistors sit at (−1.1, −7.4) and (−0.1, −7.4), rotation −90. Pins 53/54 share one 100 nF at (−2.1, −7.4), rotation 90.</p>
+<h3>Datasheet rules the copy must keep (§6.3.8.1)</h3>
+<ul>
+<li>CIN, L1 and COUT are on the same side as the chip. Never on the back.</li>
+<li>Cut away the copper on layer 2 beneath the LX node. Use a rule area on the first inner plane, covering the VREG_LX zone and L1's LX pad.</li>
+<li>On the top layer, no other copper under the inductor. Cut back copper near the VREG_LX trace by giving its zone a larger clearance.</li>
+<li>PGND joins the main GND at one point, through two adjacent vias. CFILT gets its own GND path; it must not share the CIN/COUT GND vias.</li>
+<li>A second 4.7 µF on DVDD pin 23 (bottom edge), away from LX and COUT.</li>
+<li>Inductor: the polarity-marked Abracon AOTA-B201610S3R3-101-T, in Raspberry Pi's <code>L_pol_2016</code> footprint, at the reference rotation. Orientation changes the regulator's output under load.
+  JLC stock of it is thin (C42411119: 191 then 1 on 2026-10-23). Check it at phase 1 and again at release, and plan on JLC global sourcing or a pre-order of the same MPN; don't substitute.</li>
+</ul>
+<h3>Lessons from the easy2350 example (21 mm wide, 4 layers)</h3>
+<ul>
+<li><code>scripts/transplant.py</code> does the copy, into a scratch copy of the board;
+  <code>board.py regzones</code> keeps only its zones. Box it to the vendor's decoupler
+  ring: the vendor board is wider, and its outermost GND vias land on a
+  Pico-width board's header pads.</li>
+<li>The vendor feeds IOVDD pins 1 and 45 (ring corners), VREG_VIN (49) and CIN
+  from a large outer 3V3 pour. Without that pour they are islands: join each
+  to the 3V3 band with a 0.15 mm stub (0.125 mm from the next corner pin) and
+  run pin 1 on to its decoupler, as the vendor does for pin 11.</li>
+<li>Copy the USB pin-to-27 Ω routing too (<code>Net-(U1-USB_DP)</code> / <code>_DM</code>): the
+  autorouter crosses the pair.</li>
+<li>Keep the vendor's escape directions free: an extra cap at pin 44 blocked
+  GPIO29; R8/TP3 on the diagonal GPIO16 takes from pin 27 blocked it.</li>
+<li>Inside the pad ring and over the regulator corner (L1's body), no foreign
+  net: named rule areas that restrict nothing, and <code>.kicad_dru</code> rules that
+  disallow tracks and vias of every other net there (<code>A.intersectsArea(…)</code>),
+  exempting the corner's own nets (VREG_LX, 1V1; GND, 1V1, 3V3 in the ring).
+  A plain tracks keepout also blocks the regulator's own copper from L1's pads.
+  After routing: cut the outer GND pour around the regulator corner and L1
+  (no other copper under the inductor; PGND joins GND only at its two vias).</li>
+</ul>
+<h3>Checks</h3>
+<ul>
+<li>After routing, every RP2350 power zone is present, filled, and connected to its pins.</li>
+<li>No foreign net crosses the area inside the pad ring.</li>
+<li>1V1 is never a thin wire between the spoke vias and the ring.</li>
+<li>The layer-2 cutout is present under LX.</li>
+<li>Render the regulator corner beside the reference and compare.</li>
+</ul></div></body></html>

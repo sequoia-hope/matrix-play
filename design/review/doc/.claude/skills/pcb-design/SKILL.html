@@ -1,0 +1,255 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>PCB Design</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/SKILL.md'>.claude/skills/pcb-design/SKILL.md</a></p><hr />
+<p>name: pcb-design
+description: Use for any PCB work in KiCad or Altium — requirements, part selection, schematic capture, placement, stackup and DRC rules, routing, simulation, silkscreen, fab outputs, or reviewing an existing board. Enforces human-readable schematics, datasheet-verified design, phase gates with independent review, and PCB view publishing.</p>
+<hr />
+<h1>PCB Design</h1>
+<p>The goal is a board a senior engineer would sign off on: a schematic that reads like a person drew it, a layout that follows the physics, every part checked against its datasheet, and a project page that shows the user what is happening at all times.</p>
+<p>The work runs in phases. Each phase ends at a <strong>gate</strong>: a file in <code>design/gates/</code> containing the checklist for that phase, the evidence for each item (command output, calculation, render), and the reviewer's findings. <strong>A phase is not done until its gate file exists and an independent reviewer has signed it off.</strong> Saying "done" without a gate file is a failure.</p>
+<h2>Before anything else</h2>
+<ol>
+<li>Read <code>LESSONS.md</code> in this skill folder. These are corrections the user has already had to give. Repeating one is the worst kind of mistake.</li>
+<li>Find out which tool this project uses and read <code>tools/kicad.md</code> or <code>tools/altium.md</code>.</li>
+<li>Check whether the project is <strong>open source</strong> (personal boards, KiCad, GitHub repo link on silkscreen, public PCB view) or <strong>work/confidential</strong> (Altium, internal part number, no public repo or page). This changes silkscreen, publishing and what may leave the machine.</li>
+<li>Run <code>scripts/doctor.sh</code> once per machine; fix anything it reports before phase 2.</li>
+<li>Look for an existing <code>design/</code> folder and gate files and resume from the last passed gate rather than starting over.</li>
+</ol>
+<h2>Project layout</h2>
+<pre><code>&lt;project&gt;/
+  design/
+    intent.md           phase 0: what the board must do
+    parts/              phase 1: one audit file per part or passive group
+    datasheets/         the PDFs actually read
+    nets.csv            phase 3: net classification, single source of truth for rules
+    brief.md            phase 4: mechanical and layout brief
+    stackup.md          phase 5: stackup, impedance, rule derivation
+    sim/                phase 8: one folder per simulation
+    decisions.md        running log: decision, reasoning, alternatives, date
+    gates/phaseN.md     gate checklists with evidence and review findings
+    status.json         what the project page shows: phase, activity, what you need from the user
+    pcbview-requests.md change requests for the viewer
+  hw/&lt;board&gt;/&lt;variant&gt;/ the tool project for each board variant
+  pcbview.toml          every board and variant the viewer builds (see references/pcbview.md)
+  index.html            the project page: status plus the embedded viewer
+  viewer/               generated by pcbview; never edit by hand
+</code></pre>
+<h2>Phases</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Phase</th>
+<th>Key output</th>
+<th>Gate</th>
+<th>User sign-off?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Design intent</td>
+<td><code>intent.md</code></td>
+<td>Every requirement has a number or an explicit "don't care"</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Architecture and parts</td>
+<td>block diagram, <code>parts/*.md</code></td>
+<td>Every part has a datasheet audit; every calculation done; sourcing confirmed</td>
+<td>No</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Schematic</td>
+<td>schematic</td>
+<td>ERC clean, style check passes, every part cross-checked against its audit, visual review</td>
+<td>No</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Net classification</td>
+<td><code>nets.csv</code></td>
+<td>Every net classified with a reason</td>
+<td>Glance</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Mechanical and layout brief</td>
+<td><code>brief.md</code></td>
+<td>Outline, holes, connectors, sides, layers, density, art zone decided</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Stackup and rules</td>
+<td><code>stackup.md</code>, full rule set in tool</td>
+<td>Every net class has rules; every rule traces to <code>nets.csv</code> or fab limits</td>
+<td>No</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Placement</td>
+<td>placed board</td>
+<td>Placement checks pass; visual review on render</td>
+<td>Review render</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Routing</td>
+<td>routed board</td>
+<td>DRC 0 errors, 0 unrouted, parity clean, every warning explained</td>
+<td>No</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Simulation and SI</td>
+<td><code>sim/</code></td>
+<td>Every triggered simulation has a result or a written waiver</td>
+<td>No</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Silkscreen and art</td>
+<td>finished silk</td>
+<td>Zero overlaps, all connectors labeled, board identity present</td>
+<td>Review render</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Release</td>
+<td>fab outputs</td>
+<td>Sync check, CPL rotation check, gerber review, final independent review</td>
+<td><strong>Yes</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Detail for each phase lives in <code>references/</code>. Read the reference file for a phase <strong>when you start that phase</strong>, not all at once.</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0, 4</td>
+<td><code>references/intent-and-brief.md</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>references/datasheet-audit.md</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>references/schematic-style.md</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>references/net-classes.md</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>references/stackup-and-rules.md</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>references/placement.md</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>references/routing.md</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>references/simulation.md</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>references/silkscreen-and-art.md</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>references/sync-and-release.md</code></td>
+</tr>
+<tr>
+<td>every gate</td>
+<td><code>references/review-protocol.md</code>, <code>references/pcbview.md</code></td>
+</tr>
+<tr>
+<td>domain</td>
+<td><code>domains/motor-drive.md</code>, <code>domains/io-protection.md</code>, <code>domains/high-speed.md</code> — load only when the board has that kind of circuit</td>
+</tr>
+</tbody>
+</table></div>
+<h2>At every gate</h2>
+<ol>
+<li>Run the checks for the phase. Paste the actual output into the gate file. Never write "passed" for a check you did not run.</li>
+<li>Export renders (schematic PDF, per-layer copper, top/bottom with silk, 3D) for anything visual: <code>scripts/render.py &lt;hw dir&gt; design/renders</code>. Look at them yourself before the reviewer does.</li>
+<li>Spawn an independent reviewer (see "Model routing" below) with only the artifacts and the checklist.</li>
+<li>Fix findings, or dispute them in <code>decisions.md</code> with reasoning. Re-review if anything significant changed.</li>
+<li>Update <code>design/status.json</code> and regenerate the viewer (<code>scripts/view.sh build pcbview.toml</code>) so the user can see the new state from their phone.</li>
+<li>If the phase needs user sign-off, stop and say exactly what you need them to decide.</li>
+</ol>
+<h2>Iterating</h2>
+<p>Going backward is normal. When an upstream artifact changes (a part swap, a new net, a moved connector), list which downstream gates it invalidates, mark them stale in their gate files, and re-run them. Never patch downstream to hide an upstream change.</p>
+<p>Experiments get their own <strong>variant</strong>: a new folder under <code>hw/&lt;board&gt;/</code>, a <code>[[boards]]</code> entry in <code>pcbview.toml</code> naming its parent and what changed, and its own gates from the point it diverged. Never overwrite a variant the user has looked at.</p>
+<h2>Hard rules</h2>
+<ul>
+<li><strong>Schematic is the only source of truth</strong> for values, footprints, MPNs and supplier part numbers. Never edit these in the PCB. Change the schematic, push to the PCB, run the sync check.</li>
+<li><strong>No part without its datasheet opened.</strong> If a datasheet can't be fetched, stop and ask the user to attach it. Never fill in a part's requirements from memory.</li>
+<li><strong>No programmatic-looking schematics.</strong> No grids of symbols, no global labels standing in for wires within a sheet, no blocks of passives detached from what they serve. See <code>references/schematic-style.md</code>.</li>
+<li><strong>No passives in a row.</strong> Every passive sits with the part it serves. See <code>references/placement.md</code>.</li>
+<li><strong>Don't hand-route long traces by coordinates.</strong> Power goes in pours and planes, critical nets are kept short by placement, and everything else goes to the autorouter with full net-class rules.</li>
+<li><strong>Via counts come from calculation</strong>, never a single via on a net whose current needs more.</li>
+<li><strong>Never suppress or waive a DRC/ERC error silently.</strong> Every waiver goes in <code>decisions.md</code> with a reason.</li>
+<li><strong>Zero silkscreen overlaps.</strong> Fix colliding footprint silk with a board-local footprint edit.</li>
+<li><strong>Never edit pcbview inside a project</strong> (<code>vendor/pcbview</code> is a pinned submodule). File a change request instead (see <code>references/pcbview.md</code>).</li>
+<li><strong>Log every non-obvious decision</strong> in <code>decisions.md</code> as it happens, not afterward.</li>
+</ul>
+<h2>Model routing</h2>
+<p>Use the main session model (e.g. Opus) for generation: writing files, running tools, scripts, bulk edits.</p>
+<p>Use a stronger model (e.g. Fable) as a <strong>fresh-context subagent</strong> for judgment:</p>
+<ul>
+<li>datasheet cross-check: independently re-read the datasheet and recompute every calculation</li>
+<li>schematic visual review: does this read like a human drew it?</li>
+<li>placement and silkscreen review on renders</li>
+<li>SI/EMC judgment: what could couple into what, and what needs simulating</li>
+<li>final release review</li>
+</ul>
+<p>The reviewer gets the artifacts, the relevant reference checklist and nothing else: not the conversation, not the author's reasoning. It returns findings ranked by severity. See <code>references/review-protocol.md</code> for prompts.</p>
+<h2>When the user corrects you</h2>
+<p>Add the correction to <code>LESSONS.md</code> as a concrete rule (what was wrong, what to do instead) in the same turn. The skill should get better every time it is corrected.</p></div></body></html>

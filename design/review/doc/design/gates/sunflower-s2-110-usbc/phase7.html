@@ -1,0 +1,244 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 7: PCB Routing, Planes &amp; Copper — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase7.md'>design/gates/sunflower-s2-110-usbc/phase7.md</a></p><h1>Gate 7: PCB Routing, Planes &amp; Copper — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>failed</code></strong> (<code>kicad-cli pcb drc --severity-all</code> passes with <code>0</code> violations, <code>0</code> opens, and <code>0</code> parity diffs, and <code>pad_joints.py</code> passes with <code>0</code> thin joints across <code>797</code> SMD pads; however, independent copper &amp; reference-layout audit holds Gate 7 on <code>5</code> <code>BLOCKER</code>s and <code>4</code> <code>MAJOR</code>s: <code>COUT</code> <code>Zone 11</code> has <code>0</code> power spokes routing <code>100%</code> of core <code>+1V1</code> current via <code>U3.50</code> <code>VREG_FB</code>; <code>PGND</code> shares its single via <code>@(102.43, 99.10)</code> with <code>C17</code> <code>CFILT</code>; <code>In2.Cu</code> routes <code>+3V3</code> <code>ADC_AVDD</code> and <code>VSYS</code> <code>0.21 mm</code> directly beneath <code>B.Cu</code> <code>VREG_LX</code>/<code>L1</code>; <code>RP2350</code> <code>+3V3</code> band is split into <code>4</code> pieces (<code>9.7561 mm²</code>) with <code>11</code> foreign vias inside <code>U3 ring</code>; <code>U3.61</code> has <code>1</code> via &amp; <code>U5.17</code> has <code>2</code> open vias clipping <code>B.Paste</code> without VIPPO; power transitions use single <code>0.15 mm</code> vias (<code>438 mΩ</code> PCB battery loop); <code>VBAT</code> via <code>@(86.99, 89.16)</code> sits <code>0.107 mm</code> from <code>BT1.2</code>; and <code>U4.8</code> Flash decoupling is <code>8.56 mm</code> away).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/routing.md">routing.md</a> &amp; <a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/chips/rp2350.md">rp2350.md</a>, Phase 7)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kicad-cli pcb drc --severity-all</code> (<code>0</code> errors, <code>0</code> opens, <code>0</code> parity diffs)</td>
+<td>Verbatim JSON output below (<code>violations=[]</code>, <code>unconnected_items=[]</code>, <code>schematic_parity=[]</code>)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td><code>pad_joints.py</code> (<code>797</code> SMD pads, <code>≥ 0.09 mm</code>)</td>
+<td>Verbatim output below (<code>PASS: 0 thin pad joints</code>)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td><code>copper_audit.py</code> (<code>0</code> dangling/slivers/necks)</td>
+<td>Verbatim output below (<code>morph_necks=0</code>, <code>acute_slivers=0</code>, <code>micro_segs(&lt;40um)=86</code>)</td>
+<td>passed (minor <code>m2</code>)</td>
+</tr>
+<tr>
+<td><code>nets_check.py --rules --routed</code> (<code>≤ length_limit</code>, <code>"no vias"</code>)</td>
+<td>Verbatim output + <code>pcbnew</code> hierarchical net table below (<code>0</code> length/via-count errors; <code>32</code> <code>.kicad_pro</code> <code>netclass</code> errors from Gate 5)</td>
+<td>failed (<code>netclass</code>)</td>
+</tr>
+<tr>
+<td><code>U3</code> <code>RP2350</code> <code>+1V1</code> ring, <code>VREG_FB</code> Kelvin sense, <code>PGND</code> &amp; <code>CFILT</code> vias, <code>LX</code> cutout, &amp; <code>+3V3</code> band</td>
+<td><code>+1V1</code> ring = <code>1</code> piece (<code>6.0625 mm²</code>), <strong>but <code>COUT</code> has <code>0</code> spokes (<code>100%</code> <code>DVDD</code> via <code>U3.50</code>), <code>CFILT</code> shares <code>PGND</code>'s single via, <code>In2.Cu</code> routes under <code>VREG_LX</code>/<code>L1</code>, and <code>+3V3</code> band is <code>4</code> pieces (<code>9.7561 mm²</code>)</strong></td>
+<td>failed (<code>B1</code>–<code>B4</code>)</td>
+</tr>
+<tr>
+<td>Exposed-pad thermal vias (<code>U1.41</code>, <code>U2.41</code>, <code>U3.61</code>, <code>U5.17</code>) &amp; non-VIPPO paste clearance</td>
+<td><code>U3.61 = 1</code> via &amp; <code>U5.17 = 2</code> vias overlap <code>B.Paste</code>; <code>U1.41 = 0</code> in-pad vias (<code>U2.41 = 1</code> clean)</td>
+<td>failed (<code>B5</code>)</td>
+</tr>
+<tr>
+<td>Power rail parallel via arrays, USB FS inline routing, <code>BT1</code> via safety, &amp; <code>U4.8</code> decoupling</td>
+<td>Single-via hops (<code>438 mΩ</code> battery loop), split-layer <code>34.6 / 35.9 mm</code> USB, <code>0.107 mm</code> <code>VBAT</code> via to <code>BT1.2</code>, <code>8.56 mm</code> <code>U4.8</code> cap</td>
+<td>failed (<code>M1</code>–<code>M4</code>)</td>
+</tr>
+<tr>
+<td><code>12 MHz</code> crystal <code>Y1</code> routing (<code>B.Cu</code>, <code>0</code> vias, dedicated <code>GND</code> vias)</td>
+<td><code>XIN = 8.44 mm</code>, <code>XOUT = 1.33 mm</code>, <code>C24-1 = 1.68 mm</code>, <code>0</code> vias, cap <code>GND</code> vias at <code>0.53 / 0.56 mm</code></td>
+<td>passed</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Real Command Outputs (<code>2026-11-08</code>)</h2>
+<h3>1. Design Rules Check (<code>reserve -c 4 -- kicad-cli pcb drc --severity-all --format json</code>)</h3>
+<pre><code class="language-json">{
+    &quot;$schema&quot;: &quot;https://schemas.kicad.org/drc.v1.json&quot;,
+    &quot;coordinate_units&quot;: &quot;mm&quot;,
+    &quot;date&quot;: &quot;2026-11-08T16:40:21-0800&quot;,
+    &quot;included_severities&quot;: [
+        &quot;error&quot;,
+        &quot;warning&quot;,
+        &quot;exclusion&quot;
+    ],
+    &quot;kicad_version&quot;: &quot;9.0.8&quot;,
+    &quot;schematic_parity&quot;: [],
+    &quot;source&quot;: &quot;sunflower.kicad_pcb&quot;,
+    &quot;unconnected_items&quot;: [],
+    &quot;violations&quot;: []
+}
+</code></pre>
+<h3>2. SMD Pad-Joint Neck Check (<code>pad_joints.py</code>) &amp; Copper Audit (<code>copper_audit.py</code>)</h3>
+<pre><code class="language-text">pad_joints: sunflower.kicad_pcb: 797 SMD pads, joints under 0.09 mm:
+
+  PASS: 0 thin pad joints
+
+hw/sunflower/s2-110-usbc/sunflower.kicad_pcb: tracks=4462 vias=637 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(&lt;86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(&lt;40um)=86 strip_zones=0 zone_intrusions=0
+</code></pre>
+<h3>3. Routed Length &amp; Via Check (<code>nets_check.py --rules --routed</code>) + Direct <code>pcbnew</code> Hierarchical Net Audit</h3>
+<pre><code class="language-text">  routed length (mm, track copper on the net; zones not counted) against nets.csv
+    net                 routed  limit vias
+    /MCU/QSPI_SCLK        0.00   25.0    0
+    /MCU/QSPI_SD0         0.00   25.0    0
+    /MCU/QSPI_SD1         0.00   25.0    0
+    /MCU/QSPI_SD2         0.00   25.0    0
+    /MCU/QSPI_SD3         0.00   25.0    0
+    /MCU/QSPI_SS          0.00   25.0    0
+    /MCU/USB_DM_MCU       0.00    6.0    0
+    /MCU/USB_DP_MCU       0.00    6.0    0
+    /MCU/VREG_LX          0.00      -    0
+    /Power/USB_DM_C       0.00   25.0    0
+    /Power/USB_DP_C       0.00   25.0    0
+    Net-(C24-Pad1)        1.68    6.0    0
+    Net-(U3-XIN)          8.44   11.0    0
+    Net-(U3-XOUT)         1.33    5.0    0
+    USB_DM               13.05   25.0    2
+    USB_DP               16.05   25.0    2
+
+  FAIL: 32 errors, 11 warnings
+</code></pre>
+<p><em>(Note: <code>nets_check.py</code> <code>L231</code> strips leading <code>/</code> from <code>tr.GetNetname()</code> while keeping <code>/</code> in <code>norm(name)</code>, causing hierarchical <code>/MCU/*</code> and <code>/Power/*</code> nets to report <code>0.00</code> in <code>--routed</code>; direct <code>pcbnew</code> extraction below verifies every hierarchical net's exact copper length and via count:)</em></p>
+<pre><code class="language-text">  /MCU/VREG_LX           zone=2.1826mm2 tracks=0.00mm vias= 0 (limit: no vias -&gt; PASS)
+  /Power/USB_DP_C        len= 15.94mm vias= 3 (limit &lt;=25.0mm -&gt; PASS)
+  /Power/USB_DM_C        len= 20.27mm vias= 4 (limit &lt;=25.0mm -&gt; PASS)
+  USB_DP                 len= 16.05mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+  USB_DM                 len= 13.05mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+  /MCU/USB_DP_MCU        len=  2.56mm vias= 0 (limit &lt;= 6.0mm, no vias -&gt; PASS)
+  /MCU/USB_DM_MCU        len=  2.56mm vias= 0 (limit &lt;= 6.0mm, no vias -&gt; PASS)
+  /MCU/QSPI_SCLK         len=  6.66mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+  /MCU/QSPI_SD0          len=  5.61mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+  /MCU/QSPI_SD1          len= 11.10mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+  /MCU/QSPI_SD2          len= 13.85mm vias= 4 (limit &lt;=25.0mm -&gt; PASS)
+  /MCU/QSPI_SD3          len=  5.51mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+  /MCU/QSPI_SS           len= 13.34mm vias= 2 (limit &lt;=25.0mm -&gt; PASS)
+</code></pre>
+<h3>4. <code>pcbnew</code> Zone Piece, Keepout &amp; Exposed-Pad Audit</h3>
+<pre><code class="language-text">  Zone 0: name='RP2350 ring' net='+1V1' layer=B.Cu prio=3 pieces=1 areas_mm2=[6.0625] total_mm2=6.0625
+  Zone 1: name='vendor GND' net='GND' layer=B.Cu prio=4 pieces=1 areas_mm2=[1.7578] total_mm2=1.7578
+  Zone 3: name='RP2350 band' net='+3V3' layer=B.Cu prio=1 pieces=4 areas_mm2=[1.9164, 4.6139, 0.2974, 2.9284] total_mm2=9.7561
+  Zone 5: name='vendor /MCU/VREG_LX' net='/MCU/VREG_LX' layer=B.Cu prio=5 pieces=1 areas_mm2=[2.1826] total_mm2=2.1826
+  Zone 11: name='vendor +1V1' net='+1V1' layer=B.Cu prio=6 pieces=1 areas_mm2=[2.6354] total_mm2=2.6354
+  Zone 13: name='vendor +3V3' net='+3V3' layer=B.Cu prio=7 pieces=1 areas_mm2=[0.5963] total_mm2=0.5963
+  RuleArea 18: name='LX cutout L2' layers=['In1.Cu'] bbox=(100.200,96.150)..(101.900,101.700) no_tracks=True no_vias=False no_pour=True
+  Zone 19: name='plane GND' net='GND' layer=In1.Cu prio=0 pieces=1 areas_mm2=[928.7825] total_mm2=928.7825
+  U1 pad '41' (3.40x3.40mm @ (87.40,103.00) net='GND'): in_pad=0, same_net_within_4mm=5
+  U2 pad '41' (3.40x3.40mm @ (112.60,103.00) net='GND'): in_pad=1, same_net_within_4mm=2
+  U3 pad '61' (3.40x3.40mm @ (98.60,93.40) net='GND'): in_pad=1, same_net_within_4mm=2
+  U5 pad '17' (1.70x1.70mm @ (103.40,106.00) net='GND'): in_pad=2, same_net_within_4mm=5
+  BT1 B.CrtYd bbox=(84.56,84.80)..(92.61,95.14); vias inside=29 (all tented; VBAT via @(86.992,89.164) is 0.107mm from BT1.2)
+  L1 @ (100.60,100.60); In2.Cu tracks overlapping 2.0x1.6mm body=1: [('VSYS', 0.2)] (+ '+3V3' under Zone 5 VREG_LX)
+</code></pre>
+<h2>Independent Fresh-Context Review (<code>gemini-4-argon-high</code>)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Reviewer Finding</th>
+<th>Disposition &amp; Action Taken</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B1</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>COUT</code> (<code>Zone 11</code>) has <code>0</code> power spokes to <code>+1V1</code> ring (<code>Zone 0</code>); <code>100%</code> of core <code>+1V1</code> current routes through <code>U3.50</code> (<code>VREG_FB</code>) on <code>0.20 mm</code> wire, and <code>DVDD</code> spokes are <code>0.20 mm</code> wires</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Add dedicated <code>+1V1</code> power spoke vias from <code>Zone 11</code> to <code>Zone 0</code> + <code>0.60 mm</code> spokes, and isolate <code>U3.50</code> (<code>VREG_FB</code>) as a pure Kelvin sense trace to <code>C18.1</code> (<code>4.0 mΩ</code> DC drop quantified in Gate 8).</td>
+</tr>
+<tr>
+<td><code>B2</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>Zone 1</code> (<code>vendor GND</code> / <code>PGND</code>) has <code>0</code> internal vias and shares its single <code>0.15 mm</code> <code>GND</code> via <code>@(102.43, 99.10)</code> directly with <code>C17.2</code> (<code>CFILT</code> on <code>VREG_AVDD</code>)</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Place <code>2</code> dedicated <code>PGND</code> vias inside <code>Zone 1</code> and give <code>C17.2</code> its own separate <code>GND</code> via (<code>~30 mV</code> HF bounce quantified in Gate 8 §3.2).</td>
+</tr>
+<tr>
+<td><code>B3</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>LX cutout L2</code> is on <code>In1.Cu</code> instead of <code>In2.Cu</code> (<code>0.21 mm</code> under <code>B.Cu</code> <code>U3</code>/<code>L1</code>), leaving <code>In2.Cu</code> <code>+3V3</code> (<code>ADC_AVDD</code> feed) and <code>VSYS</code> directly beneath <code>VREG_LX</code>/<code>L1</code></td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Move <code>LX</code> cutout to <code>In2.Cu</code>, reroute <code>+3V3</code>/<code>VSYS</code> clear of <code>L1</code>/<code>VREG_LX</code>, and restore unbroken <code>GND</code> on <code>In1.Cu</code> (<code>19–48 mV_pk</code> spike modeled in Gate 8 §3.2).</td>
+</tr>
+<tr>
+<td><code>B4</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>RP2350</code> <code>+3V3</code> band (<code>Zone 3</code>) fractured into <code>4</code> pieces (<code>[1.9164, 4.6139, 0.2974, 2.9284] mm²</code>) + <code>11</code> foreign LED vias inside <code>U3 ring</code> (<code>±2.85 mm</code>), pinching off <code>Piece 2</code> (<code>U3.44</code> <code>ADC_AVDD</code>)</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Expand <code>RuleArea 2</code> (<code>U3 ring vias</code>) to full <code>±2.85 mm</code> and move <code>+1V1</code> spokes off <code>B.Cu</code> so <code>Zone 3</code> fills as <code>1</code> whole piece with local <code>C14</code> decoupling on <code>U3.44</code>.</td>
+</tr>
+<tr>
+<td><code>B5</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>U3.61</code> (sole RP2350 <code>GND</code> pin) has only <code>1</code> via &amp; <code>U5.17</code> has <code>2</code> open vias overlapping <code>B.Paste</code> apertures without VIPPO (<code>U1.41</code> has <code>0</code> in-pad vias)</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Place <code>5</code> vias strictly inside the <code>0.80 mm</code> paste-free <code>+</code> cross corridors of <code>U1.41</code>, <code>U2.41</code>, and <code>U3.61</code>, and shift <code>U5.17</code>'s <code>2</code> vias into its paste-free cross channel.</td>
+</tr>
+<tr>
+<td><code>M1</code></td>
+<td><code>MAJOR</code></td>
+<td>Single-via power transitions (<code>1</code> via vs <code>3–5</code> required), <code>438.0 mΩ</code> PCB battery loop (<code>BT1 ↔ U8/U5</code>), and <code>0.16–0.20 mm</code> <code>VSYS</code> (<code>236.7 mΩ</code> to <code>U1.5</code> vs <code>53.7 mΩ</code> to <code>U2.5</code>)</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Parallel <code>3</code>-via arrays + <code>≥ 0.30–0.40 mm</code> battery/<code>VSYS</code> trunks in <code>Rev S3D</code> (<code>GCC ≤ 107</code> headroom verified down to <code>V_cell ≈ 3.59 V</code> in Gate 8).</td>
+</tr>
+<tr>
+<td><code>M2</code></td>
+<td><code>MAJOR</code></td>
+<td><code>USBLC6-2P6</code> (<code>U7</code>) non-inline (<code>34.55 / 35.87 mm</code>, <code>5–6</code> vias), <code>USB_DP</code> (<code>F.Cu</code>+<code>B.Cu</code>) &amp; <code>USB_DM</code> (<code>In2.Cu</code>+<code>B.Cu</code>) split across layers</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix):</strong> Synced <code>34.55 / 35.87 mm</code> (<code>26.0 ps</code> skew) in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a>; route inline on <code>B.Cu</code> in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>M3</code></td>
+<td><code>MAJOR</code></td>
+<td>Tented <code>VBAT</code> via <code>@(86.992, 89.164)</code> sits <code>0.107 mm</code> edge-to-edge from <code>BT1</code> Pad <code>2</code> (<code>/Power/BAT_N</code>), risking an unprotected LiPo dead short if mask/solder bridges</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix; bench DMM continuity check before LiPo attach on <code>Rev S3C</code>):</strong> Relocate <code>VBAT</code> via outside <code>BT1</code> pad zone (<code>≥ 0.35 mm</code> clearance) in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>M4</code></td>
+<td><code>MAJOR</code></td>
+<td><code>U4.8</code> Flash nearest cap (<code>C14</code>) is <code>8.56 mm</code> / <code>4</code> vias away (<code>C22</code> misplaced); <code>7</code> caps have <code>GND</code> vias <code>2.13–3.17 mm</code> away; <code>QSPI</code> vias <code>1.70–4.21 mm</code> from <code>GND</code> vias</td>
+<td><strong>Confirmed — Gate 7 held (<code>Rev S3D</code> fix; 1x/2x SPI XIP fallback on <code>Rev S3C</code>):</strong> Move <code>C22</code> beside <code>U4.8</code> and tighten cap/QSPI <code>GND</code> return vias in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>m1–m3</code></td>
+<td><code>MINOR</code></td>
+<td>Sparse rim <code>GND</code> stitching (<code>56</code> <code>GND</code> vias, <code>4.11 mm</code> <code>In1.Cu</code> antipad slot); <code>86</code> sub-<code>40 µm</code> micro-segments; <code>nets_check.py --routed</code> run</td>
+<td><strong>Addressed / queued for <code>Rev S3D</code>:</strong> Ran <code>nets_check.py --rules --routed</code> above; prune sub-<code>40 µm</code> fragments &amp; stitch perimeter <code>GND</code> vias in <code>Rev S3D</code>.</td>
+</tr>
+<tr>
+<td><code>N1–N2</code></td>
+<td><code>NOTE</code></td>
+<td>Clean <code>B.Cu</code> <code>0</code>-via <code>12 MHz</code> crystal <code>Y1</code> layout; <code>0</code> DRC errors/thin joints &amp; verified <code>L1</code> 3D chiral polarity on <code>B.Cu</code></td>
+<td><strong>Confirmed.</strong></td>
+</tr>
+</tbody>
+</table></div></div></body></html>

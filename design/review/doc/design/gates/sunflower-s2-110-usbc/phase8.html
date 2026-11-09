@@ -1,0 +1,229 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 8: Simulation &amp; Layout-Coupled Verification — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase8.md'>design/gates/sunflower-s2-110-usbc/phase8.md</a></p><h1>Gate 8: Simulation &amp; Layout-Coupled Verification — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>failed</code></strong> (all analytical/numerical models, exact <code>15.2 µm</code> inner-copper resistances, board-wide aggressor/victim scans, and plots are complete and reproducible in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/sim/sunflower-s2-110-usbc/sim_audit.py">sim_audit.py</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/sim/sunflower-s2-110-usbc/README.md">README.md</a>; however, per <a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/simulation.md#L38">simulation.md</a> <em>"Gate: passed when every triggered analysis shows margin or its layout change is fed back into Phase 7"</em>, Gate 8 is held because <code>3</code> hardware layout defects confirmed by simulation — <code>U4.8</code> <code>312–554 mV</code> 4-bit QSPI read SSO droop, <code>C17</code> <code>CFILT</code> shared-via high-pass ground bounce, and <code>19–48 mV_pk</code> <code>VREG_LX → In2.Cu ADC_AVDD</code> mutual-inductance coupling — have not yet been fed back into PCB copper; complete firmware bench workarounds are documented for <code>Rev S3C</code> if ordered as a prototype at Gate 10).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/simulation.md">simulation.md</a>, Phase 8)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Every Phase 3 / Phase 8 trigger audited with reproducible script (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/sim/sunflower-s2-110-usbc/sim_audit.py">sim_audit.py</a>)</td>
+<td>Verbatim output below (<code>SIM_EXIT=0</code>, <code>0</code> failed path lookups)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Crystal <code>Y1</code> (<code>ABM8-272-T3</code>, <code>15 pF × 2</code>, <code>200 µW</code> max) &amp; <code>I2C0</code> (<code>1 MHz</code> Fm+, <code>R21/R22 = 1.0 kΩ</code>, <code>40 pF</code> bus)</td>
+<td><code>DL ≈ 85–125 µW ≤ 200 µW</code>; <code>I2C0</code> $t_r(30\text{–}70\%) = 33.9\text{ ns} \le 120\text{ ns}$, $t_{\text{HIGH}} \approx 448\text{ ns} \ge 260\text{ ns}$</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>USB 2.0 FS (<code>12 Mbit/s</code>) flight-time skew &amp; <code>USBLC6-2P6</code> (<code>+31.2 V</code> clamp)</td>
+<td><code>DP = 233.4 ps</code>, <code>DM = 259.4 ps</code>, true dielectric-weighted skew <strong><code>26.0 ps ≤ 2,000 ps</code></strong>; <code>27 Ω</code> <code>R14/15</code> limit <code>U7</code> residual into <code>U3</code></td>
+<td>passed (FS)</td>
+</tr>
+<tr>
+<td>DC IR drop (<code>VBAT</code>/<code>BAT_N</code> <code>438 mΩ</code> PCB / <code>550 mΩ</code> total, <code>VSYS → U1</code> <code>236.7 mΩ</code>) &amp; LED headroom (<a href="../../sim/sunflower-s2-110-usbc/pdn_headroom.png">pdn_headroom.png</a>)</td>
+<td>At wearable cap <code>GCC = 107</code>, typ G/B LEDs stay in constant-current regulation ($V_{\text{CS}} \ge 300\text{ mV}$) down to <code>V_cell ≈ 3.59 V</code> (<code>+760..+1,240 mV</code> on <code>4.40 V</code> USB)</td>
+<td>passed (with <code>GCC ≤ 107</code>)</td>
+</tr>
+<tr>
+<td><code>U4.8</code> (<code>W25Q128JVPIQ</code>) QSPI SSO supply droop (<code>8.56 mm</code> / <code>4</code>-via loop to <code>C14</code>, <code>~9 nH</code>)</td>
+<td><strong>4-bit Quad-SPI (<code>0xEB</code>) droops <code>312–554 mV</code> (<code>VCC_min ≈ 2.75 V</code> vs <code>2.70 V</code> floor)</strong>; <code>Rev S3C</code> bench workaround = 1-bit/2-bit XIP (<code>78–156 mV</code>); <code>Rev S3D</code> = move <code>C22</code> to <code>U4.8</code></td>
+<td>failed (<code>B2</code> copper pending)</td>
+</tr>
+<tr>
+<td><code>RP2350</code> <code>CFILT</code> (<code>C17</code>) shared <code>PGND</code> via bounce, <code>VREG_LX → In2.Cu ADC_AVDD</code> coupling, &amp; <code>U3.39</code> <code>5.9 MHz</code> anti-resonance</td>
+<td><strong><code>~30 mV</code> HF bounce via <code>C17</code> ESL</strong> and <strong><code>19–48 mV_pk</code> (<code>2.5 ns</code>) <code>VREG_LX</code> spikes on <code>ADC_AVDD</code></strong>; <code>Rev S3D</code> = isolate <code>CFILT</code> via &amp; move <code>LX</code> cutout to <code>In2.Cu</code></td>
+<td>failed (<code>B3</code> copper pending)</td>
+</tr>
+<tr>
+<td>Pouch-backed (<code>35 K/W</code>, $\tau_{\text{th}} \approx 91\text{ s}$) thermal &amp; <code>45 °C</code> LiPo charge protection (<a href="../../sim/sunflower-s2-110-usbc/thermal_rise.png">thermal_rise.png</a>)</td>
+<td>Mandatory firmware caps synced into <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>: <strong><code>GCC ≤ 105</code></strong> battery (<code>≤ 48 °C</code> skin), <strong><code>GCC ≤ 9</code> CC / <code>≤ 24</code> CV</strong> gated on <strong><code>PGOOD == 0 || CHG == 0</code></strong> (<code>≤ 45 °C</code> LiPo)</td>
+<td>passed (firmware gated)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Real Command Outputs (<code>2026-11-08</code>)</h2>
+<h3><code>python3 design/sim/sunflower-s2-110-usbc/sim_audit.py</code></h3>
+<pre><code class="language-text">=== 1. PHASE 8 SIMULATION TRIGGER &amp; COPPER SUMMARY (JLC04161H-7628, t_in=15.2 um) ===
+  VBUS                   len= 26.11mm vias=10 w=[0.25..0.25] R70_all= 102.8mOhm (B.Cu:9.22, F.Cu:3.44, In2.Cu:13.45)
+  VBAT                   len= 69.05mm vias=11 w=[0.25..0.25] R70_all= 279.2mOhm (B.Cu:27.18, F.Cu:3.94, In2.Cu:37.93)
+  /Power/BAT_N           len= 53.01mm vias= 4 w=[0.25..0.25] R70_all= 254.5mOhm (B.Cu:10.82, In2.Cu:42.19)
+  VSYS                   len= 77.31mm vias=14 w=[0.16..0.20] R70_all= 344.5mOhm (B.Cu:44.89, F.Cu:2.49, In2.Cu:29.93)
+  +3V3                   len= 90.89mm vias=24 w=[0.15..0.20] R70_all= 388.5mOhm (B.Cu:58.18, F.Cu:1.91, In2.Cu:30.80)
+  +1V1                   len= 29.14mm vias= 3 w=[0.10..0.20] R70_all= 125.9mOhm (B.Cu:20.54, In2.Cu:8.60)
+  GND                    len= 75.80mm vias=56 w=[0.20..0.20] R70_all= 245.3mOhm (B.Cu:68.02, F.Cu:2.04, In2.Cu:5.74)
+  /MCU/VREG_AVDD         len=  4.55mm vias= 0 w=[0.10..0.10] R70_all=  26.8mOhm (B.Cu:4.55)
+  /Power/USB_DP_C        len= 15.94mm vias= 3 w=[0.15..0.15] R70_all=  94.9mOhm (B.Cu:8.78, F.Cu:0.85, In2.Cu:6.31)
+  /Power/USB_DM_C        len= 20.27mm vias= 4 w=[0.15..0.15] R70_all= 129.9mOhm (B.Cu:10.44, In2.Cu:9.82)
+  USB_DP                 len= 16.05mm vias= 2 w=[0.10..0.15] R70_all=  63.2mOhm (B.Cu:12.68, F.Cu:3.37)
+  USB_DM                 len= 13.05mm vias= 2 w=[0.10..0.15] R70_all= 105.5mOhm (B.Cu:2.48, In2.Cu:10.57)
+  /MCU/USB_DP_MCU        len=  2.56mm vias= 0 w=[0.15..0.15] R70_all=  10.1mOhm (B.Cu:2.56)
+  /MCU/USB_DM_MCU        len=  2.56mm vias= 0 w=[0.15..0.15] R70_all=  10.0mOhm (B.Cu:2.56)
+  /MCU/QSPI_SCLK         len=  6.66mm vias= 2 w=[0.10..0.10] R70_all=  85.7mOhm (B.Cu:0.62, In2.Cu:6.04)
+  /MCU/QSPI_SD0          len=  5.61mm vias= 2 w=[0.10..0.10] R70_all=  55.2mOhm (B.Cu:2.72, In2.Cu:2.89)
+  /MCU/QSPI_SD1          len= 11.10mm vias= 2 w=[0.10..0.10] R70_all= 117.4mOhm (B.Cu:4.33, In2.Cu:6.77)
+  /MCU/QSPI_SD2          len= 13.85mm vias= 4 w=[0.10..0.10] R70_all= 146.2mOhm (B.Cu:5.44, In2.Cu:8.41)
+  /MCU/QSPI_SD3          len=  5.51mm vias= 2 w=[0.10..0.10] R70_all=  63.9mOhm (B.Cu:1.41, In2.Cu:4.10)
+  /MCU/QSPI_SS           len= 13.34mm vias= 2 w=[0.10..0.10] R70_all= 111.9mOhm (B.Cu:9.00, In2.Cu:4.34)
+  Net-(R16-Pad2)         len= 16.87mm vias= 4 w=[0.10..0.10] R70_all= 119.7mOhm (B.Cu:13.51, F.Cu:0.71, In2.Cu:2.65)
+  Net-(U3-XIN)           len=  8.44mm vias= 0 w=[0.15..0.15] R70_all=  33.2mOhm (B.Cu:8.44)
+  Net-(U3-XOUT)          len=  1.33mm vias= 0 w=[0.15..0.15] R70_all=   5.2mOhm (B.Cu:1.33)
+  Net-(C24-Pad1)         len=  1.68mm vias= 0 w=[0.15..0.15] R70_all=   6.6mOhm (B.Cu:1.68)
+  I2C_SDA                len= 89.07mm vias=17 w=[0.10..0.10] R70_all= 862.3mOhm (B.Cu:30.91, F.Cu:14.18, In2.Cu:43.97)
+  I2C_SCL                len= 86.70mm vias=15 w=[0.10..0.10] R70_all= 908.1mOhm (B.Cu:24.76, F.Cu:10.19, In2.Cu:51.75)
+  /MCU/ACC_SDA           len= 13.78mm vias= 2 w=[0.10..0.10] R70_all= 155.7mOhm (B.Cu:4.06, In2.Cu:9.71)
+  /MCU/ACC_SCL           len= 18.35mm vias= 4 w=[0.10..0.10] R70_all= 212.2mOhm (B.Cu:4.79, In2.Cu:13.56)
+  /MCU/LIGHT             len= 16.55mm vias= 3 w=[0.10..0.10] R70_all=  97.5mOhm (B.Cu:8.73, F.Cu:7.81)
+  VBAT_SENSE             len= 33.71mm vias= 2 w=[0.10..0.10] R70_all= 328.2mOhm (B.Cu:16.83, In2.Cu:16.88)
+  SW worst copper R70  : /Driver 1 and matrix/SW1_5 len=116.29mm R70=845.5mOhm vias=11
+  CS worst copper R70  : /Driver 1 and matrix/CS1_15 len=48.86mm R70=460.9mOhm vias=5
+
+=== 2. EXACT SHORTEST-PATH PAD-TO-PAD DC RESISTANCE @ 70 C ===
+  VBUS: J1.A4 -&gt; U5.13              : R_70 =  13.40 mOhm, L_track =  2.48 mm, transitions = 4
+  VBAT: BT1.1 -&gt; U5.2               : R_70 = 191.42 mOhm, L_track = 44.13 mm, transitions = 6
+  BAT_N: BT1.2 -&gt; U8.4              : R_70 = 246.57 mOhm, L_track = 48.59 mm, transitions = 4
+  VSYS: U5.10 -&gt; U6.4 (3V3 LDO)     : R_70 = 153.05 mOhm, L_track = 25.66 mm, transitions = 6
+  VSYS: U5.10 -&gt; U1.5 (PVCC)        : R_70 = 236.73 mOhm, L_track = 47.57 mm, transitions = 10
+  VSYS: U5.10 -&gt; U2.5 (PVCC)        : R_70 =  53.67 mOhm, L_track = 11.99 mm, transitions = 2
+  +3V3: U6.1 -&gt; U3.49 (VREG_VIN)    : R_70 =  28.85 mOhm, L_track =  6.45 mm, transitions = 2
+  +3V3: U6.1 -&gt; U3.44 (ADC_AVDD)    : R_70 =  46.76 mOhm, L_track =  9.41 mm, transitions = 2
+  +3V3: U6.1 -&gt; U4.8 (Flash VCC)    : R_70 =  81.21 mOhm, L_track = 15.98 mm, transitions = 2
+  +3V3: C14.1 -&gt; U4.8 (nearest cap) : R_70 =  47.68 mOhm, L_track =  8.56 mm, transitions = 4
+  +1V1: C18.1 -&gt; U3.50 (VREG_FB)    : R_70 =   4.00 mOhm, L_track =  1.34 mm, transitions = 0
+  +1V1: C18.1 -&gt; U3.23 (DVDD N)     : R_70 =  11.20 mOhm, L_track =  3.61 mm, transitions = 0
+  +1V1: C18.1 -&gt; U3.39 (DVDD E)     : R_70 =  46.99 mOhm, L_track =  8.48 mm, transitions = 2
+  Combined PCB battery loop (VBAT + BAT_N) @ 70 C = 438.0 mOhm (+ ~112 mOhm conn+U8+U5 FETs = 550.0 mOhm total)
+
+=== 3. BOARD-WIDE AGGRESSOR / VICTIM COUPLING SCAN ===
+  [3a] In2.Cu segments under B.Cu VREG_LX pour / L1 (h = 0.2104 mm):
+    In2.Cu +3V3             (100.34,96.41)-&gt;(101.94,97.31) w=0.20mm L=1.84mm ov_LX_pour=0.09mm ov_L1_body=0.00mm C_mut~=6fF
+    In2.Cu VSYS             (104.52,100.76)-&gt;(99.72,101.76) w=0.20mm L=4.90mm ov_LX_pour=0.49mm ov_L1_body=0.25mm C_mut~=33fF
+  [3b] Top co-planar parallel runs (edge gap &lt;= 0.30 mm, parallel &gt;= 0.80 mm):
+    In2.Cu /Driver 2 and matrix/SW2_6   &lt;-&gt; I2C_SDA           : L_par= 9.92 mm, min_gap=0.228 mm
+    In2.Cu /Driver 1 and matrix/CS1_15  &lt;-&gt; VBAT_SENSE        : L_par= 6.79 mm, min_gap=0.115 mm
+    In2.Cu /Driver 2 and matrix/SW2_6   &lt;-&gt; I2C_SCL           : L_par= 5.30 mm, min_gap=0.122 mm
+    In2.Cu /Driver 2 and matrix/SW2_7   &lt;-&gt; I2C_SCL           : L_par= 3.59 mm, min_gap=0.200 mm
+  [3c] Top adjacent-layer broadside runs (h = 0.2104 mm, d_cc &lt;= 0.35 mm, parallel &gt;= 0.50 mm):
+    B.Cu&lt;-&gt;In2.Cu  /Driver 1 and matrix/SW1_5   &lt;-&gt; I2C_SDA           : L_par= 8.94 mm, min_dcc=0.047 mm
+    B.Cu&lt;-&gt;In2.Cu  /Driver 2 and matrix/SW2_8   &lt;-&gt; I2C_SDA           : L_par= 8.44 mm, min_dcc=0.007 mm
+    In2.Cu&lt;-&gt;B.Cu  /Driver 2 and matrix/SW2_6   &lt;-&gt; I2C_SCL           : L_par= 7.19 mm, min_dcc=0.272 mm
+    In2.Cu&lt;-&gt;B.Cu  /Driver 2 and matrix/SW2_3   &lt;-&gt; +1V1              : L_par= 5.29 mm, min_dcc=0.008 mm
+
+=== 4. QUANTITATIVE SI / PI / THERMAL CHECKPOINTS ===
+  U4.8 SSO [4-bit Quad-SPI (0xEB, fast edge)]: Q=92.4 pC, dV_droop ~=   554 mV -&gt; V_CC,min ~= 2.75 V (spec &gt;= 2.70 V)
+  U4.8 SSO [4-bit Quad-SPI (0xEB, 25% DRV)  ]: Q=92.4 pC, dV_droop ~=   312 mV -&gt; V_CC,min ~= 2.99 V (spec &gt;= 2.70 V)
+  U4.8 SSO [2-bit Dual-SPI (0xBB, 25% DRV)  ]: Q=46.2 pC, dV_droop ~=   156 mV -&gt; V_CC,min ~= 3.14 V (spec &gt;= 2.70 V)
+  U4.8 SSO [1-bit Fast-Read (0x0B, 25% DRV) ]: Q=23.1 pC, dV_droop ~=    78 mV -&gt; V_CC,min ~= 3.22 V (spec &gt;= 2.70 V)
+  USB FS flight time: DP = 233.4 ps (34.55 mm, 5 vias), DM = 259.4 ps (35.87 mm, 6 vias), |dt| = 26.0 ps (FS budget &lt;= 2000 ps)
+  I2C0 1 MHz Fm+ (R21/R22=1.0 kOhm, C_bus~=40 pF): tr(30-70%)=33.9 ns (&lt;=120 ns), t(0-&gt;2.4V)=52.0 ns -&gt; t_HIGH~=448 ns (&gt;=260 ns)
+  Thermal [Wearable Battery (25 C amb, 35 K/W, 48 C skin limit)]: GCC_max = 107 (T@GCC128=51.2 C, T@GCC255=71.7 C)
+  Thermal [USB Charging CV taper (25 C amb, 35 K/W, P_chg=0.27W @4.1V, 45 C LiPo limit)]: GCC_max =  27 (T@GCC128=63.3 C, T@GCC255=86.4 C)
+  Thermal [USB Charging CC mid (25 C amb, 35 K/W, P_chg=0.36W @3.8V, 45 C LiPo limit)]: GCC_max =   9 (T@GCC128=66.5 C, T@GCC255=89.6 C)
+  Thermal [USB Charging low-bat (25 C amb, 35 K/W, P_chg=0.45W @3.5V, 45 C LiPo limit)]: GCC_max =   0 (T@GCC128=69.6 C, T@GCC255=92.7 C)
+  Thermal [Hot Ambient Battery (40 C amb, 35 K/W, 60 C LiPo discharge limit)]: GCC_max =  89 (T@GCC128=66.2 C, T@GCC255=86.7 C)
+</code></pre>
+<h2>Independent Fresh-Context Review (<code>gemini-4-argon-high</code>)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Reviewer Finding</th>
+<th>Disposition &amp; Action Taken</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B1</code></td>
+<td><code>BLOCKER</code></td>
+<td>Initial <code>sim/README.md</code> omitted <code>0.16 W</code> MCU baseline in text, used <code>28 K/W</code> instead of pouch-backed <code>35 K/W</code> on battery, and gated charging cap only on <code>CHG == 0</code> instead of <code>PGOOD == 0 || CHG == 0</code></td>
+<td><strong>Fixed in <code>sim_audit.py</code>, <code>sim/README.md</code>, <code>thermal_rise.png</code>, <code>intent-s2-110-usbc.md</code>, &amp; <code>bringup-s2-110-usbc.md</code>:</strong> Standardized on <code>35 K/W</code> pouch-backed model (<code>GCC ≤ 105</code> battery, <code>GCC ≤ 9</code> CC / <code>≤ 24</code> CV gated on <code>PGOOD == 0 || CHG == 0</code> + cold-boot <code>ADC4</code> <code>ΔT</code> throttling).</td>
+</tr>
+<tr>
+<td><code>B2</code></td>
+<td><code>BLOCKER</code></td>
+<td><code>U4.8</code> (<code>W25Q128JVPIQ</code>) <code>8.56 mm</code> / <code>4</code>-via decoupling gap (<code>~9 nH</code>) causes <code>312–554 mV</code> 4-bit QSPI read SSO droop (<code>U4</code> drives <code>SD0..3</code> on reads, not <code>U3</code>)</td>
+<td><strong>Modeled in <code>sim_audit.py</code> &amp; Gate 8 held (<code>Rev S3D</code> move <code>C22</code>):</strong> Documented 1-bit (<code>0x0B</code>, <code>78 mV</code>) / 2-bit (<code>0xBB</code>, <code>156 mV</code>) SPI XIP bench mitigation for <code>Rev S3C</code> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>.</td>
+</tr>
+<tr>
+<td><code>B3</code></td>
+<td><code>BLOCKER</code></td>
+<td>Initial <code>sim/README.md</code> cited Round Pendant <code>R13 = 2.2 Ω</code> / missing <code>C19</code>, understated <code>CFILT</code> high-pass ground bounce via shared <code>PGND</code> via, and omitted $M\,dI/dt$ (<code>19–48 mV_pk</code>) on <code>In2.Cu</code> <code>ADC_AVDD</code> + <code>U3.39</code> <code>5.9 MHz</code> anti-resonance</td>
+<td><strong>Fixed in <code>sim/README.md</code> &amp; Gate 8 held (<code>Rev S3D</code> copper fixes):</strong> Verified <code>s2-110-usbc</code> actually has <code>R13 = 33 Ω</code> (<code>f_c ≈ 2.01 kHz</code>) and <code>C19 = 4.7 µF</code> (<code>C_eff ≈ 5.0 µF</code>), and added full <code>C17</code> ESL high-pass bounce (<code>~30 mV</code>), <code>M dI/dt</code> (<code>19–48 mV_pk</code>), and <code>5.9 MHz</code> (<code>1.2 Ω</code>) spoke anti-resonance models.</td>
+</tr>
+<tr>
+<td><code>B4</code></td>
+<td><code>BLOCKER</code></td>
+<td>Script lived only in scratchpad, failed (<code>-1.00</code>) on <code>BAT_N</code>/<code>VBUS</code>, used <code>17.5 µm</code> vs <code>15.2 µm</code> inner Cu, and lacked board-wide Aggressor/Victim scan</td>
+<td><strong>Fixed:</strong> Created <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/sim/sunflower-s2-110-usbc/sim_audit.py">sim_audit.py</a> with <code>t_in = 15.2 µm</code> (<code>1.357 mΩ/sq</code> @ <code>70 °C</code>), T-junction/multi-pad Dijkstra solver (<code>BAT_N = 246.6 mΩ</code>, <code>VBAT = 191.4 mΩ</code>, <code>VBUS = 13.4 mΩ</code>), and <code>4,462</code>-segment co-planar + broadside scan.</td>
+</tr>
+<tr>
+<td><code>M1</code></td>
+<td><code>MAJOR</code></td>
+<td><code>pdn_headroom.png</code> plotted against <code>VSYS</code> without subtracting <code>550 mΩ</code> battery+<code>U8</code>+<code>U5</code> drop from <code>V_cell</code></td>
+<td><strong>Fixed in <code>sim_audit.py</code> &amp; <code>pdn_headroom.png</code>:</strong> Plotted directly against <code>V_cell</code> (<code>3.50..4.20 V</code> with full <code>550 mΩ</code> loop drop) + <code>4.40 V</code> USB marker.</td>
+</tr>
+<tr>
+<td><code>M2</code></td>
+<td><code>MAJOR</code></td>
+<td>Reviewer checked <code>2.2 kΩ</code> <code>I2C0</code> pull-ups (<code>t_0→2.4V</code> risk) from stale Round Pendant text</td>
+<td><strong>Resolved (<code>s2-110-usbc</code> uses <code>R21 = R22 = 1.0 kΩ</code>, <code>C11702</code>):</strong> Even at <code>40 pF</code> (<code>89.1 mm</code>, <code>17</code> vias), <code>1.0 kΩ</code> gives $t_r(30\text{–}70\%) = 33.9\text{ ns}$ and $t_{0\to 2.4\text{V}} = 52.0\text{ ns}$ ($t_{\text{HIGH}} = 448\text{ ns} \ge 260\text{ ns}$).</td>
+</tr>
+<tr>
+<td><code>M3</code></td>
+<td><code>MAJOR</code></td>
+<td>Reviewer checked <code>100 µW</code> crystal drive limit from stale <code>X322512MSB4SI</code> citation</td>
+<td><strong>Resolved (<code>s2-110-usbc</code> uses <code>ABM8-272-T3</code>, <code>C20625731</code>, <code>15 pF × 2</code>, <code>200 µW</code> max):</strong> <code>85–125 µW</code> drive power has ample margin below <code>200 µW</code>.</td>
+</tr>
+<tr>
+<td><code>M4–M5</code></td>
+<td><code>MAJOR</code></td>
+<td><code>ADC4</code> offset &amp; <code>91 s</code> thermal time constant; <code>USBLC6-2P6</code> <code>VCL+ = +31.2 V</code> &amp; <code>26.0 ps</code> split-layer USB skew</td>
+<td><strong>Fixed in <code>sim_audit.py</code>, <code>sim/README.md</code>, &amp; <code>bringup-s2-110-usbc.md</code>.</strong></td>
+</tr>
+<tr>
+<td><code>m1–m4</code></td>
+<td><code>MINOR</code></td>
+<td><code>L1</code> <code>Isat = 2.8/2.4 A</code>, <code>U6</code> <code>[0.5, 22] µF</code>, <code>U5</code> <code>22 µF</code> caps &amp; <code>4.50 V</code> <code>VIN-DPM</code>, <code>Q2</code> <code>30 µA @ 100 lx</code> (<code>~440 lx</code> sat), <code>OD=1, PUE=0</code> on <code>ADC0/1</code>, <code>GPIO6</code> <code>LED_SDB</code> <code>100 nF</code> note</td>
+<td><strong>Fixed across <code>sim/README.md</code> &amp; <code>bringup-s2-110-usbc.md</code>.</strong></td>
+</tr>
+</tbody>
+</table></div></div></body></html>

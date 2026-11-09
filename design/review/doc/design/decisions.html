@@ -1,0 +1,622 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Decisions</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md'>design/decisions.md</a></p><h1>Decisions</h1>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Decision</th>
+<th>Reasoning</th>
+<th>Alternatives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-11-02</td>
+<td>IS31FL3741A-QFLS4-TR (C2940604) for the drivers</td>
+<td>IS31FL3741-QFLS4-TR has 0 JLC stock (<code>jlc_parts.py search</code>); the A has 455, same 39 × 9 QFN-60 and 13 × 9 RGB circuit</td>
+<td>IS31FL3729: named fallback, rejected: 15 × 9 dots gives 45 RGB per chip, 90 LEDs from two</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>234 LEDs on a 38 mm board, not a smaller board</td>
+<td>Requested diameter; 234 sites need ~37 mm, and 38 mm leaves spare sites at the rim for USB-C tabs and any lanyard hole</td>
+<td>37 mm: smaller, but no spare sites near USB-C</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Driver SW and logic supply on VSYS, 3V3 regulator fed from VSYS</td>
+<td>Driver inputs must stay ≤ VCC + 0.3 V (IS31FL3741A p.5); a regulator fed from the same rail cannot exceed it</td>
+<td>Drivers on raw VBAT: a flat or absent cell with USB in would violate the limit</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Omit the 20 Ω/51 Ω CS resistors of the datasheet's Figure 2</td>
+<td>They reduce chip dissipation at 5 V, 78 parts for two drivers. At ≤ 4.2 V (5 V only on USB) with the lower peak current of R18 and the firmware limit R19, the chip stays within ~0.25 W. Rechecked in phase 1</td>
+<td>Fit them: no bottom-side room</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Accelerometer on its own I2C bus</td>
+<td>Driver bus runs 1 MHz for frame rate; many low-power accelerometers stop at 400 kHz</td>
+<td>Shared bus at 400 kHz: 702 bytes takes ~16 ms, marginal for 60 fps</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Boardroom project layout from phase 0</td>
+<td>User's instruction</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Gate 0 review finding 4 disputed in part: the reviewer counted 3 tracks per channel at JLC minimum</td>
+<td>Routing G under the LED body through the 0.35 mm centre gap leaves 2 tracks per 0.75 mm channel, and no crossings on F.Cu. Written into R21; proved or dropped at routing</td>
+<td>3 tracks per channel at 0.1/0.1 mm, needing a crossing for G and B</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Gate 0 review finding 3 (blind vias effectively mandatory) taken as a recommendation, not settled</td>
+<td>It changes cost and lead time, so it is the user's to decide; quote not yet checked</td>
+<td>Through vias with EP cut-outs and a modified RP2350 ring</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>6 layers, through vias, via-in-pad; no blind vias</td>
+<td>User's decision at gate 0, against the blind-via recommendation</td>
+<td>Blind F.Cu–In1 vias on 4-layer HDI</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Battery is Grepow 5435035, charged to 4.2 V; XB9901A on board</td>
+<td>User named the cell. Listings disagree (3.85 V nominal vs 4.4 V), and 4.2 V is safe for either. Protection status of the cell unknown, and XB9901A also gives reverse-connection protection per its datasheet</td>
+<td>LiHV charger at 4.35 V: more capacity, needs the maker's spec</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>BQ24073RGTR, not the BQ24075 family</td>
+<td>VSYS regulated at 4.4 V on USB keeps driver dissipation low and holds blue/green headroom; 6.6 V OVP keeps VBUS faults off the drivers. BQ24075's 5.5 V OUT would run the drivers hotter</td>
+<td>BQ24072 tracks VBAT + 225 mV: cooler but dims with a flat cell</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Sleep budget raised from 75 to 85 µA; flash deep power-down not relied on</td>
+<td>RP2350 docs describe only an XIP exit at flash boot, so a flash left in deep power-down may not boot on a P1.7 cold wake. 610 mAh makes the difference small</td>
+<td>Warm-boot code from retained SRAM (P1.3, +7 µA): firmware option</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>LIS2DW12 SA0 and CS tied to VDD_IO</td>
+<td>They have ~20 kΩ internal pull-ups (Table 3); strapping SA0 low would draw ~160 µA, twice the whole sleep budget</td>
+<td>SA0 low with pull-up disabled by register: draws until configured</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Style check's <code>grid</code> errors on matrix1 and matrix2 waived</td>
+<td>They are LED matrices, and drawing one as a grid is what makes it readable; datasheet Figure 2 does the same. No other sheet is affected</td>
+<td>Scatter 234 LEDs to pass a check: worse to read</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>SKRTLAE010 for the buttons, not TS-1088-AR02016</td>
+<td>Basic part, but its drawing shows a top plunger; R10 needs side actuation at the edge</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Schematic is hierarchical, drawn with kicad_write plus a small root-sheet writer in scripts/schematic.py</td>
+<td>kicad_write has no sheets; instance paths are rewritten after saving. Request for kicad_write worth raising</td>
+<td>One enormous sheet</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>U3 centred on a via, 8 ring vias stepped out to the 3V3 band</td>
+<td>Reviewer proposed offsetting U3 by (1, 1): 4 EP, 0 ring, 10 band. Recomputed with only the 5 open stub directions: centring gives 1 EP, 0 ring, 8 band, which disturbs less. Both keep the ring whole</td>
+<td>Centre with vias in the ring (8 segments, 4 unspoked); (1, 1) offset; 45° rotation</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Buttons at −28° and −152°, on rim sites</td>
+<td>Their 1.2 mm peg holes can't fit an LED channel; 2 sites lost, spare rim sites cover it</td>
+<td>Put them on the south, by USB: more interior loss</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Board net classes checked by script against nets.csv, not by <code>nets_check.py --rules</code></td>
+<td>kicad-cli's netlist reports class Default on this hierarchical schematic; the board reads the right class. To raise with the skill: nets_check should read the board or handle hierarchy</td>
+<td>Flatten the schematic</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>SIGNAL clearance 0.09, below nets_check's derived 0.10</td>
+<td>JLC floor; R21 needs it in LED channels; low voltage</td>
+<td>0.10: fails channel fit margin</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Decoupler distance limit raised from 3 to 7 mm</td>
+<td>LED via grid: a 0402 fits only between 4 vias; bulk 22 uF further. High-value bulk isn't distance-critical at 32 us scan edges; 100 nF kept nearest</td>
+<td>Stub more vias aside: more F.Cu congestion</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>U3's 8 band vias are 0.20/0.10 mm</td>
+<td>A 0.25 mm via plus clearance leaves slivers under the minimum width in the 0.6 mm band (review, gate 6). JLC allows it on this board</td>
+<td>0.8 mm stubs: 0.01 mm from pads</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Charger EP whole, 1 thermal via</td>
+<td>Through vias reach the LED side, so one LED channel crossing falls under a 1.7 mm pad. Reviewer's 4 vias aren't physically available. TI's thermal regulation protects it; phase 8</td>
+<td>Split EP, same via count</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>U3 turned so its USB, QSPI and regulator side faces south; brief §7 updated</td>
+<td>USB and QSPI shorter</td>
+<td>Regulator north, USB crosses the board</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Pattern study made, board unchanged; placement sign-off on hold</td>
+<td>User found LEDs too close to USB-C and asked for golden-spiral tests. Plans in design/study/patterns/. True golden arcs reach 167–191 LEDs; sunflower lattice reaches 234 with 0.29 mm minimum pad gap</td>
+<td>Route the 2 mm grid as placed</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Vertical USB-C studied with the turned sunflower, board unchanged</td>
+<td>User asked for right-angle USB-C off the back, with the rotated sunflower. The plug must pass beside the 35 mm cell, which needs a 41 mm board; study in design/study/usb-back/</td>
+<td>Edge-mount J1 on 38 mm; smaller cell on 38 mm</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>USB-C off the board, pads only; turned sunflower; 38 mm kept</td>
+<td>User's decision: they dislike the gaps a board-mounted connector leaves in the pattern. Removes all USB through-holes and lets the 35 mm cell stay centred. Proposed, unconfirmed: 6 pads (VBUS, GND, D+, D−, CC1, CC2) with Rd and ESD staying on the board</td>
+<td>Vertical USB-C on 41 mm; edge USB-C on 38 mm</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Variant b: EVQP7C01P buttons (C388883), pegs between LEDs</td>
+<td>User's choice. 6 LEDs nudged away from pegs to keep 0.22 mm to the 0.7 mm holes in the datasheet's land pattern</td>
+<td>EVQP7J01P no pegs; SKRTLAE010</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Variant b: 6 USB pads; Rd and ESD stay on board</td>
+<td>Works with a bare receptacle; a breakout with its own 5.1k leaves CC unwired. No connector, no LCSC part on J1</td>
+<td>4 pads with Rd off-board</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Variant b: exposed pads as tiles cut round foreign anode vias, per instance on the board</td>
+<td>Sunflower vias land anywhere, so no fixed split works: U1 and U2 11 vias each, U3 3, U5 2. 0.3 mm from via centre keeps 0.2 mm hole-to-copper. EP solder paste not yet added: needed before release</td>
+<td>Move LEDs off chips, breaking the pattern</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Variant b routing trials: 1 to 5 incomplete</td>
+<td>Open signal connections: 103, 109, 120, 194 (control first), 122 (chip keepouts, inner fan-out). Keepouts and inner fan-out cut the control-only pass to 8 open, but the full board stays near 100+ with rip-up out of time. Trials 1 to 4 boards overwritten; trial 5 kept in route/trials/t5</td>
+<td>Blind vias; a matrix map aware of crossings; more router time</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Matrix assignment isn't what limits routing; variant b keeps its map for now</td>
+<td>Same settings as trial 5 (122 signal open, 82 plane, 49 errors): spiral map, trial 6 (hw/round-pendant/b-spiral), 146, 73, 72; driver-centred fan map, trial 7 (hw/round-pendant/b-fan), 118, 67, 51. Fan cut estimated crossings by 43% (503 to 288) and open signals by 3%. CS nets are most of what stays open</td>
+<td>Blind vias; a less dense pattern; longer router runs</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Symmetric centre studied, no board changed; 5-fold 5 + 10 + 15 recommended, unconfirmed</td>
+<td>User asked for a more rotationally symmetric centre. It keeps 234 LEDs, exact to 5.4 mm radius, moves 11 nearby LEDs by at most 0.49 mm, and opens the tightest pad gap from 0.36 to 0.42 mm. Study in design/study/center/</td>
+<td>5 + 10; 6-fold (2.8 mm hole); 8-fold (0.30 mm gap, 4.5 mm hole); Fibonacci rings (no overall symmetry)</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>Plain sunflower plus 2 centre LEDs studied, no board changed</td>
+<td>User asked to see it. 2 neighbours eased by at most 0.25 mm keeps the 0.36 mm tightest gap; 0.18 mm with nothing moved. Drivers have exactly 234 positions, and the wiring and back-side fit of the extra 2 are unsolved. Study in design/study/center-plus2/</td>
+<td>Symmetric rings (design/study/center/)</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Variant c: plain sunflower plus D235 at (0.05, -0.65), nothing nudged, on RP2350 GPIO23-25</td>
+<td>User's choice. Anode on +3V3: VSYS would hold an off GPIO above IOVDD. R40 1 k red, R41 and R42 470 R green and blue, for about 1.5 mA, near a matrix LED's 1.25 mA average; Vf at this current estimated from the p.6 curve, not measured. Pin high is off; firmware must clear pull-downs before sleep, or the LED draws from the 85 uA budget. GPIO23-25 chosen as the free pins facing the centre. Fan map used, as the best of trials 5-7</td>
+<td>Share a matrix cell: no separate control</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Routing crunch started on variant c, through vias, 6 layers</td>
+<td>User asked for multiple automated attacks with subagents and Gemini. Brief in design/study/crunch/README.md. Layer, map, placement and router attacks each keep their own variant folders; a Gemini 4 Argon plan is advisory</td>
+<td>Blind vias and bigger board not started, still the user's call</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>8 layers allowed; blind vias ruled out</td>
+<td>User's decision: the board must stay within JLC capabilities. 6 layers is still preferred if it routes. Through vias stay</td>
+<td>Blind vias, bigger board</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>All copper zones get explicit clearance: planes 0.2 mm, RP2350 ring and band 0.09 mm</td>
+<td>Found by the layers attack. zones_b left KiCad's default 0.5 mm, which cut the GND plane to 320 mm² in 20 pieces on trial 7 and left the 1V1 ring with no fill. Refilling trial 7 at 0.2 mm: 832 mm² in 1 piece, plane opens 67 to 2, signal opens unchanged. Trial plane-open figures to date are inflated by this</td>
+<td>-</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>SW scan lines move to a new class SW_SCAN: 0.1 mm track, 0.25 mm via</td>
+<td>Gemini's review found it, checked here: nets.csv had them POWER, and the intended 0.1 mm rule used a condition the router can't read, so trial 7 laid 899 of 955 SW segments at 0.2 mm, about 970 mm on In1 and In3. 0.1 mm was the original intent. 84 mV drop at 494 mA is Gemini's estimate, not yet checked on a routed board: must be measured against driver headroom before release</td>
+<td>0.12 mm; POWER at 0.2 mm</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Routing crunch focuses on 8 layers: GND on In2, VSYS and +3V3 on In5</td>
+<td>User's direction, after 8 layers cut signal opens from 107 to 56 on the same 1200 s limit, the only large gain so far. Not yet complete. JLC publishes no 8-layer stackup table, so thicknesses need confirming with a quote</td>
+<td>Keep pressing 6 layers</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Two-board stack being explored alongside 8 layers</td>
+<td>User's idea: a 4-layer LED board with both drivers on one half of the back, and a small processor board on the empty half, joined at the edge. Could be cheaper than 8 layers, and takes control nets off the LED board. First test is whether the LED board alone routes on 4 layers. 8 layers stays preferred if parts must be flown over each other</td>
+<td>8 layers only</td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Two-board stack: agent recommends shelving it, owner has not decided</td>
+<td>4-layer LED board alone: 91 open with a GND plane, 56 with no plane (GND then 144 mm of 0.2 mm track). Processor half fits only by moving the LDO and its caps 9-11 mm, with 15 courtyard overlaps. 16 joint pads, no JLC board-on-board service found, no bare-board quote. Reversal needs under 10 opens with a real GND path and a quote showing a clear saving. Report: design/study/crunch/stack/report.md</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>New 8-layer starting candidate: U3 fix, drivers 2.4 mm north with their parts, cathode vias through driver pads</td>
+<td>Reported 22 open / 5 plane / 76 errors / 865 vias at 1200 s (c-placement-y5, --cell 0.025) against 57 / 11 / 54 / 956 with the U3 fix alone. No LED moved; the map changed. Driver pad copper falls from about 26 to 16-17 mm², thermally unchecked.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Near-complete 8-layer route: c-placement-y11, not signed off</td>
+<td>2 signal open (CS2_16, CS2_17), 1 plane open, 901 vias, 3000 s, --cell 0.025. Adds USB and crystal uncrossing (R14/R15 swap, Y1 turned, R17 moved, C23/C24 swap), real net classes for VBAT, BAT_N, VBUS, driver GND zones, critical nets locked from a first pass. VSYS minimum dropped from 0.3 to 0.2 mm: a rule change, stub lengths and currents not yet checked.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>c-placement-y12: In6 ground island and closer C23</td>
+<td>2 signal open (CS2_14, CS2_17), 0 plane, 6 dangling stubs, 880 vias, 3000 s, --cell 0.025, reported pad_joints pass. XIN 6.3 mm against the 6 mm limit. Last opens are LEDs over L1 and the PGND zone.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>First fully connected route: c-placement-y17, not signed off</td>
+<td>0 signal open, 0 plane open, 898 vias, 235 LEDs, 8 layers, through vias. KiCad DRC with zones refilled: 0 unconnected, 5 dangling stubs, XIN 6.34 mm against 6 mm, SW2_8 via in the L1 window, plus silk. pad_joints FAIL: U1.53 0.069 mm, U2.28 0.022 mm. Double-wired zone copper not yet removed.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>c-placement-y17/y18 complete route rejected as a finished board</td>
+<td>DRC 0 unconnected and 877 vias after tidying, but 15 foreign vias within ±2.3 mm of U3 (3 placed before routing) cut the 1V1 ring from 6.1 to 1.5 mm², leaving 1V1 on about 72 mm of thin inner track, against <code>chips/rp2350.md</code>. Next: y19 forbids new foreign vias in the ring; y20 tries a 1V1 pour on In6.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Electrical check of c-placement-y17: fine at the 300 mA limit, not at full white</td>
+<td>Agent figures: full-white row needs about 4.00 V typical, about 4.55 V top bin (above a full cell); 3.44 V at the 300 mA limit if GCC scales the peak. Mostly SW line resistance, 0.1 mm tracks, worst 276 mV. VSYS at 0.2 mm judged justified on B.Cu, except the single U5 output via. Report: design/study/crunch/layers/report.md</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>c-placement-y19 replaces y17 as the best board</td>
+<td>0 signal open, 2 plane open (+3V3 at U6 pad 1 and C12 pad 1), 895 vias, with new foreign vias forbidden inside ±2.3 mm of U3. Reported: ring one piece at 6.0 mm², 3V3 band in 9 pieces. y20 (1V1 pour on In6) scored 1/1/1/897 with the pour in 5 pieces, so the vendor ring stays.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Full-white headroom stops driving the routing</td>
+<td>User: "most of the time I am gonna be operating this at a reduced brightness". So 0.1 mm SW lines stay, widening the worst four becomes best-effort after routing, and the firmware keeps a global-current limit (GCC scaling, 300 mA figure) as protection against heat and droop. Full white stays possible on a fresh cell but is not a design case.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Real 3D models for the viewer, in 3dmodels/</td>
+<td>EasyEDA models by LCSC number for U3, L1, SW1/2, U6, U8. No model exists for the LED (C965834), so scripts/make_led_model.py draws one from the datasheet; die and top-copper positions are approximate. U1/U2 use the same QFN-60 STEP as U3, because their own is .wrl only. Applied to the viewer copy by scripts/set_3d_models.py, which must run again on each new board; lib footprints unchanged. EasyEDA rotation for U3 (270) and L1 (0) corrected by eye to 0 and 180.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Front silk is a sunflower seed web, back silk off for now</td>
+<td>User: draw an interconnected web between the LEDs and round the edge, remove back silk, have Gemini tidy designators later. scripts/silk_web.py: Voronoi cells of the LED centres, 0.153 mm stroke, 0.15 mm from pads, JLC standard limits; 99% of the web and 98% of the ring survive clipping. Runs over tented vias. Silk DRC errors 0.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>c-placement-y27 is the best board: every connection joined</td>
+<td>KiCad DRC with zones refilled: 0 unconnected, 861 vias, 5 rule-area vias and XIN 6.34 mm as the only non-silk errors. 1V1 ring whole at 5.66 mm², 1V1 track 15.8 mm. Corner necks not fixed: 456 joints under 0.09 mm. Copy with seed web silk and models is hw/round-pendant/c-web2. Report: design/study/crunch/placement/report-y27.md</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>c-placement-y30 is the best board, published as c-web3</td>
+<td>y27 plus post-route fixes, no parts moved. KiCad DRC: 0 unconnected, 861 vias, 5 rule-area vias and XIN 6.34 mm as the only non-silk errors, one copper sliver warning. necks.py: 30 joints under 0.09 mm, 2 sole, down from 456 and 378. pad_joints_fixed FAIL on U1.61 at 0.079 mm. User approved updating GitHub Pages.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Viewer moved to the top of the project page, above the title</td>
+<td>User request. Still to fix in the copper, per user: necks, meaning the thin track-to-pad joints. No via change was requested.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Thermal figures corrected: heat is set by the whole board, not the drivers alone</td>
+<td>The earlier estimate counted driver dissipation only. All supply power becomes board heat apart from emitted light: 1.26 W at 300 mA on a 4.2 V cell, about 44 K/W to still air, so up to about 55 K steady rise (hand estimate, h about 10, both faces, no case or cell, light not subtracted). About 80 °C at 25 °C ambient. Datasheet: TJMAX 150 °C absolute, operating 125 °C. The 300 mA default in intent.md R19 needs review for a worn part; measure on the first board.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Trying to add a front-side analog light sensor and load resistor</td>
+<td>User request; placement decided by where the analog net can escape. Survey: a 1.7 x 0.8 mm body fits at 12 edge sites without moving LEDs. GPIO27-29 (ADC1-3) are free. Part per user: same as simple_earring, ALS-PT19 C146233 (two pads, 2.3 x 0.8 mm land), 22k C25768 load, 100 nF C1525 filter. 7 sites fit that land. Nothing routed yet.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Battery changes to a 403535 round pouch cell</td>
+<td>User direction. Same 35 mm outline, 4 mm thick against 5.45 mm, so it still fits. Capacity not confirmed; about 400-450 mAh estimated by scaling the 610 mAh 5435035 by thickness. R4 (297 mA charge) needs reducing once ratings are known; schematic value text for BT1 still names the old cell.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Addressable LED counterfactual costed</td>
+<td>scripts/cost_compare.py at qty 5, LCSC prices: this board parts $22.83 (LEDs $6.34, driver parts $6.76); 235 WS2816C $22.77 total, 235 SK6805 $23.90. Idle: drivers about 8 mA with SDB high against 165-235 mA (WS2816C) or about 70 mA (SK6805). Fab not priced: needs a JLC quote.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>No press-to-hold latch on this board</td>
+<td>It has SW1 wake from RP2350 sleep (about 85 µA budget), not simple_earring's latch. Recommendation: same press-to-hold feel in firmware, no new parts; firmware must watchdog and return to sleep. Two buttons stay. Sensor powered from a GPIO, as the user agreed.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Charge current stays at about 297 mA on the 403535 cell</td>
+<td>User prefers faster charging: about 0.74C on an assumed 400 mAh, 266-325 mA across the ISET range (about 0.67-0.81C). R4 stays 3k. Needs the cell to allow 1C charge, not yet confirmed.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-03</td>
+<td>Gemini's back silk accepted, applied to y30 as c-web4</td>
+<td>scripts/crunch/silk/back_silk.py: 24 of 24 major parts and 28 of 73 passives keep a designator (52 of 97), 0.8 mm text with 0.10 mm stroke, 7 over tented vias. Checked: copper and part positions unchanged, 0 silk errors with the seed web. Needs JLC's high-precision silkscreen option, per JLC's blog only. min_text_thickness set to 0.1. Report: design/study/crunch/silk/report.md. Gemini's claim that U6's 3D dot is 180 degrees off was checked and is wrong here; U8's model dot is off pin 1, 3D view only.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>Route candidates after the placement agent stopped; base not chosen yet</td>
+<td>y30: 0/0 open, FB reaches COUT on B.Cu (agent's check, correcting its earlier doubt), one VSYS and one VBAT via at U5, XIN 6.34 mm, 5 keep-out vias, 1 sliver. y43: 0/0, DRC clean except silk, 3 vias at U5, but D235's via cuts FB from COUT. Eight routes with the via moved all ended with 0-3 signal and 0-3 plane opens; latest y57 2/1, y58 3/1.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>Corner necks fixed on y30 as c-placement-y61, no reroute</td>
+<td>necks_fixed.py (true pad layer, fixing the same GetLayer fault as pad_joints.py): 38 real necks to 0. Other figures unchanged from y30. Scripts necks2.py, joints3.py are re-runnable; necks_hand.py is y30 coordinates only.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>y61 chosen as the route to take forward</td>
+<td>User decision, over more routing runs. User also asked for more vias at U5 for VSYS and VBAT; being tried locally as y62, without rerouting the board.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>y62 adds 3 VSYS and 3 VBAT vias at U5, locally</td>
+<td>Reported per-via current VSYS 363/330/295 mA, VBAT 461/392/167 mA at 988 mA total, from pdn_vias.py. Two vias sit in U5 pin pads (U5.11, U5.2) and must be filled. VSYS drop 9.1 to 7.4 mV, VBAT 50.9 to 49.0 mV. 8 nets moved; SW2_8 off L1. VBAT far via at (6.49, 14.29) still carries all current alone.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>RP2350 relaxations: 1, 2, 3, 4 and 6 accepted; part of 5 accepted; rest of 5 and 7 open</td>
+<td>User decision on the list in rp2350-acceptable.md. Accepted: regulator block rigid with PGND's two vias free to move about 0.7 mm; block may move or turn; XIN/XOUT limit 11 mm; QSPI 25 mm with vias allowed, slower flash clock as the fix if marginal; U3 100 nF parts within 4 mm pad centre to pad centre; one via per USB line before the 27 Ω resistors. Open: dropping 90 Ω as a goal, and foreign vias through U3's exposed pad. Not yet applied to the .kicad_dru.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>Relaxation 7 rejected: no signals through U3's exposed pad</td>
+<td>User decision: the ground pad is one solid pad, and soldering over many small pads with signals between them is not acceptable. Reverses the 2026-11-02 row that tiled exposed pads round foreign vias. User confirmed it covers U1, U2 and U5 too and asked for a reroute, overriding the earlier choice of y61/y62; y62 stays on disk for comparison. User also accepted dropping 90 Ω USB impedance as a goal (relaxation 5). Measured on y62 (vias inside each pad's outline; copper by raster): U1 24 foreign, 16 GND, 54% copper; U2 21 foreign, 16 GND, 50%; U3 3 foreign, 9 GND, 89%; U5 2 foreign, 2 GND, 73%. No tile has a paste layer. y62 fails this rule on all four.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>Solid exposed pad reroute started: c-solid-z6 running; z5's first try failed on a full disk, and its rebuild z7 was stopped at 01:48 by a queue stop signal, exit 143, cause unknown</td>
+<td>board.py knob solid_ep: one solid pad on U1, U2, U3 and U5, footprint paste windows kept, build stops if a foreign via lands in a pad. From exp/y45.json without ep_cathodes or ep_prune, stub_rings up to 3.6 mm. z5 has 16 GND vias on U1 and U2, z6 has 9 (a relaxation, labelled for comparison). Both have U3 9 and U5 2 (U5 asked for 4; only 2 fit). Rules: XIN, XOUT and Net-(C24-Pad1) max 11 mm, USB_DM and USB_DP one via. Pre-route DRC errors are silk and text only; placement_check passes. z1 to z4 are failed builds, kept. The library's pads on U1, U2 and U3 were separate rectangles with gaps, not one pad. Paste windows cover 4.0 of 29.2 mm² on U1 and U2 and 4.84 of 11.6 on U3: to review before release.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>First solid-pad routes: z6 51 signal, 4 plane, 6 errors, 870 vias; z7 56 signal, 2 plane, 4 errors, 882 vias</td>
+<td>KiCad's judge, 3000 s, deadline hit. Most opens have an LED end over a chip body. Straight F.Cu stubs from those pads (z9) about half fail and give crossing and hole clearance errors. Agent crunch-solid takes it from here, reporting in design/study/crunch/solid/report.md.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-04</td>
+<td>Variant d: 5× IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers (C2678907), routed to 0 open and 0 DRC errors with solid exposed pads</td>
+<td>User requested a BGA LED driver variant after QFN-60 solid exposed pads stalled routing. Five WLCSP-36 drivers (2.895 × 2.895 mm, 6 × 6 balls at 0.50 mm pitch, zero exposed ground pad, 8 SW × 18 CS = 48 RGB cells each, 5 × 47 = 235 RGB LEDs including D235) replace the two QFN-60 drivers, cutting driver footprint area from 98 to 41.9 mm² and scan peak current from 494 to 204 mA. Solid exposed ground pads enforced on U3 (11.56 mm², 9 GND vias, 0 foreign vias) and U5 (2.89 mm², 2 GND vias, 0 foreign vias); U3 +1V1 ring 1 piece (10.83 mm² union). Routed on 8 layers with through vias in ultraroute: 876 vias, 5,870 track segments, 0 locked copper, KiCad DRC 0 violations and 0 unconnected items (1 copper_sliver warning), pad_joints and pad_joints_fixed 0 thin joints, ERC 0 errors, sync_check/placement_check/nets_check PASS. Front sunflower seed web silk (99% kept) + 5 WLCSP A1 pin-1 dots + 58/104 tidy back designators (27/27 majors). Audit: design/parts/drivers-bga.md; viewer: viewer/round-pendant-d.html.</td>
+<td>C2678772 IS31FL3235A (no scan matrix: 79 chips needed for 235 RGB); C2678908 IS31FL3746B (12 RGB/chip: 20 chips needed); C2874518 IS31FL3729 (QFN-40 with exposed pad, no BGA)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Variant d copper cleanup, strict <code>.kicad_pro</code> DRC rules, and topological <code>copper_audit.py</code> gate</td>
+<td>User inspection caught leftover partial-rip-up trace stubs, discontinuous trace joins, and narrow copper necks on Variant D. Root causes: (1) <code>.kicad_pro</code> had <code>min_connection = 0.0</code> and <code>connection_width</code>/<code>copper_sliver</code>/<code>isolated_copper</code>/<code>via_dangling</code>/<code>hole_to_hole</code>/<code>holes_co_located</code> set to <code>warning</code>; (2) KiCad's connectivity treats any <code>&gt; 0 nm</code> same-net round-endcap overlap as connected and non-dangling, hiding 119 off-center via grazes (<code>.00/.25</code> escape vias vs <code>.x175/.x137</code> ultraroute grid), 22 cap-to-cap gaps, 25 mid-segment partial-rip-up stubs, 5 dangling stubs, 580 duplicate collinear sub-segments, 1 <code>In1.Cu</code> 10.8° V-notch sliver (<code>SW3_1</code>), and 1 <code>&lt; 86 µm</code> morphological neck (<code>CS1_11</code>). Tightened <code>.kicad_pro</code> (<code>min_connection = 0.09</code>, all six severities promoted to <code>error</code>) and ran <code>scripts/bga/clean_copper_d.py</code> + <code>scripts/bga/copper_audit.py</code>: tracks reduced from 5,870 to 5,218 (876 vias), 0 defects across all 7 <code>copper_audit.py</code> categories, 0 <code>kicad-cli pcb drc --severity-all</code> errors or warnings, and 0 <code>pad_joints</code> / <code>pad_joints_fixed</code> thin joints. Re-exported <code>hw/round-pendant/d/fab/</code> Gerbers/BOM/CPL and rebuilt viewer.</td>
+<td>KiCad DRC alone (misses same-net cap-overlap stubs and off-center via grazes)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Keep <code>5× IS31FL3745-CLS4-TR</code> WLCSP-36 via JLCPCB Global Sourcing; WLCSP thermal margin verified</td>
+<td>User decision: keep <code>IS31FL3745-CLS4-TR</code> (<code>C2678907</code>, ~2,078 at DigiKey / ~648 at Mouser via JLCPCB Global Sourcing, alongside <code>L1</code>) rather than switching to in-stock QFN-EP drivers (<code>4× AW20198QNR</code> QFN-40 or <code>6× IS31FL3729</code> QFN-32) whose solid exposed ground pads re-block LED anode vias. Why matrix drivers are mostly QFN-EP in general: single-chip signage/keyboard drivers sinking <code>300–600 mA</code> off <code>5 V</code> burn <code>0.8–1.5 W</code> in one package and target cheap 2/4-layer <code>0.15 mm</code> boards. Here, current is split across 5 spaced WLCSPs fed from LiPo <code>VSYS</code> (<code>3.7 V</code> nom, <code>4.2 V</code> full): at <code>300 mA</code> board total (<code>60 mA</code>/chip, mean <code>VF ≈ 2.53 V</code>), each <code>IS31FL3745</code> dissipates <code>0.10 W</code> (<code>100 mW</code>). At <code>θJA = 47.49 °C/W</code> (<code>is31fl3745.pdf</code> p. 5; flip-chip solder balls conduct directly from silicon into 8-layer <code>In2.Cu</code> <code>GND</code> + <code>In5.Cu</code> <code>VSYS</code> planes), local die-to-board rise is <code>4.7 °C</code> (<code>&lt; 5 °C</code>) atop the <code>~80 °C</code> whole-board temperature (<code>~85 °C</code> vs <code>125 °C</code> operating / <code>150 °C</code> <code>TJMAX</code>, <code>40 °C</code> margin).</td>
+<td><code>4× AW20198QNR</code> (<code>C5137654</code>, <code>11.56 mm²</code> solid EP × 4); <code>6× IS31FL3729</code> (<code>C2940549</code>, <code>7.29 mm²</code> solid EP × 6)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Variant e: front-side 12-o'clock top-rim <code>ALS-PT19</code> ambient light sensor added, routed &amp; cleaned to <code>0</code> DRC errors/warnings</td>
+<td>User requested the ambient light sensor on the front (<code>F.Cu</code>) top rim with the LEDs, keeping <code>5× IS31FL3745-CLS4-TR</code>. Placed <code>Q2</code> (<code>ALS-PT19-315C/L177/TR8</code>, <code>C146233</code>, <code>1.7 × 0.8 mm</code>) on <code>F.Cu</code> at <code>(-2.04, -18.04 mm, +6.0°)</code> tangent to the 12-o'clock bezel (<code>0.40 mm</code> pad-to-edge, <code>0.20 mm</code> courtyard to <code>D115</code>/<code>D116</code>, zero LEDs moved), powered from <code>U3.3</code> (<code>GPIO1</code> → <code>/MCU/LIGHT_PWR</code>, <code>0 µA</code> sleep draw) with <code>R43 = 22 kΩ</code> (<code>C25768</code>) and <code>C70 = 100 nF</code> (<code>C1525</code>, <code>τ = 2.2 ms</code>) on <code>B.Cu</code> directly behind <code>Q2</code> feeding <code>U3.41</code> (<code>GPIO27/ADC1</code> → <code>/MCU/LIGHT</code>). Routed on 8 layers in <code>ultraroute</code> and cleaned with <code>clean_copper_d.py</code>: <code>5,221</code> tracks, <code>879</code> vias, <code>0</code> locked copper, solid <code>U3.61</code> (<code>9</code> GND vias, <code>0</code> foreign) &amp; <code>U5.17</code> (<code>2</code> GND vias, <code>0</code> foreign), <code>0</code> <code>kicad-cli pcb drc --severity-all</code> errors or warnings, <code>0</code> <code>copper_audit.py</code> defects, <code>0</code> <code>pad_joints</code> / <code>pad_joints_fixed</code> thin joints across <code>1,408</code> SMD pads, ERC <code>0</code> violations, and <code>sync_check</code>/<code>placement_check</code>/<code>nets_check</code> PASS (<code>332</code> BOM/CPL parts in <code>hw/round-pendant/e/fab/</code>). Audit: <code>design/parts/light-sensor.md</code>; viewer: <code>viewer/round-pendant-e.html</code>.</td>
+<td>Back-side sensor (occluded by battery/neck); continuous <code>+3V3</code> collector tie (wastes sleep current under ambient light)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>4-layer low-cost <code>25 × 70 mm</code> skewed-parallelogram variant family (<code>hw/parallelogram/p1-66..p4-264</code>) built, costed, and routed across 5 density tiers</td>
+<td>User requested a low-cost 4-layer skewed-parallelogram variant family (<code>25 × 70 mm</code> tip-to-tip, <code>17.75°</code> skew, centered <code>20 × 35 mm</code> prismatic <code>802035</code>/<code>102035</code> LiPo pocket, zero BGA, solid <code>B.Cu</code> exposed ground pads, 100% locally in-stock JLCPCB PCBA BOM) spanning lower to higher LED density to find the empirical 4-layer routing ceiling. Selected Shanghai Awinic <code>AW20198QNR</code> (<code>C5137654</code>, QFN-40 <code>5 × 5 mm</code>, <code>3.4 × 3.4 mm</code> solid EP, <code>18 CS × 11 SW = 66</code> RGB LEDs/chip, JLC stock <code>6,055</code>, <code>$0.78</code>), Panasonic <code>EVQP7J01P</code> peg-less buttons (<code>C2828254</code>, stock <code>6,971</code>), and Newopto <code>XYC-PT19C-L1</code> top-bezel light sensor (<code>C2693594</code>, stock <code>25,206</code>). Routed all 5 tiers on 4 layers (<code>In1.Cu</code> unbroken solid <code>GND</code> plane, <code>In2.Cu</code> single inner signal layer, <code>0.30/0.15 mm</code> through vias, <code>0</code> foreign EP vias): <code>p1-66</code> (<code>6×11 = 66</code> LEDs, <code>$11.45</code> BOM / <code>$10.05</code> w/ <code>XL-1615RGBC</code> + <code>RP2040</code>) routes <strong><code>475/475</code> (<code>100.0%</code>, <code>0</code> open, <code>0</code> DRC errors/warnings, <code>0</code> <code>copper_audit</code> defects, <code>0</code> <code>pad_joints</code>, Gerbers/BOM/CPL in <code>hw/parallelogram/p1-66/fab/</code>)</strong>; <code>p2-132</code> (<code>6×22 = 132</code> LEDs, <code>$14.06</code> BOM) hits the exact 4L knee at <strong><code>759/761</code> (<code>99.74%</code>, <code>2</code> open on <code>U2.10</code>/<code>U2.12</code>)</strong>; <code>p3-162</code> (<code>9×18 = 162</code> LEDs, <code>$15.47</code> BOM) reaches <code>870/901</code> (<code>96.6%</code>, <code>31</code> open); <code>p3-198</code> (<code>9×22 = 198</code> LEDs, <code>$16.44</code> BOM) reaches <code>989/1,045</code> (<code>94.6%</code>, <code>56</code> open); <code>p4-264</code> (<code>12×22 = 264</code> LEDs, <code>$19.03</code> BOM) saturates at <code>1,190/1,329</code> (<code>89.5%</code>, <code>139</code> open) once column pitch (<code>2.55/2.02 mm</code>) drops below the <code>3.40 mm</code> solid QFN EP width. Study: <code>design/study/parallelogram/README.md</code>.</td>
+<td><code>0.45/0.20 mm</code> vias on 4L (<code>74</code> open on <code>p2-132</code>); <code>IS31FL3745</code> WLCSP (requires 8L + Global Sourcing)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Variant f: RP2350 pin-to-decap links, DVDD fingers, LDO links and FB finger as locked tracks, not 0.2 mm zones</td>
+<td>User spotted thin rectangular "pours" off the RP2350 3V3 that should be traces and didn't line up. Cause: <code>u3fix.py</code> drew each link as two butted rectangular zones so it would survive autoroute's <code>--strip</code>; <code>reserve_escapes.py</code>'s keepout list skipped <code>IOVDD</code>, so 5 locked LED escape vias (plus one later) landed on them and the refill carved them (pin 11→C9 kept 32 % of its copper, pin 54→C13 split in two), and a +3V3 track split the FB finger, so FB sensed on the ring side (report-final.md had flagged this). DRC and unconnected stayed 0 through the In5 plane. Locked tracks survive <code>--strip</code> and are obstacles to every via planner; pin 54's path straightened to y 97.90 and finger 50 moved 0.06 mm to keep CS1_7/CS3_18's escapes; 10 nets rerouted locally (<code>scripts/variant_f/</code>). <code>copper_audit.py</code> gains STRIP_ZONE and ZONE_INTRUSION checks</td>
+<td>Keep zones plus a keepout per strip: still square-ended joints, still invisible to DRC</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Variant f: no direct track from IOVDD pins 11 and 54 to C9 and C13; they decouple through the In5 3V3 plane</td>
+<td>With a real 0.2 mm track beside each pin, <code>via_sites.py</code> finds no legal escape via site for CS1_7/CS3_16 (pin 54) or CS3_5/CS3_18/I2C_SDA (pin 11), and the router left 3 open whatever was ripped. E had the same electrical result after its vias cut those two zones. Asked the user (status.json <code>decap-11-54</code>)</td>
+<td>Move C9/C13 or LED escapes (placement change, user's call); laser microvias (pending JLC quote)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Parallelogram lower-density tiers (<code>p1-66</code> &amp; <code>p2-132</code>): swapped RGB LED from <code>XL-1010RGB-YG</code> (<code>C965834</code>) to <code>XL-1615RGBC-RF</code> (<code>C965840</code>) — both now <code>100%</code> routed &amp; <code>0</code> DRC on 4 layers; compiled <code>ultraroute</code> notes</td>
+<td>User requested swapping the lower-density 4-layer parallelogram boards (<code>p1-66</code>, <code>p2-132</code>) to <code>XL-1615RGBC-RF</code> (<code>1.6 × 1.5 × 0.6 mm</code>, <code>C965840</code>, <code>718k+</code> in JLC stock, <code>Pin 2 = Anode, 1 = R, 3 = B, 4 = G</code>, CPL rotation <code>180°</code>; audit: <code>design/parts/leds-xl1615.md</code>) while keeping <code>XL-1010RGB</code> on 9–12-column <code>p3-162..p4-264</code>, and sending compiled <code>ultraroute</code> UX/engineering notes upstream. Also replaced <code>RP2350</code> <code>0.24 mm</code> <code>IOVDD</code>/<code>FB</code> strip zones in <code>scripts/parallelogram/pcb_gen.py</code> with 17 locked <code>B.Cu</code> tracks and wrapped all 4 <code>vendor *</code> regulator zones in <code>.kicad_dru</code> rule areas (<code>0</code> <code>strip_zones</code>, <code>0</code> <code>zone_intrusions</code>). <code>XL-1615RGBC</code>'s <code>0.80 mm</code> horizontal intra-pad gap (<code>2.3×</code> wider than <code>XL-1010</code>'s <code>0.35 mm</code>) cut vias by <code>22–27%</code> (<code>467 → 343</code> on <code>p1-66</code>, <code>859 → 670</code> on <code>p2-132</code>), lowered qty-10 BOM to <strong><code>$10.61/bd</code></strong> (<code>p1-66</code>) and <strong><code>$12.60/bd</code></strong> (<code>p2-132</code>), and closed <strong><code>p2-132</code> from <code>2</code> opens (<code>99.74%</code>) to <code>761/761</code> (<code>100.00%</code>, <code>0</code> open)</strong>! Both <code>p1-66</code> and <code>p2-132</code> pass strict <code>ERC = 0</code>, <code>kicad-cli pcb drc --severity-all = 0</code> errors / <code>0</code> warnings / <code>0</code> unconnected, <code>copper_audit.py = 0</code> across all 9 checks, <code>pad_joints.py = 0</code>, <code>sync_check = 0</code>, <code>nets_check --routed = 0</code>, with Gerbers/BOM/CPL/PDF in <code>hw/parallelogram/{p1-66,p2-132}/fab/</code>. Delivered <code>ultraroute</code> report to <code>design/ultraroute-requests.md</code> &amp; <code>~/Software/ultraroute/docs/research/round-pendant-user-notes-2026-11.md</code> + repro bundle in <code>~/Software/ultraroute-lab/repro/round-pendant-parallelogram/</code>.</td>
+<td>Keep <code>XL-1010RGB</code> on <code>p1-66</code>/<code>p2-132</code> (<code>$0.84–$1.46/bd</code> dearer, <code>12k</code> vs <code>718k</code> stock, <code>2</code> opens on <code>p2-132</code>); swap <code>XL-1615RGBC</code> onto <code>p3-198</code>/<code>p4-264</code> (<code>0.42–0.95 mm</code> alley crowds <code>9–12</code> columns)</td>
+</tr>
+<tr>
+<td>2026-11-05</td>
+<td>Variant g (attempt, not adopted): moving C9/C13 next to IOVDD pins 11/54 for real tracks leaves LED escapes unroutable; F stays the board</td>
+<td>User asked to move C9 and C13 so they get real traces. C9 → (93.48, 92.20) 180° (pad 1 on pin 11's axis, 1.2 mm track; courtyard 0.03 mm off U3's) and C13 → (98.02, 98.08) 180° under pins 53/54 (1.28 mm track; no legal GND via under it — D19/D20 pads above — so 2.24 mm GND track to its old via). C13 there covers CS3_16's only escape from D135-4: KiCad DRC probing (<code>scripts/variant_g/probe_sites.py</code>) finds no legal via for it within 2 mm, and five router passes (kept, adopt/shove, neighbour unlock, 1.5 mm region unlock) left 2 open. C9 alone: CS3_4 (D104-4 to D103-4) loses its via site to C9 pad 1 and stays open after kept, adopt and region-unlock passes; no legal via within 2 mm of either pad once CS3_5/SW3_2/I2C_SDA are rerouted. Alternatives: move LED escapes/LEDs, shift R14/R15 ~0.5 mm down for C13, or laser microvias (JLC quote). Work files in <code>hw/round-pendant/g/route</code>, scripts in <code>scripts/variant_g/</code>.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-06</td>
+<td>Sunflower family: 38 mm round, XL-1615 LEDs in a Vogel spiral, AW20198 QFN drivers, 4 layers (<code>hw/sunflower/</code>, study <code>design/study/sunflower/README.md</code>)</td>
+<td>User asked for a cheaper, smaller round board using the parallelogram's low-cost LEDs and drivers in a sunflower pattern, and where 4 layers stop working; diameter first 32–35 mm, then set by the user at 38 mm. With vias allowed in pads (POFV), all four tiers reach 0 opens on 4 layers: 66 (1 driver, 0 DRC, $10.61 BOM @10), 88 (2 drivers, 0 DRC, $11.90), 110 (2 <code>+3V3</code> width errors left, $12.25), 132 (1 thin joint and 1 stub left, $12.60). With no vias in SMD pads (new <code>.kicad_dru</code> rule, no POFV), 88 reaches 0 opens and 66 is left with 1 open at U1. No tier chosen yet; fab price not quoted</td>
+<td>Keep 8 layers and WLCSP drivers (Variant E/F, $26.46 BOM)</td>
+</tr>
+<tr>
+<td>2026-11-06</td>
+<td>Sunflower family: JST GH 1.25 mm battery socket (SM02B-GHS-TB, C189893) in place of hand-solder pads, at the north-west rim; front seed-web silk; PWR/BOOT/BATT +/- back labels</td>
+<td>User asked for the main pendant's front silk pattern, button labels and a JST connector, and picked GH from PH/GH/SH. <code>jst_site.py</code> found clear courtyard only at the NW rim on every tier (the SE spot by U8 needs U8/C6/R8 moved), so the battery nets run ~30 mm. Local re-routes: s1-66-pofv, s2-88-pofv, s2-88 0 open and 0 DRC; s2-110 0 open (2 old +3V3 width errors); s2-132 2 opens left, second pass queued; s1-66 probe unchanged at 1 open. +$0.35/board.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-06</td>
+<td>Sunflower battery socket: Molex PicoBlade 53261-0271 (C177225) in place of JST GH, at the north-west rim with the plug entering from the board-centre side</td>
+<td>A reviewer flagged that the 1.25 mm plugs on most small LiPos are friction-fit PicoBlade clones, not latching GH. PicoBlade is wider (9.4 mm courtyard), so no rim-facing site clears every tier; the user chose NW with the plug facing in over moving U8/C6/R8 to the SE rim. Re-routes: s1-66-pofv, s2-88-pofv, s2-88 0 open and 0 DRC; s2-110 1 open, s2-132 2 opens; s1-66 probe 1 open. Connector cost +$0.12/board.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-06</td>
+<td>Sunflower USB-C study (s2-110-usbc): HRO TYPE-C-31-M-12 on the back at the south rim, centre LED, light sensor at the top rim</td>
+<td>User asked for USB-C on the back (dodging the LEDs) next to the battery socket if possible, buttons and socket at the top, an LED at the centre and the sensor at the rim. Next to the socket the receptacle lands on U3 at every angle, so it went to the south rim, where only USB-side parts move. Front LEDs steered round its 6 through-holes. Routed from scratch to 3 opens after four passes; VBAT_EN then moved from GPIO14 to GPIO28 (pin 42, beside VBAT_SENSE) for this variant only, as it would not route from the north edge of U3. No via-in-pad, so U2's PVCC caps moved 0.45 mm out to free its south pin escapes. A schematic bug that merged USB D+/D- into CC1 was fixed and re-routed. Final: 0 opens, 0 DRC, audits clean, 612 vias, fab files exported.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-07</td>
+<td>s2-110-usbc bring-up pads and board ID straps; UART1 on GPIO24/25</td>
+<td>User asked for test pads on spare signals (UART, I2C, VBUS, spare GPIO) and board ID straps so firmware can tell boards apart. UART first went on GPIO8/9 with pads west of U3, but those pads blocked the west LED rows and ACC_SDA; the user chose to drop them and use GPIO24/25 (also UART1). ID straps on GPIO19-21, read with pull-ups, tied = 0: this board ties GPIO19 (net tie NT1) and reads 6; boards without straps read 7. Test pads use a 0.75 mm courtyard copy of KiCad's 1.0 mm pad to fit. Re-routed to 0 opens, 0 DRC, audits clean, 637 vias, fab files re-exported</td>
+<td>UART on GPIO8/9 (would not route), resistor straps (extra parts), OTP board ID (per-unit step)</td>
+</tr>
+<tr>
+<td>2026-11-07</td>
+<td>s2-110-usbc: In1 LX cutout follows the VREG_LX copper instead of a bounding box</td>
+<td>User spotted a rectangle missing from the inner GND plane at the 1V1 inductor. The cutout (chips/rp2350.md §6.3.8.1: cut layer 2 under the LX node) was the bounding box of U3 pin 48 and L1's LX pad plus 0.25 mm, which also took plane from under pins 46/47 and the PGND pour: 9.2 mm². Now the VREG_LX zone and LX pads grown 0.25 mm: 5.4 mm². Plane refilled, 0 DRC, audits clean, gerbers re-exported.</td>
+<td>Keep the box (more plane missing than the datasheet asks); remove the cutout (datasheet asks for it)</td>
+</tr>
+<tr>
+<td>2026-11-07</td>
+<td>Parallelogram boards: In1 LX cutout follows the VREG_LX copper instead of a bounding box</td>
+<td>Same fault as s2-110-usbc (the user asked for it fixed here too): the layer-2 cutout was the bounding box of U3 pin 48 and L1's LX pad, 9.2 mm², taking plane from under pins 46/47 and the PGND pour. Now the VREG_LX zone and LX pads grown 0.25 mm (5.4-5.5 mm²), in <code>scripts/parallelogram/pcb_gen.py</code> and on all ten boards in place (plane refilled, no copper moved). p1-66, p2-132 and both -usb boards stay at 0 DRC with audits clean; gerbers re-exported, BOM/CPL unchanged. On p3-162, p3-198 and p4-264 the old box covered the PGND tie vias, which now reach the plane as designed.</td>
+<td></td>
+</tr>
+<tr>
+<td>2026-11-07</td>
+<td>Sunflower family: pn-dense, a 38 mm round board with LEDs on a dense Penrose P3 tiling (hw/sunflower/pn-dense)</td>
+<td>User asked for the pattern explorer's dense Penrose tiling on a round board. Cloned s2-110-usbc (USB-C on the back, centre LED, rim light sensor, test pads, PicoBlade, 2x AW20198, 4L) and took the LED field from the explorer's construction: Robinson-triangle deflation (level 4) of the ten-triangle sun, LEDs at rhomb vertices, scaled so the closest pair is the dense pitch hypot(1.6+0.25, 1.5+0.25) = 2.547 mm, cropped to r 17.2 mm, snapped to the 0.025 mm router grid (&lt;=0.018 mm). Vertices in keepouts are dropped, not pushed, so the tiling stays exact: 4 dropped at the USB-C holes, 67 LEDs. The wedge matrix map now spreads n unevenly (&lt;=11 per wedge) instead of requiring multiples of 11; front silk is the rhomb edges. Board ID strap GPIO20 (ID 5). Routed with route_variant.py plus one rip-region plough pass: 0 open, 0 DRC errors/warnings, copper_audit 0, pad_joints 0, 419 vias, none in pads. $11.75 BOM @10.</td>
+<td>Push vertices out of keepouts (distorts the tiling); one driver (67 LEDs is one over AW20198's 66)</td>
+</tr>
+<tr>
+<td>2026-11-07</td>
+<td>pn-dense-1d: one AW20198 plus the centre LED driven directly from RP2350 GPIO7/8/9, anode on +3V3 (hw/sunflower/pn-dense-1d)</td>
+<td>User chose to keep all 67 Penrose LEDs, drop U2 and drive one LED from GPIOs. The centre vertex (D67) takes GPIO7/8/9 (pins 10/12/13, the only three free adjacent pins) through R80 150 R / R81 510 R / R82 510 R; U1 drives 66 LEDs in 6 wedges of 11. Anode on +3V3 = IOVDD, so no pin can exceed IOVDD in any state (rp2350.pdf Tables 1426/1433/1436); VSYS was rejected because a floating pin's voltage depends on LED leakage the datasheet doesn't give. Green/blue at ~1.07 mA at 100 % PWM (matrix average: 400/30k x 255/256 x 0.0805, aw20198 p. 18); red runs at a ~8 mA peak and is matched by PWM duty (13 % for average current, ~20 % for brightness) because xl-1615 p. 6 shows red dark below 5 mA. Firmware: 12 mA drive, pins high early in boot. Routed 0 open; clean_copper_4l.py wrongly deleted one CS1_7 run, which was restored from the router output (plus 3 small joint fixes); 0 DRC errors/warnings, copper_audit 0, pad_joints 0, 528 vias, $10.81 BOM @10 (-$0.94).</td>
+<td>Anode on VSYS (headroom, but pin voltage can't be bounded when floating); drop one LED (user declined)</td>
+</tr>
+<tr>
+<td>2026-11-07</td>
+<td>Square-bezel bga13-169: more router time does not close it</td>
+<td>Re-ran route_variant.py with 3 seeds x 1800 s (was 1 x 960 s): seeds 0/1 gave 56 and 55 open (previous best 50); the run was then stopped for low machine memory. Opens cluster on driver CS lines at the WLCSP-36s behind the array, so the limit is the 0.5 mm-pitch ball escape under a 1.65 mm LED grid, not search time. Board file restored to its pre-run state; the viewer shows the earlier 50-open plough. Next step is the user's choice (status.json square-bezel-escape).</td>
+<td>Keep adding seeds/time</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>s2-110-usbc: Bottom-side CPL rotation &amp; EasyEDA pick-origin fix (<code>scripts/sunflower/export_and_cost.py</code>); stale <code>production/</code> moved aside</td>
+<td>Phase 10 CPL audit caught that <code>export_and_cost.py</code> computed <code>(rot_kicad + rot_off) % 360</code> without Bottom-layer mirroring <code>(180 - rot_kicad + rot_off) % 360</code> or EasyEDA pick-origin offsets (<code>BT1</code> <code>+0.950 mm</code> Y, <code>J1</code> <code>+1.571 mm</code> Y), leaving <code>BT1</code> (<code>70°</code> vs <code>110°</code>), <code>J1</code> (<code>180°</code> vs <code>0°</code>), <code>U1/U2</code>, <code>U4</code>, <code>Q1</code>, <code>U9</code>, and <code>SW1/SW2</code> mis-rotated/shifted in <code>cpl-jlcpcb.csv</code>. Fixed <code>export_and_cost.py</code>, re-exported <code>hw/sunflower/s2-110-usbc/fab/</code>, verified all 191 parts against all 34 LCSC EasyEDA models (<code>0.000 mm</code> centroid error, <code>0.00°</code> rotation error; <code>design/renders/sunflower-s2-110-usbc/cpl-check-{top,bottom}.png</code>), and moved the stale 01:37 2026-11-07 KiCad Fabrication Toolkit folder to <code>hw/sunflower/s2-110-usbc/production-stale-2026-11-07-0137/</code>.</td>
+<td>Hand-fix CPL CSV (violates <code>sync-and-release.md</code>; other Sunflower tiers also share <code>export_and_cost.py</code>)</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>s2-110-usbc gate reviews: 4 reviewer claims disputed with datasheet/footprint proof (<code>Q2</code> polarity, <code>U8</code> split-EP bars, <code>U8</code> <code>B.SilkS</code> dot, <code>BT1–SW2</code> clearance)</td>
+<td>(1) <code>Q2</code> (<code>XYC-PT19C-L1</code>, <code>C2693594</code>): <code>xyc-pt19c-l1.pdf</code> p. 8 mislabels phototransistor leads "Anode/Cathode", but internal die-paddle leadframe geometry vs <code>als-pt19.pdf</code> p. 3 and EasyEDA <code>C2693594</code> confirms Collector = Pin 1 (<code>Mark</code> side, <code>LIGHT_PWR</code>) and Emitter = Pin 2 (<code>LIGHT</code>), matching <code>mcu.kicad_sch</code>. (2) <code>U8</code> (<code>XB9901A</code>): <code>XySemi_DFN-6_1.8x1.4mm.kicad_mod</code> merges <code>nc</code> pins 2/3/5 into the <code>1.30 × 0.28 mm</code> (<code>GND</code>) and <code>0.79 × 0.28 mm</code> (<code>BAT_N</code>) exposed bars per <code>xb9901a.pdf</code> p. 9. (3) <code>U8</code> <code>B.SilkS</code> dot: at <code>180°</code> on <code>B.Cu</code>, Pin 1 sits at bottom-left right beside the <code>B.SilkS</code> dot (<code>cpl-check-bottom.png</code>); only the <code>.wrl</code> 3D dot is <code>180°</code> off (as noted 2026-11-03). (4) <code>BT1 ↔ SW2</code>: true <code>pcbnew</code> <code>B.Fab</code> clearance is <code>1.017 mm</code> (<code>0.898 mm</code> to <code>SW2</code> pad); regenerated <code>floorplan-s2-110-usbc.svg</code> from exact <code>B.Fab</code> vertices.</td>
+<td>Rewire <code>Q2</code>/<code>U8</code> or move <code>BT1</code> for non-existent collisions</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>s2-110-usbc <code>Rev S3C</code> prototype waivers for Gates 1–3 (<code>sch_gen.py</code> style, <code>C35 = 100 nF</code>, <code>BT1</code> <code>MP</code> nails, <code>_C</code>/<code>_MCU</code> &amp; <code>Net-(...)</code> names)</td>
+<td>Frozen routed <code>Rev S3C</code> schematic/PCB kept at <code>0</code> ERC / <code>0</code> DRC / <code>0</code> parity errors by waiving: (a) <code>sch_gen.py</code> programmatic LED grid, 24.3 mm <code>USB_D*_C</code> label jump, and <code>U3</code>/<code>U5</code> stacked power pins (<code>schematic_style_check.py</code>); (b) shared <code>C35 = 100 nF</code> on CMOS <code>LED_SDB</code> (<code>GPIO6</code>, <code>R31 = 100 kΩ</code> pull-down) vs <code>1 µF/chip</code> example; (c) <code>BT1</code> <code>Conn_01x02</code> leaving mechanically isolated <code>MP</code> nails un-netted (<code>Molex 53261</code> rated <code>1.0 A</code> in <code>PS-51021-024</code>); (d) <code>_C</code>/<code>_MCU</code> diff-pair suffixes and <code>Net-(...)</code> names (clean up in <code>Rev S3D</code>); and (e) passive/family-ID rows in <code>sources.csv</code> (all 34 LCSC parts verified normal lifecycle &amp; in stock via <code>jlc_parts.py show</code>).</td>
+<td>Edit schematic symbols/labels now (desynchronizes frozen <code>Rev S3C</code> PCB)</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>s2-110-usbc phase gates 0–10 completed (<code>design/gates/sunflower-s2-110-usbc/</code>); <code>Rev S3C</code> prototype order vs <code>Rev S3D</code> respin awaits user sign-off</td>
+<td>Gates 1–3 <code>passed</code>; Gates 0, 4, 10 <code>awaiting_signoff</code>; Gates 5–9 <code>failed</code> on frozen <code>Rev S3C</code> and Gate 10 Gerber review added 1 PCBA catch (<code>sunflower-B_Paste.gbp</code> omits paste on <code>J1</code>'s 4 PTH shield slots while <code>F.Cu</code> rings sit <code>0.18–0.29 mm</code> from <code>D10</code>/<code>D104</code>/<code>D110</code>, forbidding <code>F.Cu</code> wave/iron soldering): <code>COUT</code> (<code>C18</code>, <code>Zone 11</code>) has <code>0</code> power spokes so core <code>+1V1</code> flows via <code>U3.50</code> <code>VREG_FB</code>; <code>C17</code> (<code>CFILT</code>) shares <code>U3</code> <code>PGND</code>'s single via <code>@(102.43, 99.10)</code>; <code>In2.Cu</code> routes <code>+3V3</code> <code>ADC_AVDD</code> &amp; <code>VSYS</code> <code>0.21 mm</code> under <code>B.Cu</code> <code>VREG_LX</code>/<code>L1</code> (<code>19–48 mV_pk</code> spikes) while <code>LX cutout L2</code> sits on <code>In1.Cu</code>; <code>+3V3</code> band splits into 4 pieces (<code>9.7561 mm²</code>) vs whole <code>+1V1</code> ring (<code>6.0625 mm²</code>); <code>U3.61</code> (1) &amp; <code>U5.17</code> (2) open vias clip <code>B.Paste</code>; <code>U4.8</code> is <code>8.56 mm</code> from <code>C14</code> (<code>312–554 mV</code> 4-bit QSPI SSO droop); <code>BT1</code> has 29 vias in Molex restricted area + <code>0.107 mm</code> <code>VBAT</code> via to <code>BT1.2</code> + <code>438 mΩ</code> PCB battery loop; <code>.kicad_pro</code> has <code>netclass_assignments: null</code>; and <code>BT1</code> <code>+</code>/<code>-</code> &amp; <code>J1</code> <code>USB 5V</code> silk are occluded under connector bodies. User chooses at Gate 10: order 5–10 <code>Rev S3C</code> prototypes (<code>ENIG 1U"</code>, <code>Pass 1 = B.Cu</code>, <code>Pass 2 = F.Cu ≤ 245 °C</code> for <code>Q2</code>, no <code>F.Cu</code> soldering on <code>J1</code> + microscope <code>B.Cu</code> outer-slot tacking, <code>Kapton + ≥ 2.4 mm</code> spacer, and FW guards: <code>1x/2x</code> SPI XIP, <code>ADC4</code> <code>GCC ≤ 105</code> battery / <code>≤ 9</code> CC / <code>≤ 24</code> CV on <code>PGOOD == 0 \|\| CHG == 0</code>, <code>GPIO4/5</code> <code>12 mA</code> + <code>GCR = 0xB9</code>), or spin <code>Rev S3D</code> first (incl. full-SMT <code>TYPE-C-31-M-22</code> <code>C530612</code>).</td>
+<td>Mark Gates 5–10 passed without fixing copper or user sign-off</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>Parallelogram <code>p2-132-usb6</code> (<code>hw/parallelogram/p2-132-usb6/</code>): two peg-less <code>EVQP7J01P</code> side buttons added on the West long edge (<code>SW5</code> <code>USER_C</code> on <code>GPIO9</code>, <code>SW6</code> <code>USER_D</code> on <code>GPIO0</code>), <code>J1</code> untouched, routed to <code>0</code> open &amp; <code>0</code> DRC</td>
+<td>User asked for two more side buttons near each end of one long (<code>62 mm</code> vertical) edge of <code>p2-132-usb</code> with everything else — explicitly including <code>J1</code> at <code>(-1.24, +26.82 mm, 162.26°)</code> — kept as-is and all existing variants byte-identical. <strong>Why West edge (<code>x = -12.50 mm</code>):</strong> the East South edge is occupied by <code>BT1</code> (<code>(+8.40, +20.05)</code>), <code>U8</code> (<code>(+10.00, +12.60)</code>), and SE wing <code>SW4</code> (<code>(+9.15, +28.65)</code>), whereas the West edge is clear at both ends outside the <code>[-10.0, +10.0] × [-21.5, +13.5] mm</code> LiPo pocket: <code>SW5</code> at <code>(-10.85, -22.00, +90°)</code> (<code>0.31 mm</code> courtyard south of <code>SW3</code>, <code>13.31 mm</code> north of <code>SW2</code>) and <code>SW6</code> at <code>(-10.85, +22.80, +90°)</code> (<code>1.81 mm</code> rotated-courtyard clear of <code>J1</code>, <code>2.91 mm</code> clear of <code>U4</code>), both protruding <code>0.45 mm</code> past <code>x = -12.50 mm</code> like <code>SW1</code>/<code>SW2</code> (<code>CPL Rot = 90.00°</code>, <code>Mid X = 88.825 mm</code>). Wired <code>SW5 -&gt; R46 (1 kΩ) + C71 (100 nF) -&gt; /MCU/USER_C (GPIO9, U3.13)</code> and <code>SW6 -&gt; R47 (1 kΩ) + C72 (100 nF) -&gt; /MCU/USER_D (GPIO0, U3.2)</code> (<code>&gt;= 20 ms</code> press+release SW debounce; <code>-92.69%</code> <code>8 kV</code> ESD clamp current with <code>350 V</code> <code>0402</code> air-flashover in <code>design/sim/p2-132-usb6/</code>). Routed (<code>route_variant.py</code>) &amp; polished (<code>clean_copper_4l.py</code>): <code>795/795</code> pad connections (<code>0</code> open), <code>4,921</code> tracks, <code>729</code> vias (<code>ENIG 1U" + POFV = Yes</code>, <code>0</code> EP paste overlaps across <code>U1=5, U2=5, U3=5, U5=2</code>), <code>0</code> <code>kicad-cli pcb drc --severity-all --schematic-parity</code> errors/warnings/parity, <code>0</code> ERC errors, <code>copper_audit.py = 0</code>, <code>pad_joints.py = 0</code>, <code>plane GND</code> (<code>1,309.17 mm²</code>) / <code>RP2350 ring</code> (<code>8.61 mm²</code>) / <code>RP2350 band</code> (<code>11.06 mm²</code>) each <code>1</code> piece, <code>0</code> foreign EP vias, <code>$13.25</code> BOM @ qty 10 (<code>40/40</code> rows in JLCPCB PCBA stock), and <code>p2-132-usb</code> + <code>p1-66-usb</code> proven <code>100%</code> byte-identical in scratchpad regeneration.</td>
+<td>East long edge (collides with <code>BT1</code>, <code>U8</code>, and <code>SW4</code>); peg switches <code>EVQP7C01P</code> (drills punch into <code>F.Cu</code> LED matrix)</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td><code>p2-132-usb6</code> gate review dispositions (<code>design/gates/parallelogram-p2-132-usb6/phase4..10.md</code>): <code>LX cutout L2/L3</code>, <code>POFV = Yes</code>, inherited parent placement &amp; 4L autorouted <code>VSYS</code> nodal proof, solid <code>B.Cu</code> zone ties, and <code>B.SilkS</code> policy</td>
+<td>(1) <strong>Regulator keepouts (Gate 5):</strong> Added <code>LX cutout L3</code> (<code>no_tracks, no_pour</code>) on <code>In2.Cu</code> <code>0.21 mm</code> directly beneath <code>B.Cu</code> <code>VREG_LX</code>/<code>L1</code>, while retaining the shaped <code>5.43 mm²</code> <code>In1.Cu</code> <code>LX cutout L2</code> (<code>plane GND</code> stays <code>1</code> unbroken <code>1,309.17 mm²</code> piece) per <code>chips/rp2350.md</code> §6.3.8.1 and the 2026-11-07 user decision. (2) <strong><code>POFV = Yes</code> &amp; <code>0</code> EP paste overlap (Gates 6, 7, 9, 10):</strong> <code>non_ep_via_in_pad = 118</code> (<code>75</code> <code>F.Cu</code> LED pads + <code>43</code> <code>B.Cu</code> IC pads vs <code>134</code> on <code>p2-132-usb</code>) is ordered with <strong><code>POFV = Yes</code> (epoxy-filled &amp; copper-capped VIPPO) + <code>ENIG 1U"</code></strong> per <code>design/study/parallelogram/README.md</code> §2 (providing planar capped vias under SMD pads and <code>F.SilkS</code> web), and <code>U2</code>'s redundant 6th EP via <code>@(106.036, 91.435)</code> was dropped so <code>0</code> EP vias touch <code>B.Paste</code>. (3) <strong>Inherited parent placement &amp; 4L <code>VSYS</code> topology (Gates 6, 7, 8):</strong> Disputed moving parent <code>p2-132-usb</code> parts (<code>C17, C1/C2/C5, C30..C44, Y1, BT1</code>) per explicit task rule (<em>"Everything else stays as it is"</em>); all <code>33/33</code> decouplers pass <code>placement_check.py</code> (<code>1.17–3.56 mm</code>), <code>USB 2.0</code> FS (<code>18.63 mm</code>) is <code>&lt; 0.15 × l_crit</code>, and an exact <code>pcbnew</code> <code>VSYS</code> resistive nodal solve (<code>sim_buttons.py</code>) proves <code>ΔV(U6.4) = -60.72 mV</code> and <code>ΔV(U1.5) = -114.50 mV</code> at the <code>300 mA</code> wearable budget (<code>GCC &lt;= 0x74</code>, <code>V(U6.4) = 3.437 V &gt;= 3.42 V</code> at <code>V_BAT = 3.55 V</code>; guarded in <code>bringup.md</code> §3 with <code>SRCR = 0x07</code> &amp; <code>SLEWFAST = 0</code>). (4) <strong>Solid <code>B.Cu</code> zone ties &amp; shared <code>checks.toml</code> (Gates 5, 9):</strong> Retained <code>ZONE_CONNECTION_FULL</code> on <code>B.Cu</code> <code>RP2350</code> rings/EPs (<code>plane GND</code> is internal <code>In1.Cu</code> reached via necked traces), and kept <code>F.Cu</code> LED text/dots hidden per <code>intent.md</code> line 98 while placing <code>37</code> <code>B.SilkS</code> texts (<code>[0.0°, 90.0°]</code>, contiguous 3-col URL, <code>16/20</code> major refs, <code>0</code> passives) + <code>12/12</code> <code>B.SilkS</code> pin-1 dots outside 3D bodies (<code>0</code> non-LED <code>silk_check</code> errors).</td>
+<td>Move parent <code>p2-132-usb</code> parts (violates task scope); remove <code>In1.Cu</code> <code>LX cutout L2</code>; edit shared <code>checks.toml</code> mid-run</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td><code>s2-110-usbc-s3d</code> (<code>Rev S3D</code>) architecture, stackup, LED keepout, schematic &amp; rule dispositions (<code>hw/sunflower/s2-110-usbc-s3d/</code>)</td>
+<td>(1) <strong>Stackup (<code>In2.Cu</code> = solid <code>GND</code> + <code>LX cutout L3</code>, <code>In1.Cu</code> = inner routing + <code>LX inner guard</code>):</strong> Because <code>100%</code> of active ICs (<code>U1..U9</code>), <code>75 MHz</code> QSPI, <code>12 MHz</code> crystal, <code>L1</code> buck, USB-C (<code>J1</code>/<code>U7</code>), and MLCC decouplers sit on <code>B.Cu</code> (<code>L4</code>), moving <code>plane GND</code> + <code>LX cutout L3</code> to <code>In2.Cu</code> (<code>L3</code>, <code>h = 0.2104 mm</code> <code>7628</code> prepreg vs <code>1.2906 mm</code> <code>In1.Cu</code>) cuts <code>B.Cu</code> reference height <code>6.13×</code>, reduces QSPI loop inductance <code>42%</code> (<code>838.7 → 486.6–492.6 nH/m</code>), sets <code>0.20/0.15 mm</code> <code>B.Cu</code> USB diff impedance to <code>97.0–98.6 Ω</code> coated (<code>+8.4%</code> vs <code>90 Ω</code>), cuts decoupler via-pair loop height <code>~5×</code>, and puts <code>LX cutout L3</code> directly adjacent to <code>U3.48</code>/<code>L1</code> (<code>rp2350.pdf</code> §6.3.8.1) while <code>F.Cu</code> (<code>5.05 kHz</code> current-regulated LEDs + RC-filtered <code>Q2</code>) loses nothing (<code>stackup-4l-s3d.md</code> §1). (2) <strong><code>J1</code> (<code>TYPE-C-31-M-22</code>, <code>C530612</code>) &amp; South-rim LEDs:</strong> Dropped <code>M-12</code>'s <code>4</code> obsolete PTH shield-slot keepouts; retained <code>S3C</code>'s <code>110</code> LED coordinates because un-pushed Vogel spiral sites place <code>D7</code>/<code>D107</code> within <code>&lt; 0.12 mm</code> of <code>M-22</code>'s <code>2 × Ø0.65 mm</code> NPTH pegs <code>(±2.89, +13.00)</code> (<code>0.317 mm</code> &amp; <code>0.585 mm</code> preserved, <code>0</code> firmware LED-table change). (3) <strong>Gate 2 schematic conventions:</strong> Preserved family global-label inter-sheet convention with an explicit graphical block-interconnect diagram on <code>sunflower.kicad_sch</code>, waived <code>schematic_style_check.py</code>'s <code>2</code> <code>[grid]</code> flags on the <code>11 × 5</code> physical LED matrices (<code>matrix1/2</code>) and <code>7</code> stacked-pin <code>U3</code> <code>IOVDD/DVDD</code> distance checks (matches 2026-11-02 row), and set <strong><code>BOARD_ID = 4</code> (<code>0b100</code>)</strong> via <code>NT1</code> (<code>GPIO19</code>) + <code>NT2</code> (<code>GPIO20</code>). (4) <strong>Gate 5 DRC &amp; netlist rules:</strong> Promoted <strong><code>56/57</code> DRC severities to <code>"error"</code></strong> (including <code>"lib_footprint_mismatch": "error"</code>; only <code>"footprint_filters_mismatch": "ignore"</code> waived because custom local symbols/footprints do not duplicate stock <code>ki_fp_filters</code> wildcards), replaced single <code>A.inDiffPair('*')</code> skew rule with <code>3</code> per-pair <code>skew (max 2.0mm)</code> rules (<code>USB_C_</code>, <code>USB_</code>, <code>USB_MCU_</code>) + <code>disallow micro_via buried_via</code> + <code>edge_clearance (min 0.30mm)</code> (<code>100%</code> of <code>70</code> <code>.kicad_dru</code> rules verified parsed to EOF in KiCad 9.0.8), and verified all <code>109/109</code> netclasses <code>1:1</code> in <code>pcbnew</code> (noting KiCad 9.0.8 <code>kicad-cli sch export netlist --format kicadxml</code> emits <code>class="Default"</code> on all nets, including KiCad's own official demos).</td>
+<td>Keep <code>GND</code> on <code>In1.Cu</code> (<code>1.29 mm</code> from <code>B.Cu</code> ICs); un-push South LEDs (<code>&lt; 0.12 mm</code> NPTH violation)</td>
+</tr>
+</tbody>
+</table></div></div></body></html>

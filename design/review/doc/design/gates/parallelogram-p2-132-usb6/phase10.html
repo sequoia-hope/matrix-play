@@ -1,0 +1,400 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 10: release (parallelogram-p2-132-usb6)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/parallelogram-p2-132-usb6/phase10.md'>design/gates/parallelogram-p2-132-usb6/phase10.md</a></p><h1>Gate 10: release (<code>parallelogram-p2-132-usb6</code>)</h1>
+<p>Status: <strong>awaiting_signoff</strong></p>
+<h2>Checklist (<code>references/sync-and-release.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>All earlier gates current (not stale):</strong> <code>phase4.md</code> (<code>awaiting_signoff</code>), <code>phase5.md</code> (<code>passed</code>), <code>phase6.md</code> (<code>passed</code>), <code>phase7.md</code> (<code>passed</code>), <code>phase8.md</code> (<code>passed</code>), <code>phase9.md</code> (<code>passed</code>)</li>
+<li>[x] <strong>Release sync check passes (<code>sync_check.py --bom --cpl</code>):</strong> <code>231</code> schematic symbols ↔ <code>231</code> PCB footprints ↔ <code>223</code> assembled parts in <code>bom-jlcpcb.csv</code> &amp; <code>cpl-jlcpcb.csv</code> (<code>8</code> <code>in_bom=False</code> test points <code>TP1..TP8</code> excluded cleanly; <strong><code>PASS: 0 errors, 0 warnings</code></strong>)</li>
+<li>[x] <strong>DRC / ERC / copper / pad-joint / parity checks re-run on final files:</strong></li>
+<li><code>kicad-cli pcb drc --severity-all --schematic-parity</code>: <strong><code>0</code> violations, <code>0</code> unconnected items, <code>0</code> schematic parity issues</strong></li>
+<li><code>kicad-cli sch erc --severity-all</code>: <strong><code>0</code> violations across all <code>5</code> sheets</strong></li>
+<li><code>scripts/bga/copper_audit.py</code>: <strong><code>rc == 0</code></strong> (<code>tracks=4921 vias=729 | 0</code> dangling, <code>0</code> cap_gap, <code>0</code> mid_graze/stubs, <code>0</code> off_via, <code>0</code> morph_necks, <code>0</code> acute_slivers, <code>0</code> collinear_dups, <code>0</code> zone_intrusions)</li>
+<li><code>pad_joints.py</code>: <strong><code>PASS: 0 thin pad joints</code></strong> across <code>913</code> SMD pads</li>
+<li>[x] <strong>Stock &amp; qty-10 BOM cost checked on <code>2026-11-08</code>:</strong></li>
+<li><code>export_and_cost.py --cost --qty 10</code>: <strong><code>$13.25 / board</code> @ qty 10</strong> (<code>+$0.39</code> over live <code>p2-132-usb</code> <code>$12.86</code>, <code>35</code> unique LCSC part codes, <code>223</code> assembled parts)</li>
+<li>Live JLCPCB PCBA SMT assembly API (<code>selectSmtComponentList/v2</code>): <strong><code>40/40</code> BOM lines (<code>35/35</code> unique LCSC parts) <code>100%</code> in stock</strong> for a <code>10</code>-board build (<code>min stock = 529</code> on <code>TPS7A0233PDQNR</code>, <code>6,887</code> on <code>EVQP7J01P</code> <code>C2828254</code>, <code>1,439</code> on <code>AOTA-B201610S3R3-101-T</code> <code>C42411119</code>)</li>
+<li>[x] <strong>CPL rotation &amp; pick-origin verified for every polarized part, IC, connector, &amp; switch (including new <code>SW5</code>/<code>SW6</code>):</strong> Mirrored-Bottom visual overlay <code>design/renders/parallelogram-p2-132-usb6/cpl-overlay.png</code> (matching <code>3d-bottom.png</code> &amp; JLCPCB Bottom PCBA viewer) + complete table below with both <code>KiCad Rot</code> and <code>CPL Rot</code></li>
+<li>[x] <strong>Gerbers independently parsed &amp; rendered (<code>gerber_render.py</code> via <code>gerbonara</code>) + Assembly PDFs + 3D STEP:</strong></li>
+<li><code>hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6-gerbers.zip</code> (<code>13</code> files)</li>
+<li><code>hw/parallelogram/p2-132-usb6/fab/{assembly-bottom.pdf,assembly-top.pdf}</code> + <code>design/renders/parallelogram-p2-132-usb6/assembly-bottom.png</code></li>
+<li><code>hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6.step</code> (<code>147</code> 3D STEP/WRL models embedded)</li>
+<li>[x] <strong>Bring-up plan written with part-audit expected values, probe coordinates, &amp; firmware guards:</strong> <code>design/gates/parallelogram-p2-132-usb6/bringup.md</code> (linked from <code>index.html</code> card)</li>
+<li>[x] <strong>Other variants proven byte-identical (<code>run_bytecheck.py</code>):</strong> <code>53</code> raw byte-identical files + <code>2</code> canonical-identical <code>.kicad_pcb</code> files (<code>0</code> mismatches across <code>p2-132-usb</code> and <code>p1-66-usb</code>)</li>
+<li>[ ] <strong>Git tag (<code>parallelogram-p2-132-usb6-revP1U6</code>) &amp; User release approval:</strong> Deferred per workspace rule (<em>"Do not commit or push. The supervising agent will review and commit"</em>) and awaiting user sign-off below.</li>
+</ul>
+<hr />
+<h2>1. Verbatim Release Check Outputs</h2>
+<h3>A. <code>sync_check.py --bom --cpl</code></h3>
+<pre><code class="language-text">sync_check: hw/parallelogram/p2-132-usb6
+  schematic parallelogram.kicad_sch: 231 symbols (0 excluded from board)
+  board parallelogram.kicad_pcb: 231 footprints (0 board-only)
+  BOM bom-jlcpcb.csv: 223 designators
+  CPL cpl-jlcpcb.csv: 223 placements
+  223 parts to build; required fields: LCSC
+  stock not checked: re-check every LCSC part at release (phase 10)
+
+  PASS: 0 errors, 0 warnings
+</code></pre>
+<h3>B. Final <code>kicad-cli pcb drc --severity-all --schematic-parity</code> &amp; <code>kicad-cli sch erc --severity-all</code></h3>
+<pre><code class="language-text">Found 0 violations
+Found 0 unconnected items
+Found 0 schematic parity issues
+ERC sheets: 5 total violations: 0
+</code></pre>
+<h3>C. Fab Export &amp; Independent Gerber Object-Count Audit (<code>gerber_render.py</code>)</h3>
+<pre><code class="language-text">Exported hw/parallelogram/p2-132-usb6/fab/parallelogram-p2-132-usb6-gerbers.zip (13 files), bom-jlcpcb.csv (40 lines), cpl-jlcpcb.csv (223 parts)
+
+gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
+  top_silk             parallelogram-F_Silkscreen.gto     827 objects
+  top_paste            parallelogram-F_Paste.gtp          530 objects
+  top_mask             parallelogram-F_Mask.gts           532 objects
+  top_copper           parallelogram-F_Cu.gtl            3747 objects
+  inner_1_copper       parallelogram-In1_Cu.g1            730 objects
+  inner_2_copper       parallelogram-In2_Cu.g2           1692 objects
+  bottom_copper        parallelogram-B_Cu.gbl            2608 objects
+  bottom_mask          parallelogram-B_Mask.gbs           405 objects
+  bottom_paste         parallelogram-B_Paste.gbp          407 objects
+  bottom_silk          parallelogram-B_Silkscreen.gbo    1936 objects
+  drill_parallelogram  parallelogram.drl                  731 objects
+  outline              parallelogram-Edge_Cuts.gm1          8 objects
+  12 layer images in design/renders/parallelogram-p2-132-usb6/gerbers
+</code></pre>
+<p><strong>Gerber structural cross-check:</strong>
+- <code>outline = 8 objects</code>: <code>4</code> straight edges + <code>4</code> <code>R = 1.00 mm</code> tangent corner arcs (watertight closed loop).
+- <code>drill_parallelogram = 731 objects</code>: <code>729</code> plated through vias + <code>2</code> <code>Ø 0.65 mm</code> <code>J1</code> NPTH locating holes (<code>729 + 2 = 731</code> exact).
+- <code>top_paste = 530 objects</code>: <code>132</code> <code>XL-1615RGBC</code> LEDs × <code>4</code> pads (<code>528</code>) + <code>1</code> <code>Q2</code> <code>XYC-PT19C-L1</code> × <code>2</code> pads (<code>2</code>) = <code>530</code> exact (<code>0</code> paste on vias).
+- <code>top_mask = 532 objects</code>: <code>530</code> top SMD pads + <code>2</code> <code>J1</code> NPTH clearances = <code>532</code> exact (<code>100%</code> tented/capped vias).
+- <code>inner_1_copper = 730 objects</code>: <code>1</code> unbroken <code>plane GND</code> polygon (<code>1,309.17 mm²</code>) + <code>729</code> via pads/antipads = <code>730</code> exact.
+- <code>bottom_paste = 407 objects</code> vs <code>bottom_mask = 405 objects</code>: <code>U6</code> (<code>X2SON-4</code>) splits its central pad paste into small sub-apertures while <strong>all <code>17</code> <code>GND</code> thermal vias in <code>U1/U2/U3/U5</code> solid EPs (<code>5 + 5 + 5 + 2</code>) have <code>0</code> <code>B.Paste</code> overlap</strong>.
+- <strong>JLCPCB Order Form Specification:</strong> <strong><code>JLC04161H-7628</code></strong> (<code>1.6 mm</code>, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG 1U"</code></strong> surface finish, <strong><code>Via Covering = Epoxy Filled &amp; Capped (POFV = Yes)</code></strong> for the <code>118</code> SMD via-in-pad sites, double-sided PCBA with <code>Pass 1 = B.Cu</code> and <code>Pass 2 = F.Cu &lt;= 245 °C</code> peak for <code>Q2</code> <code>XYC-PT19C-L1</code>).</p>
+<hr />
+<h2>2. CPL Rotation &amp; Pick-Origin Verification (<code>hw/parallelogram/p2-132-usb6/fab/cpl-jlcpcb.csv</code> + Mirrored-Bottom <code>cpl-overlay.png</code>)</h2>
+<p><em>(Coordinate convention: in Mirrored <code>B.Cu</code> view — matching <code>3d-bottom.png</code>, <code>bottom.png</code>, and JLCPCB's Bottom PCBA viewer — <code>+X</code> East is Left, <code>-X</code> West is Right, <code>-Y</code> North is Top, and <code>+Y</code> South is Bottom. Every LCSC part's EasyEDA zero-orientation was cross-checked pad-for-pad against <code>pcbnew</code> and <code>sunflower-s2-110-usbc/phase10.md</code>: </em><em><code>0.00°</code> rotation error across all <code>223</code> parts</em><em>.)</em></p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>LCSC</th>
+<th>MPN</th>
+<th>Layer</th>
+<th style="text-align: right;">KiCad Rot (°)</th>
+<th>Mid X</th>
+<th>Mid Y</th>
+<th style="text-align: right;">CPL Rot (°)</th>
+<th>EasyEDA Zero-Orientation &amp; Mirrored <code>B.Cu</code> Pin-1 / Plunger Proof</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>SW5</code></strong></td>
+<td><strong><code>C2828254</code></strong></td>
+<td><strong><code>EVQP7J01P</code></strong></td>
+<td><strong><code>Bottom</code></strong></td>
+<td style="text-align: right;"><strong><code>+90.0</code></strong></td>
+<td><strong><code>88.8250mm</code></strong></td>
+<td><strong><code>-78.0000mm</code></strong></td>
+<td style="text-align: right;"><strong><code>90.00</code></strong></td>
+<td><strong>New West-North (<code>USER_C</code>):</strong> <code>-0.325 mm</code> <code>c_origin</code> X-shift -&gt; <code>Mid X = 88.825</code>; plunger projects <code>-X</code> outward (Right in Mirrored <code>B.Cu</code> view) <code>0.45 mm</code> past <code>x = -12.50 mm</code> West edge, identical to <code>SW2</code>.</td>
+</tr>
+<tr>
+<td><strong><code>SW6</code></strong></td>
+<td><strong><code>C2828254</code></strong></td>
+<td><strong><code>EVQP7J01P</code></strong></td>
+<td><strong><code>Bottom</code></strong></td>
+<td style="text-align: right;"><strong><code>+90.0</code></strong></td>
+<td><strong><code>88.8250mm</code></strong></td>
+<td><strong><code>-122.8000mm</code></strong></td>
+<td style="text-align: right;"><strong><code>90.00</code></strong></td>
+<td><strong>New West-South (<code>USER_D</code>):</strong> <code>-0.325 mm</code> <code>c_origin</code> X-shift -&gt; <code>Mid X = 88.825</code>; plunger projects <code>-X</code> outward <code>0.45 mm</code> past <code>x = -12.50 mm</code> West edge, identical to <code>SW2</code>.</td>
+</tr>
+<tr>
+<td><code>SW2</code></td>
+<td><code>C2828254</code></td>
+<td><code>EVQP7J01P</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+90.0</code></td>
+<td><code>88.8250mm</code></td>
+<td><code>-96.5000mm</code></td>
+<td style="text-align: right;"><code>90.00</code></td>
+<td>Inherited West-mid (<code>BOOT</code>): plunger projects <code>-X</code> West.</td>
+</tr>
+<tr>
+<td><code>SW1</code></td>
+<td><code>C2828254</code></td>
+<td><code>EVQP7J01P</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>-90.0</code></td>
+<td><code>111.1750mm</code></td>
+<td><code>-101.5000mm</code></td>
+<td style="text-align: right;"><code>270.00</code></td>
+<td>Inherited East-mid (<code>PWR</code>): <code>+0.325 mm</code> shift -&gt; <code>Mid X = 111.175</code>, <code>270°</code> (<code>180°</code> opposite <code>SW2/5/6</code>), plunger projects <code>+X</code> East (Left in Mirrored <code>B.Cu</code>).</td>
+</tr>
+<tr>
+<td><code>SW3, SW4</code></td>
+<td><code>C318884</code></td>
+<td><code>TS-1187A-B-A-B</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+90.0</code></td>
+<td><code>90.85 / 109.15</code></td>
+<td><code>-71.35 / -128.65</code></td>
+<td style="text-align: right;"><code>90.00</code></td>
+<td>Symmetric <code>6.00 × 3.75 mm</code> flat-face SPST (<code>90°</code>).</td>
+</tr>
+<tr>
+<td><code>J1</code></td>
+<td><code>C530612</code></td>
+<td><code>TYPE-C-31-M-22</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>162.26</code></td>
+<td><code>98.3953mm</code></td>
+<td><code>-127.9761mm</code></td>
+<td style="text-align: right;"><code>17.74</code></td>
+<td>Slanted South edge (<code>162.26°</code> + <code>c_origin</code> shift): mouth faces South-West perpendicular to <code>17.74°</code> edge; <code>2 × Ø 0.65 mm</code> NPTH pegs align cleanly.</td>
+</tr>
+<tr>
+<td><code>BT1</code></td>
+<td><code>C225111</code></td>
+<td><code>A1251WR-S-2P</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+90.0</code></td>
+<td><code>108.6000mm</code></td>
+<td><code>-120.0500mm</code></td>
+<td style="text-align: right;"><code>90.00</code></td>
+<td>Horizontal JST <code>1.25</code>: <code>+0.20 mm</code> X-shift, mouth faces <code>-X</code> West; <code>Pad 1</code> (<code>+</code> <code>VBAT</code>) South (<code>y = +20.675</code>), <code>Pad 2</code> (<code>-</code> <code>BAT_N</code>) North (<code>y = +19.425</code>).</td>
+</tr>
+<tr>
+<td><code>U1</code></td>
+<td><code>C5137654</code></td>
+<td><code>AW20198QNR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><strong><code>+90.0</code></strong></td>
+<td><code>100.0000mm</code></td>
+<td><code>-81.5000mm</code></td>
+<td style="text-align: right;"><strong><code>0.00</code></strong></td>
+<td><strong>Exact (<code>0.00°</code> err):</strong> At <code>KiCad = +90°</code> on <code>B.Cu</code>, <code>U1.1</code> sits at <code>(+1.80, -83.80)</code> (<code>y = -16.20</code> board-centered) = <strong>Bottom-Left</strong> in Mirrored <code>B.Cu</code> view; EasyEDA <code>C5137654</code> zero-orientation is <code>-BL</code>, so <code>CPL = 0.00°</code> aligns Pin 1 at Bottom-Left (matches <code>3d-bottom.png</code> dot!).</td>
+</tr>
+<tr>
+<td><code>U2</code></td>
+<td><code>C5137654</code></td>
+<td><code>AW20198QNR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><strong><code>+90.0</code></strong></td>
+<td><code>107.4000mm</code></td>
+<td><code>-91.8000mm</code></td>
+<td style="text-align: right;"><strong><code>0.00</code></strong></td>
+<td><strong>Exact (<code>0.00°</code> err):</strong> Identical <code>KiCad = +90°</code> -&gt; Pin 1 Bottom-Left in Mirrored <code>B.Cu</code> -&gt; <code>CPL = 0.00°</code>.</td>
+</tr>
+<tr>
+<td><code>U3</code></td>
+<td><code>C42411118</code></td>
+<td><code>RP2350A</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><strong><code>0.0</code></strong></td>
+<td><code>100.0000mm</code></td>
+<td><code>-106.4000mm</code></td>
+<td style="text-align: right;"><strong><code>180.00</code></strong></td>
+<td><strong>Exact (<code>0.00°</code> err):</strong> At <code>KiCad = 0°</code> on <code>B.Cu</code>, <code>U3.1</code> sits at <code>(-2.80, +9.44)</code> = <strong>Bottom-Right</strong> in Mirrored <code>B.Cu</code> (<code>3d-bottom.png</code>); EasyEDA <code>C42411118</code> <code>0°</code> is <code>-TL</code>, so <code>CPL = 180.00°</code> rotates <code>-TL -&gt; -BR</code>!</td>
+</tr>
+<tr>
+<td><code>U4</code></td>
+<td><code>C190862</code></td>
+<td><code>W25Q128JVPIQ</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+90.0</code></td>
+<td><code>96.3500mm</code></td>
+<td><code>-117.6000mm</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td>WSON-8 <code>6×5</code>: EasyEDA <code>0°</code> = <code>-BL</code>; at <code>KiCad = +90°</code> on <code>B.Cu</code>, <code>U4.1</code> is Bottom-Left in Mirrored <code>B.Cu</code> -&gt; <code>CPL = 0.00°</code>.</td>
+</tr>
+<tr>
+<td><code>U5</code></td>
+<td><code>C15220</code></td>
+<td><code>BQ24073RGTR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><strong><code>0.0</code></strong></td>
+<td><code>103.0200mm</code></td>
+<td><code>-118.5500mm</code></td>
+<td style="text-align: right;"><strong><code>180.00</code></strong></td>
+<td><strong>Exact (<code>0.00°</code> err):</strong> EasyEDA <code>C15220</code> <code>0°</code> = <code>-TL</code>; at <code>KiCad = 0°</code> on <code>B.Cu</code>, <code>U5.1</code> (<code>IN</code>) is Bottom-Right in Mirrored <code>B.Cu</code> -&gt; <code>CPL = 180.00°</code>.</td>
+</tr>
+<tr>
+<td><code>U6</code></td>
+<td><code>C2860046</code></td>
+<td><code>TPS7A0233PDQNR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180.0</code></td>
+<td><code>95.3000mm</code></td>
+<td><code>-113.4000mm</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td>X2SON-4 <code>1×1</code>: EasyEDA <code>0°</code> = <code>-BR</code>; at <code>KiCad = 180°</code> on <code>B.Cu</code>, <code>U6.1</code> (<code>OUT</code>) is Top-Left -&gt; <code>0.00°</code> matches pad-for-pad (<code>sunflower-s2-110-usbc/phase10.md</code> line 175).</td>
+</tr>
+<tr>
+<td><code>U7</code></td>
+<td><code>C15999</code></td>
+<td><code>USBLC6-2P6</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180.0</code></td>
+<td><code>102.2000mm</code></td>
+<td><code>-121.9500mm</code></td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td>SOT-666: <code>180°</code>-symmetric diode array (<code>Pin 1/3</code> ↔ <code>Pin 6/4</code>, <code>Pin 2</code> <code>GND</code> ↔ <code>Pin 5</code> <code>VBUS</code>; <code>U7.1</code> matches EasyEDA <code>180.00°</code>).</td>
+</tr>
+<tr>
+<td><code>U8</code></td>
+<td><code>C669687</code></td>
+<td><code>XB9901A</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180.0</code></td>
+<td><code>110.0000mm</code></td>
+<td><code>-112.6000mm</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td>DFN-6 <code>1.8×1.4</code>: EasyEDA <code>-BL</code> at <code>0°</code> places <code>U8.1..3</code> (<code>GND</code> bar) Bottom, <code>U8.4..5</code> (<code>BAT_N</code> bar) Top-Right, <code>U8.6</code> (<code>VDD</code>) Top-Left (<code>0.000 mm</code> pad error).</td>
+</tr>
+<tr>
+<td><code>U9</code></td>
+<td><code>C189624</code></td>
+<td><code>LIS2DW12TR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180.0</code></td>
+<td><code>91.2000mm</code></td>
+<td><code>-105.2000mm</code></td>
+<td style="text-align: right;"><code>270.00</code></td>
+<td>LGA-12 <code>2×2</code>: EasyEDA <code>-BL</code> at <code>270°</code> places <code>U9.1</code> (<code>SCL</code>) Top-Left in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>Q1</code></td>
+<td><code>C236117</code></td>
+<td><code>NTZD3155CT1G</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180.0</code></td>
+<td><code>109.2000mm</code></td>
+<td><code>-107.6000mm</code></td>
+<td style="text-align: right;"><code>270.00</code></td>
+<td>SOT-563: EasyEDA <code>-BL</code> at <code>270°</code> places <code>Q1.1</code> (<code>GND</code>) Top-Left in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>L1, Y1</code></td>
+<td><code>C42411119</code> / <code>C20625731</code></td>
+<td><code>2016</code> / <code>3225</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>0.0</code></td>
+<td><code>102.0 / 98.7</code></td>
+<td><code>-113.6 / -98.2</code></td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td><code>L1</code> start-dot on <code>+1V1</code> (<code>Pad 1</code>); <code>Y1.1</code> (<code>XIN</code>) Bottom-Right (<code>Pads 2, 4 = GND</code>, <code>180°</code>-symmetric).</td>
+</tr>
+<tr>
+<td><code>Q2</code></td>
+<td><code>C2693594</code></td>
+<td><code>XYC-PT19C-L1</code></td>
+<td><code>Top</code></td>
+<td style="text-align: right;"><code>-17.74</code></td>
+<td><code>100.0000mm</code></td>
+<td><code>-70.1000mm</code></td>
+<td style="text-align: right;"><code>342.26</code></td>
+<td>Top-bezel phototransistor: Collector <code>Pad 1</code> West-NW along <code>-17.74°</code> (<code>342.26°</code>) North edge.</td>
+</tr>
+<tr>
+<td><code>LED1..132</code></td>
+<td><code>C965840</code></td>
+<td><code>XL-1615RGBC-RF</code></td>
+<td><code>Top</code></td>
+<td style="text-align: right;"><code>0.0</code></td>
+<td>Grid</td>
+<td>Grid</td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td><code>132</code> top RGB LEDs: <code>KiCad = 0° + 180° = 180.00°</code> per EasyEDA <code>C965840</code> tape orientation.</td>
+</tr>
+<tr>
+<td><code>R46, R47, C71, C72</code></td>
+<td><code>C11702</code> / <code>C1525</code></td>
+<td><code>0402</code> R / C</td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>180.0</code></td>
+<td><code>92.6000mm</code></td>
+<td><code>-79.0..-119.8</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td>Non-polarized <code>0402</code> passives paired east of <code>SW5</code>/<code>SW6</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>3. Qty-10 BOM Cost (<code>export_and_cost.py --cost --qty 10</code>) &amp; Live JLCPCB PCBA Stock (<code>2026-11-08</code>)</h2>
+<ul>
+<li><strong><code>p2-132-usb6</code> BOM @ qty 10:</strong> <strong><code>$13.25 / board</code></strong> (<code>+$0.39</code> over live <code>p2-132-usb</code> <code>$12.86</code>; <code>35</code> unique LCSC parts, <code>223</code> placed parts).</li>
+<li><strong>Live JLCPCB PCBA SMT stock (<code>selectSmtComponentList/v2</code>):</strong> <strong><code>40/40</code> BOM lines (<code>100%</code>) in stock</strong> (<code>C2828254</code> <code>EVQP7J01P</code> = <code>6,887</code>; <code>C42411118</code> <code>RP2350A</code> = <code>3,100</code>; <code>C5137654</code> <code>AW20198QNR</code> = <code>6,055</code>; <code>C42411119</code> <code>L1</code> = <code>1,439</code>; <code>C23733</code> <code>4.7 µF</code> = <code>1,012,436</code>; <code>C2860046</code> <code>TPS7A0233</code> = <code>529</code>).</li>
+</ul>
+<hr />
+<h2>4. Independent Fresh-Context Release Review (<code>agy</code> <code>gemini-4-argon-high</code>) &amp; Dispositions</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Finding Summary</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B1</code></td>
+<td>BLOCKER</td>
+<td>Earlier <code>cpl-overlay.png</code> plotted <code>B.Cu</code> in Top-Through coords (<code>+X</code> Right) while <code>3d-bottom.png</code> is Mirrored Bottom (<code>+X</code> Left), making <code>U1/U2</code> (<code>KiCad +90°</code>, <code>CPL 0°</code>) appear mismatched against <code>U3/U5</code> (<code>KiCad 0°</code>, <code>CPL 180°</code>).</td>
+<td><strong>Fixed &amp; Proven</strong>: Re-plotted all <code>B.Cu</code> panels in <code>cpl-overlay.png</code> in <strong>Mirrored Bottom view (<code>+X</code> Left, <code>-X</code> Right)</strong> with explicit <code>K:&lt;KiCad°&gt; C:&lt;CPL°&gt;</code> labels and added <code>KiCad Rot</code> column above (<code>U1/U2</code> <code>KiCad = +90°</code> + EasyEDA <code>-BL</code> -&gt; <code>CPL = 0.00°</code>; <code>U3/U5</code> <code>KiCad = 0°</code> + EasyEDA <code>-TL</code> -&gt; <code>CPL = 180.00°</code>, <code>0.00°</code> error across all <code>223</code> parts).</td>
+</tr>
+<tr>
+<td><code>B2</code></td>
+<td>BLOCKER</td>
+<td><code>phase10.md</code> previously omitted <code>POFV = Yes</code> for the <code>118</code> SMD via-in-pad sites and <code>1</code> <code>U2</code> EP via touched <code>B.Paste</code>.</td>
+<td><strong>Fixed</strong>: Specified <strong><code>POFV = Yes</code> (VIPPO) + <code>ENIG 1U"</code></strong> in §1.C &amp; User Decision #3 below, and removed the redundant 6th <code>U2</code> EP via (<code>729</code> vias, <strong><code>0</code> EP paste overlaps</strong>).</td>
+</tr>
+<tr>
+<td><code>M1–M4</code></td>
+<td>MAJOR</td>
+<td><code>bringup.md</code> had swapped <code>C1.1</code> coords / <code>R4 = 3.0 kΩ</code> / <code>15 ms</code> debounce and lacked <code>GCC</code>/<code>SRCR</code> guards; <code>fab/</code> lacked <code>assembly-*.pdf</code> &amp; <code>.step</code>; zip named <code>gerbers-jlcpcb.zip</code>.</td>
+<td><strong>Fixed</strong>: Corrected <code>bringup.md</code> (<code>C1.1 = (+4.55, +21.27)</code>, <code>R4 = 3.0 kΩ</code>, <code>&gt;= 20 ms</code> debounce, <code>SRCR = 0x07</code>, <code>GCC &lt;= 0x74</code>/<code>0x44</code>, JST polarity + <code>1.28 mm</code> <code>BT1</code> gap), exported <code>assembly-bottom.pdf</code>, <code>assembly-top.pdf</code>, &amp; <code>parallelogram-p2-132-usb6.step</code>, and exported <code>parallelogram-p2-132-usb6-gerbers.zip</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Independent Fresh-Context Re-Review Verdict:</strong> <strong>VERDICT: PASS (ready for user sign-off)</strong> (all technical release checks verified; awaiting user sign-off in §5).</p>
+<hr />
+<h2>5. Decisions Requiring User Sign-Off (Phase 10 Release)</h2>
+<ol>
+<li><strong>Approve fab release package (<code>hw/parallelogram/p2-132-usb6/fab/{parallelogram-p2-132-usb6-gerbers.zip,bom-jlcpcb.csv,cpl-jlcpcb.csv,assembly-bottom.pdf,assembly-top.pdf,parallelogram-p2-132-usb6.step}</code>):</strong>
+   - <code>4</code>-layer <code>JLC04161H-7628</code> (<code>1.6 mm</code> FR-4, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <strong><code>ENIG 1U"</code></strong> finish, <strong><code>POFV = Yes</code> (epoxy-filled &amp; copper-capped vias)</strong>, double-sided PCBA with <code>Pass 2 F.Cu &lt;= 245 °C</code> for <code>Q2</code>), qty-10 BOM <strong><code>$13.25 / board</code></strong>, <code>40/40</code> BOM rows in JLCPCB PCBA stock (<code>223</code> assembled parts).</li>
+<li><strong>Confirm CPL orientation &amp; <code>0.45 mm</code> West-edge actuator overhang on <code>SW5</code> (<code>USER_C</code>) and <code>SW6</code> (<code>USER_D</code>):</strong>
+   - Verified in Mirrored-Bottom <code>cpl-overlay.png</code> and <code>3d-bottom.png</code>: <code>SW5</code> (<code>88.825, -78.000</code>, <code>Rot = 90°</code>) and <code>SW6</code> (<code>88.825, -122.800</code>, <code>Rot = 90°</code>) match <code>SW2</code>'s <code>90°</code> West-facing plunger orientation (<code>0.25 mm</code> proud at <code>0.20 mm</code> full stroke), while <code>J1</code> remains untouched at its inherited <code>17.74°</code> (<code>KiCad = 162.26°</code>) South-edge angle.</li>
+<li><strong>Confirm git release tag (<code>parallelogram-p2-132-usb6-revP1U6</code>) upon commit.</strong></li>
+</ol></div></body></html>

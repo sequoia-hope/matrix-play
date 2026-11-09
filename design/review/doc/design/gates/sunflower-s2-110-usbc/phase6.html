@@ -1,0 +1,277 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 6: Component Placement — Sunflower s2-110-usbc</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase6.md'>design/gates/sunflower-s2-110-usbc/phase6.md</a></p><h1>Gate 6: Component Placement — Sunflower <code>s2-110-usbc</code></h1>
+<p>Status: <strong><code>failed</code></strong> (<code>placement_check.py</code>, <code>sync_check.py</code>, and KiCad DRC all pass with <code>0</code> errors / <code>0</code> courtyard overlaps, <strong>held</strong> on <code>BT1</code> Molex <code>RESTRICTED AREA</code> pad-escape violation, <code>LX cutout L2</code> placed on <code>In1.Cu</code> instead of adjacent <code>In2.Cu</code>, <code>U8</code> cell protector placed <code>29.11 mm</code> away from <code>BT1</code> on the opposite SE rim, and <code>U4</code> flash decoupler <code>C22</code> placed <code>5.51 mm</code> away on the wrong side of <code>U4</code> — see <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase10.md">phase10.md</a> for <code>Rev S3C</code> prototype waiver vs <code>Rev S3D</code> respin options).</p>
+<h2>Checklist (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/placement.md">placement.md</a>, Phase 6)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Evidence</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fixed items match <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md">brief-s2-110-usbc.md</a> (<code>Edge.Cuts</code>, <code>0</code> mounting holes, <code>J1</code>, <code>BT1</code>, <code>SW1</code>, <code>SW2</code>, <code>Q2</code>, <code>D1..D110</code>)</td>
+<td>Coordinates/rotations match <code>config.py</code> &amp; <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md">brief-s2-110-usbc.md</a> (<code>3.40 mm</code> <code>BT1</code> height &amp; <code>3.02/4.04 mm</code> inward clearance documented); footprints not marked <code>(locked)</code> in <code>.kicad_pcb</code></td>
+<td>partial</td>
+</tr>
+<tr>
+<td><code>placement_check.py</code> passes (output pasted below)</td>
+<td><code>PASS: 0 errors, 0 warnings</code> (<code>2587 mm</code> MST ratsnest over <code>134</code> nets)</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Schematic–board parity (<code>sync_check.py</code> &amp; <code>kicad-cli pcb drc --schematic-parity</code>)</td>
+<td><code>206</code> symbols = <code>206</code> footprints, <code>0</code> parity errors, <code>0</code> courtyard overlaps</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>Datasheet layout guidelines &amp; rule areas followed per part</td>
+<td><strong>Failed</strong> on <code>BT1</code> Molex <code>RESTRICTED AREA</code>, <code>U3</code>/<code>L1</code> <code>In2.Cu</code> <code>LX</code> cutout, <code>U8</code> inline proximity to <code>BT1</code>, and <code>C22 -&gt; U4.8</code> (<code>5.51 mm</code>) — per-part table below</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>Independent visual placement review (<a href="../../renders/sunflower-s2-110-usbc/top.png">top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/bottom.png">bottom.png</a>, <a href="../../renders/sunflower-s2-110-usbc/3d-top.png">3d-top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/3d-bottom.png">3d-bottom.png</a>, <a href="../../renders/sunflower-s2-110-usbc/assembly-top.png">assembly-top.png</a>, <a href="../../renders/sunflower-s2-110-usbc/assembly-bottom.png">assembly-bottom.png</a>)</td>
+<td>Completed (<code>2 BLOCKER, 2 MAJOR, 6 MINOR, 3 NOTE</code>)</td>
+<td><strong>failed</strong></td>
+</tr>
+<tr>
+<td>User reviewed placement render in PCB view</td>
+<td>Deferred to user review alongside Gates 4 &amp; 10</td>
+<td>pending</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Per-Part Datasheet Layout Guideline Audit</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Part(s)</th>
+<th>Datasheet Guideline</th>
+<th><code>s2-110-usbc</code> Placement Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>U3</code>, <code>L1</code>, <code>C16</code>–<code>C21</code>, <code>R13</code> (<code>RP2350A</code> + <code>3.3 µH</code>)</td>
+<td><a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/chips/rp2350.md">rp2350.md</a>: <code>L1</code>, <code>C16</code> (<code>1.17 mm</code>), <code>C18</code> (<code>2.13 mm</code>), <code>C17</code> (<code>2.83 mm</code>), <code>R13</code> congruent to RPi reference; <code>L1.1</code> dot on <code>+1V1</code>; plane cutout directly under <code>VREG_LX</code>/<code>L1</code></td>
+<td><strong>Partial (<code>BLOCKER-2</code>):</strong> <code>B.Cu</code> 3D $SO(3)$ placement &amp; <code>L1</code> polarity match RPi reference (<code>0.89–3.10 mm</code> local decouplers), <strong>but</strong> <code>LX cutout L2</code> was placed on <code>In1.Cu</code> (<code>1.29 mm</code> away) instead of <code>In2.Cu</code> (<code>0.21 mm</code> directly under <code>B.Cu</code> <code>VREG_LX</code>/<code>L1</code>)</td>
+</tr>
+<tr>
+<td><code>Y1</code>, <code>C23</code>, <code>C24</code>, <code>R17</code> (<code>ABM8-272-T3</code> <code>12 MHz</code>)</td>
+<td>Short <code>B.Cu</code>-only loop (<code>≤ 11 mm</code>), <code>0</code> vias, away from <code>VREG_LX</code>/<code>L1</code></td>
+<td><strong>Pass (<code>MINOR-6</code>):</strong> <code>0</code> vias, <code>15.8 mm</code> from <code>L1</code>; <code>XIN</code> sits on <code>Y1.1</code> (<code>5.8 mm</code> pad-to-pin, <code>1.68 mm</code> routed track)</td>
+</tr>
+<tr>
+<td><code>BT1</code> (<code>Molex 53261-0271</code>)</td>
+<td>Molex <code>532610001-SD</code> Sh. 2: <code>3.0 × 2.5 mm</code> <code>RESTRICTED AREA</code> (<code>no copper pattern or solder</code>) under housing behind signal pads</td>
+<td><strong>Fail (<code>BLOCKER-1</code>):</strong> Signal pads abut <code>Edge.Cuts</code> (<code>0.408 mm</code> pad-to-edge) with no via-in-pad allowed, forcing <code>VBAT</code> &amp; <code>BAT_N</code> traces through Molex's prohibited area under <code>BT1</code> (no rule area drawn); inward plug gap to <code>C9</code> is <code>3.02 mm</code></td>
+</tr>
+<tr>
+<td><code>U8</code>, <code>R8</code>, <code>C6</code> (<code>XB9901A</code>)</td>
+<td><code>xb9901a.pdf</code> p. 10 Fig. 6: inline right at battery connector with short, wide high-current path</td>
+<td><strong>Fail (<code>MAJOR-1</code>):</strong> Placed at SE rim <code>(+6.45, +12.79)</code>, <strong><code>29.11 mm</code> Euclidean (<code>&gt; 35 mm</code> routed)</strong> across the board from <code>BT1</code>, with <code>C6</code> (<code>3.32 mm</code>) split north of <code>U7</code></td>
+</tr>
+<tr>
+<td><code>U4</code>, <code>C22</code> (<code>W25Q128JVPIQ</code>)</td>
+<td>High-speed <code>75 MHz</code> QSPI decoupling right at <code>U4.8</code> (<code>VCC</code>), <code>NoEPCopper</code> under body</td>
+<td><strong>Fail (<code>MAJOR-2</code>):</strong> <code>NoEPCopper</code> respected and QSPI pins face <code>U3</code> (<code>5.51–13.85 mm</code>), <strong>but</strong> <code>C22</code> sits on the West side of <code>U4</code> (<code>5.51 mm</code> from <code>U4.8</code> on the NE corner)</td>
+</tr>
+<tr>
+<td><code>U5</code>, <code>C1</code>, <code>C2</code>, <code>C5</code> (<code>BQ24073</code>)</td>
+<td>Bypass caps close on <code>IN</code> (<code>C1</code> <code>2.35 mm</code>), <code>OUT</code> (<code>C2</code> <code>2.82 mm</code>), <code>BAT</code> (<code>C5</code> <code>3.27 mm</code>); thermal pad tied to <code>GND</code></td>
+<td><strong>Pass</strong> (placement clean; <code>U5.17</code> non-POFV paste overlap tracked in Gate 7)</td>
+</tr>
+<tr>
+<td><code>U6</code>, <code>C3</code>, <code>C4</code> (<code>TPS7A0233</code>)</td>
+<td><code>1 µF</code> input/output within <code>&lt; 2 mm</code></td>
+<td><strong>Pass:</strong> <code>C3 -&gt; U6.4 = 1.82 mm</code>, <code>C4 -&gt; U6.1 = 1.08 mm</code></td>
+</tr>
+<tr>
+<td><code>U7</code> (<code>USBLC6-2P6</code>)</td>
+<td>Flow-through inline between <code>J1</code> and <code>R14/R15</code>/<code>U3</code></td>
+<td><strong>Pass (<code>MINOR-1</code>):</strong> Wired flow-through (<code>0</code> stubs); <code>~7.0 mm</code> East of <code>J1</code> center pins, <code>~4.7 mm</code> from <code>C1</code></td>
+</tr>
+<tr>
+<td><code>U1</code>, <code>U2</code>, <code>C30</code>–<code>C34</code>, <code>C40</code>–<code>C44</code> (<code>AW20198QNR</code>)</td>
+<td><code>0402</code> HF bypass closest to <code>VCC1/VCC2</code> ahead of <code>22 µF</code> <code>0603</code> bulk</td>
+<td><strong>Pass:</strong> <code>0402</code> caps at <code>1.29–2.66 mm</code>, <code>0603</code> bulk at <code>3.56–3.93 mm</code></td>
+</tr>
+<tr>
+<td><code>U9</code>, <code>C25</code>–<code>C27</code> (<code>LIS2DW12</code>)</td>
+<td><code>100 nF</code> + <code>4.7 µF</code> close to <code>VDD</code>/<code>VDD_IO</code>, away from board flex/heat</td>
+<td><strong>Pass:</strong> <code>C25 = 1.72 mm</code>, <code>C26 = 2.08 mm</code>, <code>C27 = 3.51 mm</code></td>
+</tr>
+<tr>
+<td><code>D1</code>–<code>D110</code>, <code>Q2</code> (<code>F.Cu</code>)</td>
+<td>Keepouts around <code>J1</code> <code>6</code> holes &amp; <code>Q2</code> optical aperture</td>
+<td><strong>Pass (<code>MINOR-3</code>):</strong> <code>0</code> overlaps; outer LED pad corners reach <code>r = 18.374 mm</code> (<code>0.626 mm</code> inside <code>Edge.Cuts</code>; any bezel lip must stay at <code>r ≥ 18.5 mm</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Verbatim Check Outputs (<code>2026-11-08</code>)</h2>
+<h3>1. <code>placement_check.py</code></h3>
+<p>Command:
+<code>python3 .claude/skills/pcb-design/scripts/placement_check.py hw/sunflower/s2-110-usbc/sunflower.kicad_pcb</code></p>
+<pre><code class="language-text">placement_check: hw/sunflower/s2-110-usbc/sunflower.kicad_pcb
+  Y1 pad 1 (Net-(U3-XIN)) is 5.8 mm from its IC pin
+  Y1 pad 3 (Net-(C24-Pad1)) is 3.9 mm from its IC pin
+  ratsnest (MST, all nets except GND): 2587 mm over 134 nets
+
+  decoupler -&gt; pin, pad centre to pad centre
+    C1    -&gt; U5.13   VBUS        2.35 mm
+    C10   -&gt; U3.20   +3V3        2.40 mm
+    C11   -&gt; U3.30   +3V3        1.60 mm
+    C12   -&gt; U3.38   +3V3        1.87 mm
+    C13   -&gt; U3.53   +3V3        3.10 mm
+    C14   -&gt; U3.44   +3V3        1.69 mm
+    C16   -&gt; U3.49   +3V3        1.17 mm
+    C17   -&gt; U3.46   /MCU/VREG_AVDD  2.83 mm
+    C18   -&gt; U3.50   +1V1        2.13 mm
+    C19   -&gt; U3.23   +1V1        1.63 mm
+    C2    -&gt; U5.10   VSYS        2.82 mm
+    C20   -&gt; U3.6    +1V1        1.60 mm
+    C21   -&gt; U3.39   +1V1        1.69 mm
+    C22   -&gt; U4.8    +3V3        5.51 mm
+    C25   -&gt; U9.9    +3V3        1.72 mm
+    C26   -&gt; U9.9    +3V3        2.08 mm
+    C27   -&gt; U9.10   +3V3        3.51 mm
+    C3    -&gt; U6.4    VSYS        1.82 mm
+    C30   -&gt; U1.5    VSYS        3.56 mm
+    C31   -&gt; U1.5    VSYS        2.23 mm
+    C32   -&gt; U1.5    VSYS        2.23 mm
+    C33   -&gt; U1.22   VSYS        1.29 mm
+    C34   -&gt; U1.22   VSYS        1.36 mm
+    C4    -&gt; U6.1    +3V3        1.08 mm
+    C40   -&gt; U2.5    VSYS        3.93 mm
+    C41   -&gt; U2.5    VSYS        2.66 mm
+    C42   -&gt; U2.5    VSYS        2.66 mm
+    C43   -&gt; U2.22   VSYS        1.29 mm
+    C44   -&gt; U2.22   VSYS        1.36 mm
+    C5    -&gt; U5.2    VBAT        3.27 mm
+    C6    -&gt; U8.6    Net-(U8-VDD)  3.32 mm
+    C8    -&gt; U3.1    +3V3        1.60 mm
+    C9    -&gt; U3.11   +3V3        1.60 mm
+
+  PASS: 0 errors, 0 warnings
+</code></pre>
+<h3>2. <code>sync_check.py</code> &amp; Courtyard / Parity DRC</h3>
+<p>Command:
+<code>python3 .claude/skills/pcb-design/scripts/sync_check.py hw/sunflower/s2-110-usbc</code></p>
+<pre><code class="language-text">sync_check: hw/sunflower/s2-110-usbc
+  schematic sunflower.kicad_sch: 206 symbols (0 excluded from board)
+  board sunflower.kicad_pcb: 206 footprints (0 board-only)
+  BOM bom-jlcpcb.csv: 191 designators
+  CPL cpl-jlcpcb.csv: 191 placements
+  191 parts to build; required fields: LCSC
+  stock not checked: re-check every LCSC part at release (phase 10)
+
+  PASS: 0 errors, 0 warnings
+</code></pre>
+<p>KiCad DRC (<code>kicad-cli pcb drc --severity-all --schematic-parity --format json</code>): <code>violations: 0</code>, <code>unconnected_items: 0</code>, <code>schematic_parity: 0</code> (full JSON in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase7.md">phase7.md</a>).</p>
+<h2>Independent Review (<code>2026-11-08</code>, fresh-context <code>agy</code> reviewer)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Severity</th>
+<th>Finding</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BLOCKER-1</code></td>
+<td>BLOCKER</td>
+<td><code>BT1</code> (<code>Molex 53261-0271</code>) rim placement leaves <code>0</code> outward escape room without via-in-pad, forcing raw <code>VBAT</code>/<code>BAT_N</code> traces across Molex's <code>3.0 × 2.5 mm</code> <code>RESTRICTED AREA</code> under the housing (<code>no rule area drawn</code>); inward mating clearance to <code>C9</code>/<code>U3</code> is <code>3.02 / 4.04 mm</code>; height is <code>3.40 mm</code> mated</td>
+<td><strong>Upheld — Gate 6 held (<code>failed</code>):</strong> Height (<code>3.40 mm</code>) and exact <code>3.02 / 4.04 mm</code> inward plug clearance updated in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md">brief-s2-110-usbc.md</a>; physical <code>BT1</code> pullback + Molex <code>RESTRICTED AREA</code> rule area requires board copper edit (<code>Rev S3D</code> vs <code>Rev S3C</code> bench prototype waiver in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a> / <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/sunflower-s2-110-usbc/phase10.md">phase10.md</a>)</td>
+</tr>
+<tr>
+<td><code>BLOCKER-2</code></td>
+<td>BLOCKER</td>
+<td><code>RP2350A</code> (<code>U3</code>) switch-node cutout (<code>LX cutout L2</code>) placed on <code>In1.Cu</code> (<code>1.29 mm</code> away) instead of <code>In2.Cu</code> (<code>0.21 mm</code> directly beneath <code>B.Cu</code> <code>VREG_LX</code>/<code>L1</code>)</td>
+<td><strong>Upheld — Gate 6 held (<code>failed</code>):</strong> Quantified in Phase 8 (<code>1.31 pF</code> parasitic switch-node coupling; buck remains functional on bench); <code>In2.Cu</code> cutout + <code>In1.Cu ↔ In2.Cu</code> layer swap tracked for <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>MAJOR-1</code></td>
+<td>MAJOR</td>
+<td><code>U8</code> (<code>XB9901A</code>) placed <code>29.11 mm</code> away from <code>BT1</code> at SE rim (not inline at <code>BT1</code>), with <code>C6</code> (<code>3.32 mm</code>) split north of <code>U7</code></td>
+<td><strong>Upheld — Gate 6 held (<code>failed</code>):</strong> Adds <code>~220 mΩ</code> round-trip trace resistance on raw battery path (modeled in Phase 8 <a href="../../sim/sunflower-s2-110-usbc/pdn_headroom.png">pdn_headroom.png</a>); NW co-location with <code>BT1</code> tracked for <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>MAJOR-2</code></td>
+<td>MAJOR</td>
+<td><code>U4</code> (<code>W25Q128JVPIQ</code>) decoupler <code>C22</code> placed on West side of <code>U4</code>, <code>5.51 mm</code> away from <code>U4.8</code> (<code>VCC</code> on NE corner)</td>
+<td><strong>Upheld — Gate 6 held (<code>failed</code>):</strong> Modeled in Phase 8 (<code>19.5 mV</code> transient rail droop at <code>75 MHz</code> QSPI, electrically safe for <code>2.7–3.6 V</code> flash); moving <code>C22</code> beside <code>U4.8</code> tracked for <code>Rev S3D</code></td>
+</tr>
+<tr>
+<td><code>MINOR-1</code></td>
+<td>MINOR</td>
+<td><code>U7</code> (<code>USBLC6-2P6</code>) detoured <code>~7.0 mm</code> East of <code>J1</code> <code>D±</code> pads and <code>~4.7 mm</code> from <code>C1</code> (<code>34.55 / 35.87 mm</code> total <code>USB_D±</code> length)</td>
+<td>Fixed <code>34.55 / 35.87 mm</code> length in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md#L44">brief-s2-110-usbc.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/stackup-4l.md">stackup-4l.md</a>; <code>12 Mbps</code> FS margin verified in Phase 8</td>
+</tr>
+<tr>
+<td><code>MINOR-2</code></td>
+<td>MINOR</td>
+<td>Single <code>GND</code> test pad (<code>TP8</code>) <code>22–30 mm</code> West of East test pads; <code>13/14</code> test pads inside <code>Ø35 mm</code> battery circle; <code>TP9/TP10</code> absent</td>
+<td>Documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/bringup-s2-110-usbc.md">bringup-s2-110-usbc.md</a>: clip <code>J1</code> metal USB-C shell as South <code>GND</code> return, complete Steps 1–7 before bonding LiPo, then cover <code>B.Cu</code> test pads with <code>0.05 mm</code> Kapton tape</td>
+</tr>
+<tr>
+<td><code>MINOR-3</code></td>
+<td>MINOR</td>
+<td>Outer LED pads reach <code>r_max = 18.374 mm</code> (<code>0.626 mm</code> to edge; bezel ID must be <code>r ≥ 18.5 mm</code>); <code>0.18–0.29 mm</code> <code>F.Cu</code> annular-ring gap to <code>D10/D104/D110</code> around <code>J1</code> slots</td>
+<td>Documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md#L20">brief-s2-110-usbc.md</a>: <strong>forbid <code>F.Cu</code> wave/hand soldering on <code>J1</code></strong> (<code>sunflower-B_Paste.gbp</code> omits paste on <code>J1</code>'s 4 PTH slots; tack outer <code>B.Cu</code> slot edges only on <code>Rev S3C</code>, or switch to full-SMT <code>TYPE-C-31-M-22</code> / add <code>B.Paste</code> in <code>Rev S3D</code>)</td>
+</tr>
+<tr>
+<td><code>MINOR-4</code></td>
+<td>MINOR</td>
+<td><code>C7</code> (<code>VBAT_SENSE</code> filter cap) sits at <code>Q1</code> (<code>~22 mm</code> from <code>U3.40</code>) rather than right at <code>U3.40</code></td>
+<td>Noted for <code>Rev S3D</code>; <code>100 nF</code> low-frequency RC (<code>≥ 30 ms</code> settle) + <code>16</code>-sample averaging mitigates coupling on bench</td>
+</tr>
+<tr>
+<td><code>MINOR-5</code></td>
+<td>MINOR</td>
+<td>Sparse in-pad <code>GND</code> vias (<code>U3.61</code>: <code>1</code> in-pad + <code>1</code> perimeter, <code>U2.41</code>: <code>1+1</code>, <code>U1.41</code>: <code>0+5</code>); <code>SW1/SW2</code> pads <code>0.282 mm</code> from <code>Edge.Cuts</code></td>
+<td>Tracked in Gate 7 (<code>B5</code>) and modeled in Phase 8 (<code>+1.6 K</code> junction penalty on <code>U3</code>, well within <code>125 °C</code> limit)</td>
+</tr>
+<tr>
+<td><code>MINOR-6</code></td>
+<td>MINOR</td>
+<td><code>Y1</code> at <code>0°</code> puts <code>XIN</code> on north pad (<code>5.8 mm</code> pad-to-pin, <code>1.68 mm</code> routed) and <code>R17</code>–<code>Y1</code> on <code>8.44 mm</code> wrap</td>
+<td>Verified safe in Phase 8 (<code>CL,eff ≈ 9.8 pF</code>, <code>13×</code> <code>gm</code> startup margin, <code>0</code> vias); <code>180°</code> <code>Y1</code> rotation noted as optional <code>Rev S3D</code> polish</td>
+</tr>
+</tbody>
+</table></div></div></body></html>

@@ -1,0 +1,173 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Mechanical and layout brief: Sunflower s2-110-usbc-s3d (Rev S3D)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc-s3d.md'>design/study/sunflower/brief-s2-110-usbc-s3d.md</a></p><h1>Mechanical and layout brief: Sunflower <code>s2-110-usbc-s3d</code> (Rev S3D)</h1>
+<p>Phase 4 layout brief for <code>hw/sunflower/s2-110-usbc-s3d/sunflower.kicad_pcb</code>.
+Parent brief: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/study/sunflower/brief-s2-110-usbc.md">brief-s2-110-usbc.md</a> (<code>Rev S3C</code>).
+Floorplan schematic SVG: <a href="floorplan-s2-110-usbc-s3d.svg">floorplan-s2-110-usbc-s3d.svg</a> (conceptual block/keepout diagram incl. <code>Ø35 mm</code> cell circle); <code>pcbnew</code> placement plot: <a href="../../renders/sunflower-s2-110-usbc-s3d/floorplan.png">floorplan.png</a> (exact placed footprints incl. passives, <code>NT1/NT2</code>, and test pads; see also <code>bringup-map-bottom.png</code> for <code>TP1..TP16</code> callouts).
+Generator geometry: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/sunflower/config.py">config.py</a> (<code>VARIANTS["s2-110-usbc-s3d"]</code>).</p>
+<p>All coordinates <code>(x, y)</code> below are in millimetres relative to the board centre <code>(100.000, 100.000)</code> (<code>+x</code> East, <code>+y</code> South, <code>−y</code> North / 12-o'clock top rim when worn).</p>
+<h2>1. Board outline and size</h2>
+<ul>
+<li><strong>Outline:</strong> Exact circle on <code>Edge.Cuts</code>, diameter <strong><code>38.000 mm</code></strong> (<code>R = 19.000 mm</code>, area <code>1,134.1 mm²</code>).</li>
+<li><strong>Bezel / copper clearance:</strong> Board copper-to-edge rule <strong><code>0.300 mm</code></strong> (<code>sunflower.kicad_dru</code> <code>"Board 0.30mm copper-to-edge margin"</code>), with <code>0.250 mm</code> floor in <code>sunflower.kicad_pro</code> exclusively for edge-mounted <code>SW1</code>/<code>SW2</code> pads (<code>0.282 mm</code> to <code>Edge.Cuts</code>). Radially outermost LED centre (<code>D44</code> at <code>(−11.450, −12.850)</code>) sits at <code>r = 17.211 mm</code> (<code>D110</code> at <code>r = 16.461 mm</code>; <code>0.626 mm</code> min rotated pad-corner clearance to <code>Edge.Cuts</code>); <code>Q2</code> pads clear <code>Edge.Cuts</code> by <code>0.364 mm</code>, <code>BT1</code> solder tabs by <code>0.408 mm</code>, and <code>J1</code> SMD shell pads by <code>0.662 mm</code>.</li>
+</ul>
+<h2>2. Mounting holes</h2>
+<ul>
+<li><strong>Count:</strong> <strong>None (<code>0</code> mounting holes).</strong> Wearable retention/enclosure (if used) grips the rim outside <code>r &gt; 18.5 mm</code> with cutouts/reliefs at <code>J1</code> (capturing its stainless-steel shell for cable strain relief), <code>SW1</code>/<code>SW2</code>, <code>BT1</code> rear pin tips (<code>r = 18.592 mm</code> on <code>B.Cu</code>), and a clear optical aperture over <code>Q2</code> at 12 o'clock <code>(0, −18.20)</code>.</li>
+</ul>
+<h2>3. Connector and rim-part placement</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Part</th>
+<th>Side</th>
+<th>Centre <code>(x, y)</code> mm</th>
+<th>Rot (KiCad)</th>
+<th>Facing / Overhang / Mating &amp; Strain Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>J1</code></td>
+<td>HRO <code>TYPE-C-31-M-22</code> (<code>C530612</code>) 16-pin Full-SMT USB-C</td>
+<td><code>B.Cu</code></td>
+<td><code>(+0.000, +14.170)</code></td>
+<td><code>180.0°</code></td>
+<td>South rim (<code>6 o'clock</code>), mouth facing <strong>outward (<code>+y</code>)</strong>, height <strong><code>3.26 ± 0.15 mm</code></strong> (<code>0.10 mm</code> tab coplanarity). Shell (<code>8.94 × 7.35 mm</code>, <code>B.Fab</code>) spans <code>y = +11.940..+19.290 mm</code> (<strong><code>+0.290 mm</code> overhang</strong> past <code>R = 19.000 mm</code> on axis; <strong><code>+0.823 mm</code> axial / <code>+0.801 mm</code> radial</strong> at <code>x = ±4.47 mm</code> mouth corners). Four gull-wing SMD shell pads (<code>2.30 × 1.80 mm</code> on <code>B.Cu</code> only, <code>0.50 mm</code> toe fillet, <code>0.662 mm</code> min corner-to-edge) replace <code>Rev S3C</code>'s <code>4</code> PTH slots (<strong><code>0</code> PTH holes, <code>0</code> <code>F.Cu</code> soldering hazard</strong>; bare prototype relies on <code>1 oz</code> copper peel strength — support <code>J1</code> with two fingers during bench plug/unplug, and capture shell in bezel if housed). Two <code>Ø0.650 mm</code> NPTH holes at <code>(±2.890, +13.000 mm)</code> accept <code>0.70 ± 0.05 mm</code> plastic locating pegs, leaving <code>0.85–0.95 mm</code> nominal / <code>0.69 mm</code> worst-case FR-4 below <code>F.Cu</code> (<code>0.00 mm</code> front protrusion) and clearing <code>F.Cu</code> LED copper by <strong><code>0.317 mm</code> (<code>D7.4</code>)</strong> and <strong><code>0.585 mm</code> (<code>D107.2</code>)</strong>.</td>
+</tr>
+<tr>
+<td><code>BT1</code></td>
+<td>Molex <code>53261-0271</code> (<code>C177225</code>) 2P PicoBlade 1.25 mm RA</td>
+<td><code>B.Cu</code></td>
+<td><code>(−11.400, −10.200)</code></td>
+<td><code>−110.0°</code> (<code>250°</code>)</td>
+<td>North-West rim (<code>~10:30</code>), height <strong><code>3.20 +0.20/−0.05 mm</code> (<code>3.40 mm</code> mated)</strong>, <code>B.Fab</code> clearance to <code>SW2</code> = <strong><code>1.017 mm</code></strong> (<code>0.898 mm</code> to <code>SW2</code> pad), Molex <code>3.0 × 2.5 mm</code> restricted copper keepout (<code>BT1 restricted</code>) enforced (<code>0</code> tracks, <code>0</code> vias). Mating mouth points inward (<code>+20.0°</code> toward <code>U3</code>, <code>3.02 mm</code> mouth clearance to <code>C9</code>, <code>4.04 mm</code> to <code>U3</code> NW corner; mated <code>51021-0200</code> plug protrudes <code>1.0 mm</code> past mouth, while <code>~4.2 mm</code> unmated insertion sweep angles above <code>0.55 mm</code> <code>C9</code> / <code>0.90 mm</code> <code>U3</code>). <strong>Check plug polarity (<code>Pin 1</code> SSW = <code>VBAT +</code>, <code>Pin 2</code> NNE = <code>BAT_N −</code>) before pre-mating</strong> — no reverse-polarity FET (<strong>open — user sign-off</strong>).</td>
+</tr>
+<tr>
+<td><code>SW1</code></td>
+<td>Panasonic <code>EVQP7J01P</code> (<code>C2828254</code>, <code>USER / WAKE</code>)</td>
+<td><code>B.Cu</code></td>
+<td><code>(+16.151, −6.200)</code></td>
+<td><code>−69.0°</code> (<code>291°</code>)</td>
+<td>North-East rim (<code>~2 o'clock</code>, <code>r = 17.300 mm</code>), peg-less SMD. Plunger reaches <code>r = 19.400 mm</code> (<strong><code>+0.400 mm</code> nominal projection</strong>; <code>+0.200 mm</code> pressed; <code>0.00 to −0.20 mm</code> worst-case tolerance — <strong>open — user sign-off</strong>).</td>
+</tr>
+<tr>
+<td><code>SW2</code></td>
+<td>Panasonic <code>EVQP7J01P</code> (<code>C2828254</code>, <code>BOOTSEL</code>)</td>
+<td><code>B.Cu</code></td>
+<td><code>(−16.151, −6.200)</code></td>
+<td><code>+69.0°</code></td>
+<td>North-West rim (<code>~10 o'clock</code>, <code>r = 17.300 mm</code>), symmetric mirror of <code>SW1</code> (<code>pad-to-edge = 0.282 mm</code>; same plunger projection tolerance — <strong>open — user sign-off</strong>).</td>
+</tr>
+<tr>
+<td><code>Q2</code></td>
+<td>Newopto <code>XYC-PT19C-L1</code> (<code>C2693594</code>) phototransistor</td>
+<td><code>F.Cu</code></td>
+<td><code>(+0.000, −18.200)</code></td>
+<td><code>0.0°</code></td>
+<td>North rim (<code>12 o'clock</code> top bezel, height <code>0.80 ± 0.15 mm</code>, <code>0.364 mm</code> pad-to-edge; <code>2.50 mm</code> front LED keepout disc).</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Front LED Spiral Keepout Decision (<code>Rev S3C</code> → <code>Rev S3D</code>)</h3>
+<p>Removing <code>TYPE-C-31-M-12</code>'s four PTH shield slots freed the four outer South-rim slot sites (<code>±4.32, +12.47 / +16.65</code>), while <code>TYPE-C-31-M-22</code> retains the exact same two <code>Ø0.65 mm</code> NPTH locating-peg holes at <code>(±2.89, +13.00 mm)</code>. Testing pure un-steered Vogel positions vs keeping <code>S3C</code>'s South-rim LED relaxation showed that un-pushed spiral seeds place <code>D7</code> / <code>D107</code> <code>1.6×1.5 mm</code> SMD pads within <code>&lt; 0.12 mm</code> of the <code>(±2.89, +13.00)</code> NPTH drills (violating the <code>0.20 mm</code> <code>hole_clearance</code> rule), whereas keeping the existing South-rim LED positions (<code>r = 1.951 mm</code> min / <code>2.688 mm</code> mean spacing) preserves <strong><code>0.317 mm</code> (<code>D7.4</code>)</strong> and <strong><code>0.585 mm</code> (<code>D107.2</code>)</strong> NPTH-to-copper clearance, keeps <code>D1..D110</code> coordinates identical to <code>Rev S3C</code> firmware LED lookup tables, and avoids re-crowding South-rim <code>F.Cu</code> matrix channels. We therefore dropped the four obsolete PTH slot keepouts in <code>s2-110-usbc-s3d</code>'s mechanical DRC/zones while preserving the <code>S3C</code> <code>110</code>-LED coordinates (recorded in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</p>
+<h2>4. Assembly sides &amp; mandatory PCBA reflow instructions</h2>
+<ul>
+<li><strong>100%-SMT double-sided assembly at JLCPCB (<code>0</code> through-hole soldering), requiring an explicit JLCPCB PCBA engineering instruction</strong> (since factories otherwise default to flat <code>F.Cu</code> first):</li>
+<li><strong>Pass 1 — Back (<code>B.Cu</code>):</strong> Reflow all <code>80</code> <code>B.Cu</code> SMD parts first (<code>U1..U9</code>, <code>Q1</code>, <code>L1</code>, <code>Y1</code>, full-SMT <code>J1</code>, <code>BT1</code>, <code>SW1</code>, <code>SW2</code>, <code>38</code> MLCCs, <code>26</code> resistors).</li>
+<li><strong>Pass 2 — Front (<code>F.Cu</code>, <code>≤ 245 °C</code> peak, underside carrier support):</strong> Reflow <code>110 × XL-1615RGBC-RF</code> (<code>0.60 mm</code>, MSL Level 3 <code>168 h</code>) and <code>Q2</code> (<code>XYC-PT19C-L1</code>, <code>0.80 mm</code>, <strong>24-hour open-bag floor life</strong> / <code>65 °C × 24 h</code> bake per <code>xyc-pt19c-l1.pdf</code> pp. 11, 13) in Pass 2 so <strong><code>Q2</code> sees only 1 reflow pass</strong>. Specify <code>≥ 3.5 mm</code> underside carrier clearance for Pass 2 stencil printing and allow red SMD glue under <code>J1</code> (<code>~0.65 g</code> over <code>~14.3 mm²</code> ≈ <code>29 g/in²</code>) if requested by JLCPCB CAM for inverted reflow retention.</li>
+</ul>
+<h2>5. Layer count and <code>Rev S3D</code> stackup role</h2>
+<ul>
+<li><strong>4 layers, <code>1.6 mm</code> nominal thickness (<code>JLC04161H-7628</code>), </strong><code>ENIG</code><strong> finish, standard <code>0.30/0.15 mm</code> (<code>0.35/0.15 mm</code> power) through vias, zero vias in SMD signal pads (<code>no POFV</code>).</strong></li>
+<li><strong><code>F.Cu</code> (<code>L1</code>, <code>1 oz</code>):</strong> <code>110</code> RGB LEDs + <code>Q2</code> pads; radial <code>CS</code> cathode triplets and outer <code>SW</code> scan arcs.</li>
+<li><strong><code>In1.Cu</code> (<code>L2</code>, <code>0.5 oz</code>):</strong> Inner routing layer (<code>1.2906 mm</code> above <code>B.Cu</code>, <code>0.2104 mm</code> below <code>F.Cu</code>) — circumferential <code>SW</code> scan arcs, cross-wedge <code>CS</code> jumps, power trunks, and <code>RP2350</code> <code>+1V1</code> <code>COUT</code> (<code>0.50 mm</code>) / <code>DVDD</code> (<code>0.40 mm</code>) power spokes, guarded by <code>LX inner guard</code> so zero supply/analog copper crosses above <code>VREG_LX</code>/<code>L1</code>.</li>
+<li><strong><code>In2.Cu</code> (<code>L3</code>, <code>0.5 oz</code>):</strong> <strong>Unbroken solid <code>GND</code> plane (<code>1</code> piece, <code>0.2104 mm</code> directly beneath <code>B.Cu</code> ICs)</strong>, perforated only by via antipads, <code>J1</code>'s <code>2</code> NPTH holes, and <code>LX cutout L3</code> directly under <code>U3.48</code>/<code>L1</code> (<code>see quantitative justification in stackup-4l-s3d.md §1</code>).</li>
+<li><strong><code>B.Cu</code> (<code>L4</code>, <code>1 oz</code>):</strong> All active ICs (<code>U1..U9</code>), <code>J1</code>, <code>BT1</code>, <code>SW1/2</code>, passives, test pads, <code>1</code>-piece <code>RP2350 ring</code> (<code>+1V1</code>) and <code>1</code>-piece <code>RP2350 band</code> (<code>+3V3</code>), and solid <code>GND</code> EPs (<code>17</code> paste-free thermal vias).</li>
+</ul>
+<h2>6. Density &amp; probing philosophy</h2>
+<ul>
+<li><strong><code>0402</code> standard passives, <code>0603</code> only for <code>10 µF</code> / <code>22 µF</code> bulk MLCCs and <code>0806</code> <code>2.0 × 1.6 mm</code> <code>L1</code>.</strong></li>
+<li><strong>Strict paste-free EP thermal vias &amp; no-POFV discipline:</strong> <code>.kicad_dru</code> forbids via holes in all <code>797</code> SMD signal pads and enforces <code>16</code> paste-aperture keepouts (<code>4</code> split paste quadrants × <code>4</code> EPs) so all <strong><code>17</code> EP <code>GND</code> thermal vias (<code>5</code> on <code>U3.61</code>, <code>2</code> on <code>U5.17</code>, <code>5</code> on <code>U1.41</code>, <code>5</code> on <code>U2.41</code>) sit strictly inside the paste-free cross channels (<code>0.000 mm²</code> <code>B.Paste</code> overlap)</strong>.</li>
+<li><strong>Test-pad probing density:</strong> <code>14 × Ø1.0 mm</code> bare <code>B.Cu</code> test pads (<code>0.75 mm</code> courtyard radius, <code>≥ 1.8 mm</code> centre-to-centre spacing where grouped) placed in open <code>B.Cu</code> pockets for handheld needle/tweezers probing during bench bring-up (or pogo-pin fixture prior to battery bonding).</li>
+</ul>
+<h2>7. Block floorplan, signal/power flow, &amp; noisy-vs-sensitive separation</h2>
+<ol>
+<li><strong>Inline USB-C input &amp; ESD (<code>South</code>, <code>(0, +14.17)</code> → <code>(+0.65, +9.95)</code>):</strong> <code>J1</code> (<code>TYPE-C-31-M-22</code> at <code>(0.0, +14.17)</code>) feeds <code>VBUS</code> (<code>C1</code> at <code>(+3.40, +9.50)</code>, <code>1.73 mm</code> from <code>U5.13</code>) and <code>USB_C_P/N</code> straight north into inline <strong><code>U7</code> (<code>USBLC6-2P6</code> at <code>(+0.65, +9.95, 180°)</code></strong>, zero crossover), then through <code>27 Ω</code> <code>R14/R15</code> into <code>U3.51/52</code>.</li>
+<li><strong>Co-located NW cell protection (<code>NW</code>, <code>(−11.40, −10.20)</code> → <code>(−12.10, −3.60)</code>):</strong> <strong><code>U8</code> (<code>XB9901A</code> at <code>(−12.10, −3.60, 180°)</code>)</strong>, <code>C6</code> <code>(−9.80, −3.10)</code>, and <code>R8</code> <code>(−9.80, −4.25)</code> sit immediately south of <code>BT1</code> in the NW pocket (<code>3× 0.35/0.15 mm</code> dedicated <code>GND</code> vias off <code>U8.1..3</code>), eliminating <code>Rev S3C</code>'s <code>29.1 mm</code> cross-board raw <code>/Power/BAT_N</code> run.</li>
+<li><strong>Power-path charger, <code>+3V3</code> LDO &amp; switched <code>VBAT</code> divider:</strong> <code>U5</code> (<code>BQ24073</code> at <code>(+3.40, +6.00)</code>) regulates <code>VSYS</code> for <code>U1</code>, <code>U2</code>, and <code>U6</code> (<code>TPS7A0233</code> at <code>(−6.10, +0.40)</code>); <code>Q1</code> (<code>NTZD3155C</code> at <code>(−8.20, +12.40)</code>) switches the RC-filtered <code>VBAT_SENSE</code> divider (<code>C7 = 100 nF</code> right at <code>U3.40</code>, isolated from <code>L1</code> by <code>U4</code> and <code>In2.Cu</code> <code>GND</code>).</li>
+<li><strong>MCU, <code>C22</code>-decoupled QSPI flash, <code>1.1 V</code> switcher, crystal, accelerometer (<code>Centre-North</code>):</strong>
+   - <code>U3</code> (<code>RP2350A</code> at <code>(−1.40, −6.60, 0°)</code>) with polarity-marked <code>L1</code> at <code>(+0.60, +0.60, 0°)</code> (<code>Pad 2 = VREG_LX</code> East, <code>Pad 1 = +1V1</code> West per <code>rp2350.md</code>), isolated <code>C17</code> <code>GND</code> via, and <code>COUT</code> 2-via <code>0.50 mm</code> <code>In1.Cu</code> spoke to <code>RP2350 ring</code>.
+   - <strong><code>U4</code> (<code>W25Q128JVPIQ</code> at <code>(−2.80, +5.40, 90°)</code>) with <code>C22</code> (<code>100 nF</code>) placed right at <code>U4.8</code> (<code>(−1.75, +1.35)</code>, <code>1.40 mm</code> pad-to-pad)</strong>, shrinking the <code>U4.8</code> decoupling distance from <code>8.56 mm</code> (<code>S3C</code>) to <code>1.40 mm</code>.
+   - <strong>Noisy-vs-sensitive separation:</strong> High-impedance <code>12 MHz</code> crystal <code>Y1</code> <code>(−2.70, −14.80, 0°)</code> and <code>Q2</code> <code>(0.00, −18.20)</code> sit in the quiet North sector <code>&gt; 15 mm</code> north of <code>L1</code> <code>(+0.60, +0.60)</code> and <code>&gt; 17 mm</code> from <code>U1</code>/<code>U2</code> (<code>±12.60, +3.00</code>), shielded from <code>F.Cu</code> LED scan edges by the unbroken <code>In2.Cu</code> <code>GND</code> plane; <code>U9</code> (<code>LIS2DW12</code>) sits at <code>(+4.40, −13.80, 180°)</code>.</li>
+<li><strong>East/West LED matrix drivers (<code>U1</code> at <code>(−12.60, +3.00)</code>, <code>U2</code> at <code>(+12.60, +3.00)</code>, <code>90°</code>).</strong></li>
+</ol>
+<h2>8. Thermal management &amp; heat-source budget</h2>
+<ul>
+<li><strong>Heat sources &amp; paths (<code>17</code> paste-free EP thermal vias into <code>0.2104 mm</code>-adjacent <code>In2.Cu</code> solid <code>GND</code> plane):</strong></li>
+<li><strong>Battery discharge (<code>0–35 °C</code> ambient):</strong> <code>110</code> front LEDs + <code>U1</code>/<code>U2</code> (<code>5+5</code> EP vias) + <code>U3</code> (<code>5</code> EP vias) + <code>U6</code> dissipate <code>~0.68 W</code> total at <code>GCC ≤ 105</code> (<code>~146 mA</code> LED avg, <code>~189 mA</code> <code>VSYS</code>). At <code>R_th ≈ 35 K/W</code>, <code>ΔT ≈ +23.8 K</code> (<code>~48.8 °C</code> at <code>25 °C</code> ambient); calibrated <code>ADC4</code> throttles <code>GCC</code> linearly above <code>25 °C</code> so board temperature stays <code>&lt; 55 °C</code> (<code>&lt; 60 °C</code> LiPo discharge limit, <code>&lt; 70 °C</code> <code>EVQP7J01P</code>).</li>
+<li><strong>USB active charging (<code>~{CHG} == 0</code> steady <code>≥ 1 s</code>, <code>0–25 °C</code> ambient — open — user sign-off) &amp; post-charge USB:</strong> <code>U5</code> (<code>BQ24073</code>, <code>2</code> paste-free EP vias, <code>CE = GND</code>, <code>TS = 10 kΩ</code> fixed, <code>R4 = 3.0 kΩ</code> → <code>297 mA</code> typ / <code>328 mA</code> max) dissipates <code>0.56 W</code> typ (<code>0.80–0.87 W</code> max) during low-bat CC (<code>5.0 V → 3.2 V</code>), giving <code>P_board ≈ 0.70–0.75 W</code> typ even with LEDs throttled to <code>GCC ≤ 9</code> (<code>0</code> at low-bat CC, <code>≤ 24</code> CV). Charging is specified at <code>≤ 25 °C</code> ambient (<code>≤ 45 °C</code> across the bulk <code>3.7–4.2 V</code> curve; swapping <code>R4</code> to <code>4.7 kΩ</code> <code>189 mA</code> cuts <code>P_U5,typ</code> to <code>0.36 W</code>). Once <code>~{CHG} = Hi-Z</code> on USB (<code>~{PGOOD} == 0</code>, <code>VO(REG) = 4.4 V</code>, <code>P_U5 ≈ 0.10–0.12 W</code>), static full-white caps at <code>GCC ≤ 85</code> (<code>~0.79 W</code> total; <code>ADC4</code> <code>&lt; 55 °C</code> loop stays active and <code>300 mA</code> bursts are disabled on USB).</li>
+</ul>
+<h2>9. Art zone</h2>
+<ul>
+<li><strong>Front sunflower seed web (<code>F.SilkS</code>, open — user sign-off):</strong> Programmatically generated Voronoi sunflower seed-cell web (<code>pcb_gen.py</code>, <code>0.153 mm</code> stroke width) clipped <code>≥ 0.15 mm</code> clear of all <code>F.Cu</code> pads, <code>Edge.Cuts</code>, <code>J1</code> NPTH holes, <strong>and all <code>0.30/0.35 mm</code> through vias (<code>0</code> <code>[silk-over-via]</code> errors)</strong>.</li>
+<li><strong>Back (<code>B.SilkS</code>):</strong> Functional callouts &amp; pin-1 dots only (<code>0</code> decorative art zones).</li>
+</ul>
+<h2>10. Silkscreen &amp; Fab-layer policy</h2>
+<ul>
+<li><strong>Silkscreen (<code>B.SilkS</code>):</strong> Footprint designators hidden (<code>designators = "none"</code> for wearable density), replaced by clear via-free board labels <strong>outside</strong> connector bodies (<code>BT1</code>: <code>"+"</code>, <code>"-"</code>, <code>"BATT 3.7V"</code>; <code>J1</code>: <code>"USB 5V"</code>; <code>SW1</code>: <code>"USER"</code>; <code>SW2</code>: <code>"BOOT"</code>; <code>U1..U9</code>, <code>Q1</code>) plus via-free <code>B.SilkS</code> net callouts on all test pads with clear adjacent board area (<code>TP1..TP8</code>, <code>TP11..TP16</code> placed dynamically where <code>≥ 0.15 mm</code> clear of pads, mask openings, and vias; full map in <code>bringup-map-bottom.png</code>) and visible pin-1 marks on every IC/transistor/LED (<code>0</code> <code>[pin1]</code> errors, <code>0</code> <code>[silk-over-via]</code> errors). Board name/rev/URL omission on <code>B.SilkS</code> remains open for user sign-off (<code>BOARD_ID = 4</code>).</li>
+<li><strong>Assembly Fab layers (<code>F.Fab</code>, <code>B.Fab</code>):</strong> Centered <code>${REFERENCE}</code> designators enabled across all assembled parts (<code>D1..D110</code>, <code>Q2</code>, <code>U1..U9</code>, <code>J1</code>, <code>BT1</code>, <code>SW1</code>, <code>SW2</code>, passives) with orientation chamfers/dots on every IC (<code>including U1/U2</code>).</li>
+</ul>
+<h2>11. Keepouts and rule areas (<code>hw/sunflower/s2-110-usbc-s3d/sunflower.kicad_pcb</code>)</h2>
+<ol>
+<li><strong>Front LED &amp; NPTH keepouts (<code>J1 NPTH W</code>, <code>J1 NPTH E</code>, <code>Q2 optical keepout</code> on <code>F.Cu</code>):</strong> <code>2</code> <code>r = 0.525 mm</code> (<code>0.325 mm</code> drill radius + <code>0.200 mm</code> copper clearance) copper/via keepout discs around <code>J1</code>'s <code>Ø0.65 mm</code> NPTH holes <code>(±2.89, +13.00)</code> enforced by <code>.kicad_dru</code> <code>"J1 NPTH F.Cu copper keepout"</code> (<code>disallow pad track via</code> excluding <code>J1</code>'s own mechanical NPTH pad), plus <code>r = 1.45 mm</code> courtyard-free optical rule area around <code>Q2</code> <code>(0.00, −18.20)</code> enforced by <code>.kicad_dru</code> <code>"Q2 optical F.Cu LED keepout"</code> (<code>disallow footprint</code>, corresponding to the <code>2.50 mm</code> center-to-center LED seed exclusion where nearest LED <code>D65</code> sits at <code>2.657 mm</code> center / <code>1.505 mm</code> courtyard / <code>1.701 mm</code> pad).</li>
+<li><strong><code>LX cutout L3</code> (<code>In2.Cu</code>) &amp; <code>LX inner guard</code> (<code>In1.Cu</code>):</strong> Cuts the adjacent <code>In2.Cu</code> <code>GND</code> plane directly beneath <code>U3.48</code>/<code>L1</code> and forbids <code>ANALOG</code> class nets plus <code>+3V3</code>/<code>VSYS</code>/<code>VBAT</code>/<code>VBUS</code>/<code>VREG_AVDD</code>/<code>LIGHT</code>/<code>VBAT_SENSE</code> copper/zones on <code>In1.Cu</code> above <code>LX</code>.</li>
+<li><strong><code>L1 window</code> (<code>B.Cu</code>) &amp; <code>CFILT PGND sep</code> (<code>B.Cu</code>):</strong> Keeps <code>B.Cu</code> under <code>L1</code> clean and isolates <code>C17.2</code>'s dedicated <code>GND</code> via from <code>PGND</code>'s <code>2</code> vias.</li>
+<li><strong><code>U3 ring</code> &amp; <code>U3 band</code>:</strong> Protect the <code>1</code>-piece <code>+1V1</code> <code>RP2350 ring</code> and <code>1</code>-piece <code>+3V3</code> <code>RP2350 band</code> from foreign tracks/vias.</li>
+<li><strong><code>U1/U2/U3/U5 solid EP</code> + <code>16</code> <code>paste keepout</code> areas:</strong> Enforce <code>GND</code>-only thermal vias strictly inside the paste-free cross corridors (<code>0.000 mm²</code> <code>B.Paste</code> overlap).</li>
+<li><strong><code>BT1 restricted</code> &amp; <code>BT1 pad via guard</code> (<code>Molex 532610001-SD</code> Sh. 2, <code>B.Cu</code>):</strong> <code>BT1 restricted</code> forbids <code>B.Cu</code> surface tracks/pours under Molex's <code>3.0 × 2.5 mm</code> contact-beam housing window AND blocks all standard through-vias (<code>F.Cu–B.Cu</code>) through that window (<code>inner In1.Cu/In2.Cu copper is buried under FR-4 + B.Mask and cannot contact Molex B.Cu beams</code>); <code>BT1 pad via guard</code> keeps vias <code>≥ 0.35 mm</code> clear of <code>BT1.1</code>/<code>BT1.2</code>.</li>
+<li><strong>Rear <code>Ø35.0 mm</code> <code>403535</code> battery stack (<code>open — user sign-off</code>):</strong> Because <code>Ø35.0 mm</code> overlaps <code>J1</code> (<code>3.26 ± 0.15 mm</code>) and <code>BT1</code> (<code>3.20–3.40 mm</code>) in XY (<code>21.55 mm</code> chord), requires <code>0.05 mm</code> Kapton tape over <code>B.Cu</code> test pads + either a <strong><code>≥ 3.50 mm</code> pocketed foam / 3D-printed carrier standoff (<code>~10.0 mm</code> total bare stack)</strong> or a smaller <code>≤ 30 mm</code> cell on <code>2.4 mm</code> foam inside the central component pocket.</li>
+</ol>
+<h2>12. Test, debug, and bring-up provisions</h2>
+<ul>
+<li><strong><code>14</code> bare <code>1.0 mm</code> <code>B.Cu</code> test pads (<code>0</code> <code>B.Paste</code>, no SWD header, no <code>0 Ω</code> rail-split jumpers):</strong> <code>TP1</code> (<code>VSYS</code>), <code>TP2</code> (<code>+3V3</code>), <code>TP3</code> (<code>VBAT</code>), <code>TP4</code> (<code>+1V1</code>), <code>TP5</code> (<code>RUN</code>), <code>TP6</code> (<code>SWCLK</code>), <code>TP7</code> (<code>SWDIO</code>), <code>TP8</code> (<code>GND</code> — plus <code>J1</code> SMD metal shell at South rim), <code>TP11</code> (<code>I2C_SDA</code>), <code>TP12</code> (<code>I2C_SCL</code>), <code>TP13</code> (<code>VBUS</code>), <code>TP14</code> (<code>UART_TX</code>), <code>TP15</code> (<code>UART_RX</code>), <code>TP16</code> (<code>GPIO29_TP</code>). <strong>Bring-up rule:</strong> never back-power <code>+3V3</code> (<code>TP2</code>) externally without <code>VSYS</code> (<code>TP1</code> / <code>VBUS</code> / <code>VBAT</code>) present (<code>AW20198</code> <code>VCC + 0.3 V</code> input limit).</li>
+<li><strong>Hardware board-ID straps (<code>NT1</code>, <code>NT2</code>):</strong> Tie <code>GPIO19</code> and <code>GPIO20</code> to <code>GND</code> (<strong><code>ID = 4 = 0b100</code></strong>).</li>
+</ul>
+<h2>13. Consolidated items awaiting user sign-off at Gate 4</h2>
+<ol>
+<li><strong>Mechanical stack (<code>BT1</code> inward corridor, rear battery spacer <code>2.4 mm</code> vs <code>≥ 3.50 mm</code> pocketed carrier, &amp; <code>SW1/SW2</code> <code>0.00 to −0.20 mm</code> worst-case plunger projection)</strong> — preserved unchanged on PCB per user instructions.</li>
+<li><strong>Charge current (<code>R4 = 3.0 kΩ</code>, <code>~297 mA</code> typ, <code>0.56 W</code> <code>U5</code> CC heat / <code>≤ 25 °C</code> charge ambient vs <code>R4 = 4.7 kΩ</code> <code>189 mA</code>)</strong> — preserved unchanged on PCB per user instructions.</li>
+<li><strong>Back-silk identity omission (<code>BOARD_ID = 4</code>), front <code>F.SilkS</code> Voronoi seed web, &amp; calibrated <code>ADC4</code> / <code>~{CHG} == 0</code> firmware thermal caps</strong> — preserved unchanged per user instructions.</li>
+</ol></div></body></html>

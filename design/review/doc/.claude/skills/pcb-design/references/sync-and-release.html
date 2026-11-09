@@ -1,0 +1,97 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Phase 10: sync and release</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/sync-and-release.md'>.claude/skills/pcb-design/references/sync-and-release.md</a></p><h1>Phase 10: sync and release</h1>
+<h2>Schematic is the source of truth</h2>
+<p>Values, footprints, MPNs and supplier part numbers are changed <strong>only in the schematic</strong>, then pushed to the PCB (KiCad: Update PCB from Schematic; Altium: ECO). Never edit them in the PCB editor. Never edit the BOM by hand.</p>
+<h2>Sync check (<code>scripts/sync_check.py</code>) — run at every gate from phase 6 on</h2>
+<pre><code class="language-sh">python3 .claude/skills/pcb-design/scripts/sync_check.py hw/&lt;board&gt;/&lt;variant&gt;
+python3 .claude/skills/pcb-design/scripts/sync_check.py hw/&lt;board&gt;/&lt;variant&gt; --bom &lt;bom.csv&gt; --cpl &lt;cpl.csv&gt;   # release
+</code></pre>
+<p>Compares, for every reference designator, across schematic, PCB and generated BOM/CPL:
+- present in all three (no orphans)
+- value
+- footprint (library ID and, for board-local edits, that the base footprint matches)
+- MPN, manufacturer, LCSC/supplier PN
+- DNP flag
+Fails on any mismatch. Also confirms every BOM part number resolves to an in-stock part (re-check stock at release).</p>
+<h2>Release outputs</h2>
+<ul>
+<li>Gerbers + drill (fab's preferred settings; for JLC use their KiCad/Altium guides)</li>
+<li>BOM in fab format</li>
+<li>CPL / pick-and-place</li>
+<li>Schematic PDF, assembly drawing PDF (top/bottom, with designators even if hidden on silk)</li>
+<li>3D STEP</li>
+<li><code>design/</code> folder, with gates and decisions</li>
+<li>Version tag in git: <code>&lt;board&gt;-rev&lt;X&gt;</code></li>
+</ul>
+<h2>Assembly drawing</h2>
+<p>With designators off the silk (policy "none" or "selective"), the assembly
+drawing is how people find parts, so it must be readable: <code>render.py</code> writes
+F.Fab at ≈ 4:1 on A4 (<code>kicad-cli pcb export pdf</code> plots 1:1, where 0402
+designators are 0.4 mm high).</p>
+<h2>Stackup on the order</h2>
+<p>The gerber job file carries the KiCad board's stackup table, often still
+KiCad's default. The fab builds what the order form says: name the fab's
+stackup code there, and put it in <code>stackup.md</code>.</p>
+<h2>CPL rotation check</h2>
+<p>Rotation and origin offsets between library footprints and JLC's part orientation are a classic silent failure. Use JLC's rotation correction approach (e.g. a rotation offset field per part or a correction database), then render each part's assembly preview (or the CPL overlaid on the board image) and verify pin 1 and polarity for <strong>every</strong> polarized part and IC. Paste the list.</p>
+<h2>Gerber review</h2>
+<p>Render the gerbers (gerbv / tracespace / KiCad gerber viewer) layer by layer, separate from the CAD tool, and check: outline closed, drills present, mask openings correct, paste on SMD pads only, silk not clipped, no missing pours.</p>
+<p><code>scripts/gerber_render.py</code> does it with gerbonara (an independent parser) and
+headless Chrome. Look at every image: on the example the first attempt went
+through ImageMagick, whose SVG renderer silently dropped the silk strokes, and
+a blank layer is easy to read as "fine". Compare each layer's object count
+with what the board should have (holes = vias + plated pins; bottom paste
+empty when nothing is assembled there).</p>
+<h2>Final independent review</h2>
+<p>The stronger model, fresh context, gets: <code>intent.md</code>, all <code>parts/*.md</code>, schematic PDF, <code>nets.csv</code>, <code>stackup.md</code>, all renders, DRC/ERC/sync outputs and gate files. It answers: would you send this to fab? What's the highest-risk thing on this board? Anything in <code>intent.md</code> not met?</p>
+<h2>Bring-up plan</h2>
+<p>Take every expected value from the part audit's own numbers, not from memory
+of a similar board: the example's first plan used Schottky numbers for a
+silicon rectifier, and a good board would have failed its VLED step. Probe
+points must be probe-able (a capacitor pad, not a DFN pin).</p>
+<p>Write <code>design/bringup.md</code>: power-up sequence with current limit, what to measure at each test point and expected value, isolation jumpers to open first, firmware smoke test. Link it from the project page (<code>index.html</code>).</p>
+<h2>Gate checklist (phase 10)</h2>
+<ul>
+<li>[ ] All earlier gates current (not stale)</li>
+<li>[ ] Sync check passes</li>
+<li>[ ] DRC/ERC re-run on final files: clean</li>
+<li>[ ] Stock re-checked</li>
+<li>[ ] CPL rotation verified for every polarized part</li>
+<li>[ ] Gerbers reviewed in a separate viewer</li>
+<li>[ ] Final independent review: no blocking findings</li>
+<li>[ ] Bring-up plan written</li>
+<li>[ ] Git tagged</li>
+<li>[ ] <strong>User approves release</strong></li>
+</ul></div></body></html>
