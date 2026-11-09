@@ -1,8 +1,8 @@
 {
  "title": "Matrix Play",
- "built": "2026-11-07T19:22:44",
+ "built": "2026-11-07T19:14:19",
  "pcbview": "0.1 (26ba32b)",
- "config": "pcbview.publish.toml",
+ "config": "pcbview.toml",
  "boards": [
   {
    "id": "dense-square-s16-256",
@@ -24,6 +24,50 @@
     "kind": "file",
     "pcb": "hw/dense-square/s15-225/dense-square.kicad_pcb",
     "sch": "hw/dense-square/s15-225/dense-square.kicad_sch"
+   }
+  },
+  {
+   "id": "dense-square-bga13-169",
+   "name": "Square Bezel bga13-169 (169 LEDs, WLCSP behind array) - routing in progress",
+   "page": "dense-square-bga13-169.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/dense-square/bga13-169/route/ploughed_8L.kicad_pcb",
+    "sch": "hw/dense-square/bga13-169/dense-square.kicad_sch"
+   }
+  },
+  {
+   "id": "dense-square-bga15-225",
+   "name": "Square Bezel bga15-225 (225 LEDs, WLCSP behind array) - routing in progress",
+   "page": "dense-square-bga15-225.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/dense-square/bga15-225/route/routed_raw_8L.kicad_pcb",
+    "sch": "hw/dense-square/bga15-225/dense-square.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-pn-dense-1d",
+   "name": "Penrose pn-dense-1d (67 LEDs, 1 driver + GPIO LED)",
+   "page": "sunflower-pn-dense-1d.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/pn-dense-1d/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/pn-dense-1d/sunflower.kicad_sch"
+   }
+  },
+  {
+   "id": "sunflower-pn-dense",
+   "name": "Penrose pn-dense (67 LEDs, 4L, USB-C)",
+   "page": "sunflower-pn-dense.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/sunflower/pn-dense/sunflower.kicad_pcb",
+    "sch": "hw/sunflower/pn-dense/sunflower.kicad_sch"
    }
   },
   {
@@ -57,28 +101,6 @@
     "kind": "file",
     "pcb": "hw/sunflower/s2-88-pofv/sunflower.kicad_pcb",
     "sch": "hw/sunflower/s2-88-pofv/sunflower.kicad_sch"
-   }
-  },
-  {
-   "id": "sunflower-pn-dense-1d",
-   "name": "Penrose pn-dense-1d (67 LEDs, 1 driver + GPIO LED)",
-   "page": "sunflower-pn-dense-1d.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/sunflower/pn-dense-1d/sunflower.kicad_pcb",
-    "sch": "hw/sunflower/pn-dense-1d/sunflower.kicad_sch"
-   }
-  },
-  {
-   "id": "sunflower-pn-dense",
-   "name": "Penrose pn-dense (67 LEDs, 2 drivers)",
-   "page": "sunflower-pn-dense.html",
-   "embed": null,
-   "source": {
-    "kind": "file",
-    "pcb": "hw/sunflower/pn-dense/sunflower.kicad_pcb",
-    "sch": "hw/sunflower/pn-dense/sunflower.kicad_sch"
    }
   },
   {
@@ -126,6 +148,61 @@
    }
   },
   {
+   "id": "parallelogram-p1-66-usb",
+   "name": "Parallelogram p1-66-usb (66 LEDs, USB-C + JST 1.25 + Wing Buttons)",
+   "page": "parallelogram-p1-66-usb.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/parallelogram/p1-66-usb/parallelogram.kicad_pcb",
+    "sch": "hw/parallelogram/p1-66-usb/parallelogram.kicad_sch"
+   }
+  },
+  {
+   "id": "parallelogram-p2-132-usb",
+   "name": "Parallelogram p2-132-usb (132 LEDs, USB-C + JST 1.25 + Wing Buttons)",
+   "page": "parallelogram-p2-132-usb.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/parallelogram/p2-132-usb/parallelogram.kicad_pcb",
+    "sch": "hw/parallelogram/p2-132-usb/parallelogram.kicad_sch"
+   }
+  },
+  {
+   "id": "parallelogram-p3-162-usb",
+   "name": "Parallelogram p3-162-usb (162 LEDs, USB-C) - 34 open",
+   "page": "parallelogram-p3-162-usb.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/parallelogram/p3-162-usb/parallelogram.kicad_pcb",
+    "sch": "hw/parallelogram/p3-162-usb/parallelogram.kicad_sch"
+   }
+  },
+  {
+   "id": "parallelogram-p3-198-usb",
+   "name": "Parallelogram p3-198-usb (198 LEDs, USB-C) - 79 open",
+   "page": "parallelogram-p3-198-usb.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/parallelogram/p3-198-usb/parallelogram.kicad_pcb",
+    "sch": "hw/parallelogram/p3-198-usb/parallelogram.kicad_sch"
+   }
+  },
+  {
+   "id": "parallelogram-p4-264-usb",
+   "name": "Parallelogram p4-264-usb (264 LEDs, USB-C) - 168 open",
+   "page": "parallelogram-p4-264-usb.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/parallelogram/p4-264-usb/parallelogram.kicad_pcb",
+    "sch": "hw/parallelogram/p4-264-usb/parallelogram.kicad_sch"
+   }
+  },
+  {
    "id": "parallelogram-p1-66",
    "name": "Parallelogram p1-66 (66 LEDs, 4L)",
    "page": "parallelogram-p1-66.html",
@@ -167,6 +244,17 @@
     "kind": "file",
     "pcb": "hw/parallelogram/p4-264/parallelogram.kicad_pcb",
     "sch": "hw/parallelogram/p4-264/parallelogram.kicad_sch"
+   }
+  },
+  {
+   "id": "round-pendant-f",
+   "name": "Round Pendant F (235 LEDs, track PDN)",
+   "page": "round-pendant-f.html",
+   "embed": null,
+   "source": {
+    "kind": "file",
+    "pcb": "hw/round-pendant/f/round-pendant.kicad_pcb",
+    "sch": "hw/round-pendant/f/round-pendant.kicad_sch"
    }
   },
   {

@@ -1,0 +1,104 @@
+{
+ "schematic": "parallelogram.kicad_sch",
+ "pdf": "parallelogram.pdf",
+ "sheets": [
+  {
+   "sheet": "root",
+   "title": "parallelogram (p4-264-usb): top",
+   "desc": "264 XL-1010RGB LEDs (12x22), 4x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L \u00b7 0 symbols",
+   "file": "parallelogram.svg",
+   "source": "parallelogram.kicad_sch",
+   "paper": "A4",
+   "page": "1",
+   "symbols": 0,
+   "size_mm": [
+    297.0022,
+    210.0072
+   ]
+  },
+  {
+   "sheet": "Power",
+   "title": "Power",
+   "desc": "USB-C 16P SMT, charger, protection, LDO, Micro-JST 1.25 battery, VBAT sense \u00b7 30 symbols",
+   "file": "parallelogram-Power.svg",
+   "source": "power.kicad_sch",
+   "paper": "A3",
+   "page": "2",
+   "symbols": 30,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "MCU",
+   "title": "MCU",
+   "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, top-bezel light sensor \u00b7 50 symbols",
+   "file": "parallelogram-MCU.svg",
+   "source": "mcu.kicad_sch",
+   "paper": "A3",
+   "page": "3",
+   "symbols": 50,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 1 and matrix",
+   "title": "Driver 1 and matrix",
+   "desc": "U1 AW20198QNR (0x20), 66 RGB LEDs (drivers-aw20198.md) \u00b7 73 symbols",
+   "file": "parallelogram-Driver 1 and matrix.svg",
+   "source": "matrix1.kicad_sch",
+   "paper": "A3",
+   "page": "4",
+   "symbols": 73,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 2 and matrix",
+   "title": "Driver 2 and matrix",
+   "desc": "U2 AW20198QNR (0x25), 66 RGB LEDs (drivers-aw20198.md) \u00b7 73 symbols",
+   "file": "parallelogram-Driver 2 and matrix.svg",
+   "source": "matrix2.kicad_sch",
+   "paper": "A3",
+   "page": "5",
+   "symbols": 73,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 3 and matrix",
+   "title": "Driver 3 and matrix",
+   "desc": "U10 AW20198QNR (0x22), 66 RGB LEDs (drivers-aw20198.md) \u00b7 72 symbols",
+   "file": "parallelogram-Driver 3 and matrix.svg",
+   "source": "matrix3.kicad_sch",
+   "paper": "A3",
+   "page": "6",
+   "symbols": 72,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  },
+  {
+   "sheet": "Driver 4 and matrix",
+   "title": "Driver 4 and matrix",
+   "desc": "U11 AW20198QNR (0x23), 66 RGB LEDs (drivers-aw20198.md) \u00b7 72 symbols",
+   "file": "parallelogram-Driver 4 and matrix.svg",
+   "source": "matrix4.kicad_sch",
+   "paper": "A3",
+   "page": "7",
+   "symbols": 72,
+   "size_mm": [
+    419.989,
+    297.0022
+   ]
+  }
+ ]
+}

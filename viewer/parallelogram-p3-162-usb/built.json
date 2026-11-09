@@ -1,0 +1,262 @@
+{
+ "sch": {
+  "schematic": "parallelogram.kicad_sch",
+  "pdf": "parallelogram.pdf",
+  "sheets": [
+   {
+    "sheet": "root",
+    "title": "parallelogram (p3-162-usb): top",
+    "desc": "162 XL-1010RGB LEDs (9x18), 3x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L \u00b7 0 symbols",
+    "file": "parallelogram.svg",
+    "source": "parallelogram.kicad_sch",
+    "paper": "A4",
+    "page": "1",
+    "symbols": 0,
+    "size_mm": [
+     297.0022,
+     210.0072
+    ]
+   },
+   {
+    "sheet": "Power",
+    "title": "Power",
+    "desc": "USB-C 16P SMT, charger, protection, LDO, Micro-JST 1.25 battery, VBAT sense \u00b7 30 symbols",
+    "file": "parallelogram-Power.svg",
+    "source": "power.kicad_sch",
+    "paper": "A3",
+    "page": "2",
+    "symbols": 30,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "MCU",
+    "title": "MCU",
+    "desc": "RP2350A, flash, crystal, accelerometer, peg-less side buttons, top-bezel light sensor \u00b7 50 symbols",
+    "file": "parallelogram-MCU.svg",
+    "source": "mcu.kicad_sch",
+    "paper": "A3",
+    "page": "3",
+    "symbols": 50,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 1 and matrix",
+    "title": "Driver 1 and matrix",
+    "desc": "U1 AW20198QNR (0x20), 54 RGB LEDs (drivers-aw20198.md) \u00b7 61 symbols",
+    "file": "parallelogram-Driver 1 and matrix.svg",
+    "source": "matrix1.kicad_sch",
+    "paper": "A3",
+    "page": "4",
+    "symbols": 61,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 2 and matrix",
+    "title": "Driver 2 and matrix",
+    "desc": "U2 AW20198QNR (0x25), 54 RGB LEDs (drivers-aw20198.md) \u00b7 61 symbols",
+    "file": "parallelogram-Driver 2 and matrix.svg",
+    "source": "matrix2.kicad_sch",
+    "paper": "A3",
+    "page": "5",
+    "symbols": 61,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 3 and matrix",
+    "title": "Driver 3 and matrix",
+    "desc": "U10 AW20198QNR (0x22), 54 RGB LEDs (drivers-aw20198.md) \u00b7 60 symbols",
+    "file": "parallelogram-Driver 3 and matrix.svg",
+    "source": "matrix3.kicad_sch",
+    "paper": "A3",
+    "page": "6",
+    "symbols": 60,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   }
+  ]
+ },
+ "layers": {
+  "board": "parallelogram.kicad_pcb",
+  "generated": "2026-11-07",
+  "view_mm": [
+   86.115,
+   63.982,
+   27.771,
+   72.036
+  ],
+  "size_mm": [
+   25.0,
+   69.266
+  ],
+  "round": null,
+  "polar": null,
+  "thickness": 1.5862,
+  "plate": "#c8c8c8",
+  "body": "body.svg",
+  "vias": 874,
+  "nets": 167,
+  "footprints": 261,
+  "front": 163,
+  "back": 98,
+  "tracks": 5800,
+  "length_mm": 4328.4,
+  "layers": [
+   {
+    "name": "F.Cu",
+    "slug": "f",
+    "kind": "copper",
+    "file": "f.svg",
+    "color": "#C83434",
+    "note": "Top copper, 35 \u00b5m (1 oz).",
+    "tracks": 2628,
+    "length_mm": 1506.8,
+    "pads": 650,
+    "zones": []
+   },
+   {
+    "name": "In1.Cu",
+    "slug": "in1",
+    "kind": "copper",
+    "file": "in1.svg",
+    "color": "#7FC87F",
+    "note": "Inner layer 1 of 2, 15.2 \u00b5m.",
+    "tracks": 0,
+    "length_mm": 0.0,
+    "pads": 0,
+    "zones": [
+     "GND"
+    ]
+   },
+   {
+    "name": "In2.Cu",
+    "slug": "in2",
+    "kind": "copper",
+    "file": "in2.svg",
+    "color": "#CE7D2C",
+    "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
+    "tracks": 1326,
+    "length_mm": 1520.3,
+    "pads": 0,
+    "zones": []
+   },
+   {
+    "name": "B.Cu",
+    "slug": "b",
+    "kind": "copper",
+    "file": "b.svg",
+    "color": "#4D7FC4",
+    "note": "Bottom copper, 35 \u00b5m (1 oz).",
+    "tracks": 1846,
+    "length_mm": 1301.4,
+    "pads": 438,
+    "zones": [
+     "/MCU/VREG_LX",
+     "+1V1",
+     "+3V3",
+     "GND"
+    ]
+   },
+   {
+    "name": "Edge.Cuts",
+    "slug": "edge",
+    "kind": "outline",
+    "file": "edge.svg",
+    "color": "#D0D2CD",
+    "note": "The outline and every cut-out in it."
+   },
+   {
+    "name": "F.Silkscreen",
+    "slug": "silk_f",
+    "kind": "silk",
+    "file": "silk_f.svg",
+    "color": "#F2EDA1",
+    "note": "Silkscreen, front: reference designators and markings as printed."
+   },
+   {
+    "name": "B.Silkscreen",
+    "slug": "silk_b",
+    "kind": "silk",
+    "file": "silk_b.svg",
+    "color": "#E8B2A7",
+    "note": "Silkscreen, back, seen through the board (mirror the view to read it)."
+   },
+   {
+    "name": "F.Fab",
+    "slug": "fab_f",
+    "kind": "fab",
+    "file": "fab_f.svg",
+    "color": "#DDE1E8",
+    "note": "Part bodies and reference designators, front: what each piece of copper belongs to."
+   },
+   {
+    "name": "B.Fab",
+    "slug": "fab_b",
+    "kind": "fab",
+    "file": "fab_b.svg",
+    "color": "#96A2CE",
+    "note": "Part bodies and reference designators, back."
+   }
+  ]
+ },
+ "3d": {
+  "board": "parallelogram.kicad_pcb",
+  "generated": "2026-11-07",
+  "glb": "board.glb",
+  "bytes": 11910884,
+  "kicad_bytes": 41418372,
+  "parts": 261,
+  "modelled": 253,
+  "no_model": [
+   "TP1",
+   "TP2",
+   "TP3",
+   "TP4",
+   "TP5",
+   "TP6",
+   "TP7",
+   "TP8"
+  ],
+  "missing": [],
+  "empty": [],
+  "substituted": [],
+  "resolved": [
+   "C16",
+   "C18"
+  ],
+  "flattened": [
+   "U1",
+   "U2",
+   "U10"
+  ],
+  "boxed": [],
+  "why": {},
+  "missing_models": [],
+  "boxes": [],
+  "resolved_how": {
+   "legacy": 2,
+   "found": 0
+  },
+  "triangles": 771559,
+  "primitives": 3332
+ },
+ "when": "2026-11-07 19:09",
+ "source": {
+  "kind": "file",
+  "pcb": "hw/parallelogram/p3-162-usb/parallelogram.kicad_pcb",
+  "sch": "hw/parallelogram/p3-162-usb/parallelogram.kicad_sch"
+ }
+}

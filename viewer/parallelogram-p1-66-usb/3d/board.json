@@ -1,0 +1,39 @@
+{
+ "board": "parallelogram.kicad_pcb",
+ "generated": "2026-11-07",
+ "glb": "board.glb",
+ "bytes": 7163996,
+ "kicad_bytes": 23176740,
+ "parts": 152,
+ "modelled": 144,
+ "no_model": [
+  "TP1",
+  "TP2",
+  "TP3",
+  "TP4",
+  "TP5",
+  "TP6",
+  "TP7",
+  "TP8"
+ ],
+ "missing": [],
+ "empty": [],
+ "substituted": [],
+ "resolved": [
+  "C16",
+  "C18"
+ ],
+ "flattened": [
+  "U1"
+ ],
+ "boxed": [],
+ "why": {},
+ "missing_models": [],
+ "boxes": [],
+ "resolved_how": {
+  "legacy": 2,
+  "found": 0
+ },
+ "triangles": 490438,
+ "primitives": 617
+}

@@ -1,0 +1,175 @@
+{
+ "board": "round-pendant.kicad_pcb",
+ "generated": "2026-11-03",
+ "view_mm": [
+  80.237,
+  80.239,
+  39.523,
+  39.522
+ ],
+ "size_mm": [
+  38.002,
+  38.002
+ ],
+ "round": {
+  "centre": [
+   100.0,
+   100.0
+  ],
+  "dia": 38.0
+ },
+ "polar": [
+  100.0,
+  100.0
+ ],
+ "thickness": 1.0,
+ "plate": "#c8c8c8",
+ "body": "body.svg",
+ "vias": 895,
+ "nets": 171,
+ "footprints": 332,
+ "front": 235,
+ "back": 97,
+ "tracks": 4923,
+ "length_mm": 4218.9,
+ "layers": [
+  {
+   "name": "F.Cu",
+   "slug": "f",
+   "kind": "copper",
+   "file": "f.svg",
+   "color": "#C83434",
+   "note": "Top copper, 35 \u00b5m (1 oz).",
+   "tracks": 1857,
+   "length_mm": 992.8,
+   "pads": 944,
+   "zones": []
+  },
+  {
+   "name": "In1.Cu",
+   "slug": "in1",
+   "kind": "copper",
+   "file": "in1.svg",
+   "color": "#7FC87F",
+   "note": "Inner layer 1 of 6, 15.2 \u00b5m.",
+   "tracks": 608,
+   "length_mm": 761.7,
+   "pads": 4,
+   "zones": []
+  },
+  {
+   "name": "In2.Cu",
+   "slug": "in2",
+   "kind": "copper",
+   "file": "in2.svg",
+   "color": "#CE7D2C",
+   "note": "Inner layer 2 of 6, 15.2 \u00b5m.",
+   "tracks": 0,
+   "length_mm": 0.0,
+   "pads": 4,
+   "zones": [
+    "GND"
+   ]
+  },
+  {
+   "name": "In3.Cu",
+   "slug": "in3",
+   "kind": "copper",
+   "file": "in3.svg",
+   "color": "#4FCBCB",
+   "note": "Inner layer 3 of 6, 15.2 \u00b5m.",
+   "tracks": 545,
+   "length_mm": 649.3,
+   "pads": 4,
+   "zones": []
+  },
+  {
+   "name": "In4.Cu",
+   "slug": "in4",
+   "kind": "copper",
+   "file": "in4.svg",
+   "color": "#DB628B",
+   "note": "Inner layer 4 of 6, 15.2 \u00b5m.",
+   "tracks": 570,
+   "length_mm": 668.5,
+   "pads": 4,
+   "zones": []
+  },
+  {
+   "name": "In5.Cu",
+   "slug": "in5",
+   "kind": "copper",
+   "file": "in5.svg",
+   "color": "#A7A5C6",
+   "note": "Inner layer 5 of 6, 15.2 \u00b5m.",
+   "tracks": 0,
+   "length_mm": 0.0,
+   "pads": 4,
+   "zones": [
+    "VSYS",
+    "+3V3"
+   ]
+  },
+  {
+   "name": "In6.Cu",
+   "slug": "in6",
+   "kind": "copper",
+   "file": "in6.svg",
+   "color": "#28CCD9",
+   "note": "Inner layer 6 of 6, 15.2 \u00b5m.",
+   "tracks": 445,
+   "length_mm": 553.6,
+   "pads": 4,
+   "zones": []
+  },
+  {
+   "name": "B.Cu",
+   "slug": "b",
+   "kind": "copper",
+   "file": "b.svg",
+   "color": "#4D7FC4",
+   "note": "Bottom copper, 35 \u00b5m (1 oz).",
+   "tracks": 898,
+   "length_mm": 593.1,
+   "pads": 657,
+   "zones": [
+    "+1V1",
+    "GND",
+    "+3V3",
+    "/MCU/VREG_LX"
+   ]
+  },
+  {
+   "name": "Edge.Cuts",
+   "slug": "edge",
+   "kind": "outline",
+   "file": "edge.svg",
+   "color": "#D0D2CD",
+   "note": "The outline and every cut-out in it."
+  },
+  {
+   "name": "B.Silkscreen",
+   "slug": "silk_b",
+   "kind": "silk",
+   "file": "silk_b.svg",
+   "color": "#E8B2A7",
+   "note": "Silkscreen, back, seen through the board (mirror the view to read it)."
+  },
+  {
+   "name": "F.Fab",
+   "slug": "fab_f",
+   "kind": "fab",
+   "file": "fab_f.svg",
+   "color": "#DDE1E8",
+   "note": "Part bodies and reference designators, front: what each piece of copper belongs to."
+  },
+  {
+   "name": "B.Fab",
+   "slug": "fab_b",
+   "kind": "fab",
+   "file": "fab_b.svg",
+   "color": "#96A2CE",
+   "note": "Part bodies and reference designators, back."
+  }
+ ]
+}
