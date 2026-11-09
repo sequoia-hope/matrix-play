@@ -45,7 +45,7 @@ Status: **passed**
   "drc_warning_types": [],
   "copper_audit_rc": 0,
   "copper_audit_tail": [
-    "/home/sequoia/pcb/round-pendant/hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb: tracks=4921 vias=729 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(<86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(<40um)=68 strip_zones=0 zone_intrusions=0"
+    "hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb: tracks=4921 vias=729 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(<86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(<40um)=68 strip_zones=0 zone_intrusions=0"
   ],
   "pad_joints_rc": 0,
   "pad_joints_tail": ["", "  PASS: 0 thin pad joints"],

@@ -32,7 +32,7 @@ Status: **passed** *(visual render published to PCB view for user review alongsi
 
 ### 1. `placement_check.py`
 ```text
-placement_check: /home/sequoia/pcb/round-pendant/hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb
+placement_check: hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb
   Y1 pad 1 (Net-(U3-XIN)) is 5.8 mm from its IC pin
   Y1 pad 3 (Net-(C24-Pad1)) is 3.9 mm from its IC pin
   ratsnest (MST, all nets except GND): 2892 mm over 138 nets
@@ -77,7 +77,7 @@ placement_check: /home/sequoia/pcb/round-pendant/hw/parallelogram/p2-132-usb6/pa
 
 ### 2. `sync_check.py`
 ```text
-sync_check: /home/sequoia/pcb/round-pendant/hw/parallelogram/p2-132-usb6
+sync_check: hw/parallelogram/p2-132-usb6
   schematic parallelogram.kicad_sch: 231 symbols (0 excluded from board)
   board parallelogram.kicad_pcb: 231 footprints (0 board-only)
   223 parts to build; required fields: LCSC

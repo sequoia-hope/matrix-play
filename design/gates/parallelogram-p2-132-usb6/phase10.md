@@ -28,7 +28,7 @@ Status: **awaiting_signoff**
 
 ### A. `sync_check.py --bom --cpl`
 ```text
-sync_check: /home/sequoia/pcb/round-pendant/hw/parallelogram/p2-132-usb6
+sync_check: hw/parallelogram/p2-132-usb6
   schematic parallelogram.kicad_sch: 231 symbols (0 excluded from board)
   board parallelogram.kicad_pcb: 231 footprints (0 board-only)
   BOM bom-jlcpcb.csv: 223 designators
