@@ -1,109 +1,109 @@
 net,class,v_max,i_cont,i_peak,impedance,length_limit,reason
-+1V1,POWER,1.1,0.05,0.1,,,RP2350 core; reference ring + regulator zones per chips/rp2350.md
-+3V3,POWER,3.4,0.04,0.15,,,"Logic rail; 150 mA max, RP2350 band + local links"
-/Driver 1 and matrix/CS1_1,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_10,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_11,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_12,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_13,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_14,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_15,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_2,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_3,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_4,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_5,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_6,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_7,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_8,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/CS1_9,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_1,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_10,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_11,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_2,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_3,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_4,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_5,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_6,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_7,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_8,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 1 and matrix/SW1_9,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_1,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_10,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_11,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_12,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_13,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_14,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_15,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_2,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_3,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_4,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_5,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_6,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_7,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_8,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/CS2_9,SIGNAL,4.5,0.011,0.0133,,,AW20198 CS sink: 13.33 mA peak (1.07 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_1,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_10,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_11,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_2,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_3,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_4,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_5,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_6,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_7,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_8,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/Driver 2 and matrix/SW2_9,SIGNAL,4.5,0.020,0.240,,,AW20198 SW scan line: 240 mA peak at 1/12.4 duty (19.3 mA avg); drivers-aw20198.md
-/MCU/ACC_INT,SIGNAL,3.4,,,,,"Control or status, low current"
-/MCU/ACC_SCL,SIGNAL,3.4,,,,,"Control or status, low current"
-/MCU/ACC_SDA,SIGNAL,3.4,,,,,"Control or status, low current"
++1V1,POWER,1.1,0.05,0.1,,,RP2350 core; reference ring + regulator zones; VREG_FB Kelvin sense to COUT (C18.1) per chips/rp2350.md
++3V3,POWER,3.4,0.04,0.15,,,"Logic rail; 150 mA max, RP2350 band (0.15 mm QFN corner stubs) + local links"
+/Driver 1 and matrix/CS1_1,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_10,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_11,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_12,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_13,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_14,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_15,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_2,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_3,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_4,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_5,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_6,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_7,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_8,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/CS1_9,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 1 and matrix/SW1_1,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_10,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_11,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_2,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_3,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_4,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_5,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_6,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_7,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_8,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 1 and matrix/SW1_9,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/CS2_1,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_10,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_11,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_12,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_13,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_14,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_15,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_2,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_3,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_4,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_5,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_6,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_7,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_8,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/CS2_9,SIGNAL,4.5,0.012,0.0133,,,AW20198 CS sink: 13.33 mA peak; 11.8 mA trunk avg across 11 slots (1.07 mA/die); drivers-aw20198.md
+/Driver 2 and matrix/SW2_1,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_10,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_11,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_2,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_3,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_4,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_5,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_6,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_7,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_8,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/Driver 2 and matrix/SW2_9,SIGNAL,4.5,0.0161,0.200,,,AW20198 SW scan line: 200 mA peak across 15 CS at 255/3168 duty (16.1 mA avg); routed in SW_SCAN 0.10 mm
+/MCU/ACC_INT,SIGNAL,3.4,,,,,LIS2DW12TR INT1 motion wake line to GPIO10
+/MCU/ACC_SCL,SIGNAL,3.4,0.0007,0.0007,,,"400 kHz I2C1 SCL to LIS2DW12TR (GPIO3), 4.7 k pull-up (R19)"
+/MCU/ACC_SDA,SIGNAL,3.4,0.0007,0.0007,,,"400 kHz I2C1 SDA to LIS2DW12TR (GPIO2), 4.7 k pull-up (R20)"
 /MCU/BOARD_ID0,SIGNAL,3.4,,,,,"GPIO19 board ID strap, tied to GND through net tie NT1 (reads 0)"
-/MCU/BTN,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/BTN,SIGNAL,3.4,,,,,GPIO11 user button input via 1 k series R18
 /MCU/GPIO29_TP,SIGNAL,3.4,,,,,GPIO29 spare GPIO (ADC3) to its test pad
-/MCU/LIGHT,ANALOG,3.4,0.00015,0.00015,,,"XYC-PT19C-L1 emitter analog node (22 k || 100 nF to GND, ADC1)"
+/MCU/LIGHT,ANALOG,3.4,0.00015,0.00015,,,"XYC-PT19C-L1 emitter analog node (22 k || 100 nF to GND, ADC1); keep clear of SW/CS matrix edges"
 /MCU/LIGHT_PWR,SIGNAL,3.4,0.00015,0.00015,,,GPIO1 switched 3.3 V collector supply for Q2 (0 uA sleep)
-/MCU/QSPI_SCLK,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
-/MCU/QSPI_SD0,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
-/MCU/QSPI_SD1,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
-/MCU/QSPI_SD2,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
-/MCU/QSPI_SD3,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
-/MCU/QSPI_SS,SE_HS,3.4,,,,25,Flash at up to 75 MHz; keep under 25 mm
-/MCU/RUN,SIGNAL,3.4,,,,,"Control or status, low current"
-/MCU/SWCLK,SIGNAL,3.4,,,,,"Control or status, low current"
-/MCU/SWDIO,SIGNAL,3.4,,,,,"Control or status, low current"
+/MCU/QSPI_SCLK,SE_HS,3.4,,,uncontrolled (<=13.85 mm; <10% l_crit),25,"Flash clock up to 75 MHz; <=25 mm, solid GND return (In2.Cu preferred in Rev S3D)"
+/MCU/QSPI_SD0,SE_HS,3.4,,,uncontrolled (<=13.85 mm; <10% l_crit),25,"Flash IO0 up to 75 MHz; <=25 mm, solid GND return (In2.Cu preferred in Rev S3D)"
+/MCU/QSPI_SD1,SE_HS,3.4,,,uncontrolled (<=13.85 mm; <10% l_crit),25,"Flash IO1 up to 75 MHz; <=25 mm, solid GND return (In2.Cu preferred in Rev S3D)"
+/MCU/QSPI_SD2,SE_HS,3.4,,,uncontrolled (<=13.85 mm; <10% l_crit),25,"Flash IO2 up to 75 MHz; <=25 mm, solid GND return (In2.Cu preferred in Rev S3D)"
+/MCU/QSPI_SD3,SE_HS,3.4,,,uncontrolled (<=13.85 mm; <10% l_crit),25,"Flash IO3 up to 75 MHz; <=25 mm, solid GND return (In2.Cu preferred in Rev S3D)"
+/MCU/QSPI_SS,SE_HS,3.4,,,uncontrolled (<=13.85 mm; <10% l_crit),25,"Flash CS up to 75 MHz; <=25 mm, place 1 k R16 <=3 mm from U3.56-U4.1 trunk to isolate SW2 BOOTSEL stub"
+/MCU/RUN,SIGNAL,3.4,,,,,RP2350 active-low reset to TP_RUN
+/MCU/SWCLK,SIGNAL,3.4,,,,,SWD clock to TP_SWCLK
+/MCU/SWDIO,SIGNAL,3.4,,,,,SWD data to TP_SWDIO
 /MCU/UART_RX,SIGNAL,3.4,,,,,GPIO25 UART1 RX to its test pad
 /MCU/UART_TX,SIGNAL,3.4,,,,,GPIO24 UART1 TX to its test pad
-/MCU/USB_DM_MCU,DIFF_HS,3.6,,,90 diff,,"USB FS, 27 R to pin, very short"
-/MCU/USB_DP_MCU,DIFF_HS,3.6,,,90 diff,,"USB FS, 27 R to pin, very short"
-/MCU/VREG_AVDD,ANALOG,3.4,0.001,0.001,,,"Regulator analog filter, RFILT and CFILT"
-/MCU/VREG_LX,SWITCH,3.4,0.1,0.2,,,Core regulator switch node; reference zone
-/Power/BAT_N,POWER,4.3,0.34,1.0,,,"Cell minus, XB9901A GND pins; never joined to board GND"
-/Power/CC1,SIGNAL,3.4,,,,,"Control or status, low current"
-/Power/CC2,SIGNAL,3.4,,,,,"Control or status, low current"
-/Power/USB_DM_C,DIFF_HS,5.5,,,90 diff,,"USB FS, pads to ESD"
-/Power/USB_DP_C,DIFF_HS,5.5,,,90 diff,,"USB FS, pads to ESD"
-CHG,SIGNAL,3.4,,,,,"Control or status, low current"
-GND,POWER,0,1.0,2.0,,,Return for everything; unbroken solid plane on In1.Cu (L2)
-I2C_SCL,SIGNAL,3.4,0.0033,0.0033,,,"Driver bus to AW20198QNR at 1 MHz, 1 k pull-up"
-I2C_SDA,SIGNAL,3.4,0.0033,0.0033,,,"Driver bus to AW20198QNR at 1 MHz, 1 k pull-up"
-LED_SDB,SIGNAL,3.4,,,,,Shared AW20198QNR EN; 100k pull-down + 100nF
-Net-(C24-Pad1),CLOCK,3.4,,,,11,"12 MHz crystal; <=11 mm, no vias"
-Net-(Q1A-D),SIGNAL,4.5,,,,,"Control or status, low current"
-Net-(Q1B-D),SIGNAL,4.5,,,,,"Control or status, low current"
-Net-(R16-Pad2),SIGNAL,3.4,,,,,"Control or status, low current"
-Net-(R18-Pad2),SIGNAL,3.4,,,,,"Control or status, low current"
-Net-(U1-ISET),ANALOG,4.5,,,,,AW20198 ISET current-setting resistor node (30 k to GND); drivers-aw20198.md
-Net-(U2-ISET),ANALOG,4.5,,,,,AW20198 ISET current-setting resistor node (30 k to GND); drivers-aw20198.md
-Net-(U3-XIN),CLOCK,3.4,,,,11,"12 MHz crystal; <=11 mm, no vias"
-Net-(U3-XOUT),CLOCK,3.4,,,,11,"12 MHz crystal; <=11 mm, no vias"
-Net-(U5-ILIM),ANALOG,4.5,,,,,Current-setting resistor node
-Net-(U5-ISET),ANALOG,4.5,,,,,Current-setting resistor node
-Net-(U5-TS),ANALOG,4.5,,,,,Current-setting resistor node
-Net-(U8-VDD),SIGNAL,4.5,,,,,"Control or status, low current"
-PGOOD,SIGNAL,3.4,,,,,"Control or status, low current"
-USB_DM,DIFF_HS,3.6,,,90 diff,,"USB FS, between ESD and 27 R"
-USB_DP,DIFF_HS,3.6,,,90 diff,,"USB FS, between ESD and 27 R"
-VBAT,POWER,4.3,0.34,1.0,,,Protected cell rail; 300 mA charge
-VBAT_EN,SIGNAL,3.4,,,,,"Control or status, low current"
-VBAT_SENSE,ANALOG,3.4,,,,,ADC0 from switched divider
-VBUS,POWER,5.5,0.5,0.5,,,"USB input, 500 mA limit"
-VSYS,POWER,4.5,0.34,0.96,,,System rail: 300 mA LEDs + 40 mA logic; routed 0.25 mm min
+/MCU/USB_DM_MCU,DIFF_HS,3.6,,,uncontrolled FS (27R damped; ~134R diff),6,"USB FS DM, R14 to U3.51; partner /MCU/USB_DP_MCU, <=6 mm, no vias, skew <=1.5 mm"
+/MCU/USB_DP_MCU,DIFF_HS,3.6,,,uncontrolled FS (27R damped; ~134R diff),6,"USB FS DP, R15 to U3.52; partner /MCU/USB_DM_MCU, <=6 mm, no vias, skew <=1.5 mm"
+/MCU/VREG_AVDD,ANALOG,3.4,0.001,0.001,,,"Regulator analog filter (33 R R13 + 4.7 uF C17); dedicated CFILT GND via separate from PGND"
+/MCU/VREG_LX,SWITCH,3.4,0.1,0.45,,,"Core regulator switch node; reference zone, no vias, cutout on adjacent inner layer (In2.Cu for B.Cu U3/L1)"
+/Power/BAT_N,POWER,4.35,0.35,1.0,,,"Raw cell minus to XB9901A GND pins (350 mA capped / 515 mA hw max); BATTERY 0.25 mm; never join to board GND"
+/Power/CC1,SIGNAL,5.5,0.0011,0.0011,,,USB-C CC1 5.1 k Rd (R1) to GND; 5.5 V max
+/Power/CC2,SIGNAL,5.5,0.0011,0.0011,,,USB-C CC2 5.1 k Rd (R2) to GND; 5.5 V max
+/Power/USB_DM_C,DIFF_HS,5.5,,,uncontrolled FS (27R damped; ~134R diff),25,"USB FS DM, J1 A7/B7 to U7; partner /Power/USB_DP_C, <=25 mm, skew <=5 mm"
+/Power/USB_DP_C,DIFF_HS,5.5,,,uncontrolled FS (27R damped; ~134R diff),25,"USB FS DP, J1 A6/B6 to U7; partner /Power/USB_DM_C, <=25 mm, skew <=5 mm"
+CHG,SIGNAL,3.4,,,,,BQ24073 open-drain ~CHG status to GPIO12 (100 k pull-up R7)
+GND,POWER,0,1.0,2.0,,,"Return for everything; solid plane on In1.Cu (L2; swap to In2.Cu adjacent to B.Cu in Rev S3D); single 2-via PGND tie"
+I2C_SCL,SIGNAL,3.4,0.0033,0.0033,,,"Driver bus to AW20198QNR at 1 MHz (GPIO5), 1 k pull-up (R22)"
+I2C_SDA,SIGNAL,3.4,0.0033,0.0033,,,"Driver bus to AW20198QNR at 1 MHz (GPIO4), 1 k pull-up (R21)"
+LED_SDB,SIGNAL,3.4,,,,,Shared AW20198QNR EN (GPIO6); 100k pull-down (R31) + 100nF (C35; drive high/low cleanly)
+Net-(C24-Pad1),CLOCK,3.4,,,,6,"12 MHz crystal R17-to-Y1.3/C24 segment; <=6 mm (<=11 mm total XOUT), no vias"
+Net-(Q1A-D),SIGNAL,4.5,,,,,NTZD3155C N-FET drain pulling P-FET gate for switched VBAT_SENSE divider
+Net-(Q1B-D),SIGNAL,4.5,,,,,NTZD3155C P-FET drain feeding switched VBAT_SENSE divider (2x 100 k R11/R12)
+Net-(R16-Pad2),SIGNAL,3.4,,,,,Isolated BOOTSEL button branch from 1 k R16 to SW2 (keeps QSPI_SS stub short)
+Net-(R18-Pad2),SIGNAL,3.4,,,,,Unclamped finger-ESD button pad from SW1 to 1 k series R18 (place R18 near SW1)
+Net-(U1-ISET),ANALOG,4.5,,,,,AW20198 ISET current-setting resistor node (30 k R30 to GND); drivers-aw20198.md
+Net-(U2-ISET),ANALOG,4.5,,,,,AW20198 ISET current-setting resistor node (30 k R33 to GND); drivers-aw20198.md
+Net-(U3-XIN),CLOCK,3.4,,,,11,"12 MHz crystal XIN; <=11 mm, no vias"
+Net-(U3-XOUT),CLOCK,3.4,,,,5,"12 MHz crystal U3.19-to-R17 segment; <=5 mm (<=11 mm total XOUT), no vias"
+Net-(U5-ILIM),ANALOG,4.5,,,,,BQ24073 ILIM current-limit programming resistor node (3.6 k R5 to GND; ~424 mA)
+Net-(U5-ISET),ANALOG,4.5,,,,,BQ24073 ISET fast-charge programming resistor node (3.0 k R4 to GND; ~297 mA)
+Net-(U5-TS),ANALOG,4.5,,,,,BQ24073 TS fixed 10 k bias resistor node (R3 to GND; NTC disabled)
+Net-(U8-VDD),ANALOG,4.5,0.00001,0.001,,,XB9901A VDD supply/cell-sense filter node (100 R R8 + 100 nF C6 to BAT_N)
+PGOOD,SIGNAL,3.4,,,,,BQ24073 open-drain ~PGOOD USB status to GPIO13 (100 k pull-up R6)
+USB_DM,DIFF_HS,3.6,,,uncontrolled FS (27R damped; ~134R diff),25,"USB FS DM, U7 to R14; partner USB_DP, <=25 mm, skew <=3.5 mm"
+USB_DP,DIFF_HS,3.6,,,uncontrolled FS (27R damped; ~134R diff),25,"USB FS DP, U7 to R15; partner USB_DM, <=25 mm, skew <=3.5 mm"
+VBAT,POWER,4.35,0.35,1.0,,,"Protected cell rail: 350 mA capped discharge (515 mA hw max) / 297 mA charge; BATTERY 0.25 mm"
+VBAT_EN,SIGNAL,3.4,,,,,GPIO28 enable for Q1 (NTZD3155C) switched VBAT_SENSE divider (100 k pull-down R9)
+VBAT_SENSE,ANALOG,3.4,,,,,ADC0 from switched 2x 100 k VBAT divider
+VBUS,POWER,5.5,0.5,1.5,,,"USB-C 5 V input: 500 mA USB500 limit, 1.5 A hot-plug/ESD peak; USB_POWER 0.25 mm"
+VSYS,POWER,4.5,0.35,0.96,,,"System rail: 348 mA typ (515 mA hw max), 0.96 A decoupling/slot transient; POWER 0.20 mm (0.16 mm QFN neck in DRU; 0.25 mm target in Rev S3D)"

@@ -21,5 +21,5 @@
 | 100 Ω | 0402WGF1000TCE | C25076 | basic (per easy2350) | XB9901A VDD R1 |
 
 Calculations:
-- VBAT divider: 100 kΩ / 100 kΩ (C25741), switched by Q1 NTZD3155C, gate pull-up 100 kΩ. Off: FET leakage only. Thevenin 50 kΩ × 1 µA GPIO leakage max (Table 1436) = 50 mV at the ADC, 100 mV at VBAT worst case. 100 nF at the ADC pin; firmware waits ≥ 5 ms (τ = 50 kΩ × 100 nF) after switching.
+- VBAT divider: 100 kΩ / 100 kΩ (C25741), switched by Q1 NTZD3155C, gate pull-up 100 kΩ. Off: FET leakage only. Thevenin 50 kΩ × 1 µA GPIO leakage max (Table 1436, with RP2350 ADC pin `PDE = 0, IE = 0` mandatory to disable the default 50–80 kΩ pull-down and E9 leakage) = 50 mV at the ADC, 100 mV at VBAT worst case. 100 nF (`C7`) filter cap gives `τ = 50 kΩ × 100 nF = 5.0 ms`; firmware must wait **`≥ 30 ms` (`6 τ`, `< 0.25%` settling error)** after switching `VBAT_EN` high before reading ADC (waiting only `5 ms = 1 τ` leaves a `36.8%` error).
 - 3V3 ≤ RP2350 etc.: see parts files. MLCC derating noted per use.

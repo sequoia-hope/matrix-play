@@ -663,11 +663,16 @@ const SUNFLOWER_CARDS = [
   {
     id: "sunflower-s2-110-usbc",
     title: "Sunflower s2-110 — USB-C",
-    badge: "0 Open · 0 DRC",
-    badgeKind: "ok",
+    badge: "Gates 5–9 Held",
+    badgeKind: "probe",
     specs: ["4 layers", "110× XL-1615 LEDs", "USB-C on back", "$12.55 BOM"],
     desc: "USB-C receptacle (HRO TYPE-C-31-M-12) on the back at the bottom rim, front LEDs steered round its six through-holes, an LED at the centre and the light sensor at the top rim. Buttons and PicoBlade battery socket stay at the top. No vias in pads, so no filled-via option needed. VBAT_EN is on GPIO28 here. Test pads on the back for the power rails, SWD and reset, I2C, UART (GPIO24 TX, GPIO25 RX) and GPIO29, and board ID straps on GPIO19-21 (this board reads 6). 0 opens, 0 DRC errors or warnings, copper audit clean (637 vias); fab files exported.",
-    silkF: true, silkB: true
+    silkF: true, silkB: true,
+    extraLinks: [
+      { href: "design/study/sunflower/bringup-s2-110-usbc.md", label: "Bring-up Plan" },
+      { href: "design/sim/sunflower-s2-110-usbc/README.md", label: "PDN & Thermal Sim" },
+      { href: "design/gates/sunflower-s2-110-usbc/phase10.md", label: "Gates 0–10" }
+    ]
   },
   {
     id: "sunflower-pn-dense",

@@ -24,6 +24,20 @@ pcb = "hw/dense-square/s15-225/dense-square.kicad_pcb"
 sch = "hw/dense-square/s15-225/dense-square.kicad_sch"
 note = "100% routed & DRC-clean 15 x 15 = 225 MEIHUA MHPA0808RGBDT 0808 square matrix (1.36 mm pitch = 56.25 LEDs/cm^2, 0.46 mm dual-track F.Cu streets) in the north 20 x 20 mm window of the 25 x 50 mm 8-layer ENIG PCB, zero components under the LED array, south-bay 4x AW20198QNR + RP2350A ($20.27/bd BOM). 1,100/1,100 connections (0 open), 5,377 tracks, 998 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints."
 
+[[boards]]
+id = "dense-square-bga13-169"
+name = "Square Bezel bga13-169 (169 LEDs, WLCSP behind array) - routing in progress"
+pcb = "hw/dense-square/bga13-169/route/ploughed_8L.kicad_pcb"
+sch = "hw/dense-square/bga13-169/dense-square.kicad_sch"
+note = "IN PROGRESS. 40 x 40 mm R3 square, 13 x 13 = 169 MHPA0808RGBDT 0808 LEDs at 1.65 mm pitch, 4x IS31FL3745 WLCSP-36 drivers on B.Cu directly behind the array, RP2350A/USB-C/JST 1.25/BQ24073 around a 9.65 mm bezel, 8 layers. Shown: the latest router output (50 connections still open), not yet adopted into the board file."
+
+[[boards]]
+id = "dense-square-bga15-225"
+name = "Square Bezel bga15-225 (225 LEDs, WLCSP behind array) - routing in progress"
+pcb = "hw/dense-square/bga15-225/route/routed_raw_8L.kicad_pcb"
+sch = "hw/dense-square/bga15-225/dense-square.kicad_sch"
+note = "IN PROGRESS. 43 x 43 mm R3 square, 15 x 15 = 225 MHPA0808RGBDT 0808 LEDs at 1.65 mm pitch, 5x IS31FL3745 WLCSP-36 drivers in a quincunx behind the array, 8 layers. Shown: the latest router output (146 connections still open), not yet adopted into the board file."
+
 # ---- Sunflower 4-Layer Family (dia. 38 mm) ----
 
 [[boards]]
@@ -92,6 +106,41 @@ note = "s1-66 re-routed with no vias in SMD pads, PicoBlade battery socket: 1 op
 # ---- Skewed Parallelogram 4-Layer Family (25 x 70 mm) ----
 
 [[boards]]
+id = "parallelogram-p1-66-usb"
+name = "Parallelogram p1-66-usb (66 LEDs, USB-C + JST 1.25 + Wing Buttons)"
+pcb = "hw/parallelogram/p1-66-usb/parallelogram.kicad_pcb"
+sch = "hw/parallelogram/p1-66-usb/parallelogram.kicad_sch"
+note = "100% routed & DRC-clean 4-layer skewed parallelogram (25 x 70 mm, 17.75 deg skew) adding a board-mounted USB-C receptacle (Korean Hroparts TYPE-C-31-M-22, C530612) on the slanted South bezel, two flat-face XKB TS-1187A user interaction push buttons in the NW and SE acute wings 100% outside the 20 x 35 mm LiPo pocket, and a right-angle Micro-JST 1.25 battery header (BT1) alongside EVQP7J01P side switches ($11.08/bd BOM, +$0.47 vs wire-pad p1-66). 485/485 connections (0 open), 2,561 tracks, 372 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints; fab files in fab/."
+
+[[boards]]
+id = "parallelogram-p2-132-usb"
+name = "Parallelogram p2-132-usb (132 LEDs, USB-C + JST 1.25 + Wing Buttons)"
+pcb = "hw/parallelogram/p2-132-usb/parallelogram.kicad_pcb"
+sch = "hw/parallelogram/p2-132-usb/parallelogram.kicad_sch"
+note = "100% routed & DRC-clean 2-driver 4-layer skewed parallelogram (6 x 22 = 132 XL-1615RGBC-RF LEDs at 3.70 x 2.60 mm = 8.5 LEDs/cm^2) adding South-bezel USB-C (TYPE-C-31-M-22, NPTH bosses steered cleanly between LED alleys), NW/SE wing flat-face TS-1187A user buttons outside the 20 x 35 mm LiPo pocket, and a Micro-JST 1.25 battery header ($13.06/bd BOM, +$0.46 vs wire-pad p2-132). 771/771 connections (0 open), 4,974 tracks, 727 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints; fab files in fab/."
+
+[[boards]]
+id = "parallelogram-p3-162-usb"
+name = "Parallelogram p3-162-usb (162 LEDs, USB-C) - 34 open"
+pcb = "hw/parallelogram/p3-162-usb/parallelogram.kicad_pcb"
+sch = "hw/parallelogram/p3-162-usb/parallelogram.kicad_sch"
+note = "USB-C + JST 1.25 + wing buttons on the 9 x 18 = 162 LED tier, 4 layers. Router stopped at 34 open (4-layer density knee, as the p3-162 parent at 31 open)."
+
+[[boards]]
+id = "parallelogram-p3-198-usb"
+name = "Parallelogram p3-198-usb (198 LEDs, USB-C) - 79 open"
+pcb = "hw/parallelogram/p3-198-usb/parallelogram.kicad_pcb"
+sch = "hw/parallelogram/p3-198-usb/parallelogram.kicad_sch"
+note = "USB-C + JST 1.25 + wing buttons on the 9 x 22 = 198 LED tier, 4 layers. Router stopped at 79 open (parent p3-198: 56 open)."
+
+[[boards]]
+id = "parallelogram-p4-264-usb"
+name = "Parallelogram p4-264-usb (264 LEDs, USB-C) - 168 open"
+pcb = "hw/parallelogram/p4-264-usb/parallelogram.kicad_pcb"
+sch = "hw/parallelogram/p4-264-usb/parallelogram.kicad_sch"
+note = "USB-C + JST 1.25 + wing buttons on the 12 x 22 = 264 LED tier, 4 layers. Router stopped at 168 open (parent p4-264: 139 open)."
+
+[[boards]]
 id = "parallelogram-p1-66"
 name = "Parallelogram p1-66 (66 LEDs, 4L)"
 pcb = "hw/parallelogram/p1-66/parallelogram.kicad_pcb"
@@ -122,11 +171,18 @@ note = "4-driver 4-layer saturation tier: 12 x 22 = 264 RGB LEDs (2.02 x 2.60 mm
 # ---- Round Pendant Family (dia. 38 mm) ----
 
 [[boards]]
+id = "round-pendant-f"
+name = "Round Pendant F (235 LEDs, track PDN)"
+pcb = "hw/round-pendant/f/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/f/round-pendant.kicad_sch"
+note = "Parent: round-pendant-e. Variant F: the 27 thin rectangular zones u3fix.py drew as RP2350 pin-to-decap links, DVDD fingers, LDO links and the FB finger are now locked 0.2 mm tracks (FB 0.12 mm through its neck), so escape vias can no longer carve them. FB is continuous from pin 50 to COUT again, VREG_VIN is fed from the 3V3 band. IOVDD pins 11 and 54 keep no direct link (no room beside their LED escape vias): C9 and C13 join through the In5 plane, as in E. 10 nets locally rerouted; 0 DRC errors/warnings, 0 unconnected, 0 copper_audit defects incl. new strip-zone/zone-intrusion checks (2 vendor-zone intrusions inherited from E)."
+
+[[boards]]
 id = "round-pendant-e"
 name = "Round Pendant — Sunflower (WLCSP-36)"
 pcb = "hw/round-pendant/e/round-pendant.kicad_pcb"
 sch = "hw/round-pendant/e/round-pendant.kicad_sch"
-note = "8-layer WLCSP-36 BGA sunflower architecture (Variant E): 235x XL-1010RGB LEDs on a golden-angle spiral, 5x IS31FL3745-CLS4-TR WLCSP-36 drivers (zero driver thermal pads blocking vias), solid U3/U5 GND pads, top-rim Everlight ALS-PT19 ambient light sensor, Voronoi seed-web front silk and 58 tidy back designators. 100% routed, 0 DRC errors/warnings, 0 copper_audit defects."
+note = "8-layer WLCSP-36 BGA sunflower architecture (Variant E): 235x XL-1010RGB LEDs on a golden-angle spiral, 5x IS31FL3745-CLS4-TR WLCSP-36 drivers (zero driver thermal pads blocking vias), solid U3/U5 GND pads, top-rim Everlight ALS-PT19 ambient light sensor, Voronoi seed-web front silk and 57 tidy back designators. 100% routed, 0 DRC errors/warnings. Superseded by Variant F: copper_audit's later strip-zone and zone-intrusion checks flag 34 defects here (27 thin pin-to-decap zones, 7 intrusions, including the FB finger cut in two), which F fixed with locked tracks."
 
 [[boards]]
 id = "round-pendant-c-web4"

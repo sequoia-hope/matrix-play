@@ -2,7 +2,7 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 9,
-  "doing": "Variant E (hw/round-pendant/e) adds the front-side 12-o'clock top-rim Everlight ALS-PT19-315C/L177/TR8 ambient light sensor (Q2 on GPIO1 + 22k/100n RC filter to ADC1) onto cleaned Variant D (5x IS31FL3745-CLS4-TR WLCSP-36 BGA LED drivers via JLCPCB Global Sourcing, solid GND exposed pads on U3 and U5). Routed on 8 layers and cleaned to 5,221 tracks and 879 vias: 0 KiCad DRC errors/warnings under --severity-all, 0 unconnected items, 0 copper_audit.py defects across all 7 categories, 0 thin pad joints across 1,408 SMD pads, 0 ERC violations, and JLCPCB Gerbers/BOM/CPL exported in hw/round-pendant/e/fab/.",
+  "doing": "2026-11-08: Sunflower s2-110-usbc phase gates 0-10 completed (design/gates/sunflower-s2-110-usbc/): Gates 1-3 passed, Gates 0/4/10 awaiting_signoff, Gates 5-9 failed on frozen Rev S3C copper/rules/silk; Bottom-side CPL rotation/centroid bug fixed in scripts/sunflower/export_and_cost.py and hw/sunflower/s2-110-usbc/fab/ re-exported (0 sync/ERC/DRC errors, all 34 LCSC parts in stock incl. L1 at 1,520); stale production/ moved to production-stale-2026-11-07-0137/. Round Pendant F remains the main board.",
   "needs_user": [
     {
       "id": "inductor-preorder",
@@ -29,10 +29,32 @@
       "text": "403535 cell: send its spec sheet or listing if you have one, to confirm capacity and that its maximum charge rate is at least 1C. Charging stays at about 297 mA by your choice."
     },
     {
+      "id": "decap-11-54",
+      "kind": "question",
+      "gate": 7,
+      "text": "Tried moving C9/C13 right up to pins 11/54 (variant g work, not adopted): C13 under pins 53/54 blocks CS3_16's only escape, and C9 on pin 11's axis leaves CS3_4 (D104-D103) unroutable; no legal via within 2 mm in either case. Choose: keep plane-only decoupling (F), move a few LEDs/escapes, shift R14/R15 down ~0.5 mm for C13, or wait for laser microvias (JLC quote)."
+    },
+    {
       "id": "sunflower-tier",
       "kind": "question",
-      "gate": 4,
-      "text": "Sunflower 38 mm 4-layer family (design/study/sunflower/README.md), now with a Molex PicoBlade 1.25 mm battery socket, front seed-web silk and PWR/BOOT labels: pick a tier to finish -- s1-66 ($10.73 BOM, 1 driver, fab files), s2-88 ($12.02, 2 drivers, fab files; also routes with no vias in pads), s2-110 ($12.37, 1 open) or s2-132 ($12.72, 2 opens). Also: switch the MCU to RP2040 to save ~$0.56 and drop the inductor?"
+      "gate": 10,
+      "text": "Sunflower 38 mm 4-layer family (design/study/sunflower/README.md): s2-110-usbc ($12.55 BOM, 110 LEDs + centre LED, back-side USB-C, rim ALS, test pads, ID 6, 0 open / 0 DRC / 637 vias, no via-in-pad, fab/ CPL fixed, all 34 LCSC parts in stock incl. L1 at 1,520) is the finished routed/gated candidate alongside Penrose pn-dense ($11.75) and pn-dense-1d ($10.81); earlier POFV/probe tiers are s1-66-pofv ($10.73), s2-88-pofv ($12.02), s2-88 ($12.02, thin joints left), s2-110 (1 open) and s2-132 (2 opens). On s2-110-usbc, Gates 1-3 passed, Gates 0/4/10 await your sign-off, and Gates 5-9 are held on frozen Rev S3C copper/rules/silk findings (see s2-110-usbc-release below). Also still open: switch MCU to RP2040 (~-$0.56) on a future spin?"
+    },
+    {
+      "id": "s2-110-usbc-release",
+      "kind": "signoff",
+      "gate": 10,
+      "options": [
+        "Order Rev S3C fab/ prototype (5-10 pcs) with Gate 5-9 waivers, ENIG 1U\", Pass 1=B.Cu / Pass 2=F.Cu reflow, no F.Cu soldering on J1 (microscope B.Cu slot tack), 2.4 mm spacer + Kapton, and 1x/2x SPI + ADC4 FW guards",
+        "Hold order and spin Rev S3D fixing J1 full-SMT C530612, COUT spokes, CFILT via, In2.Cu GND+LX cutout, C22 Flash decap, BT1/U8 placement, EP paste vias, and back silk"
+      ],
+      "text": "Sunflower s2-110-usbc Gates 0, 4 & 10 sign-off (design/gates/sunflower-s2-110-usbc/phase10.md): confirm (1) ordering Rev S3C prototype with documented waivers vs spinning Rev S3D first, (2) 403535 cell 297 mA (~0.6-0.8C) charge rate, (3) BT1 upward-angled pre-mating + Kapton + >=2.4 mm rear spacer (~9.6 mm stack) and SW1/SW2 +0.40 mm rim projection, and (4) front Voronoi silk art + back silk identity omission."
+    },
+    {
+      "id": "square-bezel-escape",
+      "kind": "question",
+      "gate": 7,
+      "text": "Square-bezel bga13-169/bga15-225 stall at 50+ open around the WLCSP drivers behind the 1.65 mm array. Choose: via-in-pad (POFV) at the drivers, pre-escaping the WLCSP balls first (route_variant.py --escape-mode bga), or a wider LED pitch."
     }
   ],
   "checks": {
@@ -72,12 +94,12 @@
       "gate": 6
     },
     "DRC": {
-      "result": "Variant E strict KiCad DRC (--severity-all, min_connection=0.09): 0 errors, 0 warnings, 0 unconnected; copper_audit.py: 0 defects across all 7 categories (5,221 tracks, 879 vias)",
+      "result": "Variant F strict KiCad DRC (--severity-all, min_connection=0.09): 0 errors, 0 warnings, 0 unconnected (2 pre-existing {slash} parity name mismatches on unconnected U3 pins 42/43, same as E); copper_audit.py 0 defects across 9 categories incl. new strip-zone check, 2 zone intrusions inherited from E's vendor zones (SW1_2/USB_DM in COUT, VREG_AVDD in vendor GND)",
       "ok": true,
       "gate": 7
     },
     "pad_joints": {
-      "result": "Variant E pad_joints & pad_joints_fixed PASS: 0 thin joints across 1,408 SMD pads",
+      "result": "Variant F pad_joints_fixed PASS: 0 thin joints across 1,408 SMD pads",
       "ok": true,
       "gate": 7
     },
@@ -85,6 +107,26 @@
       "result": "Variant E front seed web (99% kept, clipped clear of Q2 optical window + Q2 pin-1 dot) + 5 WLCSP A1 pin-1 dots + 57/106 back designators (27/27 majors), 0 silk DRC errors",
       "ok": true,
       "gate": 9
+    },
+    "s2-110-usbc: sync & stock": {
+      "result": "PASS: 206 symbols <-> 206 footprints, 191 BOM/CPL placements (0 errors); all 34 unique LCSC parts normal lifecycle & in stock on 2026-11-08 (min 531 on U6, L1 C42411119 = 1,520)",
+      "ok": true,
+      "gate": 10
+    },
+    "s2-110-usbc: ERC & DRC": {
+      "result": "PASS: 0 ERC violations across 5 sheets; 0 KiCad DRC errors/warnings, 0 opens, 0 parity diffs, 0 thin pad joints (797 SMD pads), 0 copper_audit defects (637 vias)",
+      "ok": true,
+      "gate": 7
+    },
+    "s2-110-usbc: CPL & gerbers": {
+      "result": "PASS: Bottom-side CPL rotation/centroid fixed in export_and_cost.py & verified across all 191 parts (BT1 110 deg, J1 0 deg, 0.000 mm pad error); 12 Gerber layers rendered & audited",
+      "ok": true,
+      "gate": 10
+    },
+    "s2-110-usbc: gates 0-10": {
+      "result": "Gates 1,2,3 passed; Gates 0,4,10 awaiting_signoff; Gates 5,6,7,8,9 failed on frozen Rev S3C copper/rules/silk + Gate 10 J1 PTH missing B.Paste (COUT 0 spokes, shared CFILT/PGND via, In2.Cu under LX, 4-piece +3V3 band, U4.8 8.56 mm decap, BT1/U8 placement, occluded BT1/J1 silk) — see phase10.md",
+      "ok": false,
+      "gate": 10
     }
   },
   "gates": {
@@ -125,29 +167,101 @@
       "stale_because": null
     }
   },
+  "variant_gates": {
+    "sunflower-s2-110-usbc": {
+      "dir": "design/gates/sunflower-s2-110-usbc",
+      "0": { "state": "awaiting_signoff", "stale_because": null },
+      "1": { "state": "passed", "stale_because": null },
+      "2": { "state": "passed", "stale_because": null },
+      "3": { "state": "passed", "stale_because": null },
+      "4": { "state": "awaiting_signoff", "stale_because": null },
+      "5": { "state": "failed", "stale_because": null },
+      "6": { "state": "failed", "stale_because": null },
+      "7": { "state": "failed", "stale_because": null },
+      "8": { "state": "failed", "stale_because": null },
+      "9": { "state": "failed", "stale_because": null },
+      "10": { "state": "awaiting_signoff", "stale_because": null }
+    }
+  },
   "links": [
+    {
+      "label": "Sunflower s2-110-usbc (110 LEDs, 4L, USB-C, $12.55, 0 open, 0 DRC) viewer",
+      "href": "viewer/sunflower-s2-110-usbc.html"
+    },
+    {
+      "label": "Sunflower s2-110-usbc Phase Gates 0-10 & Release Sign-Off",
+      "href": "design/gates/sunflower-s2-110-usbc/phase10.md"
+    },
+    {
+      "label": "Sunflower s2-110-usbc Bring-up & Firmware Plan",
+      "href": "design/study/sunflower/bringup-s2-110-usbc.md"
+    },
+    {
+      "label": "Sunflower s2-110-usbc PDN, SI & Thermal Simulation",
+      "href": "design/sim/sunflower-s2-110-usbc/README.md"
+    },
+    {
+      "label": "Sunflower s2-110-usbc Design Intent & Mechanical Brief",
+      "href": "design/study/sunflower/intent-s2-110-usbc.md"
+    },
+    {
+      "label": "Sunflower 4-layer study & open items",
+      "href": "design/study/sunflower/README.md"
+    },
+    {
+      "label": "Penrose pn-dense-1d (67 LEDs, 1 driver + centre LED on GPIOs, $10.81, 0 open, 0 DRC) viewer",
+      "href": "viewer/sunflower-pn-dense-1d.html"
+    },
+    {
+      "label": "Direct-drive centre LED audit (pn-dense-1d)",
+      "href": "design/parts/direct-led.md"
+    },
+    {
+      "label": "Penrose pn-dense (38 mm round, 67 LEDs on a dense P3 tiling, 4L, 0 open, 0 DRC) viewer",
+      "href": "viewer/sunflower-pn-dense.html"
+    },
+    {
+      "label": "Square Bezel bga13-169 (169 LEDs, WLCSP behind array) - routing in progress",
+      "href": "viewer/dense-square-bga13-169.html"
+    },
+    {
+      "label": "Square Bezel bga15-225 (225 LEDs, WLCSP behind array) - routing in progress",
+      "href": "viewer/dense-square-bga15-225.html"
+    },
+    {
+      "label": "Parallelogram p3-162-usb (USB-C, 34 open) viewer",
+      "href": "viewer/parallelogram-p3-162-usb.html"
+    },
+    {
+      "label": "Parallelogram p3-198-usb (USB-C, 79 open) viewer",
+      "href": "viewer/parallelogram-p3-198-usb.html"
+    },
+    {
+      "label": "Parallelogram p4-264-usb (USB-C, 168 open) viewer",
+      "href": "viewer/parallelogram-p4-264-usb.html"
+    },
     {
       "label": "Parallelogram 4-layer density & cost study (66..264 LEDs)",
       "href": "design/study/parallelogram/README.md"
     },
     {
-      "label": "Parallelogram p1-66 (4L, 66x XL-1615 LEDs, $10.61 BOM \u2014 100% routed, 0 DRC) viewer",
+      "label": "Parallelogram p1-66 (4L, 66x XL-1615 LEDs, $10.61 BOM — 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p1-66.html"
     },
     {
-      "label": "Parallelogram p2-132 (4L, 132x XL-1615 LEDs, $12.60 BOM \u2014 100% routed, 0 DRC) viewer",
+      "label": "Parallelogram p2-132 (4L, 132x XL-1615 LEDs, $12.60 BOM — 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p2-132.html"
     },
     {
-      "label": "Parallelogram p3-162 (4L, 162 LEDs, $15.47 BOM \u2014 96.6% routed) viewer",
+      "label": "Parallelogram p3-162 (4L, 162 LEDs, $15.47 BOM — 96.6% routed) viewer",
       "href": "viewer/parallelogram-p3-162.html"
     },
     {
-      "label": "Parallelogram p3-198 (4L, 198 LEDs, $16.44 BOM \u2014 94.6% routed) viewer",
+      "label": "Parallelogram p3-198 (4L, 198 LEDs, $16.44 BOM — 94.6% routed) viewer",
       "href": "viewer/parallelogram-p3-198.html"
     },
     {
-      "label": "Parallelogram p4-264 (4L, 264 LEDs, $19.03 BOM \u2014 89.5% routed) viewer",
+      "label": "Parallelogram p4-264 (4L, 264 LEDs, $19.03 BOM — 89.5% routed) viewer",
       "href": "viewer/parallelogram-p4-264.html"
     },
     {
@@ -244,5 +358,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-06T15:30:00-08:00"
+  "updated": "2026-11-08T17:56:00-08:00"
 }

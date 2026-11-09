@@ -6,6 +6,7 @@ import argparse
 import collections
 import csv
 import json
+import math
 import os
 import re
 import subprocess
@@ -181,6 +182,19 @@ def export_fab(variant: str):
         key=natural,
     )
 
+    # Verified against EasyEDA component API (0-deg package pads & c_origin) vs KiCad Top 0-deg footprint:
+    # (rot_off_deg, pos_off_x_mm, pos_off_y_mm) in Top 0-deg Gerber coordinates (+X right, +Y up).
+    JLC_CPL_FIXES: dict[str, tuple[float, float, float]] = {
+        "C965840": (180.0, 0.0, 0.0),    # XL-1615RGBC-RF: EasyEDA 0 deg is 180 deg from XINGLIGHT Top View
+        "C177225": (180.0, 0.0, 0.950),  # Molex 53261-0271: EasyEDA 0 deg inverted + origin at pad-bbox midpoint
+        "C165948": (0.0, 0.0, 1.571),    # HRO TYPE-C-31-M-12: EasyEDA origin 1.571 mm north of KiCad anchor
+        "C236117": (270.0, 0.0, 0.0),    # NTZD3155CT1G SOT-563: EasyEDA pin 1 BL vs KiCad TL
+        "C5137654": (270.0, 0.0, 0.0),   # AW20198QNR QFN-40: EasyEDA pin 1 BL vs KiCad TL
+        "C190862": (270.0, 0.0, 0.0),    # W25Q128JVPIQ WSON-8: EasyEDA pin 1 BL vs KiCad TL
+        "C15999": (180.0, 0.0, 0.0),     # USBLC6-2P6 SOT-666: EasyEDA pin 1 BR vs KiCad TL
+        "C189624": (270.0, 0.0, 0.0),    # LIS2DW12TR LGA-12: EasyEDA pin 1 BL vs KiCad TL
+    }
+
     bom_groups: dict[tuple[str, str, str, str, str], list[str]] = {}
     cpl_rows: list[list[str]] = []
     for ref in built_refs:
@@ -194,11 +208,19 @@ def export_fab(variant: str):
         pos = fp.GetPosition()
         x_mm = pcbnew.ToMM(pos.x)
         y_mm = -pcbnew.ToMM(pos.y)
+        ki_rot = fp.GetOrientationDegrees()
         side = "Bottom" if fp.IsFlipped() else "Top"
-        # EasyEDA/JLCPCB C965840 (XL-1615RGBC-RF) 0 deg places Pin 1 (R-) at (+X,+Y) & Pin 2 (COM+) at (+X,-Y),
-        # which is an exact 180 deg rotation of the datasheet Top View footprint (leds-xl1615.md).
-        rot_off = 180.0 if lcsc == "C965840" else 0.0
-        rot = (fp.GetOrientationDegrees() + rot_off) % 360.0
+        rot_off, dx0, dy0 = JLC_CPL_FIXES.get(lcsc, (0.0, 0.0, 0.0))
+        rad = math.radians(ki_rot)
+        rcos, rsin = math.cos(rad), math.sin(rad)
+        if side == "Bottom":
+            x_mm += dx0 * rcos + dy0 * rsin
+            y_mm += dx0 * rsin - dy0 * rcos
+            rot = (180.0 - ki_rot + rot_off) % 360.0
+        else:
+            x_mm += dx0 * rcos - dy0 * rsin
+            y_mm += dx0 * rsin + dy0 * rcos
+            rot = (ki_rot + rot_off) % 360.0
         cpl_rows.append([ref, f"{x_mm:.4f}mm", f"{y_mm:.4f}mm", side, f"{rot:.2f}"])
 
     bom_path = out_dir / "bom-jlcpcb.csv"
