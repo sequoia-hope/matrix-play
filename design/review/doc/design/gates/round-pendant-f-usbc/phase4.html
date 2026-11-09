@@ -1,0 +1,128 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 4: mechanical and layout brief (round-pendant-f-usbc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase4.md'>design/gates/round-pendant-f-usbc/phase4.md</a></p><h1>Gate 4: mechanical and layout brief (<code>round-pendant-f-usbc</code>)</h1>
+<p>Status: <strong>awaiting_signoff</strong>
+Parent gates cited for unchanged requirements &amp; parts: <a href="../phase0.html">phase0.md</a>, <a href="../phase1.html">phase1.md</a>, <a href="../phase2.html">phase2.md</a>, <a href="../phase3.html">phase3.md</a>, <a href="../phase4.html">phase4.md</a>.
+Variant brief: <a href="../../brief-f-usbc.html">design/brief-f-usbc.md</a> (delta against <a href="../../brief.html">design/brief.md</a> and <a href="../../intent.html">design/intent.md</a>).</p>
+<hr />
+<h2>Checklist (<code>references/intent-and-brief.md</code> §Phase 4)</h2>
+<ul>
+<li>[x] <strong>1. Board outline and size:</strong> Unchanged <code>Ø38.000 mm</code> circle (<code>center = (100.000, 100.000) mm</code>, <code>radius = 19.000 mm</code>; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §1). Closest <code>J1</code> <code>B.Cu</code> SMD copper pad corner (East front <code>S1</code> outer corner at <code>(114.746, 111.271) mm</code>) sits at <code>r = 18.560 mm</code> unrounded (<code>~18.47 mm</code> rounded with <code>0.216 mm</code> fillet), giving <strong><code>0.440–0.530 mm</code></strong> edge clearance (<code>&gt; 2.2×</code> the <code>0.200 mm</code> DRC rule).</li>
+<li>[x] <strong>2. Mounting holes &amp; bezel counterbore geometry:</strong> <code>0</code> mounting holes (unchanged wearable pendant form factor; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §2). Two new <code>Ø0.650 mm</code> (<code>r = 0.325 mm</code>) unplated locating holes (<code>NPTH</code>) for <code>J1</code> (<code>TYPE-C-31-M-22</code>) plus the four inherited <code>Ø0.700 mm</code> <code>NPTH</code> locating holes for <code>SW1</code> and <code>SW2</code> (<code>6</code> total <code>NPTH</code> drills). Note East shell corner (<code>r = 19.616 mm</code>) overhangs by <code>+0.616 mm</code> (requiring a port cutout even in thin walls <code>≤ 0.65 mm</code>), and any future perimeter bezel wall <code>&gt; 0.65 mm</code> thick must counterbore a <code>12.6 × 6.8 mm</code> USB-C overmold pocket inward along <code>23.95°</code> E of S down to <strong><code>u ≤ 19.0–19.4 mm</code></strong> (matching the <code>Ø38.000 mm</code> PCB rim and clearing a worst-case <code>u = 19.466–19.666 mm</code> plug overmold).</li>
+<li>[x] <strong>3. Connector placement:</strong> <code>J1</code> swapped from <code>round_pendant:USB_Pads</code> (<code>(100.000, 116.500, 0°)</code> on Variant F) to Korean Hroparts Elec <strong><code>TYPE-C-31-M-22</code> (<code>C530612</code>)</strong> on <code>B.Cu</code> at <strong><code>(107.787, 110.926) mm</code>, <code>KiCad rot = -156.05°</code> (<code>203.95°</code>)</strong>, facing outward <strong>SSE (<code>23.95°</code> east of South = <code>156.05°</code> CW from North)</strong> with an <strong><code>8.35°</code> non-radial skew</strong> relative to the radial normal (<code>32.30°</code> E of S) at mouth midpoint <code>(109.865, 115.605) mm</code> (<code>r = 18.462 mm</code>, <code>-0.538 mm</code> inside <code>Edge.Cuts</code>). Asymmetric shell lip: East mouth corner <code>(113.951, 113.791) mm</code> overhangs at <strong><code>r = 19.616 mm</code> (<code>+0.616 mm</code>)</strong>, while West mouth corner <code>(105.780, 117.420) mm</code> sits at <strong><code>r = 18.354 mm</code> (<code>-0.646 mm</code> inside <code>Edge.Cuts</code>)</strong>; a mated USB-C plug overmold stops at <code>u = 20.066 mm</code> (<strong><code>+1.066 mm</code> nominal / <code>+0.666 mm</code> worst-case</strong> outside <code>Ø38.0 mm</code>; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §3). <code>BT1</code> (<code>BatteryPads</code>, <code>2× 1.60 × 2.40 mm</code>) shifts into the vacated 6-o'clock South pocket at <code>(100.000, 117.100, 180°)</code>.</li>
+<li>[x] <strong>4. Assembly sides:</strong> Double-sided SMT (<code>0</code> PTH joints; <code>Pass 1 = F.Cu ≤ 250 °C</code> for <code>235× XL-1010RGB-YG</code> + <code>Q2</code> <code>ALS-PT19</code>, <code>Pass 2 = B.Cu ≤ 250 °C</code> for all ICs, passives, <code>SW1/SW2</code>, and <code>J1</code>; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §4).</li>
+<li>[x] <strong>5. Layer count:</strong> <code>8</code> layers (<code>JLC08101H-1080</code>, <a href="../../stackup.html">stackup.md</a>), <code>1.0 mm</code> finished thickness (<code>0.9968 mm</code> nominal), <code>ENIG</code>, epoxy-filled &amp; capped POFV via-in-pad (unchanged from Variant F; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §5).</li>
+<li>[x] <strong>6. Density philosophy:</strong> Unchanged <code>0402</code> passives, <code>0603</code> bulk MLCCs, <code>0.50 mm</code> WLCSP-36 LED drivers, <code>0.09/0.09 mm</code> trace/space, <code>0.25/0.15 mm</code> standard vias (<code>3× 0.20/0.10 mm</code> vias inside <code>U3</code> <code>+3V3</code> band; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §6).</li>
+<li>[x] <strong>7. Block floorplan:</strong> Northern, central, eastern, and western blocks (<code>U3</code> RP2350 + <code>147</code> locked decoupling tracks, <code>U4</code>, <code>Y1</code>, <code>L1</code>, <code>U9</code>, <code>U6</code>, <code>U5</code>, <code>U1/U2/U10/U11/U12</code>, <code>SW1/SW2</code>, and all <code>235</code> front LEDs + <code>Q2</code>) are <strong>100% unchanged</strong> from Variant F. Only <code>J1</code> and <code>8</code> southern <code>B.Cu</code> parts (<code>BT1, U7, U8, C1, C6, R5, R8, TP3</code>) move inside the southern I/O sector (<a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §7).</li>
+<li>[x] <strong>8. Thermal:</strong> Whole-board <code>Ø38.0 mm</code> disc <code>θ_BA ≈ 32.4 °C/W</code> free-air / <code>49.5 °C/W</code> worn -&gt; <strong><code>≤ 0.51 W</code> continuous wearable ceiling</strong> (<code>~100 mA</code> total LED avg, <code>&lt; 50 °C</code> wear; <code>1.26 W</code> <code>300 mA</code> for <code>≤ 15 s</code> bursts only), with <code>BQ24073</code> <code>297 mA</code> linear charger into unbroken <code>847.497 mm²</code> <code>In2.Cu GND</code> plane, FW LED blanking on <code>~CHG == 0</code>, and closed-loop <code>ADC4</code> foldback (<code>42 °C</code> charge / <code>47 °C</code> wear; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §8).</li>
+<li>[x] <strong>9. Art zone:</strong> Inherited <code>F.SilkS</code> Voronoi sunflower seed web, surgically clipped outside centerline <code>r = 0.600 mm</code> around <code>J1</code>'s two <code>Ø0.65 mm</code> (<code>r = 0.325 mm</code>) NPTH holes (<code>0.199 mm</code> silk-stroke-to-hole-edge margin), <code>&lt; 0.055 mm</code> micro-stubs pruned (<code>min = 0.0655 mm</code>), and <code>(subtractmaskfromsilk yes)</code> enabled (<a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §9).</li>
+<li>[x] <strong>10. Silkscreen policy:</strong> Bare <code>F.SilkS</code> display face (Voronoi web + <code>Q2</code> <code>OD = 0.24 mm</code> [<code>0.12 mm</code> stroke] pin-1 dot inherited from Variant F); selective <code>B.SilkS</code> strictly at <strong><code>0°</code> and <code>270°</code> (<code>90° CCW</code>) draw rotations</strong> (<code>0</code> untented <code>[silk-over-via]</code> — <code>6</code> tented + POFV-capped flat VIPPO crossings only — <code>0</code> <code>[under-part]</code>, <code>9</code> unambiguous shown designators <code>TP2, TP4, TP5, TP8, SW1, SW2, U4, Q1, Y1</code>, <code>'rev FU'</code> + <code>'2026-11'</code> identity, <code>13/13</code> <code>B.Cu</code> <code>OD = 0.30 mm</code> pin-1 dots outside courtyards/3D bodies, <code>'5V'</code>/<code>'+'</code>/<code>'-'</code>/<code>'USER'</code>/<code>'BOOT'</code> labels with <code>0%</code> 3D occlusion) + collision-free <code>342/342</code> <code>4:1</code> A4 assembly drawings (<a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §10).</li>
+<li>[x] <strong>11. Keepouts &amp; rear LiPo stackup:</strong> Inherited <code>RP2350</code> <code>+1V1</code> ring and <code>L1</code>/<code>VREG_LX</code> rule areas preserved intact (<code>240</code> fixed footprints + <code>Edge.Cuts</code> + rule areas locked); <code>J1</code> <code>3.16–3.26 mm</code> shell height accommodated by <code>0.05 mm</code> Kapton tape + <code>3.3–3.5 mm</code> foam standoff under the <code>35 mm</code> round × <code>4.0 mm</code> <code>403535</code> LiPo (<a href="../../intent.html">intent.md</a> R16; <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §11).</li>
+<li>[x] <strong>12. Test and debug:</strong> All <code>8</code> <code>Ø1.0 mm</code> <code>B.Cu</code> test pads (<code>TP1..TP8</code>) preserved and accessible (<code>TP3 VBAT</code> relocated to <code>(104.000, 117.500)</code>); full bench procedure in <a href="../../bringup-f-usbc.html">design/bringup-f-usbc.md</a>.</li>
+<li>[ ] <strong>User sign-off on Phase 4 mechanical &amp; connector brief</strong> (see §3 below).</li>
+</ul>
+<hr />
+<h2>1. Feasibility Study &amp; Mechanical Verification Output</h2>
+<h3>Why SSE (<code>23.95°</code> East of South, <code>8.35°</code> Non-Radial Skew) Instead of Due South (<code>0°</code>)</h3>
+<p>At due South <code>(100.0, 113.5, 180°)</code>, <code>TYPE-C-31-M-22</code>'s two <code>5.78 mm</code>-spaced <code>Ø0.65 mm</code> (<code>r = 0.325 mm</code>) NPTH locating holes collide with Variant F's fixed golden-angle LED pads (<code>&lt; 0.08 mm</code> clearance). Sweeping <code>(x, y, θ)</code> along the southern rim found an exact zero-LED-move window at <strong><code>(107.787, 110.926) mm</code>, <code>KiCad rot = -156.05°</code> (<code>203.95°</code>)</strong> (<code>23.95°</code> E of S, an <code>8.35°</code> non-radial skew from the <code>32.30°</code> radial normal at mouth center <code>(109.865, 115.605) mm</code>):
+- <strong><code>NPTH #1 (109.953, 108.684) mm</code></strong> lands inside the <code>{D234, D235, D231, D226}</code> inter-LED gap with <strong><code>0.220 mm</code></strong> hole-edge-to-pad-edge clearance (<code>D234.4</code>), <strong><code>0.304 mm</code></strong> on <code>In3.Cu</code> (<code>CS5_16</code>), and <strong><code>≥ 0.201 mm</code></strong> across all 8 copper layers.
+- <strong><code>NPTH #2 (104.671, 111.030) mm</code></strong> lands inside the <code>{D76, D66, D74, D64}</code> inter-LED gap with <strong><code>0.220 mm</code></strong> hole-edge-to-pad-edge clearance (<code>D74.3</code>), <strong><code>0.214 mm</code></strong> to nearest <code>F.Cu</code> track (<code>CS2_12</code>), and <strong><code>≥ 0.201 mm</code></strong> across all inner/bottom layers.
+- <strong>Local rip-up bounding box:</strong> Primary southern crescent <code>X ∈ [91.3, 114.9] mm, Y ∈ [105.0, 118.8] mm</code> (<code>~195 mm²</code>, <code>17%</code> of the <code>1,134 mm²</code> disc, with minor route adjustments reaching <code>Y = 93.29 mm</code>; <strong><code>85.6%</code></strong> [<code>5,261 / 6,144</code>] of Variant F's copper items preserved verbatim).</p>
+<h3>Verbatim <code>compare_with_f.py</code> Footprint &amp; NPTH Audit Output</h3>
+<pre><code class="language-text">=== 1. FOOTPRINT PARITY ===
+  Front parts unchanged: 236/236 (235 LEDs + Q2, max delta 0.0000 mm / 0.00 deg)
+  Back parts moved/swapped: 9
+    BT1 : (109.800, 112.900, 180.00 deg) -&gt; (100.000, 117.100, 180.00 deg)
+    C1  : (105.000, 110.000, 180.00 deg) -&gt; (102.500, 108.800, 180.00 deg)
+    C6  : (107.200, 110.600, 180.00 deg) -&gt; ( 94.500, 116.600, 180.00 deg)
+    J1  : (100.000, 116.500,   0.00 deg) -&gt; (107.787, 110.926, -156.05 deg)
+    R5  : (105.000, 108.950, 180.00 deg) -&gt; (107.500, 106.400,  90.00 deg)
+    R8  : (106.100, 114.600, 180.00 deg) -&gt; ( 99.700, 115.000, 180.00 deg)
+    TP3 : (108.113, 108.950, 180.00 deg) -&gt; (104.000, 117.500, 180.00 deg)
+    U7  : (102.300, 109.400, 180.00 deg) -&gt; (100.100, 112.400, 113.95 deg)
+    U8  : (106.100, 112.600, 180.00 deg) -&gt; ( 96.400, 116.400, -90.00 deg)
+
+=== 5. J1 NPTH 8-LAYER CLEARANCE AUDIT ===
+  NPTH #1: center=(109.953, 108.684) mm, drill=0.65 mm (r=0.325 mm)
+    F.Cu  : min clearance = 0.220 mm  -&gt; Pad D234.4 (/Driver 5 and matrix/CS5_16)
+    B.Cu  : min clearance = 0.247 mm  -&gt; Pad J1.A1B12 (GND)
+    In1.Cu: min clearance = 0.311 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.192,108.714) [cu]
+    In2.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane GND' (GND)
+    In3.Cu: min clearance = 0.304 mm  -&gt; Track (/Driver 5 and matrix/CS5_16)
+    In4.Cu: min clearance = 0.264 mm  -&gt; Track (/Driver 5 and matrix/CS5_14)
+    In5.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane VSYS' (VSYS)
+    In6.Cu: min clearance = 0.311 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.192,108.714) [cu]
+  NPTH #2: center=(104.671, 111.030) mm, drill=0.65 mm (r=0.325 mm)
+    F.Cu  : min clearance = 0.214 mm  -&gt; Track (/Driver 2 and matrix/CS2_12) [nearest F.Cu LED pad D74.3 = 0.220 mm]
+    B.Cu  : min clearance = 0.247 mm  -&gt; Pad J1.B1A12 (GND)
+    In1.Cu: min clearance = 0.293 mm  -&gt; Via (/Driver 2 and matrix/SW2_3) @(104.892,111.739) [cu]
+    In2.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane GND' (GND)
+    In3.Cu: min clearance = 0.258 mm  -&gt; Track (/Driver 2 and matrix/CS2_7)
+    In4.Cu: min clearance = 0.293 mm  -&gt; Via (/Driver 2 and matrix/SW2_3) @(104.892,111.739) [cu]
+    In5.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane VSYS' (VSYS)
+    In6.Cu: min clearance = 0.211 mm  -&gt; Track (/Power/CC2)
+</code></pre>
+<h3>Datasheet vs Audit Verification (<code>type-c-31-m-22.pdf</code> p. 1 vs <code>parallelogram-io.md</code> §1)</h3>
+<ol>
+<li><strong>Peg diameter &amp; length on <code>1.0 mm</code> PCB:</strong> Datasheet p. 1 (<code>Front View</code> &amp; <code>SECTION A-A</code>) specifies <strong><code>2-Ø0.50 mm</code> pegs</strong> (<code>5.78 mm</code> span, matching <a href="../../parts/parallelogram-io.html">parallelogram-io.md</a> §1 and STEP) of <strong><code>0.70 ± 0.05 mm</code> length</strong> (<code>0.65–0.75 mm</code>), terminating <strong><code>0.30 mm</code> nominal (<code>0.15 mm</code> worst-case min board / max peg) below <code>F.Cu</code></strong> on our <code>1.00 mm ± 10%</code> PCB (guaranteed zero front protrusion).</li>
+<li><strong>4-SMD-pad shell hold-down (<code>2.30 × 1.80 mm</code> each = <code>16.56 mm²</code> <code>B.Cu</code> area) &amp; signal-row land note:</strong> Pure axial mating shear capacity (<code>~330–500 N</code>) is <code>&gt; 16×</code> the <code>5–20 N</code> rated insertion/extraction force, while out-of-plane prying is foil-peel-limited (<code>~35–55 N</code> / <code>~0.15–0.22 N·m</code>). Through-hole <code>TYPE-C-31-M-12</code> cannot be used because its <code>1.28 mm</code> PTH legs would protrude <code>0.28 mm</code> through the <code>1.0 mm</code> front LED array and destroy front LED sites. As logged in <a href="../../decisions.html">design/decisions.md</a> (<code>2026-11-08</code>), <code>S1</code> retains <code>parallelogram</code>'s verified <code>2.30 × 1.80 mm</code> pads (<code>92%</code> of datasheet <code>2.50 × 1.80 mm</code>, <code>+0.27 mm</code> heel/toe fillet beyond the <code>1.48 mm</code> gull-wing foot) because widening <code>S1</code> to <code>2.50 × 1.80 mm</code> reduces <code>hole_clearance</code> to <code>6</code> fixed front-LED escape vias (<code>CS5_17, CS5_16, SW2_3, CS2_18, SW2_6, CS2_10</code>) to <code>0.105–0.138 mm</code> (<code>&lt; 0.200 mm</code> DRC rule); <code>J1</code>'s 12 rear signal pads sit at <code>y_rel = +2.300 mm</code> (<code>1.14 mm</code> long vs <code>parallelogram-io.md</code>'s <code>y = 2.240 mm</code>, <code>1.15 mm</code> long), a benign <code>+0.055–0.060 mm</code> outboard shift over <code>0.40 mm</code>-protruding tails that widens <code>B.Cu</code> NPTH clearance to <code>0.247 mm</code>.</li>
+</ol>
+<hr />
+<h2>2. Renders Inspected</h2>
+<ul>
+<li><a href="../../renders/round-pendant-f-usbc/top.png">top.png</a>, <a href="../../renders/round-pendant-f-usbc/bottom.png">bottom.png</a></li>
+<li><a href="../../renders/round-pendant-f-usbc/3d-top.png">3d-top.png</a>, <a href="../../renders/round-pendant-f-usbc/3d-bottom.png">3d-bottom.png</a></li>
+<li><a href="../../renders/round-pendant-f-usbc/npth-gerber-zoom.png">npth-gerber-zoom.png</a></li>
+</ul>
+<hr />
+<h2>3. Decisions Requiring User Sign-Off (Gate 4)</h2>
+<ol>
+<li><strong>SSE Connector Angle (<code>23.95°</code> E of S, <code>8.35°</code> Non-Radial Skew) &amp; Two Front <code>Ø0.65 mm</code> NPTH Apertures:</strong> Approve placing <code>J1</code> at <code>(107.787, 110.926, -156.05°)</code> so <strong>zero</strong> front LEDs move, accepting the <code>23.95°</code> SSE cable angle (asymmetric <code>+0.616 mm</code> East / <code>-0.646 mm</code> West shell lip, <code>+1.066 mm</code> bare-board USB-C overmold clearance; any future bezel wall <code>&gt; 0.65 mm</code> counterbored <code>12.6 × 6.8 mm</code> along <code>23.95°</code> E of S) and two tiny <code>Ø0.65 mm</code> unplated apertures in the dark front mask web (<code>0.70 mm</code> pegs recessed <code>0.30 mm</code> below <code>F.Cu</code>).</li>
+<li><strong>SMD-Only Shell Hold-Down (<code>TYPE-C-31-M-22</code>, <code>4× 2.30 × 1.80 mm</code> <code>S1</code> Pads):</strong> Accept the 4-SMD-pad gull-wing shell (<code>16.56 mm²</code> <code>B.Cu</code> solder area; straight axial plug insertion/removal on bare boards, or rear housing capture / corner epoxy if cased) instead of through-hole shell stakes (<code>M-12</code> would pierce the <code>1.0 mm</code> front LED face).</li>
+<li><strong>Rear <code>35 mm</code> <code>403535</code> LiPo Standoff (<code>3.3–3.5 mm</code>):</strong> Confirm <code>0.05 mm</code> Kapton tape over <code>TP1..TP8</code>/<code>BT1</code> + <code>3.3–3.5 mm</code> foam ring/spacer matching <code>J1</code>'s <code>3.16–3.26 mm</code> rear shell height.</li>
+</ol>
+<hr />
+<h2>4. Independent Fresh-Context Review History (<code>agy</code> <code>gemini-4-argon-high</code>)</h2>
+<h3>Round 1 Review Summary &amp; Dispositions</h3>
+<ul>
+<li><strong><code>BLOCKER-1</code> (Mouth/bezel trig, <code>8.35°</code> non-radial skew, single-corner <code>+0.616 mm</code> overhang, <code>0.440–0.530 mm</code> <code>S1</code> corner clearance):</strong> <strong>FIXED</strong> in <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> (§1–§3) and this gate file (Checklist #1–#3, §1, §3) with exact mouth center <code>(109.865, 115.605) mm</code> (<code>r = 18.462 mm</code>), East <code>(113.951, 113.791)</code> (<code>r = 19.616 mm</code>, <code>+0.616 mm</code>) / West <code>(105.780, 117.420)</code> (<code>r = 18.354 mm</code>, <code>-0.646 mm</code>), <code>8.35°</code> non-radial skew, <code>u = 20.066 mm</code> overmold plane (<code>≤ 0.65 mm</code> bezel wall or <code>12.6 × 6.8 mm</code> counterbore), and <code>0.440–0.530 mm</code> <code>S1</code> pad-corner clearance.</li>
+<li><strong><code>MAJOR-1</code> (<code>S1</code> pad width <code>2.30 × 1.80 mm</code> vs <code>2.50 × 1.80 mm</code>):</strong> <strong>DISPUTED / JUSTIFIED in <a href="../../decisions.html">design/decisions.md</a> (<code>2026-11-08</code>)</strong> — widening <code>S1</code> to <code>2.50 × 1.80 mm</code> was tested in <code>pcbnew</code> + KiCad DRC and caused <code>6</code> <code>hole_clearance</code> violations (<code>0.105–0.138 mm &lt; 0.200 mm</code>) against <code>6</code> fixed front-LED escape vias (<code>CS5_17, CS5_16, SW2_3, CS2_18, SW2_6, CS2_10</code>); keeping <code>parallelogram</code>'s verified <code>2.30 × 1.80 mm</code> (<code>92%</code> area, <code>+0.27 mm</code> heel/toe fillet) preserves <code>0</code> LEDs moved and <code>0</code> DRC errors.</li>
+<li><strong><code>MAJOR-2</code> (<code>(subtractmaskfromsilk no)</code>, <code>'5V'</code>/<code>'R4'</code> pad encroachment, <code>'-'</code> under <code>U8</code>):</strong> <strong>FIXED</strong> in <code>round-pendant.kicad_pcb</code> via <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/polish_board.py">polish_board.py</a>: enabled <code>(subtractmaskfromsilk yes)</code>, hid <code>R4</code>, nudged <code>'5V'</code> to <code>(109.25, 106.05, 270°)</code> clear of <code>J1</code> pads, and moved <code>'-'</code> to <code>(98.00, 115.45, 0°)</code> directly north of <code>BT1.2</code> clear of <code>U8</code>.</li>
+<li><strong><code>MINOR-1..3</code> (<code>2-Ø0.50 mm</code> peg callout, <code>403535</code> cell ref, <code>+0.065 mm</code> signal-row shift note):</strong> <strong>FIXED</strong> in <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> and this gate file.</li>
+</ul>
+<h3>Round 2 Re-Review (<code>agy</code> <code>gemini-4-argon-high</code>)</h3>
+<ul>
+<li><strong>Verdict:</strong> <strong><code>Gate 4 Verdict: AWAITING_SIGNOFF — Ready for user sign-off (0 BLOCKER, 0 MAJOR, 2 MINOR, 2 NOTE)</code></strong> (<code>review_r2_phase4.txt</code>).</li>
+<li><strong>Summary &amp; Minor Cleanups:</strong> Independently re-derived <code>J1</code> mouth midpoint <code>(109.865, 115.605) mm</code> (<code>8.35°</code> non-radial skew), <code>+1.066 mm</code> nominal / <code>+0.666 mm</code> WC overmold clearance (<code>u = 20.066 / 19.666 mm</code>), all <code>16</code> (<code>2×8L</code>) <code>J1</code> <code>Ø0.65 mm</code> NPTH clearances (<code>0.2005–0.3113 mm</code>, <code>0</code> LEDs moved), <code>0.70 ± 0.05 mm</code> peg recess (<code>0.30 mm</code> nom / <code>0.15 mm</code> WC below <code>F.Cu</code>), and reproduced the <code>6</code> <code>hole_clearance</code> DRC violations (<code>0.105–0.134 mm</code>) if <code>S1</code> were widened to <code>2.50 × 1.80 mm</code>. Fixed <code>MINOR-1</code> (tightened bezel counterbore floor to <code>u ≤ 19.0–19.4 mm</code> &amp; updated intermediate <code>y_out</code> numbers in <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §2), <code>MINOR-2</code> (added <code>y_rel = +2.300 mm</code> signal-row land note above and in <a href="../../brief-f-usbc.html">brief-f-usbc.md</a> §3), and <code>NOTE-1</code> (tented + POFV-capped VIPPO qualification &amp; <code>min = 0.0655 mm</code> <code>F.SilkS</code> threshold).</li>
+</ul></div></body></html>

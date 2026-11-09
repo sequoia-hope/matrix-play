@@ -1,0 +1,169 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 8: simulation and signal integrity (round-pendant-f-usbc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase8.md'>design/gates/round-pendant-f-usbc/phase8.md</a></p><h1>Gate 8: simulation and signal integrity (<code>round-pendant-f-usbc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Source net-class table: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-f-usbc.csv">design/nets-f-usbc.csv</a>; SI/PDN/ESD/crosstalk/thermal audit script: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/si_audit.py">scripts/variant_fusbc/si_audit.py</a>; dispositions: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">design/decisions.md</a> (<code>2026-11-08</code>).</p>
+<hr />
+<h2>Checklist (<code>references/simulation.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>Trigger list generated from <code>design/nets-f-usbc.csv</code>:</strong> Complete table in §1 below covering USB 2.0 Full-Speed SI &amp; impedance, <code>U7</code> <code>±8 kV</code> ESD return loop, exact nodal DC IR drop (including <code>0.15 mm</code> via barrels at <code>25 °C / 60 °C</code>), <code>SE_HS</code> QSPI, <code>12 MHz</code> crystal, <code>VREG_LX</code> switching node, aggressor/victim crosstalk (including <code>40× SWx_y</code>, <code>90× CSx_y</code>, and <code>1 MHz</code> <code>I2C_SCL/SDA</code>), and whole-board <code>Ø38.0 mm</code> thermal resistance <code>θ_BA</code>.</li>
+<li>[x] <strong>Each triggered item has a quantitative calculation/script result or justified engineering disposition:</strong> Full first-principles calculations and verbatim <code>si_audit.py</code> output in §1–§2 below.</li>
+<li>[x] <strong>Expanded aggressor / victim coupling scan (<code>si_audit.py</code> §4) run and findings resolved:</strong> Scans all <code>SWx_y</code>, <code>CSx_y</code>, <code>I2C_SCL/SDA</code>, <code>VREG_LX</code>, <code>QSPI_*</code>, <code>USB_*</code>, and <code>CLOCK</code> aggressors via Shapely <code>unary_union</code> without angle filtering (<code>3</code> southern pairs + <code>49</code> inherited Variant F northern/matrix pairs evaluated and dispositioned below &amp; in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</li>
+<li>[x] <strong>Stronger-model SI/EMC fresh-context review (<code>agy</code> <code>gemini-4-argon-high</code>):</strong> Round-1 findings resolved &amp; Round-2 re-review appended in §3 below.</li>
+<li>[x] <strong>Design changes from SI audit fed back &amp; re-verified across Gates 4–10:</strong> Moved <code>USB_DM_C</code> off <code>F.Cu</code> -&gt; <code>In6.Cu</code>, added 2nd parallel <code>GND</code> via on <code>U7.2</code>, added 2nd <code>GND</code> via on <code>U8.1..3</code>, added 2nd <code>VBAT</code> via on <code>BT1.1</code>, and re-verified DRC/Gerbers/renders across all gates (<code>0</code> stale gates).</li>
+</ul>
+<hr />
+<h2>1. Trigger Matrix from <code>design/nets-f-usbc.csv</code></h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Class / Net Group</th>
+<th>Changed vs F?</th>
+<th>Trigger Condition (<code>references/simulation.md</code>)</th>
+<th>Quantitative Analysis / Disposition (<code>si_audit.py</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>DIFF_HS</code>: <code>/Power/USB_DP_C</code>, <code>/Power/USB_DM_C</code>, <code>USB_DP</code>, <code>USB_DM</code>, <code>/MCU/USB_DP_MCU</code>, <code>/MCU/USB_DM_MCU</code></strong></td>
+<td><strong>Yes (<code>J1 &lt;-&gt; U7 &lt;-&gt; R14/R15</code> re-routed)</strong></td>
+<td>USB 2.0 Full-Speed (<code>12 Mbit/s</code>, <code>UI = 83.33 ns</code>, <code>t_r = 4–20 ns</code> per USB 2.0 §7.1.2.1); point-to-point skew, unmated stub, stackup <code>Z_diff</code> vs <code>l_crit ≈ 100 mm</code>, plane split crossings</td>
+<td><strong>PASS (<code>si_audit.py</code> §1):</strong> True point-to-point <code>J1 -&gt; U7 -&gt; R14/R15 (27 Ω) -&gt; U3</code> lengths: <strong>Orient. A (<code>A6/A7</code>)</strong> <code>DP = 30.09 mm, DM = 27.44 mm</code> (<strong><code>|skew| = 2.64 mm ≈ 17.5 ps</code></strong> = <code>0.021%</code> UI; unmated <code>DM</code> stub = <code>8.86 mm</code> / <code>~117 ps &lt;&lt; 4 ns</code> <code>t_r</code>); <strong>Orient. B (<code>B6/B7</code>)</strong> <code>DP = 32.28 mm, DM = 28.54 mm</code> (<strong><code>|skew| = 3.74 mm ≈ 24.7 ps</code></strong>; unmated stub = <code>7.76 mm</code>). <code>B.Cu</code> <code>Z_diff ≈ 120–166 Ω</code> over <code>In5.Cu</code> (<code>h = 0.262 mm</code>) and <code>In4.Cu</code> <code>Z_diff ≈ 89 Ω</code> operate firmly in the lumped FS regime (<code>l ≤ 32.3 mm &lt; 0.33 × l_crit</code>), damped by <code>R14/R15 = 27 Ω</code>. Crossing the <code>0.21–0.58 mm</code> <code>In5.Cu</code> <code>VSYS/+3V3</code> moat is backed <code>0.27 mm</code> deeper by unbroken <code>847.50 mm²</code> <code>In2.Cu GND</code>.</td>
+</tr>
+<tr>
+<td><strong>USB <code>±8 kV</code> ESD Clamp (<code>U7</code> <code>USBLC6-2P6</code>)</strong></td>
+<td><strong>Yes (polished)</strong></td>
+<td><code>intent.md</code> <code>±8 kV</code> IEC 61000-4-2 contact ESD on <code>J1</code>; pre-clamp layer exposure &amp; <code>U7.2</code> <code>GND</code> Y-network inductance</td>
+<td><strong>PASS (<code>si_audit.py</code> §1–§2):</strong> Pre-ESD <code>/Power/USB_DM_C</code> was moved off <code>F.Cu</code> to <code>In6.Cu</code> (<strong><code>0</code> unclamped <code>F.Cu</code> USB copper</strong>), and a <strong>2nd parallel <code>GND</code> via</strong> <code>(102.470, 110.730)</code> inside <code>J1.S1</code> NW's <code>2.30 × 1.80 mm</code> copper pad (<code>dist = 0.000 mm</code>) was added alongside <code>(102.126, 110.639)</code> (<code>0</code> legal 8-layer TH via pockets exist within <code>1.91–2.00 mm</code> of <code>U7.2</code> due to <code>D91.3</code>/<code>In1.Cu</code>/<code>In3.Cu</code> matrix escapes). <code>U7.2</code> traverses <code>2.21 mm</code> of narrow <code>B.Cu</code> microstrip into <code>J1.S1</code> (<strong><code>L_shield ≈ 1.09 nH</code></strong> to USB cable shield; <strong><code>L_eff ≈ 1.39 nH</code></strong> AC over <code>In5.Cu</code> / <strong><code>2.10 nH</code></strong> over <code>In2.Cu GND</code>), while downstream <strong><code>R14/R15 = 27 Ω</code></strong> limit residual peak current into <code>U3</code>'s internal ESD clamp to <code>~2.4–3.71 A</code> (<code>~1 ns</code>, within <code>RP2350</code> CDM clamp &amp; <code>0402</code> single-pulse ratings).</td>
+</tr>
+<tr>
+<td><strong><code>POWER</code>: <code>VBUS</code>, <code>VBAT</code>, <code>/Power/BAT_N</code>, <code>U8 -&gt; GND</code>, <code>VSYS</code>, <code>+3V3</code>, <code>+1V1</code></strong></td>
+<td><strong>Yes (<code>VBUS</code>, <code>VBAT</code>, <code>BAT_N</code>, <code>U8 GND</code> polished)</strong></td>
+<td>Exact nodal DC resistance &amp; IR drop at <code>25 °C / 60 °C</code> (incl. <code>0.15 mm</code> <code>18 µm</code>-wall via barrels = <code>2.31 mΩ/mm</code>)</td>
+<td><strong>PASS (<code>si_audit.py</code> §3):</strong> <code>VBUS (J1-&gt;U5.13)</code> = <strong><code>3.90 / 4.44 mΩ</code></strong> (<code>4.96 / 5.64 mΩ</code> exact pad-center, <code>2.22–2.82 mV @ 500 mA</code>, <code>0</code> vias); <code>VBAT (BT1.1-&gt;U5.2/3)</code> = <strong><code>48.36 / 55.01 mΩ</code></strong> (<code>53.17 / 60.48 mΩ</code> 1D-barrel, <code>18.70–20.56 mV @ 340 mA</code> with <strong><code>2×</code> <code>0.30/0.15 mm</code> vias</strong> at <code>BT1.1</code>); <code>BAT_N (BT1.2-&gt;U8.4/5)</code> = <strong><code>2.86 / 3.25 mΩ</code></strong> (<code>1.10–1.16 mV @ 340 mA</code>, <code>0</code> vias); <code>U8.1..3 -&gt; In2.Cu GND</code> = <strong><code>0.98 / 1.12 mΩ</code></strong> via-to-plane / <code>2.67 / 3.04 mΩ</code> pad-center (<code>0.38–1.03 mV @ 340 mA</code> with <strong><code>2×</code> <code>GND</code> vias</strong>). <em>(Note: <code>XB9901A</code>'s <code>150 mV</code> overcurrent threshold senses across its internal MOSFET <code>R_DS(on) ≈ 35–55 mΩ</code>.)</em> <code>In2.Cu GND</code>, <code>In5.Cu VSYS</code>, <code>In5.Cu +3V3</code>, and <code>RP2350 +1V1</code> ring (<code>+ 147/147</code> locked decap tracks) are <code>1</code> unbroken piece each.</td>
+</tr>
+<tr>
+<td><strong><code>SE_HS</code>: <code>/MCU/QSPI_SCLK</code>, <code>QSPI_SS</code>, <code>QSPI_SD0..3</code></strong></td>
+<td>No (<code>100%</code> verbatim from F)</td>
+<td><code>≤ 66 MHz</code> QSPI (<code>t_r ≈ 1.5 ns</code>, <code>l_crit ≈ 37 mm</code>)</td>
+<td><strong>Unchanged from F:</strong> <code>5.45–12.06 mm</code> (<code>&lt; 0.33 × l_crit</code>) over continuous <code>In2.Cu GND</code> / <code>In5.Cu</code> planes.</td>
+</tr>
+<tr>
+<td><strong><code>CLOCK</code>: <code>Net-(U3-XIN)</code>, <code>Net-(U3-XOUT)</code>, <code>Net-(C24-Pad1)</code></strong></td>
+<td>No (<code>100%</code> verbatim from F)</td>
+<td><code>12 MHz</code> crystal (<code>Y1</code>), <code>0</code>-via rule, northern <code>In6.Cu</code> coupling check</td>
+<td><strong>Unchanged from F:</strong> <code>XIN = 6.06 mm</code>, <code>XOUT = 1.54 mm</code>, <code>C24-Pad1 = 1.56 mm</code>, <code>0</code> vias. Inherited <code>In6.Cu</code> <code>SW3_3</code>/<code>CS3_7</code>/<code>RUN</code> crossings under <code>Y1</code> inject <code>≤ 12–24 mV</code> into <code>18 pF</code> (<code>C23=C24=15 pF</code>), well within <code>±2,500 ppm</code> USB FS clock tolerance (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</td>
+</tr>
+<tr>
+<td><strong><code>SWITCH</code>: <code>/MCU/VREG_LX</code></strong></td>
+<td>No (<code>100%</code> verbatim from F)</td>
+<td><code>RP2350</code> <code>3.3 V -&gt; 1.1 V</code> buck (<code>~2–3 MHz</code>, <code>≤ 100 mA</code>)</td>
+<td><strong>Unchanged from F:</strong> <code>2.296 mm²</code> <code>B.Cu</code> zone (<code>L1</code>) + <code>2.55 mm</code> <code>0.40 mm</code> <code>In3.Cu</code> feed via <code>2× 0.30/0.15 mm</code> vias (<code>L1</code> cutouts on <code>B.Cu, In5.Cu, In6.Cu</code> intact; fixed on-die compensation with <code>3.3 µH</code> + <code>2× 4.7 µF</code>).</td>
+</tr>
+<tr>
+<td><strong>Whole-Board &amp; Charger Thermal (<code>Ø38.0 mm</code> Disc + <code>403535</code> LiPo)</strong></td>
+<td>Refined first-principles model</td>
+<td><code>&lt; 50 °C</code> wearable skin limit &amp; <code>&lt; 45 °C</code> LiPo charge limit (<code>intent.md</code>)</td>
+<td><strong>PASS WITH MANDATORY FW ENVELOPE (<code>si_audit.py</code> §5, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §8):</strong> Natural convection + <code>ε = 0.9</code> radiation on <code>Ø38.0 mm</code> (<code>11.34 cm²</code>/face) gives <strong><code>θ_BA ≈ 32.4 °C/W</code> free-air</strong> and <strong><code>49.5 °C/W</code> worn</strong> (with rear <code>35 mm</code> LiPo). <strong>Continuous wearable power is capped at <code>≤ 0.51 W</code> (<code>~100 mA</code> total LED avg, <code>T_worn ≤ 50 °C</code> @ <code>25 °C</code> amb)</strong>; <code>1.26 W</code> (<code>300 mA</code> LEDs) is restricted to <code>≤ 15 s</code> bursts, LEDs blank/<code>&lt; 5 mA</code> whenever <code>~CHG == 0</code> (<code>U5</code> <code>0.48–0.79 W</code> hardware-controlled with <code>~CE = GND</code>, keeping free-air CC charge <code>~41 °C &lt; 45 °C</code>; swap <code>R4</code> to <code>4.3–4.7 kΩ</code> per <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/bringup-f-usbc.md">bringup-f-usbc.md</a> §5 if charging enclosed/warm), and <code>ADC4</code> enforces closed-loop <code>GCC</code> foldback at <strong><code>42 °C</code> (charging)</strong> / <strong><code>47 °C</code> (discharging)</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>2. Verbatim <code>si_audit.py</code> Output &amp; Crosstalk Dispositions</h2>
+<pre><code class="language-text">=== 1. USB 2.0 FULL-SPEED (12 Mbit/s) POINT-TO-POINT SI &amp; IMPEDANCE ===
+  /Power/USB_DP_C   : total_copper= 11.94 mm, 0 vias, layers=['B.Cu']
+  /Power/USB_DM_C   : total_copper= 18.01 mm, 3 vias, layers=['B.Cu', 'In6.Cu']
+  USB_DP            : total_copper= 14.95 mm, 0 vias, layers=['B.Cu']
+  USB_DM            : total_copper= 13.52 mm, 0 vias, layers=['B.Cu']
+  /MCU/USB_DP_MCU   : total_copper=  5.28 mm, 2 vias, layers=['In4.Cu']
+  /MCU/USB_DM_MCU   : total_copper=  5.94 mm, 2 vias, layers=['B.Cu', 'In4.Cu']
+  Orient. A (A6/A7) : DP=30.09 mm, DM=27.44 mm -&gt; |skew|=2.64 mm (~17.5 ps), unmated DM stub=8.86 mm
+  Orient. B (B6/B7) : DP=32.28 mm, DM=28.54 mm -&gt; |skew|=3.74 mm (~24.7 ps), unmated DM stub=7.76 mm
+  Pre-ESD F.Cu check: USB_DM_C on F.Cu = False (layers=['B.Cu', 'In6.Cu'])
+  Impedance &amp; termination: R14/R15 = 27 Ohm at U3; B.Cu Zdiff ~ 120-166 Ohm over h=0.262 mm (l=31-33 mm &lt;&lt; l_crit=100 mm @ t_r&gt;=4 ns)
+
+=== 2. U7 (USBLC6-2P6) ESD GROUND-RETURN LOOP ===
+  U7.2 GND via #1 at (102.470, 110.730): center-path=3.90 mm (dist to J1.S1 2.3x1.8mm pad=0.000 mm)
+  U7.2 GND via #2 at (102.126, 110.639): center-path=4.06 mm (dist to J1.S1 2.3x1.8mm pad=0.216 mm)
+  Y-network inductance: U7.2 -&gt; J1.S1 shield L_shield ~ 1.09 nH; U7.2 -&gt; In2.Cu GND (2x vias) L_eff ~ 1.39 nH
+  Two-stage isolation: R14/R15 = 27 Ohm limits residual peak current into U3 clamp to ~2.4 A (&lt;1 ns) @ 8 kV IEC 61000-4-2
+
+=== 3. EXACT NODAL DC RESISTANCE &amp; IR DROP (25 C / 60 C, incl. 0.15 mm via barrels) ===
+  VBUS (J1-&gt;U5.13)        : R_25C= 3.90 mOhm, R_60C= 4.44 mOhm -&gt; Vdrop= 2.22 mV @ 500 mA (dual-row USB500)
+  VBAT (BT1.1-&gt;U5.2/3)    : R_25C=48.36 mOhm, R_60C=55.01 mOhm -&gt; Vdrop=18.70 mV @ 340 mA (340 mA max cont; 2x 0.30/0.15 vias at BT1.1)
+  BAT_N (BT1.2-&gt;U8.4/5)   : R_25C= 2.86 mOhm, R_60C= 3.25 mOhm -&gt; Vdrop= 1.10 mV @ 340 mA (0-via 1 oz B.Cu)
+  U8.1..3 -&gt; In2.Cu GND   : R_25C= 0.98 mOhm, R_60C= 1.12 mOhm -&gt; Vdrop= 0.38 mV @ 340 mA (dual GND vias into solid In2.Cu)
+
+=== 4. FULL AGGRESSOR / VICTIM COUPLING AUDIT (spacing &lt;= 0.45 mm, overlap &gt;= 1.00 mm) ===
+  Southern sector victim couplings (&gt;=1.0 mm within 0.45 mm): 3
+    /Driver 2 and matrix/CS2_13 (LED_PWM, In3.Cu) &lt;-&gt; Net-(U5-ISET) (ANALOG, In4.Cu): len=2.15 mm, min_d=0.000 mm, Y=[109.8,110.4]
+    /Driver 2 and matrix/CS2_7 (LED_PWM, B.Cu) &lt;-&gt; Net-(U2-RSET) (ANALOG, B.Cu): len=1.01 mm, min_d=0.250 mm, Y=[109.9,110.8]
+    I2C_SCL (I2C_1MHZ, In6.Cu) &lt;-&gt; Net-(U2-RSET) (ANALOG, B.Cu): len=1.37 mm, min_d=0.000 mm, Y=[109.6,110.8]
+  Inherited Variant F northern/matrix couplings (&gt;=1.0 mm within 0.45 mm): 49 total (top 8 by length):
+    /Driver 3 and matrix/CS3_6 (LED_PWM, B.Cu) &lt;-&gt; /MCU/RUN (SIGNAL_RESET, In6.Cu): len=6.07 mm, min_d=0.000 mm, Y=[84.9,89.5]
+    /Driver 2 and matrix/CS2_5 (LED_PWM, F.Cu) &lt;-&gt; VBAT_SENSE (ANALOG, In1.Cu): len=4.60 mm, min_d=0.000 mm, Y=[105.4,113.5]
+    /MCU/SWDIO (LED_SCAN, In6.Cu) &lt;-&gt; /MCU/RUN (SIGNAL_RESET, B.Cu): len=4.26 mm, min_d=0.000 mm, Y=[84.3,89.5]
+    /Driver 3 and matrix/CS3_9 (LED_PWM, B.Cu) &lt;-&gt; /MCU/RUN (SIGNAL_RESET, In6.Cu): len=4.07 mm, min_d=0.182 mm, Y=[86.0,89.0]
+    /Driver 4 and matrix/SW4_4 (LED_SCAN, In6.Cu) &lt;-&gt; /MCU/RUN (SIGNAL_RESET, B.Cu): len=3.49 mm, min_d=0.000 mm, Y=[84.7,87.9]
+    /Driver 2 and matrix/CS2_6 (LED_PWM, F.Cu) &lt;-&gt; VBAT_SENSE (ANALOG, In1.Cu): len=3.43 mm, min_d=0.000 mm, Y=[104.6,111.5]
+    /Driver 4 and matrix/CS4_12 (LED_PWM, In4.Cu) &lt;-&gt; /MCU/LIGHT (ANALOG, In3.Cu): len=3.36 mm, min_d=0.000 mm, Y=[86.6,88.9]
+    /Driver 4 and matrix/CS4_12 (LED_PWM, In3.Cu) &lt;-&gt; /MCU/LIGHT (ANALOG, In3.Cu): len=3.25 mm, min_d=0.191 mm, Y=[88.4,91.8]
+
+=== 5. WHOLE-BOARD &amp; CHARGER THERMAL ANALYSIS (O38.0 mm Disc + 403535 LiPo) ===
+  Disc area/face = 11.34 cm^2; h_conv=7.6 + h_rad=6.0 = 13.6 W/(m^2*K)
+  Whole-board theta_BA: free-air = 32.4 C/W, worn (w/ rear 35 mm LiPo) = 49.5 C/W
+  Max continuous wearable power (&lt;50 C @ 25 C amb): P_cont,max = 0.51 W (~100 mA avg total LED current)
+  Burst 1.26 W (300 mA LEDs) steady-state if unthrottled: 65.8 C free-air / 87.3 C worn -&gt; requires ADC4 closed-loop GCC foldback (42 C charge / 47 C wear)
+</code></pre>
+<h3>Quantitative Dispositions of Aggressor / Victim Couplings (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>)</h3>
+<ol>
+<li><strong><code>Net-(U5-ISET)</code> (<code>R4 = 3.0 kΩ</code>) ↔ <code>CS2_13</code> (<code>2.15 mm</code> across <code>170 µm</code> core):</strong> <code>C_m ≈ 0.16 pF</code>, <code>τ = R4·C_node ≈ 9 ns &lt; t_r ≈ 25 ns</code> -&gt; <code>I_inj ≈ 22 µA</code> for <code>25 ns</code> every <code>40 µs</code> (<code>0.005%</code> average charge-current error — negligible).</li>
+<li><strong><code>Net-(U2-RSET)</code> (<code>R33 = 30 kΩ</code>) ↔ <code>I2C_SCL</code> (<code>1.37 mm</code> broadside) &amp; <code>CS2_7</code> (<code>1.01 mm</code> at <code>0.25 mm</code> gap):</strong> Inherited from Variant F (<code>U2</code>/<code>R33</code> untouched). <code>C_m ≈ 0.14 pF</code> injects <code>&lt; 5 ns</code> <code>-0.22 V</code> impulses only during brief <code>I2C</code> register-write edges (<code>0%</code> duty during static display; <code>IS31FL3745</code> reference loop recovers in nanoseconds with zero perceptible brightness shift).</li>
+<li><strong>Inherited northern <code>/MCU/RUN</code> (<code>31.89 mm</code> to <code>TP5</code>) ↔ <code>CS3_6</code> / <code>SW4_4</code> / <code>CS3_9</code>:</strong> Worst-case simultaneous LED edge droop <code>ΔV_RUN ≈ -0.23 to -0.38 V</code> stays <strong><code>&gt; 1.9 V</code> above <code>RP2350 VIL(max) = 0.99 V</code></strong> (<code>-2.31 V</code> droop needed); <code>TP5</code> sits under <code>0.05 mm</code> Kapton tape + <code>35 mm</code> LiPo in worn assembly so finger ESD cannot strike <code>TP5</code>.</li>
+<li><strong>Inherited <code>VBAT_SENSE</code> (<code>C7 = 100 nF</code>, <code>31.8 Hz</code> RC) &amp; <code>/MCU/LIGHT</code> (<code>C70 = 100 nF</code>):</strong> Downstream trace inductance (<code>~18–32 nH</code> to <code>ADC0</code>/<code>ADC1</code>) allows <code>≤ 37 mV</code> <code>&lt; 5 ns</code> damped edge spikes with <strong><code>0.0 mV</code> DC shift</strong> under multi-sample firmware ADC averaging.</li>
+</ol>
+<hr />
+<h2>3. Independent Fresh-Context Review History (<code>agy</code> <code>gemini-4-argon-high</code>)</h2>
+<h3>Round 1 Review Summary &amp; Dispositions</h3>
+<ul>
+<li><strong><code>MAJOR-1</code> (<code>U7.2</code> single <code>GND</code> via &amp; <code>/Power/USB_DM_C</code> <code>F.Cu</code> excursion):</strong> <strong>FIXED</strong> — moved <code>USB_DM_C</code>'s <code>1.10 mm</code> <code>F.Cu</code> segment to <code>In6.Cu</code> (<code>0</code> <code>F.Cu</code> USB copper) and added a <strong>2nd parallel <code>GND</code> via</strong> <code>(102.470, 110.730)</code> inside <code>J1.S1</code> NW (<code>L_shield ≈ 1.09 nH</code>, <code>L_eff ≈ 1.39 nH</code>).</li>
+<li><strong><code>MAJOR-2</code> &amp; <code>MAJOR-3</code> (<code>si_audit.py</code> missing <code>SWx_y</code>/<code>CSx_y</code>/<code>I2C</code> aggressors, <code>U2-RSET</code>, northern <code>/MCU/RUN</code> &amp; <code>Y1</code> couplings):</strong> <strong>SCRIPT FIXED + NORTHERN COPPER JUSTIFIED in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a></strong> — rewrote <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/si_audit.py">si_audit.py</a> §4 with Shapely <code>unary_union</code> across all <code>SW*</code>, <code>CS*</code>, <code>I2C</code>, <code>QSPI</code>, <code>USB</code>, <code>VREG_LX</code>, and <code>CLOCK</code> nets without angle filtering, and quantitatively dispositioned the inherited Variant F northern couplings without ripping up locked northern Variant F copper.</li>
+<li><strong><code>MAJOR-4</code> (Whole-board <code>θ_BA</code> <code>1.26 W</code> steady-state vs <code>&lt; 50 °C</code> wear / <code>&lt; 45 °C</code> charge):</strong> <strong>FIXED</strong> in <code>si_audit.py</code> §5, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §8, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/bringup-f-usbc.md">bringup-f-usbc.md</a> §3.4, and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a> (<code>≤ 0.51 W</code> continuous wearable ceiling, <code>1.26 W</code> burst only, LEDs blanked on <code>~CHG == 0</code>, <code>ADC4</code> foldback at <code>42 °C</code> charge / <code>47 °C</code> wear).</li>
+<li><strong><code>MINOR-1..4</code> (Point-to-point USB skew vs Steiner sum, <code>R14/R15 = 27 Ω</code>, <code>VREG_LX</code> <code>In3.Cu</code> feed, <code>U8</code> 2nd <code>GND</code> via, Gauss-Seidel nodal IR drop incl. <code>0.15 mm</code> via barrels, <code>XB9901A</code> <code>150 mV</code> <code>R_DS(on)</code> note):</strong> <strong>ALL FIXED</strong> in <code>round-pendant.kicad_pcb</code>, <code>si_audit.py</code>, and this gate file.</li>
+</ul>
+<h3>Round 2 Re-Review (<code>agy</code> <code>gemini-4-argon-high</code>)</h3>
+<ul>
+<li><strong>Verdict:</strong> <strong><code>Gate 8 Verdict: PASS (0 BLOCKER, 0 MAJOR, 3 MINOR, 2 NOTE)</code></strong> (<code>review_r2_phase8.txt</code>).</li>
+<li><strong>Summary &amp; Minor Refinements:</strong> Independently verified USB 2.0 FS point-to-point skew (<code>2.19 mm ≈ 14 ps</code> Orient. A, <code>3.39 mm ≈ 22 ps</code> Orient. B, <code>&lt; 0.03%</code> UI) and unmated stubs (<code>8.86 / 7.76 mm</code>), <code>0</code> <code>F.Cu</code> USB tracks, <code>0</code> legal <code>0.25/0.15 mm</code> <code>GND</code> via pockets within <code>1.91 mm</code> of <code>U7.2</code>, inherited northern crosstalk limits, and whole-board <code>θ_BA = 32.4 °C/W</code> free-air / <code>49.5 °C/W</code> worn (<code>≤ 0.51 W</code> continuous worn cap). Noted <code>MINOR-1..3</code> in §1 above (<code>L_eff ≈ 2.10 nH</code> over <code>In2.Cu GND</code> giving <code>I_U3,pk ≈ 3.71 A</code> within <code>RP2350</code> CDM &amp; <code>0402</code> single-pulse limits; exact 1D-barrel nodal values <code>VBUS = 5.64 mΩ</code>, <code>VBAT = 60.48 mΩ</code>, <code>U8-&gt;In2 = 3.04 mΩ</code>; and free-air USB charging vs <code>R4 = 4.3–4.7 kΩ</code> when enclosed since <code>U5.~CE = GND</code>).</li>
+</ul></div></body></html>

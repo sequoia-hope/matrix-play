@@ -1,0 +1,114 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 2: schematic</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase2.md'>design/gates/phase2.md</a></p><h1>Gate 2: schematic</h1>
+<p>Status: <strong>passed</strong>.</p>
+<h2>Checks</h2>
+<p><code>scripts/check_sch.py</code> (kicad-cli 9.0.8 ERC, then the netlist):</p>
+<pre><code>{}                                                 (0 ERC violations, severity all)
+328 components 170 nets {'B': 1, 'C': 42, 'J': 1, 'Q': 1, 'R': 28, 'T': 8, 'U': 9, 'L': 1, 'S': 2, 'Y': 1, 'D': 234}
+matrix ok: 18 SW nets of 13 LEDs + driver, 78 CS nets of 9 LEDs + driver
+</code></pre>
+<p><code>schematic_style_check.py hw/round-pendant/a</code>: 2 errors, both the <code>grid</code> rule on matrix1 and matrix2, waived in <code>decisions.md</code>: a matrix drawn as a matrix. 9 warnings: 9 stacked-pin decoupler notes, placement relies on the Decouples field. FAIL exit stands because of the waived rule.</p>
+<p>Fields: all parts have value, footprint, MPN, LCSC; test pads and BT1 have no LCSC, in_bom no.</p>
+<h2>Review</h2>
+<p>Fable reviewers, fresh context, rendered sheets and netlist. Two rounds, 2026-11-02.</p>
+<p>Round 1, correctness: <strong>no blockers.</strong> All pin maps verified against datasheets (U1/U2 all 60 pins + EP, U5, U6, U8, U9, Q1, RP2350, flash). LED R/G/B to CS triplets match Figure 2. Q1 wiring and off state verified. All passive values match the audits.</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Round</th>
+<th>Sev</th>
+<th>Finding</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>MAJOR</td>
+<td>Charger ISET, ILIM wires through R3, R4</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>1</td>
+<td>MAJOR</td>
+<td>Q1 unreadable as one box</td>
+<td>Fixed: two units</td>
+</tr>
+<tr>
+<td>1</td>
+<td>MAJOR</td>
+<td>Global labels outside the frame on matrix sheets</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>1</td>
+<td>MINOR</td>
+<td>Matrix row labels, notes, TP text, comments overflow</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>1</td>
+<td>MINOR</td>
+<td>CC wires cross D±</td>
+<td>Accepted: inherent to the pin order, as on easy2350</td>
+</tr>
+<tr>
+<td>1</td>
+<td>NOTE</td>
+<td>U8 footprint pads 4, 5 swapped; both BAT_N</td>
+<td>Accepted: harmless, user's footprint</td>
+</tr>
+<tr>
+<td>2</td>
+<td>MAJOR</td>
+<td>Crystal, flash cluster text collisions</td>
+<td>Fixed: flash and crystal moved left</td>
+</tr>
+<tr>
+<td>2</td>
+<td>MAJOR</td>
+<td>TS wire through a GND label</td>
+<td>Fixed: symbol gap</td>
+</tr>
+<tr>
+<td>2</td>
+<td>MINOR</td>
+<td>Accelerometer labels, U3 ref, box edges, R32, ISET/ADDR crossing</td>
+<td>Fixed</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reviewed in round 2 as checked, and re-checked by ERC and netlist after fixes; final text fixes were not reviewed a third time. A short from one fix, R2's wire on USB_DP_C, was caught by ERC and corrected.</p>
+<p>Skill version: <code>VENDORED_FROM</code>.</p></div></body></html>

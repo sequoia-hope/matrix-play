@@ -1,0 +1,139 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Mechanical and layout brief: round-pendant</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/brief.md'>design/brief.md</a></p><h1>Mechanical and layout brief: round-pendant</h1>
+<p>Phase 4. Drawing: <code>study/floorplan.svg</code>. Numbers: <code>../scripts/via_study.py</code>, <code>../scripts/floorplan.py</code>, <code>study/sites.json</code>. Outline board with J1, SW1, SW2, BT1 on the back: <code>../hw/round-pendant/a/round-pendant.kicad_pcb</code>.</p>
+<h2>1. Outline</h2>
+<p>Circle, 38.0 mm. Rim clearance from LED land corners ~1.0 mm.</p>
+<h2>2. Mounting</h2>
+<p>No holes. Spare rim sites allow a lanyard hole later. A housing isn't designed in this revision.</p>
+<h2>3. Connectors</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Place</th>
+<th>Facing</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J1 USB-C, HRO TYPE-C-31-M-12</td>
+<td>Bottom side, south edge, axis at x = −0.75 mm, origin y = +16</td>
+<td>Out</td>
+<td>Shell front at +3.65: overhang 0.66 mm at the axis, 1.0–1.4 mm at the corners on the curve. West front-leg pad corner 0.32 mm from the edge; confirm JLC's edge rule in phase 5. Plug clearance: the housing needs a notch; the curved edge doesn't block a plug past the shell. Its 4 shell legs and 2 pegs pass through the board, displacing LEDs (section 11)</td>
+</tr>
+<tr>
+<td>BT1</td>
+<td>Bottom side, near the south-east rim</td>
+<td>—</td>
+<td>Two 2 × 3 mm solder pads. Leads reach the cell behind</td>
+</tr>
+<tr>
+<td>SW1, SW2</td>
+<td>Bottom side, at the rim at −28° (north-east) and −152° (north-west) in the drawing, actuators 0.4 mm past the edge</td>
+<td>Out</td>
+<td>SKRTLAE010's 0.9 mm NPTH pegs need 1.2 mm and can't fit a 0.75 mm channel, so they take rim sites: 2 lost, (15, −9), (−15, −9). Keep travel clear of the housing</td>
+</tr>
+</tbody>
+</table></div>
+<h2>4. Assembly sides</h2>
+<p>Double-sided, by the request. LEDs top; everything else bottom. JLC reflows the LED side too, against the 255 °C limit noted in <code>parts/leds.md</code>.</p>
+<h2>5. Layers</h2>
+<p>Six, through vias, via-in-pad filled and capped, by the user's decision. Tentative use, finalised in phase 5:
+| Layer | Use |
+|---|---|
+| F.Cu | LED pads; R, G, B cathode columns (plan R21) |
+| In1 | SW scan rows |
+| In2 | GND plane |
+| In3 | CS jumps between columns; bottom-side signal escape |
+| In4 | VSYS and +3V3 pours, with GND where free |
+| B.Cu | Parts; short signals; pours |</p>
+<p>JLC limits read 2026-11-02: through via 0.15/0.25 mm standard; 0.10/0.20 mm for boards ≤ 1 mm with ENIG. Filled and plated-over vias allowed in pads. Thickness 1.0 mm and ENIG make the 0.10/0.20 option available for tight places.</p>
+<h2>6. Density</h2>
+<p>Compact. 0402 passives; 0603 only for bulk. Designators where they fit, on the back only.</p>
+<h2>7. Floorplan (rough regions; see drawing)</h2>
+<p>USB-C south, charger and power just inside it, drivers east and west on the widest part of the disc, RP2350 north of centre, turned so its USB, QSPI and regulator side faces south: USB stays short, flash sits just south of it, L1 near the board centre. Crystal on U3's north edge, accelerometer north-east. Power flows north from J1; I2C runs across from U3 to both drivers.</p>
+<h2>8. Thermal</h2>
+<p>Drivers: exposed pad to In2 through vias. Lumissil asks 16–25; with cut-outs (section 10) use what fits, then check in phase 8. Spread east and west, so their heat doesn't stack. Charger: EP vias per TI's land pattern less the centre one.</p>
+<h2>9. Art, silk</h2>
+<p>No art zone. Top: bare display, no silk. Back: board name, rev, repo URL once it exists, BT1 polarity, USB, buttons.</p>
+<h2>10. Vias under the chips (intent risk 1)</h2>
+<p>Anode vias sit on a 2 mm grid. Each may move off pad 3 on a stub of up to 0.5 mm, in the five directions LED pads leave open: −x, +y, −x+y, −x−y, +x+y. Rotating an LED opens others (R3 allows it where needed). JLC via 0.25/0.15 mm, clearance 0.09 mm.</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>Alignment</th>
+<th>On signal pads</th>
+<th>In exposed pad</th>
+<th>In 1V1 ring</th>
+<th>In 3V3 band</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U1, U2 IS31FL3741A</td>
+<td>Centre on a via</td>
+<td>0</td>
+<td>9</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>U3 RP2350A</td>
+<td>Centre on a via, with stubs</td>
+<td>0</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td>8</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Drivers.</strong> 5.4 mm pad with 9 holes ~0.7 mm each at 2 mm pitch, leaving a ≥ 0.2 mm mask dam. Thermal vias and paste go between.</p>
+<p><strong>RP2350: a smaller deviation from <code>chips/rp2350.md</code>.</strong> The 1V1 ring and its four spokes stay whole. The 8 vias that would hit the ring step outward into the ±2.8 mm 3V3 band, which stays connected around them, leaving foreign nets inside the pad ring: 1 cut-out in the exposed pad, 8 in the band. These are SW scan lines, pulsing at up to 494 mA, near 3V3 only; the switcher corner keeps its reference zones. U3's own vias take what room remains. Checked at phase 6 on a real layout against the reference; if SW-to-core coupling shows up at bring-up, those LEDs can be left blank in firmware.</p>
+<p><strong>L1.</strong> "No other copper under the inductor." L1 is 2.0 × 1.6 mm with 2 mm via pitch: vias in its footprint step outward, leaving a window on B.Cu, and In4 is cut under LX.</p>
+<p><strong>Other parts.</strong> Flash: offset so 2 vias land in its floating EP, filled and capped (§10.3 of its datasheet asks not to leave exposed vias). Charger: centre on a via, 1 EP cut-out, drop TI's centre thermal via. BT1: 1–2 foreign vias in each pad, each masked over, or the pads move between grid lines at phase 6. Accelerometer: corner offset, marginal, checked at phase 6. 0402s fit anywhere. USB-C signal row: 4 anode vias of LEDs (−1, 11), (1, 11), (−3, 11), (3, 11) move off it on −x−y stubs.</p>
+<p><strong>Keepouts.</strong> B.Cu and In4 under L1 and LX; J1 shell footprint on B.Cu; button actuator travel; foreign-net rule areas per <code>chips/rp2350.md</code>, adjusted for the above.</p>
+<h2>11. USB-C and LED sites (intent risk 5)</h2>
+<p>All 16-pin parts read have 4 legs at x = ±4.32 mm, wider than the LED channels. At the best offset, 5 sites are lost: (−5, 13), (−5, 17), (−3, 13), (3, 13), (3, 17) mm. Three are ~13.5 mm from the centre: <strong>dark spots in the south of the display, which the user must accept.</strong> The other 2, and the 2 button sites, are nearer the rim. Count stays 234 from spare rim sites (15 left unused).</p>
+<h2>12. Matrix map</h2>
+<p>Each driver takes half the disc, split on x ≈ −0.75: 9 LED columns each, up to 18 tall. Each cell (SW, triplet) must exist exactly once.
+- <strong>Triplets, 13 per driver, 9 LEDs each:</strong> runs along a column on F.Cu, jumping between columns on In3 where a column doesn't hold 9.
+- <strong>SW lines, 9 per driver, 13 LEDs each:</strong> not plain row bands. A band two rows tall would put two LEDs of one column on one SW, so it can't meet "exactly once". Each SW takes 2 LEDs from each of the 3 tallest columns and 1 from the rest: 9 nested, non-crossing trees on In1.
+- <strong>Solver at phase 6:</strong> assignment with In1 planarity, F.Cu channel capacity (2 tracks per channel), and shortest jumps. If it can't close on In1 alone, In3 shares the SW load.
+- <strong>Fan-in:</strong> ~48 matrix vias per driver. A 0.25 mm via leaves room for 1 track per channel at 0.10/0.09, so these vias spread over columns x = ±5 to ±9 either side of each driver, with arrivals on In1 and In3. Counted again at phase 6.</p>
+<p>Firmware reads the map from a generated table.</p>
+<h2>13. Test and debug</h2>
+<p>RUN, GND, SWCLK, SWDIO, VSYS, +3V3, VBAT, 1V1 test pads. No isolation jumpers: no room, single prototype run.</p></div></body></html>

@@ -1,0 +1,347 @@
+{
+ "sch": {
+  "schematic": "round-pendant.kicad_sch",
+  "pdf": "round-pendant.pdf",
+  "sheets": [
+   {
+    "sheet": "root",
+    "title": "round-pendant: top",
+    "desc": "235 RGB LEDs on a 38 mm round board (5x IS31FL3745 WLCSP-36, SMT USB-C TYPE-C-31-M-22) \u00b7 0 symbols",
+    "file": "round-pendant.svg",
+    "source": "round-pendant.kicad_sch",
+    "paper": "A4",
+    "page": "1",
+    "symbols": 0,
+    "size_mm": [
+     297.0022,
+     210.0072
+    ]
+   },
+   {
+    "sheet": "Power",
+    "title": "Power",
+    "desc": "USB-C 16P SMT (TYPE-C-31-M-22), charger, protection, LDO, VBAT sense \u00b7 30 symbols",
+    "file": "round-pendant-Power.svg",
+    "source": "power.kicad_sch",
+    "paper": "A3",
+    "page": "2",
+    "symbols": 30,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "MCU",
+    "title": "MCU",
+    "desc": "RP2350A, flash, crystal, accelerometer, buttons, I2C0 & LED_SDB \u00b7 46 symbols",
+    "file": "round-pendant-MCU.svg",
+    "source": "mcu.kicad_sch",
+    "paper": "A3",
+    "page": "3",
+    "symbols": 46,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 1 and matrix",
+    "title": "Driver 1 and matrix",
+    "desc": "U1 IS31FL3745-CLS4-TR (0x20), 47 RGB LEDs. LED references are cell order only \u00b7 54 symbols",
+    "file": "round-pendant-Driver 1 and matrix.svg",
+    "source": "matrix1.kicad_sch",
+    "paper": "A3",
+    "page": "4",
+    "symbols": 54,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 2 and matrix",
+    "title": "Driver 2 and matrix",
+    "desc": "U2 IS31FL3745-CLS4-TR (0x22), 47 RGB LEDs. LED references are cell order only \u00b7 54 symbols",
+    "file": "round-pendant-Driver 2 and matrix.svg",
+    "source": "matrix2.kicad_sch",
+    "paper": "A3",
+    "page": "5",
+    "symbols": 54,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 3 and matrix",
+    "title": "Driver 3 and matrix",
+    "desc": "U10 IS31FL3745-CLS4-TR (0x25), 47 RGB LEDs. LED references are cell order only \u00b7 53 symbols",
+    "file": "round-pendant-Driver 3 and matrix.svg",
+    "source": "matrix3.kicad_sch",
+    "paper": "A3",
+    "page": "6",
+    "symbols": 53,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 4 and matrix",
+    "title": "Driver 4 and matrix",
+    "desc": "U11 IS31FL3745-CLS4-TR (0x26), 47 RGB LEDs. LED references are cell order only \u00b7 53 symbols",
+    "file": "round-pendant-Driver 4 and matrix.svg",
+    "source": "matrix4.kicad_sch",
+    "paper": "A3",
+    "page": "7",
+    "symbols": 53,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   },
+   {
+    "sheet": "Driver 5 and matrix",
+    "title": "Driver 5 and matrix",
+    "desc": "U12 IS31FL3745-CLS4-TR (0x2F), 47 RGB LEDs. LED references are cell order only \u00b7 53 symbols",
+    "file": "round-pendant-Driver 5 and matrix.svg",
+    "source": "matrix5.kicad_sch",
+    "paper": "A3",
+    "page": "8",
+    "symbols": 53,
+    "size_mm": [
+     419.989,
+     297.0022
+    ]
+   }
+  ]
+ },
+ "layers": {
+  "board": "round-pendant.kicad_pcb",
+  "generated": "2026-11-09",
+  "view_mm": [
+   80.237,
+   80.239,
+   39.523,
+   39.522
+  ],
+  "size_mm": [
+   38.002,
+   38.002
+  ],
+  "round": {
+   "centre": [
+    100.0,
+    100.0
+   ],
+   "dia": 38.0
+  },
+  "polar": [
+   100.0,
+   100.0
+  ],
+  "thickness": 1.0,
+  "plate": "#c8c8c8",
+  "body": "body.svg",
+  "vias": 886,
+  "nets": 212,
+  "footprints": 342,
+  "front": 236,
+  "back": 106,
+  "tracks": 5555,
+  "length_mm": 4465.8,
+  "layers": [
+   {
+    "name": "F.Cu",
+    "slug": "f",
+    "kind": "copper",
+    "file": "f.svg",
+    "color": "#C83434",
+    "note": "Top copper, 35 \u00b5m (1 oz).",
+    "tracks": 2120,
+    "length_mm": 1032.3,
+    "pads": 946,
+    "zones": []
+   },
+   {
+    "name": "In1.Cu",
+    "slug": "in1",
+    "kind": "copper",
+    "file": "in1.svg",
+    "color": "#7FC87F",
+    "note": "Inner layer 1 of 6, 15.2 \u00b5m.",
+    "tracks": 723,
+    "length_mm": 738.7,
+    "pads": 4,
+    "zones": []
+   },
+   {
+    "name": "In2.Cu",
+    "slug": "in2",
+    "kind": "copper",
+    "file": "in2.svg",
+    "color": "#CE7D2C",
+    "note": "Inner layer 2 of 6, 15.2 \u00b5m.",
+    "tracks": 0,
+    "length_mm": 0.0,
+    "pads": 4,
+    "zones": [
+     "GND"
+    ]
+   },
+   {
+    "name": "In3.Cu",
+    "slug": "in3",
+    "kind": "copper",
+    "file": "in3.svg",
+    "color": "#4FCBCB",
+    "note": "Inner layer 3 of 6, 15.2 \u00b5m.",
+    "tracks": 557,
+    "length_mm": 635.0,
+    "pads": 4,
+    "zones": []
+   },
+   {
+    "name": "In4.Cu",
+    "slug": "in4",
+    "kind": "copper",
+    "file": "in4.svg",
+    "color": "#DB628B",
+    "note": "Inner layer 4 of 6, 15.2 \u00b5m.",
+    "tracks": 635,
+    "length_mm": 685.4,
+    "pads": 4,
+    "zones": []
+   },
+   {
+    "name": "In5.Cu",
+    "slug": "in5",
+    "kind": "copper",
+    "file": "in5.svg",
+    "color": "#A7A5C6",
+    "note": "Inner layer 5 of 6, 15.2 \u00b5m.",
+    "tracks": 0,
+    "length_mm": 0.0,
+    "pads": 4,
+    "zones": [
+     "+3V3",
+     "VSYS"
+    ]
+   },
+   {
+    "name": "In6.Cu",
+    "slug": "in6",
+    "kind": "copper",
+    "file": "in6.svg",
+    "color": "#28CCD9",
+    "note": "Inner layer 6 of 6, 15.2 \u00b5m.",
+    "tracks": 510,
+    "length_mm": 618.8,
+    "pads": 4,
+    "zones": []
+   },
+   {
+    "name": "B.Cu",
+    "slug": "b",
+    "kind": "copper",
+    "file": "b.svg",
+    "color": "#4D7FC4",
+    "note": "Bottom copper, 35 \u00b5m (1 oz).",
+    "tracks": 1010,
+    "length_mm": 755.7,
+    "pads": 505,
+    "zones": [
+     "+1V1",
+     "/MCU/VREG_LX",
+     "+3V3",
+     "GND"
+    ]
+   },
+   {
+    "name": "Edge.Cuts",
+    "slug": "edge",
+    "kind": "outline",
+    "file": "edge.svg",
+    "color": "#D0D2CD",
+    "note": "The outline and every cut-out in it."
+   },
+   {
+    "name": "F.Silkscreen",
+    "slug": "silk_f",
+    "kind": "silk",
+    "file": "silk_f.svg",
+    "color": "#F2EDA1",
+    "note": "Silkscreen, front: reference designators and markings as printed."
+   },
+   {
+    "name": "B.Silkscreen",
+    "slug": "silk_b",
+    "kind": "silk",
+    "file": "silk_b.svg",
+    "color": "#E8B2A7",
+    "note": "Silkscreen, back, seen through the board (mirror the view to read it)."
+   },
+   {
+    "name": "F.Fab",
+    "slug": "fab_f",
+    "kind": "fab",
+    "file": "fab_f.svg",
+    "color": "#DDE1E8",
+    "note": "Part bodies and reference designators, front: what each piece of copper belongs to."
+   },
+   {
+    "name": "B.Fab",
+    "slug": "fab_b",
+    "kind": "fab",
+    "file": "fab_b.svg",
+    "color": "#96A2CE",
+    "note": "Part bodies and reference designators, back."
+   }
+  ]
+ },
+ "3d": {
+  "board": "round-pendant.kicad_pcb",
+  "generated": "2026-11-09",
+  "glb": "board.glb",
+  "bytes": 14056424,
+  "kicad_bytes": 42214256,
+  "parts": 342,
+  "modelled": 333,
+  "no_model": [
+   "BT1",
+   "TP1",
+   "TP2",
+   "TP3",
+   "TP4",
+   "TP5",
+   "TP6",
+   "TP7",
+   "TP8"
+  ],
+  "missing": [],
+  "empty": [],
+  "substituted": [],
+  "resolved": [
+   "C16",
+   "C18"
+  ],
+  "flattened": [],
+  "boxed": [],
+  "why": {},
+  "missing_models": [],
+  "boxes": [],
+  "resolved_how": {
+   "legacy": 2,
+   "found": 0
+  },
+  "triangles": 818085,
+  "primitives": 4902
+ },
+ "when": "2026-11-09 00:47",
+ "source": {
+  "kind": "file",
+  "pcb": "hw/round-pendant/f-usbc/round-pendant.kicad_pcb",
+  "sch": "hw/round-pendant/f-usbc/round-pendant.kicad_sch"
+ }
+}

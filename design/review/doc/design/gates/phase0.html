@@ -1,0 +1,188 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 0: design intent</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase0.md'>design/gates/phase0.md</a></p><h1>Gate 0: design intent</h1>
+<p>Status: <strong>passed</strong>. User sign-off 2026-11-02, with two choices: through vias, 6 layers, via-in-pad; battery Grepow 5435035.</p>
+<h2>Checklist (references/intent-and-brief.md, phase 0)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Where in intent.md</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purpose</td>
+<td>Purpose</td>
+<td>done</td>
+</tr>
+<tr>
+<td>Open source or confidential</td>
+<td>Open source, default</td>
+<td>done, confirm</td>
+</tr>
+<tr>
+<td>External interfaces</td>
+<td>External interfaces table</td>
+<td>done</td>
+</tr>
+<tr>
+<td>Power: input, rails, sequencing, battery, backfeed</td>
+<td>Power, R14–R20, R22</td>
+<td>battery open (R16)</td>
+</tr>
+<tr>
+<td>Environment</td>
+<td>Environment</td>
+<td>done</td>
+</tr>
+<tr>
+<td>Performance targets</td>
+<td>R2, R6, R17–R19</td>
+<td>done</td>
+</tr>
+<tr>
+<td>Mechanical</td>
+<td>Mechanical</td>
+<td>done, defaults to confirm</td>
+</tr>
+<tr>
+<td>Manufacturing</td>
+<td>Manufacturing</td>
+<td>done, defaults to confirm</td>
+</tr>
+<tr>
+<td>Serviceability</td>
+<td>Serviceability, R9</td>
+<td>done</td>
+</tr>
+<tr>
+<td>Compliance</td>
+<td>Compliance</td>
+<td>done</td>
+</tr>
+<tr>
+<td>Known risks and open questions</td>
+<td>Known risks</td>
+<td>via type open (R13, risk 1)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Evidence</h2>
+<ul>
+<li><code>jlc_parts.py</code>, 2026-11-02:
+  C965834 XL-1010RGB-YG: extended, JLC stock 12489, lifecycle normal.
+  C2940604 IS31FL3741A-QFLS4-TR: extended, 455. C2678817 IS31FL3741-QFLS4-TR: extended, 0.
+  C2940549 IS31FL3729-QFLS4-TR: extended, 2556, lifecycle normal. C42411118 RP2350A: extended, 4912.</li>
+<li>Site count on a 2 mm grid in 38 mm, land 1.25 mm, 0.35 mm from land to edge, by offset (0,0)/(1,1)/(1,0): 245/256/246.
+  At 0.5 mm: 241/248/242.</li>
+<li><code>scripts/doctor.sh</code>: all required tools ok; ngspice missing (phase 8).</li>
+<li>JLC HDI capabilities: https://jlcpcb.com/help/article/hdi-pcb-capabilities-faq (4–24 layers, laser 0.075–0.15 mm, default 0.1 mm).</li>
+</ul>
+<h2>Independent review</h2>
+<p>Reviewer: Fable, fresh context, with intent.md, the checklist and the datasheets only. 2026-11-02. No BLOCKERs.</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Severity</th>
+<th>Finding</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>MAJOR</td>
+<td>USB-powered case undefined: heat, 500 mA budget, VSYS limit</td>
+<td>Fixed: R14, R19, Environment</td>
+</tr>
+<tr>
+<td>2</td>
+<td>MAJOR</td>
+<td>Sleep budget assumes W25Q16JV, while R8 specifies 128 Mbit</td>
+<td>Fixed: deep power-down required, check in phase 1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>MAJOR</td>
+<td>Blind vias effectively mandatory</td>
+<td>Put to the user, who chose through vias on 6 layers (decisions.md); risk 1 stays open for phase 4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>MAJOR</td>
+<td>Escape channel at JLC minimum, unstated</td>
+<td>Added R21; 3-track count disputed (decisions.md)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>MINOR</td>
+<td>Site range 241–256; frame time 6.7 ms</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>6</td>
+<td>MINOR</td>
+<td>RP2350 VOL vs default driver VIL</td>
+<td>Fixed: LGC = 1 in R6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>MINOR</td>
+<td>VSYS typical missing; driver idle current</td>
+<td>Fixed: rail table</td>
+</tr>
+<tr>
+<td>8</td>
+<td>MINOR</td>
+<td>No VBAT sense, brightness, charge indication, LED-face ESD</td>
+<td>Added R22, R23; R19; Environment</td>
+</tr>
+<tr>
+<td>9</td>
+<td>MINOR</td>
+<td>Wake source count unstated</td>
+<td>Fixed: R10</td>
+</tr>
+<tr>
+<td>10</td>
+<td>NOTE</td>
+<td>I2C pull-downs in sleep cost 40–65 µA each</td>
+<td>Added to R17</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reviewer re-derived and confirmed: IOUT 12.67 mA, ILED 1.25 mA, full white 878 mA, peak 988 mA, addresses 0x30/0x33, headroom 0.46 V typ, IS31FL3729 45 RGB per chip.</p></div></body></html>

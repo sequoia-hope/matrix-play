@@ -1,0 +1,189 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 1: architecture and parts</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase1.md'>design/gates/phase1.md</a></p><h1>Gate 1: architecture and parts</h1>
+<p>Status: <strong>passed, with one sourcing item open for the user before ordering</strong>.</p>
+<h2>Checklist</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block diagram, every block maps to parts</td>
+<td><code>architecture.md</code></td>
+</tr>
+<tr>
+<td>Every part has an audit with its datasheet</td>
+<td><code>parts/</code>; RP2350 values inherited from easy2350's reviewed audit, deltas read and independently checked. Battery has no maker's datasheet: listings only, charge limit chosen to be safe either way</td>
+</tr>
+<tr>
+<td>Abs max vs worst case</td>
+<td>in each audit</td>
+</tr>
+<tr>
+<td>Chosen values calculated</td>
+<td>in each audit, corrected by review</td>
+</tr>
+<tr>
+<td>MLCC derating</td>
+<td>22 µF, 1 µF, passives</td>
+</tr>
+<tr>
+<td>Footprints match the package</td>
+<td>drawings read by reviewer; project footprints drawn at phase 2</td>
+</tr>
+<tr>
+<td>Sourcing <code>jlc_parts.py show</code></td>
+<td>below; inductor fails</td>
+</tr>
+<tr>
+<td><code>datasheets/sources.csv</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Independent review</td>
+<td>three Fable reviewers, 2026-11-02</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Sourcing, <code>jlc_parts.py show</code>, 2026-11-02</h2>
+<p>All <code>lifecycle normal</code>. U1/U2 C2940604 455; U3 C42411118 4738; U4 C190862 8662; Y1 C20625731 9181; U5 C15220 8360; U6 C2860046 1914; U8 C669687 2947; U9 C189624 45643; J1 C165948 177286; LEDs C965834 12489.
+<strong>L1 C42411119: 1. Needs 5.</strong> <code>chips/rp2350.md</code> forbids substitution and says to pre-order the MPN or use global sourcing: user action before ordering.</p>
+<h2>Review findings</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Sev</th>
+<th>Finding</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BLOCKER</td>
+<td>ADC is ratiometric to 3V3, so VBAT sense can't see low-cell thresholds in LDO dropout; 2.2 MΩ divider has up to 1.1 V error from GPIO leakage</td>
+<td>Fixed: switched 100 kΩ divider with Q1; firmware thresholds at ≥ 3.5 V (R22)</td>
+</tr>
+<tr>
+<td>MAJOR</td>
+<td>3V3 in dropout violates VREG_AVDD and USB_OTP_VDD min 3.135 V</td>
+<td>Fixed: firmware stop at 3.5 V</td>
+</tr>
+<tr>
+<td>MAJOR</td>
+<td>Latched pull-downs on all pulled-up GPIOs</td>
+<td>Fixed: R17, rp2350-core.md</td>
+</tr>
+<tr>
+<td>MAJOR</td>
+<td>Flash deep power-down not released by bootrom</td>
+<td>Budget doesn't rely on it</td>
+</tr>
+<tr>
+<td>MAJOR</td>
+<td>XB9901A R1 missing; EP is cell−, not GND</td>
+<td>Fixed: protection.md, net BAT_N</td>
+</tr>
+<tr>
+<td>MAJOR</td>
+<td>LGC startup write at VIL 0.4 V</td>
+<td>Recorded: 12 mA drive, measure at bring-up</td>
+</tr>
+<tr>
+<td>MAJOR</td>
+<td>Headroom optimistic, inconsistent</td>
+<td>Fixed: 3.65 V typ, ~4.2 V worst, firmware GCC</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>Channel 0.325 mm: no via fits; flash §10.3</td>
+<td>Fixed: risk 1, flash.md</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>ILIM mandatory, values; term, precharge; dissipation formula</td>
+<td>Fixed: charger.md</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>LDO dropout and ground current</td>
+<td>Fixed: ldo.md</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>EN1 flat-cell start</td>
+<td>Documented, bench check</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>Bulk derating; red-only 0.38 W; θJA board size</td>
+<td>Fixed: 10 V caps, intent</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>USBLC6 VBR 6 V</td>
+<td>Accepted, usb.md</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>LIS2DW12 decoupling, current at 3.3 V</td>
+<td>Fixed: accel.md, 2 µA budget</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>BOOTSEL path with soldered cell</td>
+<td>Fixed: rp2350-core.md</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>LED reflow 255 °C peak, 240 °C recommended</td>
+<td>Note for the order at phase 10</td>
+</tr>
+<tr>
+<td>MINOR</td>
+<td>LED 180° rotation invisible on placement</td>
+<td>CPL check at phase 10</td>
+</tr>
+<tr>
+<td>NOTE</td>
+<td>Body-diode charge below 2.4 V; XB note 3; 20 mV VCU margin</td>
+<td>protection.md</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reviewers verified: 12.67 mA, 1.25 mA, 875–878 mA, 494 mA; addresses 0x30, 0x33, 0x19; GPIO mux; Table 1445 sum; crystal caps; footprints.</p>
+<p>Unresolved independent review: Q1 was added after the reviews. Its role is low risk; checked again in the schematic review at gate 2.</p></div></body></html>

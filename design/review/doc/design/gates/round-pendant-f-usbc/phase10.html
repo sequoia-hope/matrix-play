@@ -1,0 +1,353 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 10: release (round-pendant-f-usbc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase10.md'>design/gates/round-pendant-f-usbc/phase10.md</a></p><h1>Gate 10: release (<code>round-pendant-f-usbc</code>)</h1>
+<p>Status: <strong>awaiting_signoff</strong>
+Fab package directory: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/fab">hw/round-pendant/f-usbc/fab/</a>.
+Bring-up plan: <a href="../../bringup-f-usbc.html">design/bringup-f-usbc.md</a>.
+Stackup &amp; order specification: <a href="../../stackup.html">design/stackup.md</a> (<strong><code>JLC08101H-1080</code></strong>).</p>
+<hr />
+<h2>Checklist (<code>references/sync-and-release.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>All earlier gates current (not stale):</strong></li>
+<li>Parent gates <code>0–3</code>: <code>passed</code> (<a href="../phase0.html">phase0.md</a>–<a href="../phase3.html">phase3.md</a>) + <code>J1</code> <code>TYPE-C-31-M-22</code> datasheet &amp; schematic verified (<code>0</code> ERC violations across <code>8</code> sheets)</li>
+<li>Variant gates: <a href="phase4.html">phase4.md</a> (<code>awaiting_signoff</code>), <a href="phase5.html">phase5.md</a> (<code>passed</code>), <a href="phase6.html">phase6.md</a> (<code>passed</code>), <a href="phase7.html">phase7.md</a> (<code>passed</code>), <a href="phase8.html">phase8.md</a> (<code>passed</code>), <a href="phase9.html">phase9.md</a> (<code>passed</code>) — all updated with final <code>5,555</code>-track / <code>886</code>-via copper and independent <code>agy</code> review records.</li>
+<li>[x] <strong>Release sync check passes (<code>sync_check.py --bom --cpl</code>):</strong> <strong><code>PASS: 0 errors, 0 warnings</code></strong> (<code>342</code> schematic symbols ↔ <code>342</code> PCB footprints ↔ <code>333</code> assembled parts in <code>bom-jlcpcb.csv</code> &amp; <code>cpl-jlcpcb.csv</code>; <code>9</code> unpopulated solder/test footprints <code>BT1, TP1..TP8</code> excluded via <code>in_bom=no</code>).</li>
+<li>[x] <strong>DRC &amp; ERC re-run on final files:</strong></li>
+<li><code>kicad-cli sch erc --severity-all</code>: <strong><code>Found 0 violations</code></strong> across all <code>8</code> sheets.</li>
+<li><code>kicad-cli pcb drc --severity-all --schematic-parity</code>: <strong><code>Found 0 violations</code>, <code>Found 0 unconnected items</code></strong>, and only the <code>2</code> inherited Variant E/F <code>U3</code> pin 42/43 <code>{slash}</code> unconnected pin-name strings (explicitly named per task instructions rather than hidden).</li>
+<li>[x] <strong>Live stock &amp; qty-10 BOM pricing verified (<code>2026-11-08</code>):</strong></li>
+<li><strong>Qty-10 BOM cost (<code>export_and_cost.py --cost</code>):</strong> <strong><code>$26.62 / board</code></strong> (<code>$26.6179</code>) vs Variant F <strong><code>$26.26 / board</code></strong> (<code>$26.2573</code>) -&gt; <strong>exact delta <code>+$0.3606 / board</code> (<code>+$3.61</code> for 10 boards)</strong> for <code>1× J1 C530612 (TYPE-C-31-M-22)</code>.</li>
+<li><strong>Live JLCPCB PCBA SMT stock (<code>selectSmtComponentList/v2</code>, §3 below):</strong> <strong><code>31/33</code> unique LCSC part codes are immediately in stock at JLCPCB PCBA</strong> (<code>C530612 TYPE-C-31-M-22 = 2,410</code>, <code>C42411119 L1 = 1,357</code>, <code>C23733 4.7 µF = 1,003,226</code>, <code>min stock = 529</code> on <code>C2860046 TPS7A0233PDQNR</code>). Only the <strong>2 inherited Variant F Global-Sourcing parts</strong> (<code>C2678907 IS31FL3745-CLS4-TR</code> WLCSP-36 driver and <code>C146233 ALS-PT19-315C/L177/TR8</code> light sensor, which also has local JLC drop-in <code>C47416518</code>) show <code>0</code> local JLC SMT stock (<code>status.json</code> <code>inductor-preorder</code> &amp; <code>sensor-part</code>).</li>
+<li>[x] <strong>CPL rotation &amp; pick-origin verified for <code>J1</code> on <code>B.Cu</code> and every polarized part/IC (<code>333/333</code>):</strong> Verified against live EasyEDA package data (<code>0.077 mm</code> RMS pad-for-pad match across all <code>16</code> SMD pads of <code>J1</code> at <code>CPL Rotation = 336.05°</code>, <code>Mid = (108.2778mm, -112.0309mm)</code>) + visual overlays <a href="../../renders/round-pendant-f-usbc/cpl-check-bottom.png">cpl-check-bottom.png</a> and <a href="../../renders/round-pendant-f-usbc/cpl-check-top.png">cpl-check-top.png</a> (§2 below).</li>
+<li>[x] <strong>Gerbers + split PTH/NPTH drills independently parsed &amp; reviewed (<code>gerbonara</code> <code>gerber_npth_audit.py</code>):</strong></li>
+<li><a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/fab/round-pendant-f-usbc-gerbers.zip">round-pendant-f-usbc-gerbers.zip</a> (<code>18</code> files: <code>15</code> Gerber layers + <code>round-pendant-PTH.drl</code> [<strong><code>886</code></strong> holes] + <code>round-pendant-NPTH.drl</code> [<strong><code>6</code></strong> holes] + <code>.gbrjob</code>).</li>
+<li>High-resolution Gerber zoom of <code>J1</code>'s two <code>Ø0.650 mm</code> NPTH holes against <code>F_Cu.gtl</code>, <code>F_Mask.gts</code>, <code>F_Silkscreen.gto</code>, and <code>B_Paste.gbp</code>: <a href="../../renders/round-pendant-f-usbc/npth-gerber-zoom.png">npth-gerber-zoom.png</a> + <code>17</code> individual layer PNGs in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/round-pendant-f-usbc/gerbers">design/renders/round-pendant-f-usbc/gerbers/</a> (§1.C below).</li>
+<li>Release artifacts in <code>fab/</code>: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/fab/bom-jlcpcb.csv">bom-jlcpcb.csv</a>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/fab/cpl-jlcpcb.csv">cpl-jlcpcb.csv</a>, <a href="../../../hw/round-pendant/f-usbc/fab/assembly-top.pdf">assembly-top.pdf</a>, <a href="../../../hw/round-pendant/f-usbc/fab/assembly-bottom.pdf">assembly-bottom.pdf</a>, <a href="../../../hw/round-pendant/f-usbc/fab/schematic.pdf">schematic.pdf</a>, and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/fab/round-pendant-f-usbc.step">round-pendant-f-usbc.step</a>.</li>
+<li>[x] <strong>Bring-up plan written &amp; verified against netlist (<code>GPIO14 VBAT_EN</code>, <code>PDE=0</code>, <code>R14/R15 = 27 Ω</code>):</strong> <a href="../../bringup-f-usbc.html">design/bringup-f-usbc.md</a> (linked from <code>index.html</code>).</li>
+<li>[x] <strong>Final independent review (<code>agy</code> <code>gemini-4-argon-high</code>):</strong> Round-1 findings resolved &amp; Round-2 re-review appended in §4 below.</li>
+<li>[ ] <strong>Git tag (<code>round-pendant-f-usbc-revFU</code>) &amp; User release approval:</strong> Git commit/tag deferred per supervising-agent workspace rule (<em>"Do not commit or push"</em>); user sign-off items listed in §5 below.</li>
+</ul>
+<hr />
+<h2>1. Verbatim Release Check &amp; Gerber Audit Outputs</h2>
+<h3>A. <code>sync_check.py --bom --cpl</code></h3>
+<pre><code class="language-text">sync_check: hw/round-pendant/f-usbc
+  schematic round-pendant.kicad_sch: 342 symbols (0 excluded from board)
+  board round-pendant.kicad_pcb: 342 footprints (0 board-only)
+  BOM bom-jlcpcb.csv: 333 designators
+  CPL cpl-jlcpcb.csv: 333 placements
+  333 parts to build; required fields: LCSC
+  stock not checked: re-check every LCSC part at release (phase 10)
+
+  PASS: 0 errors, 0 warnings
+</code></pre>
+<h3>B. Final <code>kicad-cli sch erc --severity-all</code> &amp; <code>kicad-cli pcb drc --severity-all --schematic-parity</code></h3>
+<pre><code class="language-text">Found 0 violations
+Saved ERC Report to /tmp/fusbc_erc.json
+ERC sheets: 8 violations: 0
+
+Found 0 violations
+Found 0 unconnected items
+Found 2 schematic parity issues
+  - Pad net (unconnected-(U3-GPIO28/ADC2-Pad42)) doesn't match net given by schematic (unconnected-(U3-GPIO28{slash}ADC2-Pad42)).
+  - Pad net (unconnected-(U3-GPIO29/ADC3-Pad43)) doesn't match net given by schematic (unconnected-(U3-GPIO29{slash}ADC3-Pad43)).
+</code></pre>
+<h3>C. Independent <code>gerbonara</code> 8-Layer Gerber &amp; <code>NPTH.drl</code> Audit (<code>gerber_npth_audit.py</code>)</h3>
+<pre><code class="language-text">gerber_npth_audit: hw/round-pendant/f-usbc/fab/gerbers (board round-pendant)
+  top_silk                     round-pendant-F_Silkscreen.gto        2346 objects
+  top_paste                    round-pendant-F_Paste.gtp              942 objects
+  top_mask                     round-pendant-F_Mask.gts               948 objects
+  top_copper                   round-pendant-F_Cu.gtl                3948 objects
+  inner_1_copper               round-pendant-In1_Cu.g1               1609 objects
+  inner_2_copper               round-pendant-In2_Cu.g2                887 objects
+  inner_3_copper               round-pendant-In3_Cu.g3               1443 objects
+  inner_4_copper               round-pendant-In4_Cu.g4               1521 objects
+  inner_5_copper               round-pendant-In5_Cu.g5                888 objects
+  inner_6_copper               round-pendant-In6_Cu.g6               1396 objects
+  bottom_copper                round-pendant-B_Cu.gbl                2408 objects
+  bottom_mask                  round-pendant-B_Mask.gbs               507 objects
+  bottom_paste                 round-pendant-B_Paste.gbp              497 objects
+  bottom_silk                  round-pendant-B_Silkscreen.gbo         965 objects
+  drill_round-pendant-PTH      round-pendant-PTH.drl                  886 objects
+  drill_round-pendant-NPTH     round-pendant-NPTH.drl                   6 objects
+  outline                      round-pendant-Edge_Cuts.gm1              2 objects
+
+=== INDEPENDENT GERBONARA NPTH DRILL AUDIT (6 holes in NPTH.drl) ===
+  NPTH #1: Gerber (X=104.6710 mm, Y=-111.0300 mm) =&gt; KiCad (104.671, 111.030) mm, dia=0.650 mm
+  NPTH #2: Gerber (X=109.9530 mm, Y=-108.6840 mm) =&gt; KiCad (109.953, 108.684) mm, dia=0.650 mm
+  NPTH #3: Gerber (X=83.0190 mm, Y=-93.3960 mm) =&gt; KiCad (83.019, 93.396) mm, dia=0.700 mm
+  NPTH #4: Gerber (X=84.6960 mm, Y=-94.0490 mm) =&gt; KiCad (84.696, 94.049) mm, dia=0.700 mm
+  NPTH #5: Gerber (X=115.3590 mm, Y=-94.0270 mm) =&gt; KiCad (115.359, 94.027) mm, dia=0.700 mm
+  NPTH #6: Gerber (X=117.0370 mm, Y=-93.3750 mm) =&gt; KiCad (117.037, 93.375) mm, dia=0.700 mm
+</code></pre>
+<p><strong>Gerber layer object-count &amp; NPTH cross-check (<a href="../../renders/round-pendant-f-usbc/npth-gerber-zoom.png">npth-gerber-zoom.png</a>):</strong>
+- <strong><code>top_paste = 942</code>:</strong> <code>235</code> <code>XL-1010RGB-YG</code> LEDs × <code>4</code> pads (<code>940</code>) + <code>1</code> <code>Q2</code> <code>ALS-PT19</code> × <code>2</code> pads (<code>2</code>) = <strong><code>942</code> exact</strong> (<code>0</code> paste on vias).
+- <strong><code>top_mask = 948</code>:</strong> <code>942</code> top SMD pads + <code>6</code> NPTH mask clearances (<code>2× J1 Ø0.650 mm</code> + <code>4× SW1/SW2 Ø0.700 mm</code>) = <strong><code>948</code> exact</strong> (<code>100%</code> tented/capped PTH vias).
+- <strong><code>inner_2_copper = 887</code>:</strong> <code>1</code> whole <code>plane GND</code> polygon + <code>886</code> PTH via pads/antipads = <strong><code>887</code> exact</strong>.
+- <strong><code>inner_5_copper = 888</code>:</strong> <code>2</code> whole power polygons (<code>plane VSYS</code> + <code>plane 3V3</code>) + <code>886</code> PTH via pads/antipads = <strong><code>888</code> exact</strong>.
+- <strong><code>drill_round-pendant-PTH = 886</code> &amp; <code>drill_round-pendant-NPTH = 6</code>:</strong> Separate Excellon PTH (<code>744× 0.25/0.15 mm</code> + <code>139× 0.30/0.15 mm</code> + <code>3× 0.20/0.10 mm</code>) and NPTH (<code>2× Ø0.650 mm</code> + <code>4× Ø0.700 mm</code>) drill files ensure JLCPCB never plates <code>J1</code>'s or <code>SW1/SW2</code>'s plastic peg holes; <a href="../../renders/round-pendant-f-usbc/npth-gerber-zoom.png">npth-gerber-zoom.png</a> confirms both <code>Ø0.650 mm</code> NPTH holes clear every <code>F_Cu.gtl</code> LED pad (<code>0.220 mm</code>), <code>F_Cu.gtl</code> trace (<code>0.214 mm</code>), <code>In3_Cu.g3</code> trace (<strong><code>0.304 mm</code></strong>), and <code>F_Silkscreen.gto</code> Voronoi web stroke (<strong><code>0.199 mm</code></strong>), while <code>B_Paste.gbp</code> covers all <code>4</code> <code>S1</code> SMD shell pads + <code>12</code> rear USB-C signal/power pads cleanly (<code>0</code> paste on <code>BT1</code> or <code>TP1..TP8</code>).
+- <strong>JLCPCB Order Form Specification (<a href="../../stackup.html">stackup.md</a>):</strong> <strong>8-layer, <code>1.0 mm</code> thickness</strong>, controlled-impedance stackup <strong><code>JLC08101H-1080</code></strong> (<code>Er = 4.1</code>, <code>4× 1080</code> prepreg <code>0.0764 mm</code> + <code>3× 0.170 mm</code> core), <code>1 oz</code> outer / <code>0.5 oz</code> inner copper, <strong><code>ENIG 1U"</code></strong> finish, <strong><code>Via Covering = Epoxy Filled &amp; Capped (POFV = Yes)</code></strong>, double-sided PCBA (<code>Pass 1 = F.Cu ≤ 250 °C</code>, <code>Pass 2 = B.Cu ≤ 250 °C</code>).</p>
+<hr />
+<h2>2. CPL Rotation &amp; Pick-Origin Verification (<code>cpl-jlcpcb.csv</code> + EasyEDA Pad-for-Pad Proof)</h2>
+<p>Visual verification overlays: <a href="../../renders/round-pendant-f-usbc/cpl-check-bottom.png">cpl-check-bottom.png</a> (Mirrored <code>B.Cu</code> view: <code>+X</code> Left, <code>-X</code> Right) and <a href="../../renders/round-pendant-f-usbc/cpl-check-top.png">cpl-check-top.png</a>.</p>
+<h3><code>J1</code> (<code>TYPE-C-31-M-22</code>, <code>C530612</code>) on <code>B.Cu</code> Derivation</h3>
+<ul>
+<li><strong>KiCad footprint pose on <code>B.Cu</code>:</strong> <code>(107.7870, 110.9260) mm</code>, <code>KiCad Rot = -156.05°</code> (<code>203.95°</code>).</li>
+<li><strong>Pick-origin shift (<code>c_origin</code> vs KiCad origin):</strong> EasyEDA <code>C530612</code>'s pick centroid sits <code>-1.204 mm</code> along local <code>+Y</code> (toward the front shell mouth relative to KiCad's origin). Rotating <code>(0, -1.204)</code> on <code>B.Cu</code> at <code>-156.05°</code> yields <strong><code>Mid X = 108.2778mm</code>, <code>Mid Y = -112.0309mm</code></strong>.</li>
+<li><strong>CPL rotation on <code>Bottom</code>:</strong> EasyEDA <code>C530612</code> <code>0°</code> has the <code>12</code> signal pins North and mouth South; on mirrored <code>B.Cu</code> (<code>CPL = (180° - KiCad_Rot) mod 360°</code> = <code>(180° - (-156.05°)) mod 360°</code>), <strong><code>CPL Rotation = 336.05°</code></strong> (<code>-23.95°</code>), aligning all <code>12</code> <code>0.50 mm</code>-pitch rear SMD fingers (<code>A1B12..B1A12</code>) and all <code>4</code> <code>S1</code> shell tabs with <strong><code>0.077 mm</code> RMS pad-center accuracy</strong> and <code>0.00°</code> rotation error!</li>
+</ul>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>LCSC</th>
+<th>MPN</th>
+<th>Layer</th>
+<th style="text-align: right;">KiCad Rot (°)</th>
+<th>Mid X</th>
+<th>Mid Y</th>
+<th style="text-align: right;">CPL Rot (°)</th>
+<th>EasyEDA Pad-for-Pad &amp; Polarity Proof</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>J1</code></strong></td>
+<td><strong><code>C530612</code></strong></td>
+<td><strong><code>TYPE-C-31-M-22</code></strong></td>
+<td><strong><code>Bottom</code></strong></td>
+<td style="text-align: right;"><strong><code>-156.05</code></strong></td>
+<td><strong><code>108.2778mm</code></strong></td>
+<td><strong><code>-112.0309mm</code></strong></td>
+<td style="text-align: right;"><strong><code>336.05</code></strong></td>
+<td><strong>New SMD USB-C:</strong> <code>1.204 mm</code> <code>c_origin</code> shift + <code>336.05°</code> aligns <code>12</code> rear pins NE-NW &amp; mouth SSE (<code>0.077 mm</code> pad match across all <code>16</code> pads).</td>
+</tr>
+<tr>
+<td><code>SW1</code></td>
+<td><code>C388883</code></td>
+<td><code>EVQP7C01P</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>-68.75</code></td>
+<td><code>116.5115mm</code></td>
+<td><code>-93.5790mm</code></td>
+<td style="text-align: right;"><code>248.75</code></td>
+<td><code>-0.336 mm</code> plunger centroid shift; plunger faces outward NE (<code>0.051 mm</code> pad match).</td>
+</tr>
+<tr>
+<td><code>SW2</code></td>
+<td><code>C388883</code></td>
+<td><code>EVQP7C01P</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+68.75</code></td>
+<td><code>83.5445mm</code></td>
+<td><code>-93.6008mm</code></td>
+<td style="text-align: right;"><code>111.25</code></td>
+<td><code>-0.336 mm</code> plunger centroid shift; plunger faces outward NW (<code>0.051 mm</code> pad match).</td>
+</tr>
+<tr>
+<td><code>U7</code></td>
+<td><code>C15999</code></td>
+<td><code>USBLC6-2P6</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+113.95</code></td>
+<td><code>100.1000mm</code></td>
+<td><code>-112.4000mm</code></td>
+<td style="text-align: right;"><code>246.05</code></td>
+<td>Relocated SOT-666 ESD: <code>Pin 2 (GND)</code> NE, <code>Pin 5 (VBUS)</code> SW (<code>0.000 mm</code> pad match).</td>
+</tr>
+<tr>
+<td><code>U8</code></td>
+<td><code>C669687</code></td>
+<td><code>XB9901A</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>-90.00</code></td>
+<td><code>96.4000mm</code></td>
+<td><code>-116.4000mm</code></td>
+<td style="text-align: right;"><code>270.00</code></td>
+<td>Relocated DFN-6 LiPo prot: <code>Pins 1..3 (GND)</code> East, <code>Pin 6 (VDD)</code> NW, <code>Pins 4..5 (BAT_N)</code> SW (<code>0.000 mm</code> pad match).</td>
+</tr>
+<tr>
+<td><code>U1,U2,U10..12</code></td>
+<td><code>C2678907</code></td>
+<td><code>IS31FL3745-CLS4-TR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td><em>(5 sites)</em></td>
+<td><em>(5 sites)</em></td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td><code>5×</code> WLCSP-36: <code>A1</code> ball Bottom-Right in Mirrored <code>B.Cu</code> (<code>180.00°</code>, <code>0.000 mm</code> match).</td>
+</tr>
+<tr>
+<td><code>U3</code></td>
+<td><code>C42411118</code></td>
+<td><code>RP2350A</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td><code>98.6000mm</code></td>
+<td><code>-93.4000mm</code></td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td>QFN-60: EasyEDA <code>-TL</code> <code>0°</code> -&gt; <code>180.00°</code> places <code>Pin 1</code> Bottom-Right in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>U4</code></td>
+<td><code>C190862</code></td>
+<td><code>W25Q128JVPIQ</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+90.00</code></td>
+<td><code>97.2000mm</code></td>
+<td><code>-105.4000mm</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td>WSON-8 <code>6×5</code>: EasyEDA <code>-BL</code> <code>0°</code> places <code>Pin 1</code> Bottom-Left in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>U5</code></td>
+<td><code>C15220</code></td>
+<td><code>BQ24073RGTR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td><code>103.4000mm</code></td>
+<td><code>-106.0000mm</code></td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td>QFN-16: EasyEDA <code>-TL</code> <code>0°</code> -&gt; <code>180.00°</code> places <code>Pin 1</code> Bottom-Right in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>U6</code></td>
+<td><code>C2860046</code></td>
+<td><code>TPS7A0233PDQNR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+180.00</code></td>
+<td><code>93.9000mm</code></td>
+<td><code>-100.4000mm</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td>X2SON-4 <code>1×1</code>: EasyEDA <code>-TL</code> <code>0°</code> places <code>Pin 1 (+3V3)</code> Top-Left <code>(94.330, 100.075)</code> in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>U9</code></td>
+<td><code>C189624</code></td>
+<td><code>LIS2DW12TR</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+180.00</code></td>
+<td><code>104.4000mm</code></td>
+<td><code>-86.2000mm</code></td>
+<td style="text-align: right;"><code>270.00</code></td>
+<td>LGA-12 <code>2×2</code>: EasyEDA <code>-BL</code> <code>270.00°</code> places <code>Pin 1 (SCL)</code> Top-Left in Mirrored <code>B.Cu</code>.</td>
+</tr>
+<tr>
+<td><code>Q1</code></td>
+<td><code>C236117</code></td>
+<td><code>NTZD3155CT1G</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>+180.00</code></td>
+<td><code>91.8000mm</code></td>
+<td><code>-112.4000mm</code></td>
+<td style="text-align: right;"><code>270.00</code></td>
+<td>SOT-563 dual FET: <code>Pin 1 (GND)</code> Top-Left in Mirrored <code>B.Cu</code> (<code>0.000 mm</code> match).</td>
+</tr>
+<tr>
+<td><code>L1, Y1</code></td>
+<td><code>C42411119</code> / <code>C20625731</code></td>
+<td><code>AOTA-3R3</code> / <code>ABM8-272</code></td>
+<td><code>Bottom</code></td>
+<td style="text-align: right;"><code>0.00</code></td>
+<td><code>100.6 / 97.3</code></td>
+<td><code>-100.6 / -85.2</code></td>
+<td style="text-align: right;"><code>180.00</code></td>
+<td><code>L1</code> <code>Pad 1 (+1V1)</code> Right (3D STEP model rotation aligned to <code>0°</code>); <code>Y1</code> <code>180°</code>-symmetric <code>4</code>-pad <code>12 MHz</code> crystal.</td>
+</tr>
+<tr>
+<td><code>Q2</code></td>
+<td><code>C146233</code></td>
+<td><code>ALS-PT19-315C</code></td>
+<td><code>Top</code></td>
+<td style="text-align: right;"><code>+6.00</code></td>
+<td><code>97.9600mm</code></td>
+<td><code>-81.9600mm</code></td>
+<td style="text-align: right;"><code>6.00</code></td>
+<td>Top-rim phototransistor: Collector <code>Pad 1</code> West, matching <code>F.SilkS</code> <code>OD = 0.30 mm</code> dot.</td>
+</tr>
+<tr>
+<td><code>D1..D235</code></td>
+<td><code>C965834</code></td>
+<td><code>XL-1010RGB-YG</code></td>
+<td><code>Top</code></td>
+<td style="text-align: right;"><em>spiral</em></td>
+<td><em>spiral</em></td>
+<td><em>spiral</em></td>
+<td style="text-align: right;"><code>(Ki+90)%360</code></td>
+<td><code>235</code> top RGB LEDs (<code>D1</code>: <code>Ki=+146.42°</code> -&gt; <code>CPL=236.42°</code>, <code>0.000 mm</code> 4-pad match).</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>3. Live JLCPCB PCBA SMT Stock &amp; Qty-10 Cost (<code>2026-11-08</code>, <code>selectSmtComponentList/v2</code>)</h2>
+<pre><code class="language-text">  C530612    jlc_stock=2410      type=expand   mpn=TYPE-C-31-M-22         [NEW J1: +$0.3606/bd @10]
+  C42411118  jlc_stock=3080      type=expand   mpn=RP2350A
+  C42411119  jlc_stock=1357      type=expand   mpn=AOTA-B201610S3R3-101-T [Restocked in JLC SMT!]
+  C965834    jlc_stock=12842     type=expand   mpn=XL-1010RGB-YG          [2,350 needed for 10 bds]
+  C15220     jlc_stock=749       type=expand   mpn=BQ24073RGTR
+  C2860046   jlc_stock=529       type=expand   mpn=TPS7A0233PDQNR
+  C15999     jlc_stock=20150     type=expand   mpn=USBLC6-2P6
+  C669687    jlc_stock=2947      type=expand   mpn=XB9901A
+  C190862    jlc_stock=12773     type=expand   mpn=W25Q128JVPIQ
+  C189624    jlc_stock=51846     type=expand   mpn=LIS2DW12TR
+  C388883    jlc_stock=12451     type=expand   mpn=EVQP7C01P
+  C20625731  jlc_stock=9421      type=expand   mpn=ABM8-272-T3
+  C236117    jlc_stock=7923      type=expand   mpn=NTZD3155CT1G
+  C23733     jlc_stock=1003226   type=base     mpn=CL05A475MP5NRNC
+  ... (all remaining 17 passive codes: 494,139 to 33,461,927 in JLC SMT stock) ...
+  C2678907   jlc_stock=0         type=expand   mpn=IS31FL3745-CLS4-TR     [Inherited F: Global Sourcing]
+  C146233    jlc_stock=0         type=expand   mpn=ALS-PT19-315C/L177/TR8 [Inherited F: Global Sourcing or C47416518]
+</code></pre>
+<hr />
+<h2>4. Independent Fresh-Context Release Review History (<code>agy</code> <code>gemini-4-argon-high</code>)</h2>
+<h3>Round 1 Review Summary &amp; Dispositions (<code>0</code> BLOCKERs; CAD / Gerbers / BOM / CPL = FAB-READY)</h3>
+<ul>
+<li><strong><code>MAJOR-1</code> (<code>bringup-f-usbc.md</code> toggling <code>GPIO28</code> instead of <code>GPIO14 VBAT_EN</code> &amp; omitting <code>PDE = 0</code> sleep init):</strong> <strong>FIXED</strong> in <a href="../../bringup-f-usbc.html">design/bringup-f-usbc.md</a> (§4 Step 3.1 <code>PDE = 0</code> on <code>GPIO2–5, 11, 12, 13</code>; §5 Steps 4.1–4.2 driving <code>GPIO14</code> [<code>U3</code> Pin 18] <code>VBAT_EN</code>).</li>
+<li><strong><code>MAJOR-2</code> (Stale 6-layer <code>stackup.md</code> without JLCPCB 8L stackup code):</strong> <strong>FIXED</strong> — updated <a href="../../stackup.html">design/stackup.md</a> with the 8-layer <code>1.00 mm</code> <strong><code>JLC08101H-1080</code></strong> stackup table (<code>Er = 4.1</code>), impedance notes, and DRC severity list.</li>
+<li><strong><code>MAJOR-3</code> (Gate 4–9 review closeout &amp; <code>2</code> Global-Sourcing BOM lines <code>C2678907</code>, <code>C146233</code>):</strong> <strong>FIXED + FLAGGED FOR USER SIGN-OFF (§5 below)</strong> — appended all Round-1 dispositions + Round-2 re-reviews across <code>phase4.md..phase10.md</code>, and listed <code>C2678907</code> / <code>C146233</code> pre-order / <code>C47416518</code> substitute in §5.</li>
+<li><strong><code>MINOR-1..6</code> &amp; <code>NOTE-2</code> (<code>403535</code> <code>0.66C–0.81C</code> C-rate note, <code>R14/R15 = 27 Ω</code> &amp; <code>{D234, D235, D231, D226}</code>/<code>{D76, D66, D74, D64}</code> NPTH callouts, <code>3× 0.20/0.10 mm</code> vias count, <code>L1</code> 3D STEP dot rotation, <code>2-Ø0.50 mm</code> pegs &amp; <code>U6</code> <code>-TL</code> Pin 1 prose, <code>0.304 mm</code> <code>In3.Cu</code> NPTH #1 nudge):</strong> <strong>ALL FIXED</strong> across <code>round-pendant.kicad_pcb</code>, <code>bringup-f-usbc.md</code>, <code>brief-f-usbc.md</code>, and <code>phase4.md..phase10.md</code>.</li>
+</ul>
+<h3>Round 2 Re-Review (<code>agy</code> <code>gemini-4-argon-high</code>)</h3>
+<p><strong>Verdict: YES — Ready to send to fab once the listed user sign-off / Global-Sourcing items in §5 are confirmed (<code>0 BLOCKER, 0 MAJOR, 2 MINOR, 1 NOTE</code>)</strong>:
+- Independently re-derived <code>J1</code> CPL on <code>B.Cu</code> (<code>(107.7870, 110.9260, -156.05°)</code> -&gt; <code>Mid = (108.2778mm, -112.0309mm), Bottom, 336.05°</code>) and visually verified pad-for-pad alignment across all <code>16</code> <code>J1</code> SMD pads and all <code>332</code> other placements (<code>U1..U12, Q1, Q2, L1, Y1, SW1/SW2, D1..D235</code>).
+- Verified split <code>PTH</code> (<code>886</code> vias: <code>744× 0.25 + 139× 0.30 + 3× 0.20</code>) / <code>NPTH</code> (<code>6</code> unplated holes) drills, <code>J1</code> <code>Ø0.650 mm</code> NPTH clearances (<code>0.220 mm</code> to <code>F.Cu</code> LED pads <code>D234.4</code>/<code>D74.3</code>, <code>0.214 mm</code> to <code>CS2_12</code>, <code>0.304 mm</code> on <code>In3.Cu</code>, <code>≥ 0.201 mm</code> on all 8 Cu layers), <code>342 = 333 + 9</code> sync, <code>ERC = 0</code>, <code>DRC = 0</code> (<code>2</code> <code>U3</code> <code>{slash}</code> parity strings), <code>JLC08101H-1080</code> stackup, and <code>bringup-f-usbc.md</code> (<code>GPIO14 VBAT_EN</code>, <code>PDE = 0</code>, <code>12 mA</code> I2C0 + <code>LGC = 1</code>).
+- <strong><code>MINOR-1</code>, <code>MINOR-2</code>, &amp; <code>NOTE-1</code> (Prose callouts: <code>{D234, D235, D231, D226}</code> / <code>{D76, D66, D74, D64}</code> 4-LED NPTH pockets, <code>0.300 mm</code> CAD <code>BT1.2 ↔ U8.1..3</code> mask dam + temporary Kapton masking during wire attach, <code>R4 = C25784</code>, and <code>744 + 139 + 3 = 886</code> via tally):</strong> <strong>FIXED immediately above</strong> in <code>bringup-f-usbc.md</code>, <code>brief-f-usbc.md</code>, <code>stackup.md</code>, <code>decisions.md</code>, and <code>phase4/6/10.md</code>.</p>
+<hr />
+<h2>5. Decisions Requiring User Sign-Off (Gate 10 Release)</h2>
+<ol>
+<li><strong>SSE Connector Pose &amp; SMD-Only Shell Hold-Down (<a href="phase4.html">phase4.md</a> §3):</strong> Confirm <code>J1</code> (<code>TYPE-C-31-M-22</code>, <code>C530612</code>, <code>+$0.36/bd</code>) at SSE <code>(107.787, 110.926, -156.05°)</code> (<code>23.95°</code> E of S, <code>8.35°</code> non-radial skew, <code>0</code> LEDs moved, two <code>Ø0.65 mm</code> front mask web apertures with <code>Ø0.50 × 0.70 mm</code> pegs recessed <code>0.30 mm</code> below <code>F.Cu</code>, <code>4× 2.30 × 1.80 mm</code> gull-wing SMD shell pads — use straight axial plug insertion or housing capture / corner epoxy).</li>
+<li><strong>Inherited Sourcing &amp; 8-Layer Quote Items (<code>status.json</code>):</strong>
+   - Confirm JLCPCB Global Sourcing / pre-order for <code>5× IS31FL3745-CLS4-TR</code> (<code>C2678907</code>) and whether <code>Q2</code> stays <code>ALS-PT19</code> (<code>C146233</code> via Global Sourcing) or swaps to local JLC <code>Tonyu DYWH-ALS-PT19-315C/4T</code> (<code>C47416518</code>). <em>(Note: <code>L1</code> <code>C42411119</code> is back in local JLCPCB PCBA stock at <code>1,357</code> pcs!)</em>
+   - Confirm JLCPCB quote-tool acceptance of <strong><code>JLC08101H-1080</code></strong> (<code>1.0 mm</code> 8-layer ENIG + <code>POFV = Yes</code>) and the <strong><code>3×</code> inherited <code>0.20/0.10 mm</code> vias</strong> (<code>10:1</code> aspect ratio) inside <code>U3</code>'s <code>+3V3</code> band (<code>jlc-8l-quote</code>), plus inherited plane-only decoupling on <code>U3</code> <code>IOVDD</code> pins <code>11/54</code> (<code>decap-11-54</code>).</li>
+<li><strong><code>403535</code> LiPo Charge Rate (<code>R4 = 3.0 kΩ</code> = <code>297 mA</code>) &amp; Rear Mechanical Stackup:</strong> Confirm your <code>403535</code> (<code>~400–450 mAh</code>) cell datasheet permits <code>0.66C–0.81C</code> charging (or swap <code>R4</code> to <code>4.3 kΩ</code> [<code>207 mA</code>] / <code>4.7 kΩ</code> [<code>189 mA</code>] for <code>≤ 0.5C</code>), and confirm <code>0.05 mm</code> Kapton tape over <code>TP1..TP8</code>/<code>BT1</code> + <code>3.3–3.5 mm</code> foam standoff matching <code>J1</code>'s <code>3.16–3.26 mm</code> rear height (with firmware enforcing the <code>≤ 0.51 W</code> continuous worn thermal ceiling and LED blanking while <code>~CHG == 0</code>).</li>
+</ol></div></body></html>

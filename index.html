@@ -462,6 +462,15 @@ footer {
                 <td>&mdash;</td>
               </tr>
               <tr>
+                <td><a href="viewer/round-pendant-f-usbc.html"><b>Round Pendant F-USBC</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm) + ALS + SMD USB-C</td>
+                <td>8L ENIG</td>
+                <td>235&times; XL-1010RGB</td>
+                <td>5&times; IS31FL3745 (WLCSP-36 BGA)</td>
+                <td><b>0 unconnected</b> &middot; 886 vias &middot; 0 DRC &middot; local USB-C reroute &middot; fab files</td>
+                <td>$26.62</td>
+              </tr>
+              <tr>
                 <td><a href="viewer/round-pendant-e.html"><b>Round Pendant (WLCSP Sunflower)</b></a></td>
                 <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm) + ALS</td>
                 <td>8L ENIG</td>
@@ -579,7 +588,7 @@ footer {
 
   <footer>
     <span>Every PCB layer plot, schematic sheet, and 3D model is exported directly from KiCad 9 via <a href="https://github.com/sequoia-hope/pcbview">pcbview</a> and routed with <code>ultraroute</code>.</span>
-    <span><!-- review-banner:start --><a href="design/review/index.html">Pending reviews (16)</a> &middot; <!-- review-banner:end --><a href="viewer/">All boards in viewer</a> &middot; <a href="https://github.com/sequoia-hope/matrix-play">Source repository</a></span>
+    <span><!-- review-banner:start --><a href="design/review/index.html">Pending reviews (19)</a> &middot; <!-- review-banner:end --><a href="viewer/">All boards in viewer</a> &middot; <a href="https://github.com/sequoia-hope/matrix-play">Source repository</a></span>
   </footer>
 </div>
 
@@ -828,6 +837,19 @@ const ROUND_CARDS = [
     specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "5× WLCSP-36 + ALS"],
     desc: "The current main board, built on E: the thin zones that linked the RP2350's pins to their decoupling caps are now locked 0.2 mm tracks, so escape vias can no longer carve them, and FB runs unbroken from pin 50 to its output cap again. 10 nets re-routed locally; 0 DRC errors or warnings, 0 unconnected, copper audit clean (876 vias).",
     silkF: true, silkB: true
+  },
+  {
+    id: "round-pendant-f-usbc",
+    title: "Round Pendant F — USB-C",
+    badge: "0 Open · 0 DRC",
+    badgeKind: "ok",
+    specs: ["8 layers", "235× XL-1010 LEDs", "SMD USB-C on back", "$26.62 BOM"],
+    desc: "Variant F with a real surface-mount USB-C receptacle (Hroparts TYPE-C-31-M-22, C530612) on the back at the SSE rim via a local southern rip-up and re-route: 0 front LEDs moved (both Ø 0.65 mm NPTH pegs thread inter-LED gaps with 0.220 mm pad clearance), 147/147 locked RP2350 decoupling tracks kept intact, 0 unconnected, 0 DRC errors/warnings, copper audit clean (886 vias, +$0.36 BOM vs F); fab files exported.",
+    silkF: true, silkB: true,
+    extraLinks: [
+      { href: "design/review/doc/design/bringup-f-usbc.html", label: "Bring-Up Plan" },
+      { href: "design/review/index.html#round-pendant-f-usbc-g4", label: "Review & Gates 4–10" }
+    ]
   },
   {
     id: "round-pendant-e",

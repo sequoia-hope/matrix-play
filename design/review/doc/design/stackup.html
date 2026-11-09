@@ -1,0 +1,343 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Stackup and rules</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/stackup.md'>design/stackup.md</a></p><h1>Stackup and rules</h1>
+<p>Sources: JLC capabilities page https://jlcpcb.com/capabilities/pcb-capabilities, read 2026-11-02. 3313 prepreg Er 4.1, 6-layer via-in-pad filled and capped.</p>
+<p><strong>Thickness estimate.</strong> Layer thicknesses below are worked out to total 1.0 mm from a JLC-style 3313 stack on the user's 6-layer <code>pendant-nrf52820</code> (which is 1.6 mm). JLC's exact table for 1.0 mm wasn't reachable by script. Read it from the quote tool before fab. Nothing here depends on impedance control: USB is full speed over a very short run, QSPI is under 25 mm.</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Copper</th>
+<th>Dielectric below</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F.Cu</td>
+<td>1 oz finished, 0.035</td>
+<td>0.0994 prepreg</td>
+<td>LED pads, R, G, B columns</td>
+</tr>
+<tr>
+<td>In1</td>
+<td>0.5 oz, 0.0152</td>
+<td>0.2708 core</td>
+<td>SW scan trees</td>
+</tr>
+<tr>
+<td>In2</td>
+<td>0.5 oz</td>
+<td>0.1088 prepreg</td>
+<td>GND plane</td>
+</tr>
+<tr>
+<td>In3</td>
+<td>0.5 oz</td>
+<td>0.2708 core</td>
+<td>CS jumps, bottom-side signal escape</td>
+</tr>
+<tr>
+<td>In4</td>
+<td>0.5 oz</td>
+<td>0.0994 prepreg</td>
+<td>VSYS, +3V3 pours, GND</td>
+</tr>
+<tr>
+<td>B.Cu</td>
+<td>1 oz</td>
+<td>—</td>
+<td>Parts, short signals, pours</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Fab limits used (JLC, 6-layer)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Track / clearance</td>
+<td>0.09 / 0.09 mm</td>
+<td>Capability page; floor on the user's earlier board</td>
+</tr>
+<tr>
+<td>Via</td>
+<td>0.25 / 0.15 mm standard; 0.20 / 0.10 mm in U3's 3V3 band only; annular 0.05 mm</td>
+<td>Capability page; the smaller one needs board ≤ 1 mm and ENIG, both set</td>
+</tr>
+<tr>
+<td>Via-in-pad</td>
+<td>Filled and capped</td>
+<td>Capability page, standard on 6 layers</td>
+</tr>
+<tr>
+<td>Hole clearance, hole to hole</td>
+<td>0.2 mm</td>
+<td>Capability page</td>
+</tr>
+<tr>
+<td>Copper to edge</td>
+<td>0.2 mm</td>
+<td>Capability page; check J1's west front leg, 0.32 mm from the edge: passes</td>
+</tr>
+<tr>
+<td>Silk</td>
+<td>0.8 mm height, 0.15 width</td>
+<td>Skill defaults</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Net classes</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Track</th>
+<th>Clearance</th>
+<th>Via</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGNAL, ANALOG</td>
+<td>0.1</td>
+<td>0.09</td>
+<td>0.25/0.15</td>
+<td>nets.csv; R21 needs 0.1/0.09 in the LED channels</td>
+</tr>
+<tr>
+<td>POWER</td>
+<td>0.2</td>
+<td>0.09</td>
+<td>0.3/0.15</td>
+<td>Rails, with DRU minimums below, SW lines</td>
+</tr>
+<tr>
+<td>CLOCK</td>
+<td>0.15</td>
+<td>0.15</td>
+<td>0.25/0.15</td>
+<td>Crystal: guard by spacing</td>
+</tr>
+<tr>
+<td>SE_HS</td>
+<td>0.1</td>
+<td>0.1</td>
+<td>0.25/0.15</td>
+<td>QSPI</td>
+</tr>
+<tr>
+<td>DIFF_HS</td>
+<td>0.15</td>
+<td>0.15</td>
+<td>0.25/0.15</td>
+<td>USB FS; pair 0.15/0.15, not impedance controlled</td>
+</tr>
+<tr>
+<td>SWITCH</td>
+<td>0.4</td>
+<td>0.12</td>
+<td>0.3/0.15</td>
+<td>VREG_LX in its zone</td>
+</tr>
+</tbody>
+</table></div>
+<p>DRU minimums: VBUS 0.25; VSYS, VBAT, BAT_N 0.3; +3V3 0.2; SW lines 0.1. Length limits and "no vias" rows from nets.csv. Rule areas for L1 and U3's ring are drawn with the parts at phase 6.</p>
+<p>Severities: silk overlap, silk over copper, track dangling, net conflict, duplicate, extra and missing footprint set to error. Library mismatch ignored for the board-local footprint copies.</p>
+<hr />
+<h2>8-Layer Stackup (<code>1.0 mm</code> ENIG POFV — Variants E, F, <code>f-usbc</code>)</h2>
+<p>Variants E, F (<code>hw/round-pendant/f/round-pendant.kicad_pcb</code>), and <code>f-usbc</code> (<code>hw/round-pendant/f-usbc/round-pendant.kicad_pcb</code>) upgraded to an <strong>8-layer <code>1.00 mm</code> (<code>0.9968 mm</code> physical)</strong> stackup (<code>decisions.md</code> 2026-11-04) so <code>In6.Cu</code> serves as a dedicated bottom-adjacent signal escape layer while keeping <code>In2.Cu</code> (<code>GND</code>) and <code>In5.Cu</code> (<code>VSYS</code> + <code>+3V3</code> island) unbroken.</p>
+<ul>
+<li><strong>JLCPCB 8-layer <code>1.0 mm</code> order stackup code:</strong> <strong><code>JLC08101H-1080</code></strong> (<code>1.0 mm ±10%</code>, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <code>1080</code> <code>0.0764 mm</code> prepreg, <code>0.170 mm</code> cores, <code>Er = 4.1</code>, <code>ENIG</code>, epoxy-filled &amp; capped <code>POFV</code> via-in-pad). Pin <code>JLC08101H-1080</code> explicitly on the JLCPCB order form and confirm acceptance of the <code>3×</code> <code>0.20 / 0.10 mm</code> (<code>10:1</code> aspect ratio) vias inside <code>U3</code>'s <code>+3V3</code> ring during DFM quote review.</li>
+</ul>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Type / Material</th>
+<th>Thickness (<code>mm</code>)</th>
+<th><code>Er</code></th>
+<th>Role in Variants E / F / <code>f-usbc</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F.SilkS</code></td>
+<td>White legend ink</td>
+<td>—</td>
+<td>—</td>
+<td>Voronoi sunflower web + <code>Q2</code> pin-1 dot</td>
+</tr>
+<tr>
+<td><code>F.Mask</code></td>
+<td>Matte black LPI soldermask</td>
+<td><code>0.0100</code></td>
+<td><code>3.8</code></td>
+<td>Dam min <code>0.10 mm</code> (JLC ENIG); <code>876–886</code> PTH vias tented/capped, <code>6</code> NPTHs relieved <code>1:1</code></td>
+</tr>
+<tr>
+<td><strong><code>F.Cu</code></strong></td>
+<td><strong><code>1 oz</code> finished Cu</strong></td>
+<td><strong><code>0.0350</code></strong></td>
+<td>—</td>
+<td><code>235×</code> <code>1010</code> LED pads + <code>Q2</code> + local matrix escapes</td>
+</tr>
+<tr>
+<td>Dielectric 1</td>
+<td><code>1080</code> prepreg</td>
+<td><code>0.0764</code></td>
+<td><code>4.1</code></td>
+<td>Outer build-up dielectric</td>
+</tr>
+<tr>
+<td><strong><code>In1.Cu</code></strong></td>
+<td><strong><code>0.5 oz</code> (<code>15.2 µm</code>) Cu</strong></td>
+<td><strong><code>0.0152</code></strong></td>
+<td>—</td>
+<td><code>SW</code>/<code>CS</code> matrix trees, <code>VBUS</code> branch to <code>U7.5</code></td>
+</tr>
+<tr>
+<td>Dielectric 2</td>
+<td>FR-4 core</td>
+<td><code>0.1700</code></td>
+<td><code>4.1</code></td>
+<td>Inner core 1</td>
+</tr>
+<tr>
+<td><strong><code>In2.Cu</code></strong></td>
+<td><strong><code>0.5 oz</code> (<code>15.2 µm</code>) Cu</strong></td>
+<td><strong><code>0.0152</code></strong></td>
+<td>—</td>
+<td><strong>Continuous <code>plane GND</code> (<code>1</code> whole piece, <code>847.5–849.3 mm²</code>)</strong></td>
+</tr>
+<tr>
+<td>Dielectric 3</td>
+<td><code>1080</code> prepreg</td>
+<td><code>0.0764</code></td>
+<td><code>4.1</code></td>
+<td>Inner lamination prepreg</td>
+</tr>
+<tr>
+<td><strong><code>In3.Cu</code></strong></td>
+<td><strong><code>0.5 oz</code> (<code>15.2 µm</code>) Cu</strong></td>
+<td><strong><code>0.0152</code></strong></td>
+<td>—</td>
+<td><code>SW</code>/<code>CS</code> routing, plane-cooled <code>VBAT</code> trunk (<code>0.30 mm</code>)</td>
+</tr>
+<tr>
+<td>Dielectric 4</td>
+<td>FR-4 core</td>
+<td><code>0.1700</code></td>
+<td><code>4.1</code></td>
+<td>Center core</td>
+</tr>
+<tr>
+<td><strong><code>In4.Cu</code></strong></td>
+<td><strong><code>0.5 oz</code> (<code>15.2 µm</code>) Cu</strong></td>
+<td><strong><code>0.0152</code></strong></td>
+<td>—</td>
+<td><code>SW</code>/<code>CS</code> routing, <code>QSPI</code> / <code>USB_D*_MCU</code> short escapes (<code>0</code> zones)</td>
+</tr>
+<tr>
+<td>Dielectric 5</td>
+<td><code>1080</code> prepreg</td>
+<td><code>0.0764</code></td>
+<td><code>4.1</code></td>
+<td>Inner lamination prepreg</td>
+</tr>
+<tr>
+<td><strong><code>In5.Cu</code></strong></td>
+<td><strong><code>0.5 oz</code> (<code>15.2 µm</code>) Cu</strong></td>
+<td><strong><code>0.0152</code></strong></td>
+<td>—</td>
+<td><strong>Power plane: <code>plane VSYS</code> (<code>1</code> piece, <code>600.4–603.5 mm²</code>) + <code>plane 3V3</code> (<code>1</code> piece, <code>215.8–216.1 mm²</code>)</strong></td>
+</tr>
+<tr>
+<td>Dielectric 6</td>
+<td>FR-4 core</td>
+<td><code>0.1700</code></td>
+<td><code>4.1</code></td>
+<td>Inner core 3</td>
+</tr>
+<tr>
+<td><strong><code>In6.Cu</code></strong></td>
+<td><strong><code>0.5 oz</code> (<code>15.2 µm</code>) Cu</strong></td>
+<td><strong><code>0.0152</code></strong></td>
+<td>—</td>
+<td>Bottom-adjacent signal escape layer (<code>0</code> zones)</td>
+</tr>
+<tr>
+<td>Dielectric 7</td>
+<td><code>1080</code> prepreg</td>
+<td><code>0.0764</code></td>
+<td><code>4.1</code></td>
+<td>Bottom build-up dielectric (<code>h = 0.2616 mm</code> from <code>B.Cu</code> to <code>In5.Cu</code> where <code>In6.Cu</code> is clear)</td>
+</tr>
+<tr>
+<td><strong><code>B.Cu</code></strong></td>
+<td><strong><code>1 oz</code> finished Cu</strong></td>
+<td><strong><code>0.0350</code></strong></td>
+<td>—</td>
+<td>All ICs, passives, <code>J1</code> (<code>TYPE-C-31-M-22</code> on <code>f-usbc</code>), <code>BT1</code>, <code>SW1/SW2</code>, <code>TP1..TP8</code>, <code>RP2350</code> <code>+1V1</code>/<code>+3V3</code>/<code>VREG_LX</code>/<code>GND</code> zones</td>
+</tr>
+<tr>
+<td><code>B.Mask</code></td>
+<td>Matte black LPI soldermask</td>
+<td><code>0.0100</code></td>
+<td><code>3.8</code></td>
+<td>Dam min <code>0.10 mm</code> (<code>0.300 mm</code> CAD copper/<code>B.Mask</code> gap = <code>3.0×</code> min between <code>BT1.2</code> and <code>U8.1..3</code> on <code>f-usbc</code>)</td>
+</tr>
+<tr>
+<td><code>B.SilkS</code></td>
+<td>White legend ink</td>
+<td>—</td>
+<td>—</td>
+<td>Pin-1 dots (<code>OD = 0.30 mm</code>), polarity/rating/switch labels, selective refs</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>8-Layer Stack</strong></td>
+<td><strong><code>0.9968</code></strong></td>
+<td>—</td>
+<td>Nominal <strong><code>1.00 mm ± 0.10 mm</code></strong></td>
+</tr>
+</tbody>
+</table></div></div></body></html>

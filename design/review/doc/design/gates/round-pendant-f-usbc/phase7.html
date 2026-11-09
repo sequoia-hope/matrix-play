@@ -1,0 +1,135 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 7: routing (round-pendant-f-usbc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase7.md'>design/gates/round-pendant-f-usbc/phase7.md</a></p><h1>Gate 7: routing (<code>round-pendant-f-usbc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Parent board baseline compared against: <strong>Variant F</strong> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f/round-pendant.kicad_pcb">hw/round-pendant/f/round-pendant.kicad_pcb</a>), with routing dispositions in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">design/decisions.md</a> (<code>2026-11-08</code>).</p>
+<hr />
+<h2>Checklist (<code>references/routing.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>DRC <code>0</code> errors, <code>0</code> warnings, <code>0</code> unrouted (<code>kicad-cli pcb drc --severity-all --schematic-parity</code>):</strong> <strong><code>Found 0 violations</code>, <code>Found 0 unconnected items</code></strong> (verbatim output below).</li>
+<li>[x] <strong>Schematic parity:</strong> <code>0</code> functional differences — only the <strong>2 inherited Variant E/F <code>U3</code> pin 42/43 <code>{slash}</code> name mismatches</strong> on unconnected pins (<code>GPIO28/ADC2</code> vs <code>GPIO28{slash}ADC2</code>, <code>GPIO29/ADC3</code> vs <code>GPIO29{slash}ADC3</code>), explicitly named below and never hidden (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</li>
+<li>[x] <strong><code>pad_joints_fixed.py</code> passes (no SMD pad joint under <code>0.09 mm</code> fab minimum):</strong> <strong><code>PASS: 0 thin pad joints</code></strong> across all <code>1,416</code> net-assigned SMD pads (<code>+8</code> SMD pads vs Variant F's <code>1,408</code>). <em>(Uses <code>scripts/crunch/placement/pad_joints_fixed.py</code>, which handles <code>B.Cu</code> mirrored pads accurately.)</em></li>
+<li>[x] <strong><code>copper_audit.py</code> passes all routing &amp; strip-zone checks:</strong> <code>tracks=5555 vias=886 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(&lt;86um)=0 acute_slivers=0 collinear_dups=0 strip_zones=0</code> (<code>2</code> inherited <code>B.Cu</code> vendor-zone intrusions <code>vendor +1V1</code> and <code>vendor GND</code> from Variant E/F, identical to Variant F's <code>zone_intrusions=2</code>).</li>
+<li>[x] <strong>Current capacity &amp; via-count check passes:</strong></li>
+<li><strong><code>VBUS</code> (<code>500 mA</code> max):</strong> <strong><code>0</code> vias</strong> on the <code>500 mA</code> <code>J1 -&gt; C1 -&gt; U5.13</code> <code>0.25 mm</code> <code>1 oz</code> <code>B.Cu</code> charger path (<code>R_60C = 4.44 mΩ</code>, <code>Vdrop = 2.22 mV @ 500 mA</code>; <code>IPC-2221</code> 1 oz outer <code>0.25 mm</code> &gt; <code>900 mA</code> at <code>ΔT = 10 °C</code>); <code>2</code> <code>0.30/0.15 mm</code> vias sit in series only on the <code>U7.5</code> TVS clamp branch.</li>
+<li><strong><code>VBAT</code> (<code>340 mA</code> max cont / <code>297 mA</code> charge / <code>1.0 A</code> brief transient):</strong> <strong><code>2×</code> parallel <code>0.30/0.15 mm</code> vias</strong> at <code>BT1.1</code> (<code>(100.018, 114.939)</code> &amp; <code>(100.860, 115.700)</code>) feeding <code>0.30 mm</code> <code>In3.Cu</code> (<code>R_60C = 55.01 mΩ</code>, <code>Vdrop = 18.70 mV @ 340 mA</code>). Plane-cooled <code>0.30 mm</code> <code>0.5 oz</code> <code>In3.Cu</code> (<code>0.076–0.170 mm</code> from solid <code>In2.Cu GND</code> and <code>In5.Cu VSYS</code>) exceeds <strong><code>0.80 A</code> IPC-2152 internal ampacity</strong> (<code>&gt; 2.3×</code> continuous demand; widening beyond <code>0.30 mm</code> violates <code>0.200 mm</code> matrix via <code>hole_clearance</code>, justified in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</li>
+<li><strong><code>/Power/BAT_N</code> &amp; <code>U8.1..3 -&gt; GND</code> (<code>340 mA</code> cont):</strong> <code>/Power/BAT_N</code> has <strong><code>0</code> vias</strong> (<code>4.04 mm</code> direct <code>0.30 mm</code> <code>1 oz</code> <code>B.Cu</code> from <code>BT1.2</code> to <code>U8.4/5</code>, <code>R_60C = 3.25 mΩ</code>), and <code>U8.1..3</code> exits via <code>0.25–0.30 mm</code> <code>B.Cu</code> segments into <strong><code>2×</code> <code>GND</code> vias</strong> (<code>(97.263, 115.721)</code> [<code>0.25/0.15 mm</code>] &amp; <code>(97.017, 114.689)</code> [<code>0.30/0.15 mm</code>], <code>R_60C = 1.12 mΩ</code> via-to-plane / <code>3.07 mΩ</code> pad-center-to-plane, <code>1.04 mV @ 340 mA</code>) directly into <code>In2.Cu GND</code>.</li>
+<li><strong><code>U7.2 -&gt; GND</code> (USB ESD return) &amp; <code>/Power/USB_DM_C</code>:</strong> <code>U7.2</code> traverses <code>2.21 mm</code> of narrow <code>B.Cu</code> microstrip into <code>J1.S1</code> NW's <code>2.30 × 1.80 mm</code> solid copper pad (<code>L_shield ≈ 1.09 nH</code> to USB cable shield) and <strong><code>2×</code> parallel <code>GND</code> vias</strong> (<code>(102.470, 110.730)</code> inside <code>J1.S1</code> &amp; <code>(102.126, 110.639)</code>, <code>L_eff ≈ 1.39 nH</code> into <code>In2.Cu GND</code>; <code>0</code> legal 8-layer TH via pockets exist within <code>2.00 mm</code> of <code>U7.2</code>), and <code>/Power/USB_DM_C</code> stays strictly on <code>B.Cu</code>/<code>In6.Cu</code> (<strong><code>0</code> <code>F.Cu</code> segments</strong>).</li>
+<li><strong><code>VSYS</code> (<code>~340 mA</code> board total) &amp; <code>+3V3</code> (<code>~40 mA</code>):</strong> solid <code>In5.Cu</code> planes (<code>600.368 mm²</code> and <code>215.756 mm²</code>, <code>1</code> whole piece each).</li>
+<li><strong><code>GND</code>:</strong> solid unbroken <code>In2.Cu</code> reference plane (<code>847.497 mm²</code>, <strong><code>1</code> whole piece</strong>).</li>
+<li>[x] <strong>Plane integrity &amp; Variant F locked-PDN preservation check (<code>compare_with_f.py</code>):</strong></li>
+<li><strong><code>147/147</code> locked RP2350 decoupling/DVDD/LDO/FB tracks survived 100% intact.</strong></li>
+<li><strong><code>0</code> split pieces (<code>dPcs = +0</code>) across all 9 zones</strong> vs Variant F (<code>In2.Cu plane GND = 1 pc</code>, <code>In5.Cu plane VSYS = 1 pc</code>, <code>In5.Cu plane 3V3 = 1 pc</code>, <code>B.Cu RP2350 ring = 1 pc</code>, <code>B.Cu RP2350 band = 6 pcs</code> identical to F).</li>
+<li><strong><code>85.6%</code> (<code>5,261 / 6,144</code>)</strong> of Variant F's tracks and vias preserved verbatim (primary rip-up crescent <code>X ∈ [91.3, 114.9], Y ∈ [105.0, 118.8] mm</code>, with minor route adjustments spanning <code>X ∈ [90.08, 117.87], Y ∈ [93.29, 118.59] mm</code>); total vias = <strong><code>886</code></strong> (<code>+10</code> vs Variant F's <code>876</code>).</li>
+<li><strong><code>J1</code> NPTH 8-layer clearances:</strong> <code>NPTH #1 In3.Cu</code> clearance widened from <code>0.2002 mm</code> to <strong><code>0.304 mm</code></strong>; all 8 layers <code>≥ 0.201 mm</code>.</li>
+<li>[x] <strong>Every warning explained:</strong> <code>0</code> DRC warnings; <code>nets_check.py --routed</code> <code>195</code> warnings explained in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase5.md">phase5.md</a>.</li>
+<li>[x] <strong>Per-layer copper renders reviewed (<code>8</code> layers):</strong> <a href="../../renders/round-pendant-f-usbc/F.Cu.png">F.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/In1.Cu.png">In1.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/In2.Cu.png">In2.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/In3.Cu.png">In3.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/In4.Cu.png">In4.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/In5.Cu.png">In5.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/In6.Cu.png">In6.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc/B.Cu.png">B.Cu.png</a>.</li>
+<li>[x] <strong>PCB view regenerated with copper viewer:</strong> <a href="https://github.com/sequoia-hope/matrix-play/blob/main/viewer/round-pendant-f-usbc.html">viewer/round-pendant-f-usbc.html</a>.</li>
+</ul>
+<hr />
+<h2>1. Verbatim Routing Verification Outputs</h2>
+<h3>A. Strict KiCad DRC (<code>kicad-cli pcb drc --severity-all --schematic-parity</code>, <code>drc_final.json</code>)</h3>
+<pre><code class="language-text">Found 0 violations
+Found 0 unconnected items
+Found 2 schematic parity issues
+DRC violations: 0 unconnected: 0 parity: 2
+  - Pad net (unconnected-(U3-GPIO28/ADC2-Pad42)) doesn't match net given by schematic (unconnected-(U3-GPIO28{slash}ADC2-Pad42)).
+  - Pad net (unconnected-(U3-GPIO29/ADC3-Pad43)) doesn't match net given by schematic (unconnected-(U3-GPIO29{slash}ADC3-Pad43)).
+</code></pre>
+<h3>B. <code>copper_audit.py</code> &amp; <code>pad_joints_fixed.py</code></h3>
+<pre><code class="language-text">hw/round-pendant/f-usbc/round-pendant.kicad_pcb: tracks=5555 vias=886 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(&lt;86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(&lt;40um)=203 strip_zones=0 zone_intrusions=2
+
+pad_joints: round-pendant.kicad_pcb: 1416 SMD pads, joints under 0.09 mm:
+
+  PASS: 0 thin pad joints
+</code></pre>
+<h3>C. <code>compare_with_f.py</code> (Locked Tracks, Track/Via Delta, Zone Piece Counts &amp; Areas, 8-Layer NPTH Clearances)</h3>
+<pre><code class="language-text">=== 2. LOCKED RP2350 DECOUPLING TRACKS ===
+  Survived intact: 147/147 (locked=147/147)
+
+=== 3. COPPER TRACKS &amp; VIAS (F vs F-USBC) ===
+  Board F     :  876 vias, 5268 track segs ( 4426.68 mm)
+  Board F-USBC:  886 vias, 5555 track segs ( 4465.80 mm)
+  Delta       :  +10 vias, +287 track segs (  +39.12 mm)
+  Identical copper items preserved verbatim from F: 5261/6144 (85.6%)
+
+=== 4. ZONE PIECE COUNTS &amp; FILLED AREAS (F vs F-USBC) ===
+  Idx Zone Name          Net              Layer   | F pcs    F mm^2 | U pcs    U mm^2 | dPcs    dArea
+  ------------------------------------------------------------------------------------------------
+    0 vendor +1V1        +1V1             B.Cu    |     1     2.280 |     1     2.280 |   +0   +0.000
+    1 vendor /MCU/VREG_LX /MCU/VREG_LX     B.Cu    |     1     2.296 |     1     2.296 |   +0   +0.000
+    3 vendor +3V3        +3V3             B.Cu    |     1     0.597 |     1     0.597 |   +0   +0.000
+    4 RP2350 band        +3V3             B.Cu    |     6     7.529 |     6     7.529 |   +0   +0.000
+    5 RP2350 ring        +1V1             B.Cu    |     1     6.437 |     1     6.437 |   +0   +0.000
+    8 vendor GND         GND              B.Cu    |     1     1.633 |     1     1.633 |   +0   +0.000
+   10 plane GND          GND              In2.Cu  |     1   849.289 |     1   847.497 |   +0   -1.792
+   12 plane 3V3          +3V3             In5.Cu  |     1   216.146 |     1   215.756 |   +0   -0.390
+   13 plane VSYS         VSYS             In5.Cu  |     1   603.541 |     1   600.368 |   +0   -3.174
+
+=== 5. J1 NPTH 8-LAYER CLEARANCE AUDIT ===
+  NPTH #1: center=(109.953, 108.684) mm, drill=0.65 mm (r=0.325 mm)
+    F.Cu  : min clearance = 0.220 mm  -&gt; Pad D234.4 (/Driver 5 and matrix/CS5_16)
+    B.Cu  : min clearance = 0.247 mm  -&gt; Pad J1.A1B12 (GND)
+    In1.Cu: min clearance = 0.311 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.192,108.714) [cu]
+    In2.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane GND' (GND)
+    In3.Cu: min clearance = 0.304 mm  -&gt; Track (/Driver 5 and matrix/CS5_16)
+    In4.Cu: min clearance = 0.264 mm  -&gt; Track (/Driver 5 and matrix/CS5_14)
+    In5.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane VSYS' (VSYS)
+    In6.Cu: min clearance = 0.311 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.192,108.714) [cu]
+  NPTH #2: center=(104.671, 111.030) mm, drill=0.65 mm (r=0.325 mm)
+    F.Cu  : min clearance = 0.214 mm  -&gt; Track (/Driver 2 and matrix/CS2_12)
+    B.Cu  : min clearance = 0.247 mm  -&gt; Pad J1.B1A12 (GND)
+    In1.Cu: min clearance = 0.293 mm  -&gt; Via (/Driver 2 and matrix/SW2_3) @(104.892,111.739) [cu]
+    In2.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane GND' (GND)
+    In3.Cu: min clearance = 0.258 mm  -&gt; Track (/Driver 2 and matrix/CS2_7)
+    In4.Cu: min clearance = 0.293 mm  -&gt; Via (/Driver 2 and matrix/SW2_3) @(104.892,111.739) [cu]
+    In5.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane VSYS' (VSYS)
+    In6.Cu: min clearance = 0.211 mm  -&gt; Track (/Power/CC2)
+</code></pre>
+<hr />
+<h2>2. Independent Fresh-Context Review History (<code>agy</code> <code>gemini-4-argon-high</code>)</h2>
+<h3>Round 1 Review Summary &amp; Dispositions</h3>
+<ul>
+<li><strong><code>[M1]</code> (<code>VBAT</code> single via at <code>BT1.1</code> &amp; <code>0.30 mm</code> <code>In3.Cu</code> ampacity):</strong> <strong>FIXED + JUSTIFIED in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a> (<code>2026-11-08</code>)</strong> — added a <strong>2nd parallel <code>0.30/0.15 mm</code> <code>VBAT</code> via</strong> at <code>(100.860, 115.700)</code> beside <code>BT1.1</code> (<code>R_60C = 55.01 mΩ</code>, <code>18.70 mV @ 340 mA</code>), and justified <code>0.30 mm</code> <code>In3.Cu</code> via IPC-2152 plane-cooled internal ampacity (<code>&gt; 0.80 A</code> vs <code>0.34 A</code> continuous; widening violates <code>0.200 mm</code> <code>hole_clearance</code>).</li>
+<li><strong><code>[M2]</code> (<code>U8.1..3 -&gt; GND</code> single <code>0.25/0.15 mm</code> via &amp; <code>0.20 mm</code> trace):</strong> <strong>FIXED</strong> — widened <code>U8.1..3</code> <code>GND</code> bridge (<code>0.25–0.30 mm</code> <code>B.Cu</code>) and added a <strong>2nd <code>0.30/0.15 mm</code> <code>GND</code> via</strong> at <code>(97.017, 114.689)</code> alongside <code>(97.263, 115.721)</code> (<code>R_60C = 1.12 mΩ</code> via-to-plane / <code>3.07 mΩ</code> pad-center, <code>1.04 mV @ 340 mA</code>).</li>
+<li><strong><code>[M3]</code> (<code>U7.2</code> ESD <code>GND</code> return single via):</strong> <strong>FIXED + JUSTIFIED</strong> — added a <strong>2nd parallel <code>GND</code> via</strong> at <code>(102.470, 110.730)</code> inside <code>J1.S1</code> NW's <code>2.30 × 1.80 mm</code> copper pad (<code>L_shield ≈ 1.09 nH</code>, <code>L_eff ≈ 1.39 nH</code>; <code>0</code> legal 8-layer TH via pockets exist within <code>2.00 mm</code> of <code>U7.2</code>, and downstream <code>R14/R15 = 27 Ω</code> isolate <code>U3</code>).</li>
+<li><strong><code>[m1]</code> (<code>USB_DM_C</code> <code>1.10 mm</code> <code>F.Cu</code> hop &amp; <code>In5.Cu</code> split note):</strong> <strong>FIXED</strong> — moved <code>USB_DM_C</code>'s <code>1.10 mm</code> segment from <code>F.Cu</code> to <code>In6.Cu</code> (<code>0</code> <code>F.Cu</code> USB copper; <code>7.76–8.86 mm</code> stub = <code>~117 ps &lt;&lt; 4 ns</code> FS rise time).</li>
+<li><strong><code>[m2]</code> (<code>0.2002 mm</code> <code>In3.Cu</code> NPTH #1 margin):</strong> <strong>FIXED</strong> — split &amp; nudged <code>CS5_16</code> on <code>In3.Cu</code> via <code>(109.450, 108.150)</code> so clearance to NPTH #1 rose to <strong><code>0.304 mm</code></strong>.</li>
+<li><strong><code>[m4]</code> (<code>VBUS</code> <code>0</code>-via prose, modified copper bounding box, <code>.kicad_dru</code> header):</strong> <strong>FIXED</strong> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/round-pendant.kicad_dru">round-pendant.kicad_dru</a> and this gate file.</li>
+</ul>
+<h3>Round 2 Re-Review (<code>agy</code> <code>gemini-4-argon-high</code>)</h3>
+<ul>
+<li><strong>Verdict:</strong> <strong><code>Gate 7 Verdict: PASS (0 BLOCKER, 0 MAJOR, 1 MINOR, 3 NOTE)</code></strong> (<code>review_r2_phase7.txt</code>).</li>
+<li><strong>Summary &amp; Minor Cleanup:</strong> Independently verified fresh KiCad <code>9.0.8</code> DRC (<code>0</code> violations, <code>0</code> warnings, <code>0</code> unconnected, <code>2</code> inherited <code>U3.42/43</code> <code>{slash}</code> NC strings), <code>0</code> thin pad joints across all <code>1,416</code> SMD pads (<code>min = 0.126 mm</code>), <code>copper_audit.py</code> clean (<code>0</code> dangling stubs, <code>0</code> off-via grazes, <code>0</code> strip zones), <code>VBUS</code>/<code>VBAT</code>/<code>BAT_N</code>/<code>U8.1..3</code>/<code>U7.2</code> ampacity &amp; nodal resistance, <code>9/9</code> whole planes matching Variant F (<code>85.63%</code> verbatim F copper + all <code>147</code> locked RP2350 PDN tracks intact), and all <code>16</code> (<code>2×8L</code>) <code>J1</code> NPTH clearances <code>≥ 0.2005 mm</code> (<code>NPTH #1 In3.Cu</code> = <code>0.3044 mm</code>). Clarified <code>MINOR-1</code> (<code>0.25–0.30 mm</code> <code>U8.1..3</code> segments, <code>3.07 mΩ</code> pad-center-to-plane / <code>1.04 mV @ 340 mA</code>) above.</li>
+</ul></div></body></html>

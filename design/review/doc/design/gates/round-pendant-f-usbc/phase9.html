@@ -1,0 +1,161 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 9: silkscreen and art (round-pendant-f-usbc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase9.md'>design/gates/round-pendant-f-usbc/phase9.md</a></p><h1>Gate 9: silkscreen and art (<code>round-pendant-f-usbc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Silk placement, Voronoi clipping &amp; assembly drawing scripts: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/polish_board.py">scripts/variant_fusbc/polish_board.py</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/render_assy_clean.py">scripts/variant_fusbc/render_assy_clean.py</a>.
+Dispositions recorded in: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">design/decisions.md</a> (<code>2026-11-08</code>).</p>
+<hr />
+<h2>Checklist (<code>references/silkscreen-and-art.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>Connector &amp; switch label table with reasoning:</strong> Complete table in §1 below — every external connector (<code>J1</code>, <code>BT1</code>) and user switch (<code>SW1</code>, <code>SW2</code>) has an explicit function/polarity/rating callout on <code>B.SilkS</code> positioned strictly outside courtyards and 3D component bodies (<code>0%</code> 3D overhang occlusion in <a href="../../renders/round-pendant-f-usbc/3d-bottom.png">3d-bottom.png</a>) and <code>100%</code> clear of vias and exposed copper. Multi-character <code>'BAT'</code>/<code>'3V7'</code> beside <code>BT1</code> is formally waived in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a> because an exhaustive <code>0.20 mm</code>-grid polygon scan proves <code>886</code> LED-escape vias leave zero <code>≥ 2.4 mm</code> via-free pocket within <code>8.08–9.25 mm</code> of <code>BT1</code> (<code>'+'</code> and <code>'-'</code> sit directly north of <code>BT1.1</code> and <code>BT1.2</code> clear of <code>U8</code>, Pad-1 pink shading marks <code>BT1.1 (+)</code> on <a href="../../renders/round-pendant-f-usbc/assembly-bottom.pdf">assembly-bottom.pdf</a>, and full <code>BT1</code> <code>3.7 V</code> rating/polarity is documented in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/bringup-f-usbc.md">bringup-f-usbc.md</a>).</li>
+<li>[x] <strong>Board identity present (<code>0°</code> and <code>270°</code> [<code>90° CCW</code>] ONLY):</strong> <code>'rev FU'</code> at <code>(105.30, 98.95, 270°)</code> and <code>'2026-11'</code> at <code>(89.40, 107.52, 0°)</code> on <code>B.SilkS</code> (<code>0.80 × 0.80 mm</code>, <code>0.15 mm</code> stroke, <code>0</code> via overlaps; strictly <strong>2 reading orientations</strong> across the entire board, with all vertical labels reading bottom-to-top <code>90° CCW</code>). Long strings (<code>'round-pendant'</code>, GitHub URL, <code>'CERN-OHL-P-2.0'</code>) are formally waived in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a> because <code>886</code> through-vias across <code>Ø38.0 mm</code> leave no unbroken <code>9–22 mm</code> via-free <code>B.SilkS</code> corridor.</li>
+<li>[x] <strong>Pin-1 &amp; polarity marks preserved (<code>100%</code> outside courtyards &amp; 3D bodies, <code>OD = 0.30 mm</code> on <code>B.SilkS</code>):</strong></li>
+<li><code>F.SilkS</code>: <code>Q2</code> (<code>ALS-PT19</code>) collector pin-1 dot preserved verbatim from Variant F (<code>OD = 0.24 mm</code>, <code>0.12 mm</code> stroke, filled, outside <code>F.CrtYd</code>; <code>D1..D235</code> omit individual silk marks on the clean display face per <code>intent.md</code> &amp; <code>decisions.md</code>).</li>
+<li><code>B.SilkS</code>: <strong><code>13/13</code> polarized ICs/transistors</strong> (<code>U1, U2, U3, U4, U5, U6, U7, U8, U9, U10, U11, U12, Q1</code>) have <strong><code>OD = 0.30 mm</code></strong> filled pin-1 dots placed <strong>strictly outside <code>B.CrtYd</code> and 3D package bodies</strong> and unambiguously closest to Pin 1 / <code>A1</code> (<code>0</code> <code>B.Cu [pin1]</code> errors in <code>silk_check.py</code>; embedded inside-courtyard footprint circles on <code>U2/U10/U12</code> and unpolarized <code>L1</code>'s extra dot removed, and <code>L1</code>'s 3D STEP model rotation aligned to <code>0°</code>).</li>
+<li>[x] <strong>Zero silkscreen overlaps (<code>0</code> DRC silk/text errors, <code>0</code> <code>[silk-over-via]</code>, <code>(subtractmaskfromsilk yes)</code>):</strong></li>
+<li>KiCad strict DRC (<code>silk_overlap = error</code>, <code>silk_over_copper = error</code>, <code>text_height = error</code>, <code>text_thickness = error</code>, <code>min_text_thickness = 0.15 mm</code>): <strong><code>0</code> violations</strong>.</li>
+<li><code>silk_check.py</code>: <strong><code>0</code> <code>[silk-over-via]</code></strong> (down from <strong><code>44</code> <code>[silk-over-via]</code> on Variant F</strong>), <strong><code>0</code> <code>[under-part]</code></strong>, <strong><code>0</code> <code>[association]</code></strong>, <strong><code>0</code> <code>[rotation]</code></strong>, <strong><code>0</code> <code>[size]</code></strong>, <strong><code>0</code> <code>[connector-label]</code></strong>, <strong><code>0</code> <code>B.Cu [pin1]</code></strong> (§2 below).</li>
+<li>[x] <strong>Art placed and clipped around <code>Edge.Cuts</code> &amp; all <code>6</code> NPTH holes:</strong> Inherited <code>F.SilkS</code> Voronoi sunflower seed web rebuilt cleanly from Variant F, clipped strictly inside <code>R ≤ 18.720 mm</code> (<strong><code>≥ 0.203 mm</code> stroke-edge clearance from <code>Edge.Cuts</code></strong>) and outside all <code>6</code> NPTH holes (<code>r ≥ 0.600 mm</code> = <strong><code>0.199 mm</code></strong> stroke-edge margin around <code>J1</code>'s two <code>Ø0.650 mm</code> NPTHs; <code>r ≥ 0.630 mm</code> = <strong><code>0.203 mm</code></strong> stroke-edge margin around <code>SW1/SW2</code>'s four <code>Ø0.700 mm</code> NPTHs), <code>&lt; 0.055 mm</code> runt specks pruned, and inherited Voronoi crossings over epoxy-filled copper-capped POFV vias waived in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>.</li>
+<li>[x] <strong>Top, bottom, 3D &amp; collision-free <code>4:1</code> assembly drawings rendered and visually inspected:</strong></li>
+<li><a href="../../renders/round-pendant-f-usbc/top.png">top.png</a>, <a href="../../renders/round-pendant-f-usbc/bottom.png">bottom.png</a></li>
+<li><a href="../../renders/round-pendant-f-usbc/3d-top.png">3d-top.png</a>, <a href="../../renders/round-pendant-f-usbc/3d-bottom.png">3d-bottom.png</a></li>
+<li><a href="../../renders/round-pendant-f-usbc/assembly-top.pdf">assembly-top.pdf</a> (<a href="../../renders/round-pendant-f-usbc/assembly-top.png">assembly-top.png</a>), <a href="../../renders/round-pendant-f-usbc/assembly-bottom.pdf">assembly-bottom.pdf</a> (<a href="../../renders/round-pendant-f-usbc/assembly-bottom.png">assembly-bottom.png</a>) — <strong><code>342/342</code> single-source collision-free designators</strong> (<code>0</code> double-printed <code>Fab</code> overlaps, <code>0</code> sliced LED digits, leader lines for crowded <code>0402</code> passives and <code>TP1, TP3, TP6, TP7</code>).</li>
+</ul>
+<hr />
+<h2>1. <code>B.SilkS</code> Labels, Shown Designators &amp; Outside-Courtyard Pin-1 Dots</h2>
+<h3>A. Connector, Switch &amp; Identity Labels (<code>0.80 × 0.80 mm</code>, <code>0.15 mm</code> Stroke)</h3>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Text</th>
+<th>KiCad <code>(X, Y)</code> (<code>mm</code>)</th>
+<th>Draw Rot</th>
+<th>Reasoning &amp; 3D Visibility Check (<a href="../../renders/round-pendant-f-usbc/3d-bottom.png">3d-bottom.png</a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>J1</code> (<code>TYPE-C-31-M-22</code>)</strong></td>
+<td><strong><code>5V</code></strong></td>
+<td><code>(109.25, 106.05)</code></td>
+<td><code>270°</code> (<code>90° CCW</code>)</td>
+<td>Identifies USB-C <code>5 V DC</code> nominal input rating directly north of <code>J1</code>'s rear signal pad row (<code>0%</code> 3D shell occlusion, <code>0</code> <code>[connector-label]</code> error).</td>
+</tr>
+<tr>
+<td><strong><code>BT1.1</code> (<code>BatteryPads</code> <code>VBAT</code>)</strong></td>
+<td><strong><code>+</code></strong></td>
+<td><code>(101.20, 115.05)</code></td>
+<td><code>0°</code></td>
+<td>Unambiguous positive LiPo wire-solder polarity directly north of <code>BT1.1</code> <code>(101.60, 117.10)</code> — critical since <code>XB9901A</code> has no reverse-cell protection.</td>
+</tr>
+<tr>
+<td><strong><code>BT1.2</code> (<code>BatteryPads</code> <code>BAT_N</code>)</strong></td>
+<td><strong><code>-</code></strong></td>
+<td><code>(98.00, 115.45)</code></td>
+<td><code>0°</code></td>
+<td>Unambiguous negative LiPo wire-solder polarity directly north of <code>BT1.2</code> <code>(98.40, 117.10)</code>, aligned beside <code>'+'</code> and <code>100%</code> clear of <code>U8</code>'s 3D body.</td>
+</tr>
+<tr>
+<td><strong><code>SW1</code> (<code>EVQP7C01P</code>, <code>GPIO11</code>)</strong></td>
+<td><strong><code>USER</code></strong></td>
+<td><code>(116.45, 97.29)</code></td>
+<td><code>0°</code></td>
+<td>Identifies NE rim user tactile button (<code>GPIO11</code>).</td>
+</tr>
+<tr>
+<td><strong><code>SW2</code> (<code>EVQP7C01P</code>, <code>QSPI_SS</code>)</strong></td>
+<td><strong><code>BOOT</code></strong></td>
+<td><code>(82.52, 97.74)</code></td>
+<td><code>270°</code> (<code>90° CCW</code>)</td>
+<td>Identifies NW rim <code>RP2350</code> UF2 <code>BOOTSEL</code> button (<code>bottom-to-top</code> reading).</td>
+</tr>
+<tr>
+<td><strong>Board revision</strong></td>
+<td><strong><code>rev FU</code></strong></td>
+<td><code>(105.30, 98.95)</code></td>
+<td><code>270°</code> (<code>90° CCW</code>)</td>
+<td>Distinguishes Variant <code>f-usbc</code> (<code>FU</code>) from parent Variant <code>F</code> in via-free pocket east of <code>L1</code> (<code>bottom-to-top</code> reading, eliminating earlier <code>75°</code> angle).</td>
+</tr>
+<tr>
+<td><strong>Build date</strong></td>
+<td><strong><code>2026-11</code></strong></td>
+<td><code>(89.40, 107.52)</code></td>
+<td><code>0°</code></td>
+<td>Revision date in via-free western corridor south of <code>U1</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>B. Selective Unambiguous Designators (<code>9</code> Shown on <code>B.SilkS</code>, <code>0</code> Arbitrary Passives)</h3>
+<ul>
+<li><strong>Shown (<code>9</code>, <code>0°×4, 270°×5</code>):</strong> <code>TP2</code> (<code>+3V3</code>, <code>(107.75, 94.01, 270°)</code>), <code>TP4</code> (<code>+1V1</code>, <code>(107.69, 96.24, 270°)</code>), <code>TP5</code> (<code>RUN</code>, <code>(85.94, 96.55, 270°)</code>), <code>TP8</code> (<code>GND</code>, <code>(83.17, 100.71, 270°)</code>), <code>SW1</code> (<code>(113.08, 94.18, 0°)</code>), <code>SW2</code> (<code>(85.38, 90.60, 0°)</code>), <code>U4</code> (<code>(93.84, 105.88, 270°)</code>), <code>Q1</code> (<code>(90.20, 110.56, 0°)</code>), <code>Y1</code> (<code>(94.66, 83.52, 0°)</code>).</li>
+<li><strong>Via-crowded <code>TP1, TP3, TP6, TP7</code>:</strong> Surrounded by <code>0.25/0.15 mm</code> LED-escape vias with zero <code>0.80 × 0.80 mm</code> via-free pocket that satisfies strict courtyard association (<code>0</code> <code>[silk-over-via]</code>, <code>0</code> <code>[association]</code>); mapped with crisp callouts on <a href="../../renders/round-pendant-f-usbc/assembly-bottom.pdf">assembly-bottom.pdf</a> and exact coordinates in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/bringup-f-usbc.md">bringup-f-usbc.md</a>.</li>
+</ul>
+<h3>C. <code>13/13</code> <code>B.Cu</code> Polarized Pin-1 Dots (<code>OD = 0.30 mm</code>, Strictly Outside <code>B.CrtYd</code> &amp; 3D Bodies)</h3>
+<ul>
+<li><code>U1</code> <code>(86.950, 103.800)</code>, <code>U2</code> <code>(95.150, 113.800)</code>, <code>U3</code> <code>(94.262, 96.200)</code>, <code>U4</code> <code>(100.155, 108.300)</code>, <code>U5</code> <code>(101.138, 108.050)</code>, <code>U6</code> <code>(94.130, 99.475)</code>, <code>U7</code> <code>(101.286, 113.709)</code>, <code>U8</code> <code>(96.800, 115.300)</code>, <code>U9</code> <code>(105.862, 85.150)</code>, <code>U10</code> <code>(87.600, 92.850)</code>, <code>U11</code> <code>(108.000, 92.200)</code>, <code>U12</code> <code>(108.650, 102.700)</code>, <code>Q1</code> <code>(92.713, 111.350)</code> — all <code>13</code> verified <code>100%</code> outside <code>B.CrtYd</code> (<code>≥ 0.030 mm</code> edge margin) and unoccluded in <a href="../../renders/round-pendant-f-usbc/3d-bottom.png">3d-bottom.png</a>.</li>
+</ul>
+<hr />
+<h2>2. Verbatim <code>silk_check.py</code> Output &amp; Shared <code>checks.toml</code> Policy Accounting</h2>
+<pre><code class="language-text">silk_check: hw/round-pendant/f-usbc
+  342 parts, 9 designators shown (policy: all), 1 connectors, 7 board silk texts
+  designator rotations: 0°×4, 90°×5
+
+  ERRORS (335)
+    [pin1] D76 (LED_XL-1010RGB): no pin-1 / polarity mark on the silk beside pad 1
+    [identity] board name 'round-pendant' is not on the silkscreen
+    ... (333 × [hidden] designator is hidden under shared checks.toml policy: all) ...
+
+  FAIL: 335 errors, 0 warnings
+</code></pre>
+<p><strong>Exact accounting for all <code>335</code> items (<code>333 + 1 + 1 = 335</code>; shared <code>design/checks.toml</code> left untouched):</strong>
+1. <strong><code>333 × [hidden]</code>:</strong> Shared repo-wide <code>design/checks.toml</code> specifies <code>designators = "all"</code>, whereas Round Pendant's brief (<code>brief.md</code> §10 &amp; <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §10) specifies <strong>selective</strong> back designators + zero front LED designators (<code>342 - 9 = 333</code> hidden; all <code>342/342</code> designators are collision-free and legible on <code>4:1</code> <a href="../../renders/round-pendant-f-usbc/assembly-top.pdf">assembly-top.pdf</a> and <a href="../../renders/round-pendant-f-usbc/assembly-bottom.pdf">assembly-bottom.pdf</a>).
+2. <strong><code>1 × [pin1]</code> (<code>D76</code> on <code>F.Cu</code>):</strong> Front <code>XL-1010RGB-YG</code> LEDs intentionally omit individual polarity dots on the display face (<code>234/235</code> sit near Voronoi web strokes; <code>D76</code> sits in a slightly wider web cell adjacent to clipped <code>NPTH #2</code>, identical to Variant F's clean display policy).
+3. <strong><code>1 × [identity]</code> (<code>'round-pendant'</code>):</strong> Waived in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a> alongside URL / <code>'CERN-OHL-P-2.0'</code> because <code>886</code> vias leave no unbroken <code>9–22 mm</code> via-free corridor (<code>'rev FU'</code> + <code>'2026-11'</code> identify the board cleanly with <code>0</code> <code>[silk-over-via]</code>).</p>
+<hr />
+<h2>3. Independent Fresh-Context Review History (<code>agy</code> <code>gemini-4-argon-high</code>)</h2>
+<h3>Round 1 Review Summary &amp; Dispositions</h3>
+<ul>
+<li><strong><code>BLOCKER-1</code> (<code>U4</code>/<code>U8</code> pin-1 dots under 3D bodies &amp; <code>10/13</code> <code>B.Cu</code> dots intruding <code>B.CrtYd</code>):</strong> <strong>FIXED</strong> in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/polish_board.py">polish_board.py</a> — removed embedded inside-courtyard footprint <code>B.SilkS</code> circles and recomputed all <code>13/13</code> <code>B.Cu</code> <code>OD = 0.30 mm</code> pin-1 dots strictly outside <code>B.CrtYd</code> (<code>U4</code> <code>(100.155, 108.300)</code>, <code>U8</code> <code>(96.800, 115.300)</code>, etc.), verified unoccluded in <a href="../../renders/round-pendant-f-usbc/3d-bottom.png">3d-bottom.png</a>.</li>
+<li><strong><code>BLOCKER-2</code> (<code>assembly-bottom.png</code> double-printed <code>B.Fab</code> collisions &amp; <code>assembly-top.png</code> sliced LED digits):</strong> <strong>FIXED</strong> via <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc/render_assy_clean.py">render_assy_clean.py</a> — suppresses raw <code>F.Fab</code>/<code>B.Fab</code> text and places <code>236</code> top + <code>106</code> bottom single-source collision-free labels with leader lines and solid halo backings (<code>0</code> overlaps, <code>0</code> sliced LED digits, <code>R7</code> &amp; <code>C27</code> 100% legible).</li>
+<li><strong><code>MAJOR-1</code> &amp; <code>MAJOR-2</code> (Ambiguous <code>C71</code>/<code>C73</code>/passive refs shown while <code>TP4</code> hidden):</strong> <strong>FIXED</strong> — removed all <code>6</code> arbitrary passive designators (<code>C23, C30, C71, C73, R4, R9</code>), added <code>TP4</code> (<code>+1V1</code>, <code>(108.17, 95.96)</code>), and documented via-crowded <code>TP1, TP3, TP6, TP7</code> on <code>assembly-bottom.pdf</code> + <code>bringup-f-usbc.md</code>.</li>
+<li><strong><code>MAJOR-3</code> (<code>U1</code> pin-1 dot midway between <code>A1</code> &amp; <code>A2</code>):</strong> <strong>FIXED</strong> — moved <code>U1</code> dot to <code>(86.950, 103.800)</code> (<code>+0.123 mm</code> closer to <code>A1</code> than <code>A2</code>/<code>B1</code>, strictly outside <code>U1</code> <code>B.CrtYd</code>).</li>
+<li><strong><code>MAJOR-4</code> (<code>'-'</code> tucked under <code>U8</code> &amp; <code>BT1</code> <code>'BAT'</code>/<code>'3V7'</code> rating text):</strong> <strong>FIXED + WAIVED in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a></strong> — moved <code>'-'</code> to <code>(98.00, 115.45, 0°)</code> directly north of <code>BT1.2</code> alongside <code>'+'</code> at <code>(101.20, 115.05, 0°)</code> (<code>100%</code> clear of <code>U8</code>), and recorded the exhaustive polygon-scan proof waiving multi-character <code>'BAT'</code>/<code>'3V7'</code> (<code>0</code> via-free pockets within <code>9.25 mm</code> of <code>BT1</code>).</li>
+<li><strong><code>MAJOR-5</code> (<code>'rev FU'</code> at <code>75°</code> 3rd rotation &amp; missing <code>CERN-OHL-P-2.0</code>/URL waiver):</strong> <strong>FIXED</strong> — rotated <code>'rev FU'</code> to <code>(105.30, 98.95, 270°)</code> (strictly <code>2</code> rotations across all <code>B.SilkS</code> texts!) and logged the explicit URL/<code>CERN-OHL-P-2.0</code> waiver in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>.</li>
+<li><strong><code>MINOR-1..4</code> (<code>F.SilkS</code> <code>&lt; 0.055 mm</code> specks, <code>Edge.Cuts</code>/<code>SW1</code>/<code>SW2</code> NPTH margins, <code>&lt; 0.30 mm</code> dots + <code>L1</code> dot, <code>90° CW</code> vertical reading):</strong> <strong>ALL FIXED</strong> — rebuilt <code>F.SilkS</code> clipped to <code>R ≤ 18.720 mm</code> (<code>≥ 0.203 mm</code> from <code>Edge.Cuts</code>) and <code>r ≥ 0.630 mm</code> around <code>SW1/SW2</code> NPTHs (<code>≥ 0.203 mm</code> margin), pruned <code>&lt; 0.055 mm</code> specks, waived POFV via crossings in <code>decisions.md</code>, standardized all <code>14</code> dots (<code>13</code> <code>B.Cu</code> + <code>Q2</code> <code>F.Cu</code>) to <code>OD = 0.30 mm</code> (<code>0.15 mm</code> stroke), removed <code>L1</code>'s extra dot, and switched all vertical <code>B.SilkS</code> texts to <code>270°</code> (<code>90° CCW</code> bottom-to-top reading).</li>
+</ul>
+<h3>Round 2 Re-Review (<code>agy</code> <code>gemini-4-argon-high</code>)</h3>
+<p><strong>Gate 9 Verdict: PASS (<code>0 BLOCKER, 0 MAJOR, 4 MINOR, 2 NOTE</code>)</strong>:
+- Independently verified all <code>13/13</code> <code>B.Cu</code> (<code>OD = 0.30 mm</code>) and <code>Q2</code> (<code>F.Cu</code>) pin-1 dots strictly outside <code>B.CrtYd</code>/<code>F.CrtYd</code> (<code>0.030–0.179 mm</code> edge margin) and clear of 3D bodies; verified all <code>16</code> <code>B.SilkS</code> texts (<code>9</code> selective refs + <code>7</code> labels) in strictly <code>2</code> orientations (<code>0° × 9</code>, <code>270° × 7</code>) with <code>≥ +0.127 mm</code> glyph-to-via-ring clearance (<code>0</code> via overlaps), <code>(subtractmaskfromsilk yes)</code>, <code>342/342</code> single-source collision-free assembly labels (<code>0</code> overlaps or sliced digits), Voronoi <code>F.SilkS</code> clipping (<code>0.204 mm</code> from <code>Edge.Cuts</code>, <code>0.203–0.216 mm</code> from <code>SW1/SW2</code> NPTHs, <code>0.198 mm</code> from <code>J1</code> NPTHs, <code>0</code> specks <code>&lt; 0.055 mm</code>), and polygon-scan proofs for <code>'round-pendant'</code>/<code>'CERN-OHL-P-2.0'</code>/<code>'BAT'</code>.
+- Minor non-blocking notes (<code>TP4</code>/<code>TP2</code> <code>0.326 mm</code> vertical stroke spacing, <code>Q2</code>'s inherited <code>OD = 0.24 mm</code> <code>fp_circle</code> clarified in Checklist #3 above, <code>U5</code> dot south of <code>R3</code> courtyard, and <code>BT1</code> <code>3.7 V</code> rating documented in <code>bringup-f-usbc.md</code>).</p></div></body></html>
