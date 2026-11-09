@@ -33,6 +33,8 @@ hw/round-pendant/c-*/
 !hw/round-pendant/c-web4/
 hw/round-pendant/d/route/
 hw/round-pendant/e/route/
+hw/round-pendant/f-usbc/route/
+hw/round-pendant/f-usbc/drc_final.json
 hw/round-pendant/*/fab/gerbers/
 hw/parallelogram/*/route/
 hw/parallelogram/*/fab/gerbers/

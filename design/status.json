@@ -65,6 +65,16 @@
         "Adjust SE/West button coordinates, LiPo foam thickness, or POWMAN deep-sleep wake allocation before ordering"
       ],
       "text": "Parallelogram p2-132-usb6 Gates 4 & 10 sign-off (design/gates/parallelogram-p2-132-usb6/phase4.md & phase10.md): confirm (1) Option 1 SE placement — BT1 rotated 90 deg CCW to (+7.97, +23.00, 0 deg) facing -Y North toward LiPo pocket (6.03 mm clear runway to R8, 7.20 mm to U8; Pad 1 + VBAT West, Pad 2 - BAT_N East) + bezel-aligned SW4 at (+8.15, +30.55, 162.26 deg) + West-edge SW5 (-10.85, -22.00, GPIO9) & SW6 (-10.85, +22.80, GPIO0, C71/C72 50V X7R C307331), (2) <=18.0 mm LiPo on 1.0 mm tape OR >=1.8-2.0 mm VHB/foam standoff for a 20x35 mm cell over 1.55 mm max EVQP7J01P housings, (3) >=20 ms FW debounce, GCC <= 0x40 (0.54 W) continuous worn thermal cap + ADC4 foldback, and which 2 of {SW3..SW6} share POWMAN P1.7 wake, and (4) 4L JLC04161H-7628 ENIG 1U\" + POFV=Yes (~$70-$95 4L bare-PCB POFV lot surcharge) & tag parallelogram-p2-132-usb6-revP1U6."
+    },
+    {
+      "id": "round-pendant-f-usbc-release",
+      "kind": "signoff",
+      "gate": 10,
+      "options": [
+        "Approve round-pendant-f-usbc Phase 4 & 10 release (8L JLC08101H-1080 1.0 mm ENIG + POFV=Yes, $26.62 BOM @10, J1 TYPE-C-31-M-22 C530612 at SSE 23.95 deg E of S, 0 LEDs moved)",
+        "Keep Variant F wire pads (USB_Pads) or change R4 charge resistor (3.0 kOhm 297 mA vs 4.3/4.7 kOhm) before ordering"
+      ],
+      "text": "Round Pendant f-usbc Gates 4 & 10 sign-off (design/gates/round-pendant-f-usbc/phase4.md & phase10.md): confirm (1) SSE J1 pose at (107.787, 110.926, -156.05 deg) facing 23.95 deg E of S (8.35 deg non-radial skew, 0 front LEDs moved, two dia. 0.65 mm front mask web apertures with 0.70 mm pegs recessed 0.30 mm below F.Cu, and 4x 2.30x1.80 mm SMD shell hold-down), (2) Kapton + 3.3-3.5 mm rear foam standoff under 35 mm 403535 LiPo and <=0.51 W continuous worn FW thermal ceiling (LEDs blanked while ~CHG == 0), and (3) inherited Global-Sourcing items (C2678907 IS31FL3745, C146233 ALS-PT19 or local C47416518; note L1 C42411119 is restocked at 1,357 pcs) + JLC08101H-1080 8L POFV quote."
     }
   ],
   "checks": {
@@ -147,6 +157,16 @@
       "result": "PASS: 231 symbols <-> 231 footprints <-> 223 BOM/CPL parts ($13.26/bd @10, 41/41 BOM rows in JLCPCB PCBA stock incl. C307331 50V X7R); Mirrored-Bottom CPL verified 0.00 deg error incl. rotated BT1 (180 deg, -Y North), SW4 (17.74 deg), SW5/SW6 (90 deg); split PTH (719) + NPTH (2) drills + 98/98 B.Fab & 133/133 F.Fab PDFs; p2-132-usb & p1-66-usb 100% byte-identical",
       "ok": true,
       "gate": 10
+    },
+    "f-usbc: ERC, DRC & audits": {
+      "result": "PASS: 0 ERC violations across 8 sheets; 0 unconnected, 5,555 tracks, 886 vias (+10 vs F), 147/147 locked RP2350 tracks & 9/9 zone piece counts intact (85.6% copper verbatim from F), 0 KiCad DRC errors/warnings (--severity-all; 2 inherited U3 pin 42/43 {slash} parity names), 0 copper_audit routing/strip defects, 0 thin pad joints (1,416 SMD pads), >=0.201 mm 8-layer J1 NPTH clearance",
+      "ok": true,
+      "gate": 7
+    },
+    "f-usbc: sync, stock, CPL & gerbers": {
+      "result": "PASS: 342 symbols <-> 342 footprints <-> 333 BOM/CPL parts ($26.62/bd @10, +$0.36 vs F $26.26; 31/33 BOM codes in local JLC SMT stock incl. C530612 J1 = 2,410 & C42411119 L1 = 1,357); J1 CPL verified at 336.05 deg (0.077 mm EasyEDA pad match); split PTH (886) + NPTH (6) drills & 15 Gerber layers audited",
+      "ok": true,
+      "gate": 10
     }
   },
   "gates": {
@@ -211,9 +231,35 @@
       "8": { "state": "passed", "stale_because": null },
       "9": { "state": "passed", "stale_because": null },
       "10": { "state": "awaiting_signoff", "stale_because": null }
+    },
+    "round-pendant-f-usbc": {
+      "dir": "design/gates/round-pendant-f-usbc",
+      "4": { "state": "awaiting_signoff", "stale_because": null },
+      "5": { "state": "passed", "stale_because": null },
+      "6": { "state": "passed", "stale_because": null },
+      "7": { "state": "passed", "stale_because": null },
+      "8": { "state": "passed", "stale_because": null },
+      "9": { "state": "passed", "stale_because": null },
+      "10": { "state": "awaiting_signoff", "stale_because": null }
     }
   },
   "links": [
+    {
+      "label": "Round Pendant f-usbc (235 LEDs, 8L, SMD USB-C, $26.62, 0 open, 0 DRC) viewer",
+      "href": "viewer/round-pendant-f-usbc.html"
+    },
+    {
+      "label": "Round Pendant f-usbc Phase Gates 4-10 & Release Sign-Off",
+      "href": "design/gates/round-pendant-f-usbc/phase10.md"
+    },
+    {
+      "label": "Round Pendant f-usbc Mechanical & Connector Brief",
+      "href": "design/brief-f-usbc.md"
+    },
+    {
+      "label": "Round Pendant f-usbc Bring-Up & Smoke-Test Plan",
+      "href": "design/bringup-f-usbc.md"
+    },
     {
       "label": "Sunflower s2-110-usbc (110 LEDs, 4L, USB-C, $12.55, 0 open, 0 DRC) viewer",
       "href": "viewer/sunflower-s2-110-usbc.html"
@@ -404,5 +450,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-08T17:56:00-08:00"
+  "updated": "2026-11-09T15:42:00-08:00"
 }

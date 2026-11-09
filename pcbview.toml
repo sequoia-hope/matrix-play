@@ -185,6 +185,13 @@ sch = "hw/round-pendant/f/round-pendant.kicad_sch"
 note = "Parent: round-pendant-e. Variant F: the 27 thin rectangular zones u3fix.py drew as RP2350 pin-to-decap links, DVDD fingers, LDO links and the FB finger are now locked 0.2 mm tracks (FB 0.12 mm through its neck), so escape vias can no longer carve them. FB is continuous from pin 50 to COUT again, VREG_VIN is fed from the 3V3 band. IOVDD pins 11 and 54 keep no direct link (no room beside their LED escape vias): C9 and C13 join through the In5 plane, as in E. 10 nets locally rerouted; 0 DRC errors/warnings, 0 unconnected, 0 copper_audit defects incl. new strip-zone/zone-intrusion checks (2 vendor-zone intrusions inherited from E)."
 
 [[boards]]
+id = "round-pendant-f-usbc"
+name = "Round Pendant F-USBC (235 LEDs, SMD USB-C)"
+pcb = "hw/round-pendant/f-usbc/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/f-usbc/round-pendant.kicad_sch"
+note = "Parent: round-pendant-f. Swaps J1 USB_Pads wire pads for Korean Hroparts TYPE-C-31-M-22 (C530612, 4-SMD-pad shell) on B.Cu at (107.787, 110.926) rot -156.05 deg (SSE rim, 23.95 deg east of South, 8.35 deg non-radial skew) via local southern rip-up & ultraroute re-route: 0 front LEDs moved (236/236 front parts exact; both dia. 0.65 mm NPTH pegs clear F.Cu LED pads by 0.220 mm and >=0.201 mm across all 8 layers), 8 southern B.Cu parts nudged (BT1, U7, U8, C1, C6, R5, R8, TP3), 147/147 locked RP2350 decoupling tracks & all plane/ring piece counts preserved intact (85.6% copper verbatim from F). 0 unconnected, 0 DRC errors/warnings (2 inherited U3 pin 42/43 {slash} parity names), 0 copper_audit routing/strip defects, 0 thin pad joints, 5,555 tracks, 886 vias (+10 vs F), $26.62 BOM @10 (+$0.36 vs F $26.26); fab files in fab/."
+
+[[boards]]
 id = "round-pendant-e"
 name = "Round Pendant — Sunflower (WLCSP-36)"
 pcb = "hw/round-pendant/e/round-pendant.kicad_pcb"
