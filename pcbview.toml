@@ -6,7 +6,7 @@ title = "Matrix Play"
 subtitle = "RP2350 design-space exploration"
 out = "viewer"
 back = { href = "../index.html", label = "Overview" }
-repo = "https://github.com/sequoia-hope/round-pendant"
+repo = "https://github.com/sequoia-hope/matrix-play"
 
 # ---- Ultra-Dense 20x20 mm Square Matrix Family (25 x 50 mm, 8L) ----
 

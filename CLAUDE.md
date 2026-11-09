@@ -1,4 +1,4 @@
-# round-pendant
+# matrix-play
 
 A PCB project in the Boardroom suite (Boardroom = `~/Software/easy_pcb`, Circuit Composer,
 UltraRoute Studio), run with the `pcb-design` skill vendored in `.claude/skills/pcb-design/`
