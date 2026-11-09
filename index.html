@@ -266,6 +266,21 @@ footer {
       <div class="grid" id="grid-round"></div>
     </section>
 
+    <!-- ==================== EARLIER ROUND PENDANT VARIANTS & ROUTE SNAPSHOTS ==================== -->
+    <section class="section" aria-labelledby="fam-history">
+      <div class="sec-head">
+        <div>
+          <h2 id="fam-history">Earlier Round Pendant Variants &amp; Route Snapshots</h2>
+          <p class="sec-sub">
+            The steps between Variant&thinsp;A and the WLCSP boards: B&rsquo;s move to the sunflower spiral, C&rsquo;s centre LED and its router runs, and the first seed-web silk. Kept for reference; none of these is a board to order.
+          </p>
+        </div>
+        <span class="sec-tag">8 Layers &middot; QFN-60 &middot; 234&ndash;235 LEDs</span>
+      </div>
+
+      <div class="grid" id="grid-history"></div>
+    </section>
+
     <!-- ==================== DESIGN-SPACE COMPARISON & DOCS ==================== -->
     <section class="section" aria-labelledby="sec-compare">
       <div class="card">
@@ -384,6 +399,15 @@ footer {
                 <td><b>$10.61</b></td>
               </tr>
               <tr>
+                <td><a href="viewer/parallelogram-p1-66-usb.html"><b>Parallelogram p1-66-usb</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;5.20&thinsp;mm)</td>
+                <td>4L std, USB-C + JST 1.25</td>
+                <td>66&times; XL-1615RGBC</td>
+                <td>1&times; AW20198QNR (QFN-40 EP)</td>
+                <td><b>485/485 (100%)</b> &middot; 372 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>$11.08</b></td>
+              </tr>
+              <tr>
                 <td><a href="viewer/parallelogram-p2-132.html"><b>Parallelogram p2-132</b></a></td>
                 <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;2.60&thinsp;mm)</td>
                 <td>4L std</td>
@@ -391,6 +415,15 @@ footer {
                 <td>2&times; AW20198QNR (QFN-40 EP)</td>
                 <td><b>761/761 (100%)</b> &middot; 670 vias &middot; 0 DRC</td>
                 <td><b>$12.60</b></td>
+              </tr>
+              <tr>
+                <td><a href="viewer/parallelogram-p2-132-usb.html"><b>Parallelogram p2-132-usb</b></a></td>
+                <td>25&times;70&thinsp;mm, 17.75&deg; skew (3.70&times;2.60&thinsp;mm)</td>
+                <td>4L std, USB-C + JST 1.25</td>
+                <td>132&times; XL-1615RGBC</td>
+                <td>2&times; AW20198QNR (QFN-40 EP)</td>
+                <td><b>771/771 (100%)</b> &middot; 727 vias &middot; 0 DRC &middot; fab files</td>
+                <td><b>$13.06</b></td>
               </tr>
               <tr>
                 <td><a href="viewer/parallelogram-p3-198.html"><b>Parallelogram p3-198</b></a></td>
@@ -409,6 +442,15 @@ footer {
                 <td>4&times; AW20198QNR (QFN-40 EP)</td>
                 <td>1,190/1,329 (89.5%, 139 open)</td>
                 <td>$19.03</td>
+              </tr>
+              <tr>
+                <td><a href="viewer/round-pendant-f.html"><b>Round Pendant F (main board)</b></a></td>
+                <td>Ø&thinsp;38&thinsp;mm sunflower (~2.0&thinsp;mm) + ALS</td>
+                <td>8L ENIG</td>
+                <td>235&times; XL-1010RGB</td>
+                <td>5&times; IS31FL3745 (WLCSP-36 BGA)</td>
+                <td><b>0 unconnected</b> &middot; 876 vias &middot; 0 DRC &middot; track PDN</td>
+                <td>&mdash;</td>
               </tr>
               <tr>
                 <td><a href="viewer/round-pendant-e.html"><b>Round Pendant (WLCSP Sunflower)</b></a></td>
@@ -551,6 +593,24 @@ const SQUARE_CARDS = [
     specs: ["8 layers", "225× MHPA0808", "1.36×1.36 mm", "$20.27 BOM"],
     desc: "15×15 square array (56.25 LEDs/cm²) opening 0.46 mm dual-track F.Cu streets in the north 20×20 mm window, paired with the same south-bay 4× AW20198QNR + RP2350A electronics (1,100/1,100 routed, 998 vias).",
     silkF: true, silkB: true
+  },
+  {
+    id: "dense-square-bga13-169",
+    title: "Square Bezel bga13-169",
+    badge: "In Progress · 50 Open",
+    badgeKind: "probe",
+    specs: ["8 layers", "169× MHPA0808", "1.65 mm pitch", "4× IS31FL3745 WLCSP"],
+    desc: "40×40 mm square: 13×13 LEDs with the four WLCSP-36 drivers on the back directly behind the array, and RP2350A, USB-C, JST 1.25 and charger round a 9.65 mm bezel. Shown: the latest router output (50 connections still open), not yet adopted into the board file.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "dense-square-bga15-225",
+    title: "Square Bezel bga15-225",
+    badge: "In Progress · 146 Open",
+    badgeKind: "probe",
+    specs: ["8 layers", "225× MHPA0808", "1.65 mm pitch", "5× IS31FL3745 WLCSP"],
+    desc: "43×43 mm square: 15×15 LEDs with five WLCSP-36 drivers in a quincunx behind the array. Shown: the latest router output (146 connections still open), not yet adopted into the board file.",
+    silkF: false, silkB: true
   }
 ];
 
@@ -562,6 +622,15 @@ const SUNFLOWER_CARDS = [
     badgeKind: "ok",
     specs: ["4 layers", "66× XL-1615 LEDs", "3.46 mm nearest", "$10.73 BOM"],
     desc: "Cheapest tier: one AW20198QNR drives a 66-LED Vogel spiral (13.8 mm²/LED) with the light sensor at the centre (395 vias, 83 in pads, so order with filled vias). PicoBlade battery socket, seed-web front silk, PWR/BOOT labels; fab files exported. The no-via-in-pad re-route is in the viewer with 1 open.",
+    silkF: true, silkB: true
+  },
+  {
+    id: "sunflower-s1-66",
+    title: "Sunflower s1-66 — No Via-in-Pad",
+    badge: "1 Open · 5 DRC Errors",
+    badgeKind: "probe",
+    specs: ["4 layers", "66× XL-1615 LEDs", "no POFV", "$10.73 BOM"],
+    desc: "The 66-LED board re-routed with no vias in SMD pads, with the PicoBlade battery socket: 1 open (SW1_4 at U1 pin 3), 5 DRC errors, 434 vias. Probe board.",
     silkF: true, silkB: true
   },
   {
@@ -640,6 +709,15 @@ const PARALLELOGRAM_CARDS = [
     silkF: true, silkB: true
   },
   {
+    id: "parallelogram-p1-66-usb",
+    title: "Parallelogram p1-66 — USB-C",
+    badge: "0 Open · 0 DRC",
+    badgeKind: "ok",
+    specs: ["4 layers", "66× XL-1615 LEDs", "USB-C + JST 1.25", "$11.08 BOM"],
+    desc: "p1-66 with a board-mounted USB-C receptacle (HRO TYPE-C-31-M-22) on the slanted south edge, a Micro-JST 1.25 battery socket and two flat-face user buttons in the NW and SE wings, all clear of the LiPo pocket; side PWR/BOOT switches kept. 485/485 connections, 372 vias, 0 DRC, copper audit clean; fab files exported.",
+    silkF: true, silkB: true
+  },
+  {
     id: "parallelogram-p2-132",
     title: "Parallelogram p2-132",
     badge: "100% Routed · 0 DRC",
@@ -648,6 +726,33 @@ const PARALLELOGRAM_CARDS = [
     desc: "Doubles vertical density to 6×22 (8.5 LEDs/cm²) with 2× AW20198QNR QFNs. XL-1615's 0.80 mm intra-pad channel unlocks 761/761 connections (670 vias, 0 DRC) on 4 layers.",
     silkF: true, silkB: true,
     extraLinks: [{ href: "design/sim/p2-132/report/index.html", label: "EM + picoem Sim" }]
+  },
+  {
+    id: "parallelogram-p2-132-usb",
+    title: "Parallelogram p2-132 — USB-C",
+    badge: "0 Open · 0 DRC",
+    badgeKind: "ok",
+    specs: ["4 layers", "132× XL-1615 LEDs", "USB-C + JST 1.25", "$13.06 BOM"],
+    desc: "p2-132 with USB-C (HRO TYPE-C-31-M-22) on the slanted south edge, its locating bosses threaded between the LED rows, a Micro-JST 1.25 battery socket and NW/SE wing user buttons clear of the LiPo pocket. 771/771 connections, 727 vias, 0 DRC, copper audit clean; fab files exported.",
+    silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p3-162",
+    title: "Parallelogram p3-162",
+    badge: "96.6% · Density Probe",
+    badgeKind: "probe",
+    specs: ["4 layers", "162× XL-1010 LEDs", "2.55×3.15 mm", "$15.47 BOM"],
+    desc: "Intermediate 3-driver 9×18 tier (10.5 LEDs/cm²). The 2.55 mm column pitch, under the 3.40 mm QFN pad, starts shadowing LED columns: 870/901 routed (28 signal + 3 plane open), 793 vias.",
+    silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p3-162-usb",
+    title: "Parallelogram p3-162 — USB-C",
+    badge: "34 Open · Density Probe",
+    badgeKind: "probe",
+    specs: ["4 layers", "162× XL-1010 LEDs", "USB-C + JST 1.25", "9×18 grid"],
+    desc: "USB-C, JST 1.25 and wing buttons on the 162-LED tier. The router stopped at 34 open, at the same 4-layer density knee as its parent (31 open); 874 vias.",
+    silkF: true, silkB: true
   },
   {
     id: "parallelogram-p3-198",
@@ -659,6 +764,15 @@ const PARALLELOGRAM_CARDS = [
     silkF: true, silkB: true
   },
   {
+    id: "parallelogram-p3-198-usb",
+    title: "Parallelogram p3-198 — USB-C",
+    badge: "79 Open · Density Probe",
+    badgeKind: "probe",
+    specs: ["4 layers", "198× XL-1010 LEDs", "USB-C + JST 1.25", "9×22 grid"],
+    desc: "USB-C, JST 1.25 and wing buttons on the 198-LED tier. The router stopped at 79 open (parent p3-198: 56 open); 964 vias.",
+    silkF: true, silkB: true
+  },
+  {
     id: "parallelogram-p4-264",
     title: "Parallelogram p4-264",
     badge: "89.5% · 4L Ceiling",
@@ -666,10 +780,28 @@ const PARALLELOGRAM_CARDS = [
     specs: ["4 layers", "264× XL-1010 LEDs", "2.02×2.60 mm", "$19.03 BOM"],
     desc: "4-driver 12×22 saturation tier (17.0 LEDs/cm²): two LED columns cross each solid 3.4 mm QFN pad on the opposite face, showing why ~2 mm pitch needs 6L or WLCSP (1,190/1,329 routed).",
     silkF: true, silkB: true
+  },
+  {
+    id: "parallelogram-p4-264-usb",
+    title: "Parallelogram p4-264 — USB-C",
+    badge: "168 Open · 4L Ceiling",
+    badgeKind: "probe",
+    specs: ["4 layers", "264× XL-1010 LEDs", "USB-C + JST 1.25", "12×22 grid"],
+    desc: "USB-C, JST 1.25 and wing buttons on the 264-LED tier. The router stopped at 168 open (parent p4-264: 139 open); 1,066 vias.",
+    silkF: true, silkB: true
   }
 ];
 
 const ROUND_CARDS = [
+  {
+    id: "round-pendant-f",
+    title: "Round Pendant F — Main Board",
+    badge: "0 Open · 0 DRC",
+    badgeKind: "ok",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "5× WLCSP-36 + ALS"],
+    desc: "The current main board, built on E: the thin zones that linked the RP2350's pins to their decoupling caps are now locked 0.2 mm tracks, so escape vias can no longer carve them, and FB runs unbroken from pin 50 to its output cap again. 10 nets re-routed locally; 0 DRC errors or warnings, 0 unconnected, copper audit clean (876 vias).",
+    silkF: true, silkB: true
+  },
   {
     id: "round-pendant-e",
     title: "Round Pendant — Sunflower (WLCSP-36)",
@@ -677,6 +809,15 @@ const ROUND_CARDS = [
     badgeKind: "ok",
     specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "5× WLCSP-36 + ALS"],
     desc: "Golden-angle sunflower matrix with 5× IS31FL3745 WLCSP-36 BGA drivers (zero driver thermal pads blocking vias), solid RP2350/charger pads, top-rim ALS-PT19 light sensor, and Voronoi seed-web silk (879 vias).",
+    silkF: true, silkB: true
+  },
+  {
+    id: "round-pendant-d",
+    title: "Round Pendant D — WLCSP-36",
+    badge: "0 DRC · Superseded by E",
+    badgeKind: "",
+    specs: ["8 layers", "235× XL-1010 LEDs", "Ø 38 mm sunflower", "5× IS31FL3745"],
+    desc: "First WLCSP board: five IS31FL3745 WLCSP-36 drivers (no driver exposed pads), solid GND pads on U3 and U5 with no foreign vias, through vias only, strict copper cleanup (0 DRC errors or warnings, copper audit clean), front seed web and 58 tidy back designators (876 vias).",
     silkF: true, silkB: true
   },
   {
@@ -696,6 +837,90 @@ const ROUND_CARDS = [
     specs: ["6 layers", "234× XL-1010 LEDs", "Ø 38 mm disc", "2.0×2.0 mm Grid"],
     desc: "Orthogonal 2.0 mm rectangular RGB LED array packed inside a Ø 38 mm 6-layer disc with a board-mounted USB-C connector and all driver/MCU electronics on the back.",
     silkF: false, silkB: true
+  }
+];
+
+const HISTORY_CARDS = [
+  {
+    id: "round-pendant-b",
+    title: "Round Pendant B — Off-Board USB",
+    badge: "Earlier Variant",
+    badgeKind: "",
+    specs: ["234× XL-1010 LEDs", "Ø 38 mm sunflower", "921 vias"],
+    desc: "From A: LEDs on the sunflower spiral, USB-C moved off the board through six pads, EVQP7C01P buttons with their pegs between the LEDs.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c",
+    title: "Round Pendant C — Pre-Route",
+    badge: "Earlier Variant",
+    badgeKind: "",
+    specs: ["235× XL-1010 LEDs", "centre LED", "pre-route"],
+    desc: "From B: one extra LED at the centre on RP2350 GPIO23-25, 235 in all, nothing nudged. The driver-centred fan map before routing.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c-y11",
+    title: "Round Pendant C — Route y11",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "near-complete route", "901 vias"],
+    desc: "Variant C, router run y11: near-complete route.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c-y17",
+    title: "Round Pendant C — Route y17",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "first fully connected", "898 vias"],
+    desc: "Variant C, router run y17: the first fully connected route.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c-y19",
+    title: "Round Pendant C — Route y19",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "895 vias"],
+    desc: "Variant C, router run y19.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c-y21",
+    title: "Round Pendant C — Route y21",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "893 vias"],
+    desc: "Variant C, router run y21.",
+    silkF: false, silkB: true
+  },
+  {
+    id: "round-pendant-c-web",
+    title: "Round Pendant C-y21 — Seed-Web Silk",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "seed-web front silk", "893 vias"],
+    desc: "An earlier route with two +3V3 joins open, and the first front silk drawn as a web between the LEDs. Back silk removed.",
+    silkF: true, silkB: false
+  },
+  {
+    id: "round-pendant-c-web2",
+    title: "Round Pendant C — Seed Web, Fully Connected",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "fully connected", "861 vias"],
+    desc: "Variant C fully connected, with the seed-web front silk.",
+    silkF: true, silkB: false
+  },
+  {
+    id: "round-pendant-c-web3",
+    title: "Round Pendant C-y30 — Bare Back Silk",
+    badge: "Route Snapshot",
+    badgeKind: "",
+    specs: ["235 LEDs", "route y30", "861 vias"],
+    desc: "Route y30 with the seed web on the front and no silk on the back.",
+    silkF: true, silkB: false
   }
 ];
 
@@ -734,6 +959,7 @@ document.getElementById("grid-square").innerHTML = SQUARE_CARDS.map(cardHTML).jo
 document.getElementById("grid-sunflower").innerHTML = SUNFLOWER_CARDS.map(cardHTML).join("");
 document.getElementById("grid-para").innerHTML = PARALLELOGRAM_CARDS.map(cardHTML).join("");
 document.getElementById("grid-round").innerHTML = ROUND_CARDS.map(cardHTML).join("");
+document.getElementById("grid-history").innerHTML = HISTORY_CARDS.map(cardHTML).join("");
 
 for (const btn of document.querySelectorAll("[data-set-face]")) {
   btn.addEventListener("click", () => {
