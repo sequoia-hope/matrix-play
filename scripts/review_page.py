@@ -236,24 +236,19 @@ def build():
 
 
 def banner(index: Path, n_gates, n_qs):
+    """A 'Pending reviews (N)' link in the main page's footer link row (the user asked for it
+    there, not as a box at the top). Re-running replaces it in place."""
     text = index.read_text()
     total = n_gates + n_qs
-    if total:
-        inner = (f"<a href='design/review/index.html' style='display:block;margin:.8rem auto;"
-                 f"max-width:1200px;padding:.75rem 1rem;border-radius:12px;border:2px solid var(--warn);"
-                 f"background:var(--card);color:var(--fg);font-weight:600;text-decoration:none'>"
-                 f"&#9888; Needs your review: {n_gates} gate sign-offs, {n_qs} open questions "
-                 f"&rarr;</a>")
-    else:
-        inner = ""
-    block = f"{BANNER_START}{inner}{BANNER_END}"
-    if BANNER_START in text:
-        text = re.sub(re.escape(BANNER_START) + ".*?" + re.escape(BANNER_END), lambda _: block,
-                      text, flags=re.S)
-    else:
-        text = text.replace("  <main>\n", f"  {block}\n  <main>\n", 1)
-        if block not in text:
-            raise SystemExit(f"{index}: no <main> to put the review banner before")
+    block = (f"{BANNER_START}<a href=\"design/review/index.html\">Pending reviews ({total})</a>"
+             f" &middot; {BANNER_END}")
+    # drop any earlier copy, wherever it sits (the first version was a box above <main>)
+    text = re.sub(r"[ \t]*" + re.escape(BANNER_START) + ".*?" + re.escape(BANNER_END) + r"\n?",
+                  "", text, flags=re.S)
+    anchor = '<a href="viewer/">All boards in viewer</a>'
+    if text.count(anchor) != 1:
+        raise SystemExit(f"{index}: footer link '{anchor}' not found exactly once")
+    text = text.replace(anchor, block + anchor, 1)
     index.write_text(text)
 
 
