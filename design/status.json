@@ -55,6 +55,16 @@
       "kind": "question",
       "gate": 7,
       "text": "Square-bezel bga13-169/bga15-225 stall at 50+ open around the WLCSP drivers behind the 1.65 mm array. Choose: via-in-pad (POFV) at the drivers, pre-escaping the WLCSP balls first (route_variant.py --escape-mode bga), or a wider LED pitch."
+    },
+    {
+      "id": "p2-132-usb6-release",
+      "kind": "signoff",
+      "gate": 10,
+      "options": [
+        "Approve p2-132-usb6 Phase 4 & 10 release (4L JLC04161H-7628, ENIG 1U\", POFV=Yes, $13.25 BOM @10, SW5 GPIO9 + SW6 GPIO0 on West edge, J1 unchanged)",
+        "Adjust West-edge button y-coordinates or POWMAN deep-sleep wake allocation before ordering"
+      ],
+      "text": "Parallelogram p2-132-usb6 Gates 4 & 10 sign-off (design/gates/parallelogram-p2-132-usb6/phase4.md & phase10.md): confirm (1) West long-edge EVQP7J01P positions SW5 (-10.85, -22.00, USER_C on GPIO9) & SW6 (-10.85, +22.80, USER_D on GPIO0) with 0.45 mm rest / 0.25 mm full-stroke overhang and >=0.25 mm bezel stop (J1 untouched at 162.26 deg), (2) >=20 ms FW debounce & which 2 of {SW3..SW6} share POWMAN P1.7 deep-sleep wake alongside SW1+ACC_INT, (3) <=18.5 mm LiPo on 1.0 mm tape or >=1.5 mm foam tape for a 20x35 mm cell, and (4) 4L JLC04161H-7628 ENIG + POFV=Yes release package & tag parallelogram-p2-132-usb6-revP1U6."
     }
   ],
   "checks": {
@@ -127,6 +137,16 @@
       "result": "Gates 1,2,3 passed; Gates 0,4,10 awaiting_signoff; Gates 5,6,7,8,9 failed on frozen Rev S3C copper/rules/silk + Gate 10 J1 PTH missing B.Paste (COUT 0 spokes, shared CFILT/PGND via, In2.Cu under LX, 4-piece +3V3 band, U4.8 8.56 mm decap, BT1/U8 placement, occluded BT1/J1 silk) — see phase10.md",
       "ok": false,
       "gate": 10
+    },
+    "p2-132-usb6: ERC, DRC & audits": {
+      "result": "PASS: 0 ERC violations across 5 sheets; 795/795 routed (0 open), 4,921 tracks, 729 vias, 0 locked copper, 0 KiCad DRC errors/warnings/parity (--severity-all), 0 copper_audit defects, 0 thin pad joints (913 SMD pads), plane GND / RP2350 ring / RP2350 band each 1 piece, 0 foreign EP vias, 0 EP paste overlaps",
+      "ok": true,
+      "gate": 7
+    },
+    "p2-132-usb6: sync, stock, CPL & bytecheck": {
+      "result": "PASS: 231 symbols <-> 231 footprints <-> 223 BOM/CPL parts ($13.25/bd @10, 40/40 BOM rows in JLCPCB PCBA stock); Mirrored-Bottom CPL verified 0.00 deg error incl. SW5/SW6 (90 deg); p2-132-usb & p1-66-usb 100% byte-identical (0 mismatches)",
+      "ok": true,
+      "gate": 10
     }
   },
   "gates": {
@@ -180,6 +200,16 @@
       "7": { "state": "failed", "stale_because": null },
       "8": { "state": "failed", "stale_because": null },
       "9": { "state": "failed", "stale_because": null },
+      "10": { "state": "awaiting_signoff", "stale_because": null }
+    },
+    "parallelogram-p2-132-usb6": {
+      "dir": "design/gates/parallelogram-p2-132-usb6",
+      "4": { "state": "awaiting_signoff", "stale_because": null },
+      "5": { "state": "passed", "stale_because": null },
+      "6": { "state": "passed", "stale_because": null },
+      "7": { "state": "passed", "stale_because": null },
+      "8": { "state": "passed", "stale_because": null },
+      "9": { "state": "passed", "stale_because": null },
       "10": { "state": "awaiting_signoff", "stale_because": null }
     }
   },
@@ -247,6 +277,22 @@
     {
       "label": "Parallelogram p1-66 (4L, 66x XL-1615 LEDs, $10.61 BOM — 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p1-66.html"
+    },
+    {
+      "label": "Parallelogram p2-132-usb6 (4L, 132x XL-1615 LEDs, USB-C + 6 buttons, $13.25 BOM — 100% routed, 0 DRC) viewer",
+      "href": "viewer/parallelogram-p2-132-usb6.html"
+    },
+    {
+      "label": "Parallelogram p2-132-usb6 Phase Gates 4-10 & Release Sign-Off",
+      "href": "design/gates/parallelogram-p2-132-usb6/phase10.md"
+    },
+    {
+      "label": "Parallelogram p2-132-usb6 Bring-Up & Firmware Guide",
+      "href": "design/gates/parallelogram-p2-132-usb6/bringup.md"
+    },
+    {
+      "label": "Parallelogram p2-132-usb6 Button RC, ESD, VSYS PDN & Thermal Simulation",
+      "href": "design/sim/p2-132-usb6/README.md"
     },
     {
       "label": "Parallelogram p2-132 (4L, 132x XL-1615 LEDs, $12.60 BOM — 100% routed, 0 DRC) viewer",

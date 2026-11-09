@@ -6,6 +6,7 @@ import argparse
 import collections
 import csv
 import json
+import math
 import os
 import re
 import subprocess
@@ -66,10 +67,16 @@ def run_cost(qty: int = 10):
     cache: dict = {}
     targets = [
         ("p1-66 (4L, 66x XL-1615, 1x AW20198)", ROOT / "hw/parallelogram/p1-66/parallelogram.kicad_sch"),
+        ("p1-66-usb (4L, 66x XL-1615, USB-C+SW3/4+JST)", ROOT / "hw/parallelogram/p1-66-usb/parallelogram.kicad_sch"),
         ("p2-132 (4L, 132x XL-1615, 2x AW20198)", ROOT / "hw/parallelogram/p2-132/parallelogram.kicad_sch"),
+        ("p2-132-usb (4L, 132x XL-1615, USB-C+SW3/4+JST)", ROOT / "hw/parallelogram/p2-132-usb/parallelogram.kicad_sch"),
+        ("p2-132-usb6 (4L, 132x XL-1615, USB-C+SW3..6+JST)", ROOT / "hw/parallelogram/p2-132-usb6/parallelogram.kicad_sch"),
         ("p3-162 (4L, 162x XL-1010, 3x AW20198)", ROOT / "hw/parallelogram/p3-162/parallelogram.kicad_sch"),
+        ("p3-162-usb (4L, 162x XL-1010, USB-C+SW3/4+JST)", ROOT / "hw/parallelogram/p3-162-usb/parallelogram.kicad_sch"),
         ("p3-198 (4L, 198x XL-1010, 3x AW20198)", ROOT / "hw/parallelogram/p3-198/parallelogram.kicad_sch"),
+        ("p3-198-usb (4L, 198x XL-1010, USB-C+SW3/4+JST)", ROOT / "hw/parallelogram/p3-198-usb/parallelogram.kicad_sch"),
         ("p4-264 (4L, 264x XL-1010, 4x AW20198)", ROOT / "hw/parallelogram/p4-264/parallelogram.kicad_sch"),
+        ("p4-264-usb (4L, 264x XL-1010, USB-C+SW3/4+JST)", ROOT / "hw/parallelogram/p4-264-usb/parallelogram.kicad_sch"),
         ("round-pendant-e (8L, 235x XL-1010, 5x WLCSP)", ROOT / "hw/round-pendant/e/round-pendant.kicad_sch"),
     ]
     out_summary = {}
@@ -199,8 +206,33 @@ def export_fab(variant: str):
         side = "Bottom" if fp.IsFlipped() else "Top"
         # EasyEDA/JLCPCB C965840 (XL-1615RGBC-RF) 0 deg places Pin 1 (R-) at (+X,+Y) & Pin 2 (COM+) at (+X,-Y),
         # which is an exact 180 deg rotation of the datasheet Top View footprint (leds-xl1615.md).
-        rot_off = 180.0 if lcsc == "C965840" else 0.0
-        rot = (fp.GetOrientationDegrees() + rot_off) % 360.0
+        if spec.extra_side_buttons:
+            jlc_cpl_fixes = {
+                "C965840": (180.0, 0.0, 0.0),     # XL-1615RGBC-RF: EasyEDA 0 deg is 180 deg from Top View
+                "C5137654": (270.0, 0.0, 0.0),    # AW20198QNR QFN-40: EasyEDA pin 1 BL vs KiCad TL
+                "C190862": (270.0, 0.0, 0.0),     # W25Q128JVPIQ WSON-8: EasyEDA pin 1 BL vs KiCad TL
+                "C15999": (180.0, 0.0, 0.0),      # USBLC6-2P6 SOT-666: EasyEDA pin 1 BR vs KiCad TL
+                "C189624": (270.0, 0.0, 0.0),     # LIS2DW12TR LGA-12: EasyEDA pin 1 BL vs KiCad TL
+                "C236117": (270.0, 0.0, 0.0),     # NTZD3155CT1G SOT-563: EasyEDA pin 1 BL vs KiCad TL
+                "C2828254": (0.0, 0.0, -0.325),   # EVQP7J01P: EasyEDA 0 deg matches KiCad; c_origin 0.325 mm toward knob
+                "C530612": (0.0, 0.0, -1.209),    # TYPE-C-31-M-22: EasyEDA 0 deg matches KiCad; c_origin 1.209 mm toward mouth
+                "C225111": (0.0, 0.0, 0.200),     # A1251WR-S-2P: EasyEDA 0 deg mouth matches KiCad; c_origin +0.200 mm
+            }
+            ki_rot = fp.GetOrientationDegrees()
+            rot_off, dx0, dy0 = jlc_cpl_fixes.get(lcsc, (0.0, 0.0, 0.0))
+            rad = math.radians(ki_rot)
+            rcos, rsin = math.cos(rad), math.sin(rad)
+            if side == "Bottom":
+                x_mm += dx0 * rcos + dy0 * rsin
+                y_mm += dx0 * rsin - dy0 * rcos
+                rot = (180.0 - ki_rot + rot_off) % 360.0
+            else:
+                x_mm += dx0 * rcos - dy0 * rsin
+                y_mm += dx0 * rsin + dy0 * rcos
+                rot = (ki_rot + rot_off) % 360.0
+        else:
+            rot_off = 180.0 if lcsc == "C965840" else 0.0
+            rot = (fp.GetOrientationDegrees() + rot_off) % 360.0
         cpl_rows.append([ref, f"{x_mm:.4f}mm", f"{y_mm:.4f}mm", side, f"{rot:.2f}"])
 
     bom_path = out_dir / "bom-jlcpcb.csv"

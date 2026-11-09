@@ -2,6 +2,7 @@
 """rules_gen.py -- write design/nets-parallelogram-<variant>.csv, .kicad_pro, and .kicad_dru (4L JLCPCB standard)."""
 import csv
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -80,6 +81,37 @@ CLASSES = {
 
 def build_rows(spec: VariantSpec):
     rows = list(BASE_ROWS)
+    if spec.io_mode == "usb":
+        rows.extend([
+            ("/MCU/BTN_NW", "SIGNAL", "3.4", "", "", "", "", "NW back-wing flat-face push button via 1 k (GPIO7)"),
+            ("/MCU/BTN_SE", "SIGNAL", "3.4", "", "", "", "", "SE back-wing flat-face push button via 1 k (GPIO19)"),
+            ("Net-(R44-Pad2)", "SIGNAL", "3.4", "", "", "", "", "SW3 NW wing button node between 1 k R44 and switch"),
+            ("Net-(R45-Pad2)", "SIGNAL", "3.4", "", "", "", "", "SW4 SE wing button node between 1 k R45 and switch"),
+        ])
+    if spec.extra_side_buttons:
+        patched = []
+        for r in rows:
+            net, cls, vmax, ic, ipk, imp, llim, why = r
+            if net in ("VBAT", "/Power/BAT_N", "VBUS"):
+                cls = "POWER_HI"
+            elif net == "GND":
+                ic = "0.50"
+                why = "0.50 A max per pad escape stub; 1.0 A / 2.0 A bulk return in unbroken In1.Cu plane GND"
+            elif net == "VSYS":
+                why = "System rail: 300 mA LEDs + 40 mA logic; 0.20 mm POWER nominal, 0.16 mm DRU min for 0.20 mm AW20198 PVCC pads"
+            elif net in ("/Power/USB_DP_C", "/Power/USB_DM_C", "USB_DP", "USB_DM"):
+                llim = "35"
+            elif net in ("/MCU/USB_DP_MCU", "/MCU/USB_DM_MCU"):
+                llim = "6"
+                why = "USB FS, 27 R to pin, <=6 mm, no vias"
+            patched.append((net, cls, vmax, ic, ipk, imp, llim, why))
+        rows = patched
+        rows.extend([
+            ("/MCU/USER_C", "SIGNAL", "3.4", "", "", "", "", "West-North side push button SW5 via 1 k R46 + 100 nF C71 (GPIO9)"),
+            ("/MCU/USER_D", "SIGNAL", "3.4", "", "", "", "", "West-South side push button SW6 via 1 k R47 + 100 nF C72 (GPIO0)"),
+            ("Net-(R46-Pad2)", "SIGNAL", "3.4", "", "", "", "", "SW5 West-North button node between 1 k R46 and switch"),
+            ("Net-(R47-Pad2)", "SIGNAL", "3.4", "", "", "", "", "SW6 West-South button node between 1 k R47 and switch"),
+        ])
     cells = build_led_cells(spec)
     for drv in spec.drivers:
         drv_cells = [c for c in cells if c["drv_idx"] == drv.idx]
@@ -113,7 +145,9 @@ def generate_rules(variant_name: str):
     hw.mkdir(parents=True, exist_ok=True)
     rows = build_rows(spec)
 
-    nets_csv = ROOT / f"design/nets-parallelogram-{variant_name}.csv"
+    design_dir = Path(os.environ["PARALLELOGRAM_DESIGN_ROOT"]) if os.environ.get("PARALLELOGRAM_DESIGN_ROOT") else (ROOT / "design")
+    design_dir.mkdir(parents=True, exist_ok=True)
+    nets_csv = design_dir / f"nets-parallelogram-{variant_name}.csv"
     with nets_csv.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["net", "class", "v_max", "i_cont", "i_peak", "impedance", "length_limit", "reason"])
@@ -164,9 +198,28 @@ def generate_rules(variant_name: str):
         lib_footprint_issues="warning",
         lib_footprint_mismatch="ignore",
     )
+    if spec.extra_side_buttons:
+        ds["rules"]["min_copper_edge_clearance"] = 0.30
+        ds["rules"]["solder_mask_min_width"] = 0.0
+        if "defaults" in ds:
+            ds["defaults"]["silk_text_thickness"] = 0.15
+        ds["rule_severities"].update(
+            footprint_symbol_mismatch="error",
+            lib_footprint_issues="error",
+            missing_courtyard="error",
+            silk_edge_clearance="error",
+            text_height="error",
+            text_thickness="error",
+            mirrored_text_on_front_layer="error",
+            nonmirrored_text_on_back_layer="error",
+            padstack="error",
+        )
     tmpl_cls = d["net_settings"]["classes"][0]
     d["net_settings"]["classes"] = []
-    for n, (w, c, vd, vh) in CLASSES.items():
+    cls_map = dict(CLASSES)
+    if spec.extra_side_buttons:
+        cls_map["POWER_HI"] = (0.25, 0.10, 0.35, 0.15)
+    for n, (w, c, vd, vh) in cls_map.items():
         k = dict(
             tmpl_cls,
             name=n,
@@ -185,14 +238,17 @@ def generate_rules(variant_name: str):
     pats = []
     for r in rows:
         net, cls = r[0], r[1]
-        if net in ("VBAT", "/Power/BAT_N"):
-            cls = "BATTERY"
-        elif net == "VBUS":
-            cls = "USB_POWER"
-        elif "/SW" in net and net.startswith("/Driver "):
-            cls = "SW_SCAN"
+        if not spec.extra_side_buttons:
+            if net in ("VBAT", "/Power/BAT_N"):
+                cls = "BATTERY"
+            elif net == "VBUS":
+                cls = "USB_POWER"
+            elif "/SW" in net and net.startswith("/Driver "):
+                cls = "SW_SCAN"
         pats.append({"netclass": cls, "pattern": net})
     d["net_settings"]["netclass_patterns"] = pats
+    if spec.extra_side_buttons:
+        d["net_settings"]["netclass_assignments"] = {r[0]: [r[1]] for r in rows}
     pro.write_text(json.dumps(d, indent=2) + "\n")
 
     out = [
@@ -273,6 +329,24 @@ def generate_rules(variant_name: str):
         '  (condition "A.intersectsArea(\'vendor +3V3 area\') && A.NetName != \'+3V3\'")',
         "  (constraint disallow track via))",
     ]
+    if spec.extra_side_buttons:
+        out += [
+            "",
+            "# Unbroken RP2350 +3V3 band: disallow foreign vias and non-+3V3 B.Cu crossings inside U3 band annulus",
+            '(rule "U3 band foreign"',
+            '  (condition "A.intersectsArea(\'U3 band\') && A.NetName != \'+3V3\'")',
+            "  (constraint disallow track via))",
+            "# Enforce 0.15 mm CLOCK and MCU-side USB stub widths; non-HDI 4L disallows micro/buried vias",
+            '(rule "12 MHz crystal width"',
+            '  (condition "A.NetClass == \'CLOCK\'")',
+            "  (constraint track_width (min 0.15mm)))",
+            '(rule "MCU USB stub width"',
+            '  (condition "A.NetName == \'/MCU/USB_DP_MCU\' || A.NetName == \'/MCU/USB_DM_MCU\'")',
+            "  (constraint track_width (min 0.15mm)))",
+            '(rule "4L standard through-vias only"',
+            '  (condition "A.Type == \'Via\'")',
+            "  (constraint disallow microvia buried_via))",
+        ]
     dru.write_text("\n".join(out) + "\n")
     print(f"wrote rules for {variant_name}: {nets_csv} ({len(rows)} rows), {pro}, {dru}")
 

@@ -21,6 +21,8 @@ R0402 = "Resistor_SMD:R_0402_1005Metric"
 TP = "TestPoint:TestPoint_Pad_D1.0mm"
 BTN_FP = "round_pendant:SW_Panasonic_EVQP7J"
 BTN_FIELDS = {"LCSC": "C2828254", "MPN": "EVQP7J01P", "Manufacturer": "PANASONIC"}
+WING_BTN_FP = "round_pendant:SW_Push_1P1T_XKB_TS-1187A"
+WING_BTN_FIELDS = {"LCSC": "C318884", "MPN": "TS-1187A-B-A-B", "Manufacturer": "XKB Connection"}
 
 PARTS = {
     "100n": ("C1525", "CL05B104KO5NNNC", "Samsung Electro-Mechanics"),
@@ -106,24 +108,54 @@ class Sheet(Schematic):
 
 
 def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
-    s = Sheet(spec, libs, "power", "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell)")
-    j1 = s.symbol(
-        "round_pendant:USB_Pads", "J1", "USB wires", (40.64, 93.98),
-        in_bom=False, fields={"MPN": "none, wire pads"}, ref_at=(30.48, 81.28), value_at=(30.48, 83.82),
+    pwr_desc = (
+        "USB-C 16P SMT, charger, protection, LDO, Micro-JST 1.25 battery, VBAT sense"
+        if spec.io_mode == "usb"
+        else "USB-C wires, charger, protection, LDO, VBAT sense (prismatic 802035 cell)"
     )
+    s = Sheet(spec, libs, "power", pwr_desc)
     vbus_y = 68.58
-    px = j1.pin("5")[0]
-    s.wire(j1.pin("5"), (px + 2.54, j1.pin("5")[1]), (px + 2.54, vbus_y), (64.77, vbus_y))
-    g = j1.pin("6")
-    s.wire(g, (g[0] + 2.54, g[1]), (g[0] + 2.54, g[1] + 7.62))
-    s.power("power:GND", (g[0] + 2.54, g[1] + 7.62))
-    s.power("power:PWR_FLAG", (g[0] + 7.62, g[1] + 7.62), rot=180, value="PWR_FLAG")
-    s.wire((g[0] + 2.54, g[1] + 7.62), (g[0] + 7.62, g[1] + 7.62))
-    for pin, net, x, ref in (("1", "CC1", 60.96, "R1"), ("2", "CC2", 71.12, "R2")):
+    if spec.io_mode == "usb":
+        j1 = s.symbol(
+            "round_pendant:USB_C_16P_M22", "J1", "TYPE-C-31-M-22", (36.83, 96.52),
+            fields={"LCSC": "C530612", "MPN": "TYPE-C-31-M-22", "Manufacturer": "Korean Hroparts Elec"},
+            ref_at=(22.86, 78.74), value_at=(22.86, 81.28),
+        )
+        pv = j1.pin("A4B9")
+        s.wire(pv, (pv[0] + 2.54, pv[1]), (pv[0] + 2.54, vbus_y), (64.77, vbus_y))
+        g = j1.pin("A1B12")
+        s.wire(g, (g[0] + 2.54, g[1]), (g[0] + 2.54, g[1] + 7.62))
+        s.power("power:GND", (g[0] + 2.54, g[1] + 7.62))
+        s.power("power:PWR_FLAG", (g[0] + 7.62, g[1] + 7.62), rot=180, value="PWR_FLAG")
+        s.wire((g[0] + 2.54, g[1] + 7.62), (g[0] + 7.62, g[1] + 7.62))
+        s.no_connect(j1.pin("A8"))
+        s.no_connect(j1.pin("B8"))
+        cc_pins = (("A5", "CC1", 60.96, "R1"), ("B5", "CC2", 71.12, "R2"))
+        res_y = 106.68
+        dp_pins = (("A7", "1", 5.08), ("A6", "3", 7.62))
+        usb_box_title = "USB-C 16P SMT & ESD"
+    else:
+        j1 = s.symbol(
+            "round_pendant:USB_Pads", "J1", "USB wires", (40.64, 93.98),
+            in_bom=False, fields={"MPN": "none, wire pads"}, ref_at=(30.48, 81.28), value_at=(30.48, 83.82),
+        )
+        px = j1.pin("5")[0]
+        s.wire(j1.pin("5"), (px + 2.54, j1.pin("5")[1]), (px + 2.54, vbus_y), (64.77, vbus_y))
+        g = j1.pin("6")
+        s.wire(g, (g[0] + 2.54, g[1]), (g[0] + 2.54, g[1] + 7.62))
+        s.power("power:GND", (g[0] + 2.54, g[1] + 7.62))
+        s.power("power:PWR_FLAG", (g[0] + 7.62, g[1] + 7.62), rot=180, value="PWR_FLAG")
+        s.wire((g[0] + 2.54, g[1] + 7.62), (g[0] + 7.62, g[1] + 7.62))
+        cc_pins = (("1", "CC1", 60.96, "R1"), ("2", "CC2", 71.12, "R2"))
+        res_y = 104.14
+        dp_pins = (("3", "1", 5.08), ("4", "3", 7.62))
+        usb_box_title = "USB WIRES, ESD"
+
+    for pin, net, x, ref in cc_pins:
         p = j1.pin(pin)
-        s.wire(p, (x, p[1]), (x, 104.14))
+        s.wire(p, (x, p[1]), (x, res_y))
         s.label(net, (p[0] + 7.62, p[1]))
-        s.res_v(ref, "5.1k", (x, 104.14), to_gnd=True)
+        s.res_v(ref, "5.1k", (x, res_y), to_gnd=True)
 
     u7 = s.symbol(
         "Power_Protection:USBLC6-2P6", "U7", "USBLC6-2P6", (86.36, 88.9),
@@ -131,7 +163,7 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         fields={"LCSC": "C15999", "MPN": "USBLC6-2P6", "Manufacturer": "STMicroelectronics"},
         ref_at=(90.17, 99.06), value_at=(90.17, 101.6),
     )
-    for pin, u, jog in (("3", "1", 5.08), ("4", "3", 7.62)):
+    for pin, u, jog in dp_pins:
         q, v = j1.pin(pin), u7.pin(u)
         s.wire(q, (q[0] + jog, q[1]), (q[0] + jog, v[1]), v)
     s.label("USB_DM_C", (74.93, u7.pin("1")[1]))
@@ -145,7 +177,7 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
     s.wire((64.77, vbus_y), (121.92, vbus_y))
     s.power("power:VBUS", (73.66, vbus_y))
     s.power("power:PWR_FLAG", (81.28, vbus_y), value="PWR_FLAG")
-    s.box((15.24, 55.88), (110.49, 132.08), "USB WIRES, ESD")
+    s.box((15.24, 55.88), (110.49, 132.08), usb_box_title)
 
     u5x, u5y = 160.02, 86.36
     u5 = s.symbol(
@@ -212,14 +244,27 @@ def build_power(spec: VariantSpec, libs: SymbolLib) -> Sheet:
     by = 165.1
     s.wire(b, (b[0] + 2.54, b[1]))
     s.power("round_pendant:VBAT", (b[0] + 2.54, b[1]))
-    bt = s.symbol(
-        "Connector_Generic:Conn_01x02", "BT1", "CELL 802035", (45.72, by + 2.54), mirror="y",
-        footprint="round_pendant:BatteryPads", in_bom=False,
-        fields={"Manufacturer": "Generic", "MPN": "802035", "LCSC": ""},
-        ref_at=(25.4, by), value_at=(25.4, by + 2.54), justify="left",
-    )
-    a, n = bt.pin("1"), bt.pin("2")
-    s.text("Hand-soldered leads. Standard 802035 / 102035 (20x35 mm) prismatic LiPo cell.", (20.32, by - 7.62))
+    if spec.io_mode == "usb":
+        bt = s.symbol(
+            "round_pendant:JST_1P25_2P_MP", "BT1", "A1251WR-S-2P", (40.64, by + 1.27),
+            footprint="round_pendant:Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal",
+            fields={"LCSC": "C225111", "MPN": "A1251WR-S-2P", "Manufacturer": "CJT"},
+            ref_at=(20.32, by), value_at=(20.32, by + 2.54), justify="left",
+        )
+        a, n = bt.pin("1"), bt.pin("2")
+        mp = bt.pin("MP")
+        s.wire(mp, (mp[0], mp[1] + 2.54))
+        s.power("power:GND", (mp[0], mp[1] + 2.54))
+        s.text("Micro-JST 1.25 / MX1.25 2P SMT (1=VBAT+, 2=BAT_N-). 20x35 mm LiPo.", (20.32, by - 7.62))
+    else:
+        bt = s.symbol(
+            "Connector_Generic:Conn_01x02", "BT1", "CELL 802035", (45.72, by + 2.54), mirror="y",
+            footprint="round_pendant:BatteryPads", in_bom=False,
+            fields={"Manufacturer": "Generic", "MPN": "802035", "LCSC": ""},
+            ref_at=(25.4, by), value_at=(25.4, by + 2.54), justify="left",
+        )
+        a, n = bt.pin("1"), bt.pin("2")
+        s.text("Hand-soldered leads. Standard 802035 / 102035 (20x35 mm) prismatic LiPo cell.", (20.32, by - 7.62))
     vbat_y = by
     s.wire(a, (a[0] + 7.62, a[1]), (a[0] + 7.62, vbat_y), (208.28, vbat_y))
     s.power("round_pendant:VBAT", (66.04, vbat_y))
@@ -360,6 +405,12 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
         14: "VBAT_EN",
         27: "LIGHT",
     }
+    if spec.io_mode == "usb":
+        used[7] = "BTN_NW"
+        used[19] = "BTN_SE"
+    if spec.extra_side_buttons:
+        used[9] = "USER_C"
+        used[0] = "USER_D"
     gl = {"I2C_SDA", "I2C_SCL", "LED_SDB", "CHG", "PGOOD", "VBAT_EN"}
     for i in range(30):
         nm = f"GPIO{i}" if i < 26 else f"GPIO{i}/ADC{i - 26}"
@@ -547,6 +598,54 @@ def build_mcu(spec: VariantSpec, libs: SymbolLib) -> Sheet:
     s.cap("C70", "100n", (cx, pe[1]))
     s.label("LIGHT", (lx_lbl, pe[1]))
     s.box((73.66, 223.52), (213.36, 271.78), "AMBIENT LIGHT SENSOR (TOP BEZEL)")
+
+    if spec.io_mode == "usb":
+        y_nw = 246.38
+        s.label("BTN_NW", (284.48, y_nw), rot=180)
+        r_nw = s.res_h("R44", "1k", (284.48, y_nw))
+        sw3 = s.symbol(
+            "Switch:SW_Push", "SW3", "NW WING", (306.07, y_nw),
+            footprint=WING_BTN_FP, fields=WING_BTN_FIELDS,
+            ref_at=(306.07, y_nw - 5.08), value_at=(306.07, y_nw - 2.54), justify="",
+        )
+        s.wire(r_nw.pin("2"), sw3.pin("1"))
+        q_nw = sw3.pin("2")
+        s.wire(q_nw, (q_nw[0] + 2.54, q_nw[1]))
+        s.power("power:GND", (q_nw[0] + 2.54, q_nw[1]))
+
+        y_se = 259.08
+        s.label("BTN_SE", (284.48, y_se), rot=180)
+        r_se = s.res_h("R45", "1k", (284.48, y_se), text_below=True)
+        sw4 = s.symbol(
+            "Switch:SW_Push", "SW4", "SE WING", (306.07, y_se),
+            footprint=WING_BTN_FP, fields=WING_BTN_FIELDS,
+            ref_at=(306.07, y_se + 2.54), value_at=(306.07, y_se + 5.08), justify="",
+        )
+        s.wire(r_se.pin("2"), sw4.pin("1"))
+        q_se = sw4.pin("2")
+        s.wire(q_se, (q_se[0] + 2.54, q_se[1]))
+        s.power("power:GND", (q_se[0] + 2.54, q_se[1]))
+        s.box((271.78, 233.68), (381.0, 271.78), "BACK WING FLAT-FACE BUTTONS (TS-1187A-B-A-B)")
+
+    if spec.extra_side_buttons:
+        for y_sw, net, rref, cref, swref, swval in (
+            (29.21, "USER_C", "R46", "C71", "SW5", "USER_C (WEST N)"),
+            (46.99, "USER_D", "R47", "C72", "SW6", "USER_D (WEST S)"),
+        ):
+            s.label(net, (281.94, y_sw), rot=180)
+            s.wire((281.94, y_sw), (294.64, y_sw))
+            s.cap(cref, "100n", (288.29, y_sw), text_left=True)
+            r_sw = s.res_h(rref, "1k", (294.64, y_sw))
+            sw_sym = s.symbol(
+                "Switch:SW_Push", swref, swval, (316.23, y_sw),
+                footprint=BTN_FP, fields=BTN_FIELDS,
+                ref_at=(316.23, y_sw - 5.08), value_at=(316.23, y_sw - 2.54), justify="",
+            )
+            s.wire(r_sw.pin("2"), sw_sym.pin("1"))
+            q_sw = sw_sym.pin("2")
+            s.wire(q_sw, (q_sw[0] + 2.54, q_sw[1]))
+            s.power("power:GND", (q_sw[0] + 2.54, q_sw[1]))
+        s.box((271.78, 17.78), (381.0, 62.23), "WEST LONG-EDGE USER BUTTONS (EVQP7J01P)")
     return s
 
 

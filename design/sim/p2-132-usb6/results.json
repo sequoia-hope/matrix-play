@@ -1,0 +1,140 @@
+{
+  "board": "parallelogram-p2-132-usb6",
+  "nets": [
+    "/MCU/USER_C (SW5 -> R46 -> C71 + U3.13 GPIO9)",
+    "/MCU/USER_D (SW6 -> R47 -> C72 + U3.2 GPIO0)"
+  ],
+  "dc_levels": {
+    "v_low_worst_case_mV": 68.64,
+    "rp2350_vil_max_mV": 800.0,
+    "vil_noise_margin_mV": 731.36
+  },
+  "contact_rating_evqp7j01p": {
+    "spec_min_uA": 10.0,
+    "spec_max_mA": 50.0,
+    "steady_wetting_min_uA": 37.03,
+    "steady_wetting_max_uA": 67.95,
+    "cap_discharge_peak_min_mA": 3.102,
+    "cap_discharge_peak_max_mA": 3.5,
+    "within_rating": true
+  },
+  "transient_corners": {
+    "nominal": {
+      "vdd_V": 3.3,
+      "r_pu_ohm": 65000.0,
+      "r_ser_ohm": 1000.0,
+      "c_deb_nF": 100.0,
+      "tau_fall_ms": 0.1,
+      "tau_rise_ms": 6.5,
+      "t_clean_rise_to_vih_2p0V_ms": 5.956,
+      "t_worst_10ms_off_bounce_plus_rise_ms": 15.956,
+      "t_sim_settled_vih_after_10ms_off_bounce_ms": 15.46,
+      "t_first_vil_ms": 0.145,
+      "v_10ms_on_chatter_max_after_vil_V": 0.89,
+      "stays_below_vih_2p0V_during_10ms_on_chatter": true,
+      "release_rebounce_low_excursions": 0,
+      "recommended_firmware_debounce_ms": 20,
+      "i_contact_peak_mA": 3.2997
+    },
+    "fast_worst_chatter": {
+      "vdd_V": 3.465,
+      "r_pu_ohm": 50000.0,
+      "r_ser_ohm": 1010.0,
+      "c_deb_nF": 90.0,
+      "tau_fall_ms": 0.0909,
+      "tau_rise_ms": 4.5,
+      "t_clean_rise_to_vih_2p0V_ms": 3.784,
+      "t_worst_10ms_off_bounce_plus_rise_ms": 13.784,
+      "t_sim_settled_vih_after_10ms_off_bounce_ms": 13.445,
+      "t_first_vil_ms": 0.137,
+      "v_10ms_on_chatter_max_after_vil_V": 0.9052,
+      "stays_below_vih_2p0V_during_10ms_on_chatter": true,
+      "release_rebounce_low_excursions": 2,
+      "recommended_firmware_debounce_ms": 20,
+      "i_contact_peak_mA": 3.429
+    },
+    "slow_worst_release": {
+      "vdd_V": 3.135,
+      "r_pu_ohm": 80000.0,
+      "r_ser_ohm": 990.0,
+      "c_deb_nF": 110.0,
+      "tau_fall_ms": 0.1089,
+      "tau_rise_ms": 8.8,
+      "t_clean_rise_to_vih_2p0V_ms": 8.833,
+      "t_worst_10ms_off_bounce_plus_rise_ms": 18.833,
+      "t_sim_settled_vih_after_10ms_off_bounce_ms": 18.172,
+      "t_first_vil_ms": 0.512,
+      "v_10ms_on_chatter_max_after_vil_V": 0.7977,
+      "stays_below_vih_2p0V_during_10ms_on_chatter": true,
+      "release_rebounce_low_excursions": 0,
+      "recommended_firmware_debounce_ms": 20,
+      "i_contact_peak_mA": 3.1665
+    }
+  },
+  "esd_verification": {
+    "mechanical_shielding_evqp7j01p": "Plunger is insulating engineering plastic; outboard terminal nearest PCB edge (|x|=12.10 mm) is Pin 2 = GND tied to unbroken In1.Cu plane GND, intercepting edge air-discharge arcs before inboard Pin 1.",
+    "sub_sparkover_400V_pin1": {
+      "v_gpio_peak_V": 3.874,
+      "i_clamp_peak_mA": 4.8
+    },
+    "direct_8kV_pin1_with_0402_flashover": {
+      "open_circuit_charge_share_delta_V": 11.98,
+      "v_gpio_peak_with_clamp_V": 12.71,
+      "i_clamp_peak_A": 1.77,
+      "unbuffered_iec_peak_A": 24.24,
+      "current_attenuation_pct": 92.69,
+      "c71_c72_50V_x7r_margin_V": 37.29
+    },
+    "inherited_sw3_sw4_note": "SW3/SW4 (TS-1187A) inherit 1 kOhm series R44/R45 without 100 nF cap; use 20 ms SW debounce and avoid direct >2 kV metal-stem contact without grounded bezel."
+  },
+  "vsys_nodal_pdn": {
+    "extracted_from": "hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb",
+    "wearable_budget_300mA_GCC_0x74": {
+      "i_led_total_mA": 300.0,
+      "i_3v3_ldo_mA": 25.0,
+      "dv_u6_in_mV": -60.72,
+      "dv_u2_pin5_mV": -113.31,
+      "dv_u1_pin5_mV": -114.5,
+      "v_u6_in_on_usb_4p40V": 4.339,
+      "v_u6_in_at_vbat_3p55V": 3.437,
+      "tps7a0233_vout_min_headroom_ok": true
+    },
+    "unthrottled_all_white_656mA_GCC_0xFF": {
+      "i_led_total_mA": 656.0,
+      "i_3v3_ldo_mA": 25.0,
+      "dv_u6_in_mV": -126.74,
+      "dv_u2_pin5_mV": -242.27,
+      "dv_u1_pin5_mV": -244.88
+    },
+    "firmware_guard": "Cap AW20198 GCC <= 0x74 (<= 300 mA total LED current per intent.md R19; <= 0x44 = 175 mA while CHG==0 charging) and fold back brightness below VBAT = 3.50 V so U6 (+3V3 LDO) never enters dropout."
+  },
+  "thermal_budget": {
+    "wearable_battery_300mA_mode": {
+      "p_total_W": 0.95,
+      "board_avg_rise_C": 11.2,
+      "t_surface_at_25C_amb_C": 36.2,
+      "wearable_touch_limit_45C_ok": true
+    },
+    "usb500_depleted_cell_charge_plus_GCC_0x44": {
+      "vbus_V": 5.0,
+      "vbat_V": 3.1,
+      "i_chg_mA": 297.0,
+      "i_sys_mA": 175.0,
+      "p_u5_bq24073_W": 0.669,
+      "u5_tj_est_at_25C_amb_C": 59.8,
+      "bq24073_tj_reg_125C_margin_C": 65.2
+    }
+  },
+  "crosstalk_audit": {
+    "user_c_user_d_with_100nF_c71_c72_mV": 0.019,
+    "i2c0_with_1k_pullup_and_aw20198_SRCR_0x07_mV": 84.8,
+    "i2c0_vil_margin_990mV_ok": true,
+    "adc1_light_with_100nF_c70_mV": 0.012,
+    "required_firmware_registers": {
+      "AW20198_SRCR": "0x07 (soft SW/CS slew rate, t_r ~ 8 ns)",
+      "RP2350_PADS_QSPI_SLEWFAST": "0 (standard slew on QSPI_SCLK/SD0..3)",
+      "ADC1_LIGHT_oversampling": "16x sample average"
+    }
+  },
+  "verdict": "PASS (hardware RC suppresses 10 ms ON chatter + crosstalk; >= 20 ms press+release FW debounce covers 18.83 ms slow-corner OFF bounce+rise; VSYS nodal drop = -60.72 mV at U6.4 & -114.50 mV at U1.5 @ 300 mA GCC<=0x74; thermal 36.2 C wearable / 59.8 C U5 Tj charging)"
+}

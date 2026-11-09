@@ -1,0 +1,202 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "55cf6294-59fc-4ae5-b0e6-941b8c1f7c42")
+	(paper "A4")
+	(title_block
+		(title "parallelogram (p4-264-usb): top")
+		(date "2026-11-05")
+		(rev "P4U")
+		(company "CERN-OHL-P-2.0")
+		(comment 1 "264 XL-1010RGB LEDs (12x22), 4x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L")
+		(comment 2 "Drawn by scripts/parallelogram/sch_gen.py")
+	)
+	(lib_symbols)
+	(text "Parallelogram 4-layer density study (p4-264-usb): 264 XL-1010RGB LEDs (12x22), 4x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L.\n25 x 70 mm tip-to-tip skewed parallelogram, 20 x 35 mm prismatic LiPo cell.\nSolid GND thermal pads on U3, U5, and all AW20198QNR QFN-40 drivers (0 via-in-pad)."
+		(exclude_from_sim no)
+		(at 20.32 105 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "d8a9c0fd-87c1-4d1d-9f34-b09c11b8ccbe")
+	)
+	(sheet
+		(at 20.32 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "309293de-a969-40a8-a952-9c973191b7bf")
+		(property "Sheetname" "Power"
+			(at 20.32 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 20.32 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/55cf6294-59fc-4ae5-b0e6-941b8c1f7c42"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 83.82 35.56)
+		(size 48.26 43.18)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "aea5d649-85df-4257-815b-275781a5c452")
+		(property "Sheetname" "MCU"
+			(at 83.82 34.86 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 83.82 80.54 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/55cf6294-59fc-4ae5-b0e6-941b8c1f7c42"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 25.4)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "4c619440-d36f-41a2-af99-ae81fb705827")
+		(property "Sheetname" "Driver 1 and matrix"
+			(at 149.86 24.7 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix1.kicad_sch"
+			(at 149.86 47.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/55cf6294-59fc-4ae5-b0e6-941b8c1f7c42"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 53.34)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "48a1d760-c0ec-4ed8-aa2c-d124763728f0")
+		(property "Sheetname" "Driver 2 and matrix"
+			(at 149.86 52.64 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix2.kicad_sch"
+			(at 149.86 75.46 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/55cf6294-59fc-4ae5-b0e6-941b8c1f7c42"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 81.28)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "39caf2ae-ee88-4bd6-a16b-4a605ebaaeb9")
+		(property "Sheetname" "Driver 3 and matrix"
+			(at 149.86 80.58 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix3.kicad_sch"
+			(at 149.86 103.4 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/55cf6294-59fc-4ae5-b0e6-941b8c1f7c42"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 149.86 109.22)
+		(size 58.42 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "ef1cc5b1-c419-46ef-9017-5b5fedf3e975")
+		(property "Sheetname" "Driver 4 and matrix"
+			(at 149.86 108.52 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(property "Sheetfile" "matrix4.kicad_sch"
+			(at 149.86 131.34 0)
+			(effects (font (size 1.27 1.27)) (justify left bottom))
+		)
+		(instances
+			(project "parallelogram"
+				(path "/55cf6294-59fc-4ae5-b0e6-941b8c1f7c42"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

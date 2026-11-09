@@ -292,6 +292,77 @@ def fp_led_xl1615() -> str:
     )
 
 
+def usbc_m22_fp() -> str:
+    """Korean Hroparts Elec TYPE-C-31-M-22 (C530612) 16-pin full-SMT USB-C receptacle (type-c-31-m-22.pdf p. 1).
+    Component Top View (KiCad y-down):
+      - 12 rear SMD contacts at y = -2.30 mm (size y = 1.14 mm -> y in [-2.87, -1.73], >= 0.235 mm clear of Ø0.65 NPTH):
+        A1B12(-3.20, 0.60), A4B9(-2.40, 0.60), B8(-1.75, 0.30), A5(-1.25, 0.30), B7(-0.75, 0.30), A6(-0.25, 0.30),
+        A7(+0.25, 0.30), B6(+0.75, 0.30), A8(+1.25, 0.30), B5(+1.75, 0.30), B4A9(+2.40, 0.60), B1A12(+3.20, 0.60).
+      - 4 gull-wing SMD shell pads S1 at x = +-5.07 mm, y = -1.66 & +2.24 mm (2.30 x 1.80 mm, F.Cu only, 0 TH stakes).
+      - 2 non-plated Ø0.65 mm locating peg holes at x = +-2.89 mm, y = -1.17 mm.
+      - Product Edge (mating mouth) at y = +5.12 mm (+2.88 mm ahead of front shell pad centerline +2.24 mm).
+    """
+    rear_contacts = (
+        ("A1B12", -3.20, 0.60),
+        ("A4B9", -2.40, 0.60),
+        ("B8", -1.75, 0.30),
+        ("A5", -1.25, 0.30),
+        ("B7", -0.75, 0.30),
+        ("A6", -0.25, 0.30),
+        ("A7", 0.25, 0.30),
+        ("B6", 0.75, 0.30),
+        ("A8", 1.25, 0.30),
+        ("B5", 1.75, 0.30),
+        ("B4A9", 2.40, 0.60),
+        ("B1A12", 3.20, 0.60),
+    )
+    pads = []
+    for num, x, w in rear_contacts:
+        pads.append(
+            f'\t(pad "{num}" smd roundrect (at {x:g} -2.3) (size {w:g} 1.14)'
+            ' (layers "F.Cu" "F.Mask" "F.Paste") (roundrect_rratio 0.2))\n'
+        )
+    for sx in (-5.07, 5.07):
+        for sy in (-1.66, 2.24):
+            pads.append(
+                f'\t(pad "S1" smd roundrect (at {sx:g} {sy:g}) (size 2.3 1.8)'
+                ' (layers "F.Cu" "F.Mask" "F.Paste") (roundrect_rratio 0.12))\n'
+            )
+    for hx in (-2.89, 2.89):
+        pads.append(
+            f'\t(pad "" np_thru_hole circle (at {hx:g} -1.17) (size 0.65 0.65) (drill 0.65) (layers "*.Mask"))\n'
+        )
+
+    # 8.94 x 7.35 mm shell body on F.Fab (mouth at y = +5.12 mm)
+    fab_pts = [(-4.47, -2.23), (4.47, -2.23), (4.47, 5.12), (-4.47, 5.12), (-4.47, -2.23)]
+    fab = "".join(line(a, b, "F.Fab", 0.08) for a, b in zip(fab_pts, fab_pts[1:]))
+    # Courtyard around inside-board SMD copper & rear body (mouth +3.18..+5.12 overhangs board edge)
+    cy_pts = [(-6.32, -2.95), (6.32, -2.95), (6.32, 3.18), (-6.32, 3.18), (-6.32, -2.95)]
+    crtyd = "".join(line(a, b, "F.CrtYd", 0.05) for a, b in zip(cy_pts, cy_pts[1:]))
+    model = (
+        '\t(model "${KIPRJMOD}/../../../3dmodels/USB-C-SMD_TYPE-C-31-M-22.step"\n'
+        "\t\t(offset (xyz 0 -1.06 1.63))\n"
+        "\t\t(scale (xyz 1 1 1))\n"
+        "\t\t(rotate (xyz 0 0 0))\n"
+        "\t)\n"
+    )
+    return (
+        '(footprint "USB_C_Receptacle_Hroparts_TYPE-C-31-M-22"\n'
+        '\t(version 20241229)\n'
+        '\t(generator "parallelogram_lib")\n'
+        '\t(layer "F.Cu")\n'
+        '\t(descr "Korean Hroparts Elec TYPE-C-31-M-22 (C530612), 16P full-SMT USB-C receptacle, mouth at +5.12mm; type-c-31-m-22.pdf")\n'
+        '\t(attr smd)\n'
+        + text("Reference", "REF**", -3.6, "F.SilkS")
+        + text("Value", "TYPE-C-31-M-22", 5.8, "F.Fab", True)
+        + fab
+        + crtyd
+        + "".join(pads)
+        + model
+        + ")\n"
+    )
+
+
 def generate_libs(variant_name: str):
     spec = VARIANTS[variant_name]
     hw = spec.hw_dir
@@ -380,6 +451,38 @@ def generate_libs(variant_name: str):
         width=10.16,
         ref="J",
     )
+    usb_c = ic(
+        "USB_C_16P_M22",
+        "USB-C 16-pin full-SMT receptacle, Hroparts TYPE-C-31-M-22",
+        "round_pendant:USB_C_Receptacle_Hroparts_TYPE-C-31-M-22",
+        right=[
+            ("passive", ["A4B9", "B4A9"], "VBUS"),
+            ("passive", ["A7", "B7"], "D-"),
+            ("passive", ["A6", "B6"], "D+"),
+            ("passive", "A5", "CC1"),
+            ("passive", "B5", "CC2"),
+            ("passive", "A8", "SBU1"),
+            ("passive", "B8", "SBU2"),
+            ("passive", ["A1B12", "B1A12", "S1"], "GND"),
+            None,
+        ],
+        width=12.7,
+        ref="J",
+    )
+    jst_bat = ic(
+        "JST_1P25_2P_MP",
+        "Micro-JST 1.25 / MX1.25 2-pin right-angle SMT header (CJT A1251WR-S-2P / Molex 53261-0271)",
+        "round_pendant:Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal",
+        right=[
+            ("passive", "1", "VBAT"),
+            ("passive", "2", "BAT_N"),
+        ],
+        bottom=[
+            ("passive", "MP", "MP"),
+        ],
+        width=10.16,
+        ref="BT",
+    )
     als = ic(
         "ALS-PT19",
         "Ambient light sensor phototransistor, 1.6 x 0.8 mm SMD",
@@ -395,6 +498,8 @@ def generate_libs(variant_name: str):
         S("generator", "parallelogram_symbols"),
         S("generator_version", "9.0"),
         usb,
+        usb_c,
+        jst_bat,
         als,
         aw20198_sym(),
         charger,
@@ -423,9 +528,20 @@ def generate_libs(variant_name: str):
     (pretty / "SW_Panasonic_EVQP7J.kicad_mod").write_text(evqp7j_fp())
     (pretty / "SENSOR_ALS-PT19.kicad_mod").write_text(als_pt19())
     (pretty / "USB_Pads.kicad_mod").write_text(usb_pads())
+    (pretty / "USB_C_Receptacle_Hroparts_TYPE-C-31-M-22.kicad_mod").write_text(usbc_m22_fp())
     (pretty / "LED_XL-1010RGB.kicad_mod").write_text(fp_led())
     (pretty / "LED_XL-1615RGBC.kicad_mod").write_text(fp_led_xl1615())
     (pretty / "BatteryPads.kicad_mod").write_text(battery())
+    shutil.copy(
+        Path("/usr/share/kicad/footprints/Connector_Molex.pretty/Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod"),
+        pretty / "Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.kicad_mod",
+    )
+    sw_ts = Path("/usr/share/kicad/footprints/Button_Switch_SMD.pretty/SW_Push_1P1T_XKB_TS-1187A.kicad_mod").read_text()
+    sw_ts = sw_ts.replace(
+        "${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_Push_1P1T_XKB_TS-1187A.step",
+        "${KIPRJMOD}/../../../3dmodels/SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5.step",
+    )
+    (pretty / "SW_Push_1P1T_XKB_TS-1187A.kicad_mod").write_text(sw_ts)
     for name in ("L_pol_2016", "C_0402_1005Metric_small_pads"):
         shutil.copy(VENDOR / f"{name}.kicad_mod", pretty / f"{name}.kicad_mod")
     (pretty / "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias.kicad_mod").write_text(rp2350_solid_ep())

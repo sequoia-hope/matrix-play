@@ -91,3 +91,64 @@ All five variants use the identical 3-stage deterministic `ultraroute a3ba419` p
    - Because `In1.Cu` is reserved as an unbroken solid `GND` reference plane (`1` piece across all 5 tiers), **`In2.Cu` is the sole inner routing layer** carrying both horizontal `SW` anode buses (`11` to `44` scan lines) and radial `CS` escapes out of `40`-pin `0.40 mm`-pitch QFNs.
    - **`p1-66` (`1` driver, `66× XL-1615RGBC`, `$10.61` BOM)** and **`p2-132` (`2` drivers, `132× XL-1615RGBC`, `$12.60` BOM)** BOTH route to **`100.00%` (`0` open)** and clean to **`0` DRC / `0` `copper_audit` / `0` `pad_joints`** defects (Gerbers/BOM/CPL/schematic PDF exported in `hw/parallelogram/{p1-66,p2-132}/fab/`).
    - **`p3-198` (`198` LEDs) and `p4-264` (`264` LEDs) on 6 Layers (Zero BGA):** Stepping from 4 layers to JLCPCB's **6-layer stackup** (which includes **free ENIG + free `POFV` epoxy-filled vias** on JLCPCB's `0.15 mm` 6L promo while keeping the cheap `$0.78` `AW20198QNR` QFN drivers and `$1.80` prismatic LiPo!) adds a second orthogonal inner signal layer (`In2.Cu` horizontal + `In3.Cu` vertical) to break through the `9–12` column bottleneck without needing WLCSP BGAs.
+
+---
+
+## 5. Connector & Wing-Button `-usb` Family (`p1-66-usb` .. `p4-264-usb`)
+
+To eliminate wire-soldering while keeping the original wire-pad boards (`p1-66..p4-264`) untouched, five companion 4-layer variants (`hw/parallelogram/{p1-66-usb,p2-132-usb,p3-162-usb,p3-198-usb,p4-264-usb}`) add board-mounted USB-C, a Micro-JST 1.25 battery receptacle, and two back-side flat-face user buttons in the acute NW/SE wings — all **100% outside the `20.0 × 35.0 mm` prismatic LiPo pocket** (`x ∈ [-10.0, +10.0] mm`, `y ∈ [-21.5, +13.5] mm`):
+
+1. **South Slanted-Bezel Board-Mounted USB-C (`J1`: `Korean Hroparts Elec TYPE-C-31-M-22`, `C530612`, `$0.14`):**
+   - Full-SMT 16-pin USB-C receptacle (`0` signal through-holes, `4` mechanical shield slots, `2` `1.00 mm` NPTH locating bosses) rotated to `+9.49°` so its cable mouth opens perpendicularly across the `17.75°` South slanted edge, with `5.1 kΩ` `CC1/CC2` pulldowns (`R31/R32`) and `USBLC6-2SC6` (`U7`) right behind the pins.
+   - Its `2` NPTH locating holes (`1.00 mm` drill) and `4` shield PTH slots are steered through inter-row/inter-column `F.Cu` LED alleys across all 5 grid pitches without displacing a single front LED!
+2. **NW & SE Wing Flat-Face User Push Buttons (`SW3`, `SW4`: `XKB Connectivity TS-1187A-B-A-B`, `C318884`, `5.1 × 5.1 × 1.5 mm` flat plunger, `$0.04/ea`):**
+   - `SW3` (`USER_A` -> `RP2350 GPIO6`, internal pull-up, active-low to `GND` + `100 nF` debounce `C73`) sits in the acute **NW wing** at `(-6.80, -27.20 mm, -17.75°)` (`y_max = -24.1 mm < -21.5 mm` battery North edge).
+   - `SW4` (`USER_B` -> `RP2350 GPIO7`, internal pull-up, active-low to `GND` + `100 nF` debounce `C74`) sits in the acute **SE wing** at `(+6.80, +27.20 mm, -17.75°)` (`y_min = +24.1 mm > +13.5 mm` battery South edge).
+   - Existing side-actuated `EVQP7J01P` switches `SW1` (`PWR_BTN`) and `SW2` (`BOOT`) remain unchanged on the East/West edges.
+3. **Micro-JST 1.25 mm (`MX1.25`) Right-Angle SMT Battery Header (`BT1`: `CJT A1251WR-S-2P`, `C225111` / `Molex 53261-0271`, `C177225`, `$0.05`):**
+   - Placed on `B.Cu` at `(-2.50, +17.20 mm, 0°)` just South of the `y = +13.5 mm` LiPo edge (`+` West / `-` East silkscreen polarity, zero overhang past `Edge.Cuts`, zero overlap with the LiPo pouch or `SW4`).
+
+### `-usb` Routing, Verification & Qty-10 Cost Summary
+
+| Variant | Grid (`px × py`) | LEDs & Drivers | Total Conns | Open (`Sig / Plane`) | **% Routed** | Tracks / Vias | Strict DRC (`--severity-all`) & Audits | Qty-10 BOM (`Δ` vs Wire-Pad) |
+|---|---|---|---:|---:|---:|---:|---|---:|
+| **`p1-66-usb`** | `6 × 11` (`3.70 × 5.20 mm`) | `66× XL-1615` + `1× AW20198` | `485` | **`0` (`0 / 0`)** | **`100.00%`** | `2,561 / 372` | **`0` err, `0` warn, `0` `copper_audit`, `0` `pad_joints`** (`fab/` exported) | **`$11.08`** (`+$0.47`) |
+| **`p2-132-usb`** | `6 × 22` (`3.70 × 2.60 mm`) | `132× XL-1615` + `2× AW20198` | `771` | **`0` (`0 / 0`)** | **`100.00%`** | `4,974 / 727` | **`0` err, `0` warn, `0` `copper_audit`, `0` `pad_joints`** (`fab/` exported) | **`$13.06`** (`+$0.46`) |
+| **`p2-132-usb6`** | `6 × 22` (`3.70 × 2.60 mm`) | `132× XL-1615` + `2× AW20198` | `795` | **`0` (`0 / 0`)** | **`100.00%`** | `4,921 / 729` | **`0` err, `0` warn, `0` `copper_audit`, `0` `pad_joints`** (`fab/` exported) | **`$13.25`** (`+$0.39` vs live `p2-132-usb` `$12.86`) |
+| **`p3-162-usb`** | `9 × 18` (`2.55 × 3.15 mm`) | `162× XL-1010` + `3× AW20198` | `911` | `34` (`31 / 3`) | `96.27%` | `5,800 / 874` | `34` unconn, `4` err, `0` warn, `0` `pad_joints` | **`$15.94`** (`+$0.47`) |
+| **`p3-198-usb`** | `9 × 22` (`2.55 × 2.60 mm`) | `198× XL-1010` + `3× AW20198` | `1,055` | `78` (`78 / 0`) | `92.61%` | `6,105 / 964` | `78` unconn, `1` err, `0` warn, `0` `pad_joints` | **`$16.91`** (`+$0.47`) |
+| **`p4-264-usb`** | `12 × 22` (`2.02 × 2.60 mm`) | `264× XL-1010` + `4× AW20198` | `1,339` | `169` (`169 / 0`) | `87.38%` | `6,426 / 1,066` | `169` unconn, `2` err, `0` warn | **`$19.49`** (`+$0.46`) |
+
+### Six-Button West-Edge Variant (`p2-132-usb6`) & Firmware GPIO Map
+
+`hw/parallelogram/p2-132-usb6/` (`extra_side_buttons=True` on `p2-132-usb`) adds two more peg-less side-actuated Panasonic **`EVQP7J01P`** (`C2828254`) tactile switches near the North and South ends of the **`62.00 mm` West vertical edge (`x = -12.50 mm`)**, while keeping every parent component — including `J1` at `(-1.24, +26.82 mm, rot = 162.2553°)` — in its exact `p2-132-usb` position and orientation:
+
+- **Why the West Long Edge (`x = -12.50 mm`):** On the East edge (`x = +12.50 mm`), the South segment is occupied by `BT1` (`(+8.40, +20.05 mm)`), `U8` (`(+10.00, +12.60 mm)`), and SE wing button `SW4` (`(+9.15, +28.65 mm)`), and the North segment climbs into the obtuse NE corner (`y_top(+12.5) = -27.0 mm`). On the **West** edge (`y ∈ [-35.0, +27.0] mm`), both ends sit outside the `x ∈ [-10.0, +10.0] mm, y ∈ [-21.5, +13.5] mm` LiPo pocket (`SW5`/`SW6` copper spans `x ∈ [-12.10, -9.60] mm` with `y = -22.00 mm` North and `y = +22.80 mm` South):
+  - **`SW5` (`USER_C`, West-North):** `(-10.85, -22.00 mm)`, `rot = +90°` (`0.45 mm` plunger overhang past `x = -12.50 mm`, `0.31 mm` courtyard-clear south of `SW3`, `13.31 mm` north of `SW2`), paired with `R46 = 1 kΩ` (`(-7.40, -21.00)`) + `C71 = 100 nF` (`(-7.40, -22.20)`), labeled `USER_C` on `B.SilkS`.
+  - **`SW6` (`USER_D`, West-South):** `(-10.85, +22.80 mm)`, `rot = +90°` (`0.45 mm` plunger overhang, `1.81 mm` rotated-courtyard clear of `J1`, `2.91 mm` clear of `U4`), paired with `R47 = 1 kΩ` (`(-7.40, +21.00)`) + `C72 = 100 nF` (`(-7.40, +19.80)`), labeled `USER_D` on `B.SilkS`.
+- **Debounce & Dormant-Wake Note (`design/sim/p2-132-usb6/`):** Configure all five GPIO user/power switches with `RP2350` internal pull-up enabled (`PUE = 1`, `PDE = 0`, active-low `0` when pressed). Because `EVQP7J01P` specifies `t_bounce <= 10 ms` while the `1 kΩ + 100 nF` + `R_pu` clean release rise time is `3.59–8.83 ms`, apply a **`>= 20 ms` symmetrical press + release software debounce window** in firmware (`10.0 ms` max OFF bounce + `8.83 ms` slow-corner RC rise = `18.83 ms < 20 ms`). Note that `RP2350` `POWMAN` deep-sleep GPIO wake provides `4` simultaneous wake generators (`PWRUP0..3`): `SW1` (`GPIO11`) and `ACC_INT` (`GPIO10`) use `2`, leaving `2` hardware deep-sleep wake slots selectable among `{SW3, SW4, SW5, SW6}` (all `6` buttons work simultaneously in active and `dormant` sleep modes).
+
+#### Authoritative `RP2350A` (`U3`) Firmware Pin Map (`scripts/parallelogram/sch_gen.py`)
+
+*(Note: earlier `-usb` prose above listed `SW3`/`SW4` as `GPIO6`/`GPIO7` with `C73`/`C74`; in `scripts/parallelogram/sch_gen.py`, `GPIO6` is `LED_SDB`, `SW3` (`GPIO7`) & `SW4` (`GPIO19`) use `1 kΩ` series resistors `R44`/`R45` without caps, and `SW5` (`GPIO9`) & `SW6` (`GPIO0`) add both `1 kΩ` (`R46`/`R47`) and `100 nF` (`C71`/`C72`).)*
+
+| `RP2350A` GPIO (`U3` Pin) | Schematic Net | Silk Label | Hardware Function & Firmware Config |
+|---|---|---|---|
+| **`GPIO0` (`Pin 2`)** | **`/MCU/USER_D`** | **`USER_D`** | **`SW6` (`p2-132-usb6` only):** West-South `EVQP7J01P` side switch via `R47` (`1 kΩ`) + `C72` (`100 nF`); input, `PUE=1`, active-low (`>= 20 ms` SW debounce) |
+| `GPIO1` (`Pin 3`) | `/MCU/LIGHT_PWR` | — | `Q2` (`XYC-PT19C-L1`) collector supply; drive `HIGH` only during ADC read (`0 µA` sleep) |
+| `GPIO2` (`Pin 4`) | `/MCU/ACC_SDA` | — | `I2C1 SDA` to `U9` (`LIS2DW12TR`, `0x19`), external `4.7 kΩ` (`R20`) to `+3V3` |
+| `GPIO3` (`Pin 5`) | `/MCU/ACC_SCL` | — | `I2C1 SCL` to `U9` (`LIS2DW12TR`, `0x19`), external `4.7 kΩ` (`R19`) to `+3V3` |
+| `GPIO4` (`Pin 7`) | `I2C_SDA` | — | `I2C0 SDA` (`1 MHz` Fm+) to `U1` (`0x20`) & `U2` (`0x25`) `AW20198QNR`, `1 kΩ` (`R21`) to `+3V3` (`12 mA` pad drive, `GCR = 0xB9`, `SRCR = 0x07`, `GCC <= 0x74`) |
+| `GPIO5` (`Pin 8`) | `I2C_SCL` | — | `I2C0 SCL` (`1 MHz` Fm+) to `U1` (`0x20`) & `U2` (`0x25`) `AW20198QNR`, `1 kΩ` (`R22`) to `+3V3` (`12 mA` pad drive) |
+| `GPIO6` (`Pin 9`) | `LED_SDB` | — | `U1`/`U2` hardware shutdown (`100 kΩ` `R31` pulldown + `100 nF` `C35`; drive `HIGH` to enable LED drivers) |
+| `GPIO7` (`Pin 10`) | `/MCU/BTN_NW` | `USER_A` | `SW3` (`-usb` / `-usb6`): NW wing `TS-1187A` flat button via `R44` (`1 kΩ`); input, `PUE=1`, active-low (`>= 20 ms` SW debounce) |
+| **`GPIO9` (`Pin 13`)** | **`/MCU/USER_C`** | **`USER_C`** | **`SW5` (`p2-132-usb6` only):** West-North `EVQP7J01P` side switch via `R46` (`1 kΩ`) + `C71` (`100 nF`); input, `PUE=1`, active-low (`>= 20 ms` SW debounce) |
+| `GPIO10` (`Pin 14`) | `/MCU/ACC_INT` | — | `U9` (`LIS2DW12TR`) `INT1` interrupt input |
+| `GPIO11` (`Pin 15`) | `/MCU/BTN` | `PWR` | `SW1`: East-mid `EVQP7J01P` power/wake switch via `R18` (`1 kΩ`); input, `PUE=1`, active-low (`>= 20 ms` SW debounce) |
+| `GPIO12` (`Pin 16`) | `CHG` | — | `U5` (`BQ24073`) open-drain `~CHG` status; input, `PUE=1`, active-low while charging |
+| `GPIO13` (`Pin 17`) | `PGOOD` | — | `U5` (`BQ24073`) open-drain `~PGOOD` status; input, `PUE=1`, active-low when `VBUS` valid |
+| `GPIO14` (`Pin 18`) | `VBAT_EN` | — | `Q1` (`NTZD3155C`) dual-FET battery divider enable (`100 kΩ` `R9` pulldown; drive `HIGH` to sample `VBAT_SENSE`) |
+| `GPIO19` (`Pin 31`) | `/MCU/BTN_SE` | `USR_B` | `SW4` (`-usb` / `-usb6`): SE wing `TS-1187A` flat button via `R45` (`1 kΩ`); input, `PUE=1`, active-low (`>= 20 ms` SW debounce) |
+| `GPIO26 / ADC0` (`Pin 40`) | `VBAT_SENSE` | — | `100 kΩ / 100 kΩ` (`R11`/`R12`) switched `VBAT/2` divider (`C7` `100 nF`); disable `PUE`/`PDE` (`ISO`) before ADC read |
+| `GPIO27 / ADC1` (`Pin 41`) | `/MCU/LIGHT` | — | `Q2` emitter ambient-light voltage across `R43 = 22 kΩ` || `C70 = 100 nF`; disable `PUE`/`PDE` before ADC read |
+| `~{QSPI_SS}` (`Pin 60`) | `/MCU/QSPI_SS` | `BOOT` | `SW2`: West-mid `EVQP7J01P` `BOOTSEL` switch via `R16 = 1 kΩ` to `GND` (sampled by bootrom at reset) |

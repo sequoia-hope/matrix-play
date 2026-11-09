@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """config.py -- geometry, skewed LED grid progressions, and B.Cu floorplan specs for hw/parallelogram/<variant>/."""
 from dataclasses import dataclass
+import os
 from pathlib import Path
 from typing import List, Tuple
 
@@ -45,6 +46,10 @@ class VariantSpec:
     drivers: Tuple[DriverSpec, ...]
     summary: str
     led_type: str = "XL-1010RGB"
+    io_mode: str = "pads"  # "pads" (wire pads) or "usb" (TYPE-C-31-M-22 + JST 1.25 + NW/SE wing buttons)
+    usb_s: float = 0.0     # J1 tangential coordinate along South slanted bezel (mm)
+    usb_ye: float = 0.0    # J1 origin inset perpendicular to South slanted bezel (mm; mouth at +5.12 mm)
+    extra_side_buttons: bool = False  # Add SW5 (USER_C, West-North) & SW6 (USER_D, West-South) EVQP7J01P switches
 
     @property
     def n_leds(self) -> int:
@@ -52,7 +57,8 @@ class VariantSpec:
 
     @property
     def hw_dir(self) -> Path:
-        return ROOT / "hw/parallelogram" / self.name
+        base = Path(os.environ["PARALLELOGRAM_HW_ROOT"]) if os.environ.get("PARALLELOGRAM_HW_ROOT") else (ROOT / "hw/parallelogram")
+        return base / self.name
 
 
 # Five progressive 4-layer density tiers on the identical 25 x 70 mm parallelogram & 4L JLCPCB promo rules:
@@ -183,6 +189,169 @@ VARIANTS = {
             ),
         ),
         summary="264 RGB LEDs (12x22 skewed grid, 2.02x2.60 mm), 4x AW20198QNR QFN-40, 4-layer JLCPCB standard",
+    ),
+    "p1-66-usb": VariantSpec(
+        name="p1-66-usb",
+        title_rev="P0U",
+        cols=6,
+        rows=11,
+        px=3.70,
+        py=5.20,
+        drivers=(
+            DriverSpec(
+                1, "U1", "R30", 31, "C30", "GND", "GND", "0x20",
+                (0.00, -10.40, 90.0),
+                ((0, 6, 0, 11, 1),),
+            ),
+        ),
+        summary="66 XL-1615RGBC-RF LEDs (6x11), 1x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L",
+        led_type="XL-1615RGBC",
+        io_mode="usb",
+        usb_s=-2.90,
+        usb_ye=4.85,
+    ),
+    "p2-132-usb": VariantSpec(
+        name="p2-132-usb",
+        title_rev="P1U",
+        cols=6,
+        rows=22,
+        px=3.70,
+        py=2.60,
+        drivers=(
+            DriverSpec(
+                1, "U1", "R30", 31, "C30", "GND", "GND", "0x20",
+                (0.00, -18.50, 90.0),
+                ((0, 6, 0, 11, 1),),
+            ),
+            DriverSpec(
+                2, "U2", "R33", 41, "C40", "VSYS", "VSYS", "0x25",
+                (7.40, -8.20, 90.0),
+                ((0, 6, 11, 11, 1),),
+            ),
+        ),
+        summary="132 XL-1615RGBC-RF LEDs (6x22), 2x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L",
+        led_type="XL-1615RGBC",
+        io_mode="usb",
+        usb_s=-2.45,
+        usb_ye=3.60,
+    ),
+    "p2-132-usb6": VariantSpec(
+        name="p2-132-usb6",
+        title_rev="P1U6",
+        cols=6,
+        rows=22,
+        px=3.70,
+        py=2.60,
+        drivers=(
+            DriverSpec(
+                1, "U1", "R30", 31, "C30", "GND", "GND", "0x20",
+                (0.00, -18.50, 90.0),
+                ((0, 6, 0, 11, 1),),
+            ),
+            DriverSpec(
+                2, "U2", "R33", 41, "C40", "VSYS", "VSYS", "0x25",
+                (7.40, -8.20, 90.0),
+                ((0, 6, 11, 11, 1),),
+            ),
+        ),
+        summary="132 XL-1615RGBC-RF LEDs (6x22), 2x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE wing + N/S West side buttons, 4L",
+        led_type="XL-1615RGBC",
+        io_mode="usb",
+        usb_s=-2.45,
+        usb_ye=3.60,
+        extra_side_buttons=True,
+    ),
+    "p3-162-usb": VariantSpec(
+        name="p3-162-usb",
+        title_rev="P2U",
+        cols=9,
+        rows=18,
+        px=2.55,
+        py=3.15,
+        drivers=(
+            DriverSpec(
+                1, "U1", "R30", 31, "C30", "GND", "GND", "0x20",
+                (-4.80, -16.20, 90.0),
+                ((0, 6, 0, 9, 1),),
+            ),
+            DriverSpec(
+                2, "U2", "R33", 41, "C40", "VSYS", "VSYS", "0x25",
+                (-9.35, 16.60, 90.0),
+                ((0, 6, 9, 9, 1),),
+            ),
+            DriverSpec(
+                3, "U10", "R50", 51, None, "GND", "SCL", "0x22",
+                (6.80, -8.50, 90.0),
+                ((6, 3, 0, 9, 1), (6, 3, 9, 9, 4)),
+            ),
+        ),
+        summary="162 XL-1010RGB LEDs (9x18), 3x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L",
+        io_mode="usb",
+        usb_s=-2.55,
+        usb_ye=4.15,
+    ),
+    "p3-198-usb": VariantSpec(
+        name="p3-198-usb",
+        title_rev="P3U",
+        cols=9,
+        rows=22,
+        px=2.55,
+        py=2.60,
+        drivers=(
+            DriverSpec(
+                1, "U1", "R30", 31, "C30", "GND", "GND", "0x20",
+                (-4.80, -16.20, 90.0),
+                ((0, 6, 0, 11, 1),),
+            ),
+            DriverSpec(
+                2, "U2", "R33", 41, "C40", "VSYS", "VSYS", "0x25",
+                (-9.35, 16.60, 90.0),
+                ((0, 6, 11, 11, 1),),
+            ),
+            DriverSpec(
+                3, "U10", "R50", 51, None, "GND", "SCL", "0x22",
+                (6.80, -8.50, 90.0),
+                ((6, 3, 0, 11, 1), (6, 3, 11, 11, 4)),
+            ),
+        ),
+        summary="198 XL-1010RGB LEDs (9x22), 3x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L",
+        io_mode="usb",
+        usb_s=-3.25,
+        usb_ye=3.85,
+    ),
+    "p4-264-usb": VariantSpec(
+        name="p4-264-usb",
+        title_rev="P4U",
+        cols=12,
+        rows=22,
+        px=2.02,
+        py=2.60,
+        drivers=(
+            DriverSpec(
+                1, "U1", "R30", 31, "C30", "GND", "GND", "0x20",
+                (-5.80, -18.80, 90.0),
+                ((0, 6, 0, 11, 1),),
+            ),
+            DriverSpec(
+                2, "U2", "R33", 41, "C40", "VSYS", "VSYS", "0x25",
+                (5.80, -18.80, 90.0),
+                ((6, 6, 0, 11, 1),),
+            ),
+            DriverSpec(
+                3, "U10", "R50", 51, None, "GND", "SCL", "0x22",
+                (-9.35, 16.60, 90.0),
+                ((0, 6, 11, 11, 1),),
+            ),
+            DriverSpec(
+                4, "U11", "R60", 61, None, "GND", "SDA", "0x23",
+                (6.80, -6.50, 90.0),
+                ((6, 6, 11, 11, 1),),
+            ),
+        ),
+        summary="264 XL-1010RGB LEDs (12x22), 4x AW20198QNR, USB-C + Micro-JST 1.25 + NW/SE flat-face wing buttons, 4L",
+        io_mode="usb",
+        usb_s=-3.35,
+        usb_ye=3.70,
     ),
 }
 

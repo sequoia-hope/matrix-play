@@ -69,10 +69,12 @@ def main() -> int:
     P = lambda v: (um(v.x), um(v.y))
 
     for z in b.Zones():
-        if not z.GetIsRuleArea() and z.GetZoneName() in ("plane GND", "RP2350 band"):
-            z.SetMinThickness(fm(0.12))
+        if not z.GetIsRuleArea():
             if z.GetZoneName() == "plane GND":
+                z.SetMinThickness(max(z.GetMinThickness(), fm(0.18)))
                 z.SetLocalClearance(fm(0.15))
+            elif z.GetZoneName() == "RP2350 band":
+                z.SetMinThickness(fm(0.16))
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
     base_open = b.GetConnectivity().GetUnconnectedCount(False)
@@ -127,6 +129,8 @@ def main() -> int:
             zlays = {ln for ln, lid in lay_ids.items() if z.IsOnLayer(lid)}
             if zname == "U3 ring":
                 rule_areas.append((rpoly, zlays, {"+3V3", "+1V1", "GND"}, True))
+            elif zname == "U3 band":
+                rule_areas.append((rpoly, zlays, {"+3V3"}, True))
             elif zname == "reg corner":
                 rule_areas.append((rpoly, zlays, {"/MCU/VREG_LX", "+1V1", "+3V3", "GND", "/MCU/VREG_AVDD"}, True))
             elif zname == "L1 window":
@@ -1025,7 +1029,7 @@ def main() -> int:
                     break
 
     for (n, ln), segs in list(by_nl.items()):
-        if n in POWER_NETS:
+        if n == "GND":
             continue
         # 5a-pre. Split any proper interior X-crossings between same-net tracks on (n, ln) so 5a sees all 4 rays at the crossing!
         act_x = [t for t in segs if t["active"] and math.dist(t["a"], t["b"]) > 0.05]
@@ -1079,7 +1083,7 @@ def main() -> int:
                         continue
                     c = max(-1.0, min(1.0, (v1[0] * v2[0] + v1[1] * v2[1]) / (l1 * l2)))
                     ang = math.degrees(math.acos(c))
-                    if not (2.5 <= ang < 45.0):
+                    if not (2.0 <= ang <= 45.2):
                         continue
                     d_sep = ((t1["w"] + t2["w"]) / 4.0) / math.sin(math.radians(ang / 2.0))
                     if min(l1, l2) <= d_sep + 0.02:
@@ -1591,11 +1595,11 @@ def main() -> int:
                     break
 
     # Step 6f-2: Resolve any <2.0-deg collinear forks at a shared vertex (copper_audit COLLINEAR_DUP check)
-    for _ in range(5):
+    for _ in range(12):
         adj_cf = collections.defaultdict(list)
         v_graph = collections.defaultdict(list)
         for t in tracks.values():
-            if t["active"] and t["net"] not in POWER_NETS:
+            if t["active"]:
                 sa, sb = snap(t["a"]), snap(t["b"])
                 v_graph[(t["net"], t["ln"], sa)].append((sb, t["id"]))
                 v_graph[(t["net"], t["ln"], sb)].append((sa, t["id"]))
@@ -1625,7 +1629,12 @@ def main() -> int:
                     if l1 <= 0.02 or l2 <= 0.02:
                         continue
                     ang = math.degrees(math.acos(max(-1.0, min(1.0, (v1[0] * v2[0] + v1[1] * v2[1]) / (l1 * l2)))))
-                    if ang < 2.0:
+                    is_late_acute = (
+                        2.0 <= ang <= 45.2
+                        and not in_pad(n, ln, vpt, tol=0.02)
+                        and min(l1, l2) > ((t1["w"] + t2["w"]) / 4.0) / math.sin(math.radians(ang / 2.0)) + 0.02
+                    )
+                    if ang < 2.0 or is_late_acute:
                         # Order so t_short <= t_long
                         if l1 <= l2:
                             ts, ks_v, ks_f, bs, tl, kl_v, kl_f, bl = t1, k1_v, k1_f, b1, t2, k2_v, k2_f, b2
@@ -1650,6 +1659,51 @@ def main() -> int:
                             did_cf += 1
                             resolved_here = True
                             break
+                        elif is_late_acute:
+                            ls_lg = LineString([tl["a"], tl["b"]])
+                            proj = ls_lg.interpolate(ls_lg.project(Point(bs)))
+                            q = (round(proj.x, 4), round(proj.y, 4))
+                            other_at_vpt = len(nbrs) > 2 or in_pad(n, ln, vpt, tol=0.005) or in_zone(n, ln, vpt) or any(
+                                math.dist(vpt, v["p"]) <= 0.004 for v in vias_by_net[n] if v["active"]
+                            )
+                            if math.dist(q, bs) > 0.01 and is_clear(ln, seg_poly(bs, q, ts["w"]), n, {ts["id"], tl["id"]}):
+                                if not other_at_vpt:
+                                    tl["a"], tl["b"] = q, bl
+                                elif math.dist(q, tl["a"]) > 0.004 and math.dist(q, tl["b"]) > 0.004:
+                                    old_b = tl["b"]
+                                    tl["b"] = q
+                                    new_track(q, old_b, tl["w"], ln, n, tl["nc"])
+                                ts["a"], ts["b"] = bs, q
+                                collinear_fork_fixed += 1
+                                did_cf += 1
+                                resolved_here = True
+                                break
+                            for dc_try in (0.12, 0.18, 0.25):
+                                dc = min(dc_try, min(l1, l2) * 0.45)
+                                q1 = (round(vpt[0] + (v1[0] / l1) * dc, 4), round(vpt[1] + (v1[1] / l1) * dc, 4))
+                                q2 = (round(vpt[0] + (v2[0] / l2) * dc, 4), round(vpt[1] + (v2[1] / l2) * dc, 4))
+                                bw = max(net_min_w(n), min(t1["w"], t2["w"]))
+                                if math.dist(q1, q2) > 0.012 and is_clear(ln, seg_poly(q1, q2, bw), n, {t1["id"], t2["id"]}):
+                                    if not other_at_vpt:
+                                        t1["a"], t1["b"] = q1, b1
+                                        t2["a"], t2["b"] = q2, b2
+                                        new_track(q1, q2, bw, ln, n, t1["nc"])
+                                        collinear_fork_fixed += 1
+                                        did_cf += 1
+                                        resolved_here = True
+                                        break
+                                    mid_q = (round((q1[0] + q2[0]) / 2.0, 4), round((q1[1] + q2[1]) / 2.0, 4))
+                                    if is_clear(ln, seg_poly(vpt, mid_q, bw), n, {t1["id"], t2["id"]}):
+                                        t1["a"], t1["b"] = q1, b1
+                                        t2["a"], t2["b"] = q2, b2
+                                        for sa, sb in ((vpt, mid_q), (q1, mid_q), (mid_q, q2)):
+                                            new_track(sa, sb, bw, ln, n, t1["nc"])
+                                        collinear_fork_fixed += 1
+                                        did_cf += 1
+                                        resolved_here = True
+                                        break
+                            if resolved_here:
+                                break
                         elif math.dist(bs, bl) > 0.004 and is_clear(ln, seg_poly(bs, bl, tl["w"]), n, {ts["id"], tl["id"]}):
                             tl[kl_v] = bs
                             collinear_fork_fixed += 1
@@ -1767,6 +1821,184 @@ def main() -> int:
         )
 
     # ------------------------------------------------------------------
+    # Pass 6g: Post-6f cleanup (EP paste-via dedup, late mid-via graze,
+    #          sub-micron duplicate segment dedup, and 1-layer via + tail peel)
+    # ------------------------------------------------------------------
+    ep_paste_vias_dropped = 0
+    bpaste_lid = b.GetLayerID("B.Paste")
+    ep_paste_polys = []
+    for ref_ep in ("U1", "U2", "U3", "U5"):
+        fp_ep = b.FindFootprintByReference(ref_ep)
+        if fp_ep is None:
+            continue
+        for p_ep in fp_ep.Pads():
+            if p_ep.IsOnLayer(bpaste_lid) and p_ep.GetNetname() in ("GND", ""):
+                o_ep = p_ep.GetEffectivePolygon(bpaste_lid, 0)
+                if o_ep.OutlineCount() > 0:
+                    ol_ep = o_ep.Outline(0)
+                    ep_paste_polys.append(Polygon([(um(ol_ep.CPoint(i).x), um(ol_ep.CPoint(i).y)) for i in range(ol_ep.PointCount())]))
+    if ep_paste_polys:
+        u_ep_paste = unary_union(ep_paste_polys).buffer(0.075)
+        for v in vias.values():
+            if not v["active"] or v["net"] != "GND":
+                continue
+            if u_ep_paste.contains(Point(v["p"])):
+                touching_gnd = [
+                    t for t in tracks.values()
+                    if t["active"] and t["net"] == "GND"
+                    and LineString([t["a"], t["b"]]).distance(Point(v["p"])) <= v["r"] + t["w"] * 0.5 + 0.01
+                ]
+                if not touching_gnd:
+                    v["active"] = False
+                    ep_paste_vias_dropped += 1
+                elif b.FindFootprintByReference("SW5") is not None and all(t["ln"] == "B.Cu" for t in touching_gnd):
+                    alt_vias = [
+                        v2 for v2 in vias.values()
+                        if v2["active"] and v2["id"] != v["id"] and v2["net"] == "GND"
+                        and not u_ep_paste.contains(Point(v2["p"]))
+                        and math.dist(v["p"], v2["p"]) <= 2.20
+                    ]
+                    if alt_vias:
+                        v_alt = min(alt_vias, key=lambda v2: math.dist(v["p"], v2["p"]))["p"]
+                        if all(
+                            (math.dist(t["a"], v["p"]) <= v["r"] + 0.02 and is_clear("B.Cu", seg_poly(v_alt, t["b"], t["w"]), "GND", {t["id"]}))
+                            or (math.dist(t["b"], v["p"]) <= v["r"] + 0.02 and is_clear("B.Cu", seg_poly(t["a"], v_alt, t["w"]), "GND", {t["id"]}))
+                            for t in touching_gnd
+                        ):
+                            for t in touching_gnd:
+                                if math.dist(t["a"], v["p"]) <= v["r"] + 0.02:
+                                    t["a"] = v_alt
+                                elif math.dist(t["b"], v["p"]) <= v["r"] + 0.02:
+                                    t["b"] = v_alt
+                            v["active"] = False
+                            ep_paste_vias_dropped += 1
+
+    late_mid_graze = 0
+    for t in list(tracks.values()):
+        if not t["active"]:
+            continue
+        n, ln, w = t["net"], t["ln"], t["w"]
+        ls_t = LineString([t["a"], t["b"]])
+        if ls_t.length < 0.05:
+            continue
+        for v in vias_by_net[n]:
+            if not v["active"]:
+                continue
+            vp, vr = v["p"], v["r"]
+            if math.dist(t["a"], vp) <= 0.004 or math.dist(t["b"], vp) <= 0.004:
+                continue
+            d_tv = ls_t.distance(Point(vp))
+            pr_t = ls_t.project(Point(vp))
+            if 0.004 < d_tv <= vr + 0.002 and 0.01 < pr_t < ls_t.length - 0.01:
+                if is_clear(ln, seg_poly(t["a"], vp, w), n, {t["id"]}) and is_clear(ln, seg_poly(vp, t["b"], w), n, {t["id"]}):
+                    old_b = t["b"]
+                    t["b"] = vp
+                    new_track(vp, old_b, w, ln, n, t["nc"])
+                    late_mid_graze += 1
+                    break
+
+    submicron_dups = coalesce_collinear()
+    by_nl_6g = collections.defaultdict(list)
+    for t in tracks.values():
+        if t["active"]:
+            by_nl_6g[(t["net"], t["ln"])].append(t)
+    for segs_6g in by_nl_6g.values():
+        for i in range(len(segs_6g)):
+            t1 = segs_6g[i]
+            if not t1["active"]:
+                continue
+            for j in range(i + 1, len(segs_6g)):
+                t2 = segs_6g[j]
+                if not t2["active"]:
+                    continue
+                same_dir = math.dist(t1["a"], t2["a"]) < 0.0005 and math.dist(t1["b"], t2["b"]) < 0.0005
+                rev_dir = math.dist(t1["a"], t2["b"]) < 0.0005 and math.dist(t1["b"], t2["a"]) < 0.0005
+                if same_dir or rev_dir:
+                    # Keep the original/unrounded segment if one has obj != None so endpoints match existing vertices exactly
+                    if t1["obj"] is None and t2["obj"] is not None:
+                        t1["active"] = False
+                        submicron_dups += 1
+                        break
+                    else:
+                        t2["active"] = False
+                        submicron_dups += 1
+
+    late_dangling_vias = 0
+    late_tail_peeled = 0
+    for _ in range(5):
+        did_6g = 0
+        trks_nl_6g = collections.defaultdict(list)
+        deg_6g = collections.Counter()
+        for t in tracks.values():
+            if t["active"]:
+                trks_nl_6g[(t["net"], t["ln"])].append(t)
+                deg_6g[(t["net"], t["ln"], snap(t["a"]))] += 1
+                deg_6g[(t["net"], t["ln"], snap(t["b"]))] += 1
+        for v in vias.values():
+            if not v["active"]:
+                continue
+            vn, vp, vr = v["net"], v["p"], v["r"]
+            vdisc = Point(vp).buffer(vr + 0.002, 12)
+            conn_l = 0
+            for ln in lay_ids:
+                if (
+                    any(poly.intersects(vdisc) for _, poly, _ in pads_by_nl[(vn, ln)])
+                    or any(zp.intersects(vdisc) for zp in zone_polys_nl[(vn, ln)])
+                    or any(seg_poly(t["a"], t["b"], t["w"]).intersects(vdisc) for t in trks_nl_6g[(vn, ln)])
+                ):
+                    conn_l += 1
+            if conn_l <= 1:
+                v["active"] = False
+                late_dangling_vias += 1
+                did_6g += 1
+        for t in tracks.values():
+            if not t["active"]:
+                continue
+            n, ln = t["net"], t["ln"]
+            if in_pad(n, ln, t["a"], tol=0.005) and in_pad(n, ln, t["b"], tol=0.005):
+                continue
+            if any(
+                v["active"]
+                and math.dist(t["a"], v["p"]) <= v["r"] + 0.002
+                and math.dist(t["b"], v["p"]) <= v["r"] + 0.002
+                and (
+                    (deg_6g[(n, ln, snap(t["a"]))] == 1 and math.dist(t["a"], v["p"]) > 0.004)
+                    or (deg_6g[(n, ln, snap(t["b"]))] == 1 and math.dist(t["b"], v["p"]) > 0.004)
+                )
+                for v in vias_by_net[n]
+            ):
+                t["active"] = False
+                deg_6g[(n, ln, snap(t["a"]))] -= 1
+                deg_6g[(n, ln, snap(t["b"]))] -= 1
+                late_tail_peeled += 1
+                did_6g += 1
+                continue
+            for pt in (t["a"], t["b"]):
+                if (
+                    deg_6g[(n, ln, snap(pt))] == 1
+                    and not in_pad(n, ln, pt, tol=0.02)
+                    and not in_zone(n, ln, pt)
+                    and not any(v["active"] and math.dist(pt, v["p"]) <= v["r"] + 0.01 for v in vias_by_net[n])
+                    and not any(
+                        t2["active"] and t2["id"] != t["id"] and LineString([t2["a"], t2["b"]]).distance(Point(pt)) <= (t["w"] + t2["w"]) * 0.5 + 0.01
+                        for t2 in trks_nl_6g[(n, ln)]
+                    )
+                ):
+                    t["active"] = False
+                    deg_6g[(n, ln, snap(t["a"]))] -= 1
+                    deg_6g[(n, ln, snap(t["b"]))] -= 1
+                    late_tail_peeled += 1
+                    did_6g += 1
+                    break
+        if not did_6g:
+            break
+    if ep_paste_vias_dropped or late_mid_graze or submicron_dups or late_dangling_vias or late_tail_peeled:
+        print(
+            f"Pass 6g: ep_paste_vias_dropped={ep_paste_vias_dropped}, late_mid_graze={late_mid_graze}, "
+            f"submicron_dups={submicron_dups}, late_dangling_vias={late_dangling_vias}, late_tail_peeled={late_tail_peeled}"
+        )
+
+    # ------------------------------------------------------------------
     # Apply all mutations cleanly to pcbnew.BOARD in ONE single pass!
     # ------------------------------------------------------------------
     del_tracks = 0
@@ -1805,10 +2037,12 @@ def main() -> int:
     print(f"Applied to board: del_tracks={del_tracks}, mod_tracks={mod_tracks}, add_tracks={add_tracks}, del_vias={del_vias}")
 
     for z in b.Zones():
-        if not z.GetIsRuleArea() and z.GetZoneName() in ("plane GND", "RP2350 band"):
-            z.SetMinThickness(fm(0.12))
+        if not z.GetIsRuleArea():
             if z.GetZoneName() == "plane GND":
+                z.SetMinThickness(max(z.GetMinThickness(), fm(0.18)))
                 z.SetLocalClearance(fm(0.15))
+            elif z.GetZoneName() == "RP2350 band":
+                z.SetMinThickness(fm(0.16))
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.BuildConnectivity()
     final_open = b.GetConnectivity().GetUnconnectedCount(False)

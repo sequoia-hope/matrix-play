@@ -24,10 +24,12 @@ for t in b.GetTracks():
     if t.IsLocked():
         t.SetLocked(False)
 for z in b.Zones():
-    if not z.GetIsRuleArea() and z.GetZoneName() in ("plane GND", "RP2350 band"):
-        z.SetMinThickness(pcbnew.FromMM(0.12))
+    if not z.GetIsRuleArea():
         if z.GetZoneName() == "plane GND":
+            z.SetMinThickness(max(z.GetMinThickness(), pcbnew.FromMM(0.18)))
             z.SetLocalClearance(pcbnew.FromMM(0.15))
+        elif z.GetZoneName() == "RP2350 band":
+            z.SetMinThickness(pcbnew.FromMM(0.16))
 pcbnew.ZONE_FILLER(b).Fill(b.Zones())
 pcbnew.SaveBoard(pcb_path, b)
 
@@ -104,7 +106,7 @@ def main():
     if args.clean:
         raw_bak = hw / "route/routed_raw_4L.kicad_pcb"
         # Preserve raw ultraroute output: only snapshot pcb -> raw_bak when pcb still has locked pre-clean items or raw_bak is missing!
-        if not raw_bak.exists() or "(locked yes)" in pcb.read_text():
+        if not raw_bak.exists() or (not spec.extra_side_buttons and "(locked yes)" in pcb.read_text()):
             shutil.copy2(pcb, raw_bak)
         subprocess.run(
             [sys.executable, str(ROOT / "scripts/parallelogram/clean_copper_4l.py"), str(raw_bak), str(pcb)],

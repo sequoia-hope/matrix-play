@@ -90,7 +90,7 @@ def stage_outline(spec: VariantSpec):
     b = pcbnew.NewBoard(str(pcb_path))
     b.SetCopperLayerCount(4)
     tb = b.GetTitleBlock()
-    tb.SetTitle(f"parallelogram ({spec.name})")
+    tb.SetTitle(spec.name if spec.extra_side_buttons else f"parallelogram ({spec.name})")
     tb.SetRevision(spec.title_rev)
     tb.SetDate("2026-11-05")
     tb.SetCompany("CERN-OHL-P-2.0")
@@ -198,7 +198,7 @@ def stage_stack(spec: VariantSpec):
         lay("B.Mask", "Bottom Solder Mask", 0.01),
         lay("B.Paste", "Bottom Solder Paste"),
         lay("B.SilkS", "Bottom Silk Screen"),
-        '\t\t\t(copper_finish "HAL SnPb")',
+        '\t\t\t(copper_finish "ENIG")' if spec.extra_side_buttons else '\t\t\t(copper_finish "HAL SnPb")',
         "\t\t\t(dielectric_constraints no)",
         "\t\t)",
     ]
@@ -219,6 +219,11 @@ def stage_sync(spec: VariantSpec):
     pro_path = hw / "parallelogram.kicad_pro"
     pro_bytes = pro_path.read_bytes()
     update_pcb(hw / "parallelogram.kicad_sch", hw / "parallelogram.kicad_pcb", new_parts_at=(OX, OY))
+    if spec.extra_side_buttons:
+        pcb_txt = (hw / "parallelogram.kicad_pcb").read_text()
+        pcb_txt = pcb_txt.replace("unconnected-(U3-GPIO28/ADC2-Pad42)", "unconnected-(U3-GPIO28{slash}ADC2-Pad42)")
+        pcb_txt = pcb_txt.replace("unconnected-(U3-GPIO29/ADC3-Pad43)", "unconnected-(U3-GPIO29{slash}ADC3-Pad43)")
+        (hw / "parallelogram.kicad_pcb").write_text(pcb_txt)
     pro_path.write_bytes(pro_bytes)
     print(f"synced PCB from schematic: {spec.name}", flush=True)
     os._exit(0)
@@ -272,31 +277,127 @@ def stage_place(spec: VariantSpec):
         rp = rf.GetPosition()
         set_bcu(ref, (um(rp.x) - OX) + MACRO_DX, (um(rp.y) - OY) + MACRO_DY, rf.GetOrientationDegrees())
 
-    # 4. South end-zone (uncovered by 20x35 mm pouch cell): J1 USB pads, BT1 battery pads, Q1 VBAT sense divider.
-    set_bcu("J1", 0.00, 29.10, SKEW_DEG)  # Flipped on B.Cu: +SKEW_DEG aligns along dy/dx = +0.32!
-    # Verify J1 pad slope matches +0.32; if negated, flip sign!
-    j1_p1 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "1").GetPosition()
-    j1_p6 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "6").GetPosition()
-    slope_j1 = (um(j1_p6.y) - um(j1_p1.y)) / (um(j1_p6.x) - um(j1_p1.x))
-    if abs(slope_j1 - SKEW) > 0.05:
-        set_bcu("J1", 0.00, 29.10, -SKEW_DEG)
+    # 4. South end-zone & wing I/O (pads mode vs board-mounted USB-C + Micro-JST 1.25 + NW/SE flat-face buttons).
+    if spec.io_mode == "usb":
+        sec = math.hypot(1.0, SKEW)
+        ut = (1.0 / sec, SKEW / sec)
+        un = (-SKEW / sec, 1.0 / sec)  # outward South-West normal to South slanted bezel (y - SKEW*x = +HALF_EDGE)
 
-    # R1, R2 (5.1k CC1/CC2) right above J1.1/J1.2
-    j1_p1 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "1").GetPosition()
-    j1_p2 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "2").GetPosition()
-    set_bcu("R1", um(j1_p1.x) - OX, um(j1_p1.y) - OY - 2.20, 90.0)
-    set_bcu("R2", um(j1_p2.x) - OX, um(j1_p2.y) - OY - 2.20, 90.0)
+        # Keep RP2350A + L1 + Y1 + U6 core macro identical; adjust South sub-macros around USB-C J1 & Micro-JST BT1:
+        if spec.usb_ye > 4.5:
+            set_bcu("U4", -5.60, 17.20, 180.0)
+            set_bcu("C22", -1.60, 15.00, -90.0)
+        else:
+            set_bcu("U4", -3.65, 17.60, 90.0)
+            set_bcu("C22", -0.30, 15.10, -90.0)
+        set_bcu("C4", -3.20, 13.05, -90.0)
 
-    # BT1 in the spacious South-East acute triangle (y_bot(+6.0) = +32.92 mm!), cleanly below R8 (bottom 28.12).
-    set_bcu("BT1", 8.60, 29.85, 180.0)
+        set_bcu("U5", 3.02, 18.55, 0.0)
+        set_bcu("C5", 0.02, 18.85, 90.0)
+        set_bcu("C2", 3.60, 15.50, 180.0)
+        if spec.usb_ye > 4.5:
+            set_bcu("U7", -10.30, 21.80, 180.0)
+            set_bcu("C1", -0.05, 16.50, 180.0)
+            set_bcu("R5", 1.80, 15.45, 90.0)
+        else:
+            set_bcu("C1", 4.55, 21.75, -90.0)
+            set_bcu("U7", 2.20, 21.95, 180.0)
+            set_bcu("R5", 4.55, 23.40, 180.0)
+        set_bcu("R3", 1.25, 15.45, 180.0)
+        set_bcu("R4", 0.02, 21.25, 90.0)
 
-    # Q1 + R9..R12 + C7 (VBAT_SENSE) compactly grouped in South-West with zero net crossings around Q1.
-    set_bcu("Q1", -5.20, 25.40, 180.0)
-    set_bcu("R9", -3.30, 24.80, 180.0)
-    set_bcu("R10", -7.20, 24.80, 180.0)
-    set_bcu("R11", -5.20, 27.10, 180.0)
-    set_bcu("R12", -7.20, 26.40, 180.0)
-    set_bcu("C7", -3.30, 26.40, 180.0)
+        # J1 (TYPE-C-31-M-22 16P full-SMT USB-C) aligned to South slanted bezel:
+        jx = spec.usb_s * ut[0] - spec.usb_ye * un[0]
+        jy = HALF_EDGE + spec.usb_s * ut[1] - spec.usb_ye * un[1]
+        best_j1_deg = None
+        for deg in (SKEW_DEG, -SKEW_DEG, 180.0 + SKEW_DEG, 180.0 - SKEW_DEG):
+            set_bcu("J1", jx, jy, deg)
+            pa = next(p for p in fps["J1"].Pads() if p.GetNumber() == "A1B12").GetPosition()
+            pb = next(p for p in fps["J1"].Pads() if p.GetNumber() == "B1A12").GetPosition()
+            s1_n = max((um(p.GetPosition().x) - OX) * un[0] + (um(p.GetPosition().y) - OY) * un[1] for p in fps["J1"].Pads() if p.GetNumber() == "S1")
+            sig_n = (um(pa.x) - OX) * un[0] + (um(pa.y) - OY) * un[1]
+            dx_j = um(pb.x) - um(pa.x)
+            slope_j = (um(pb.y) - um(pa.y)) / dx_j if abs(dx_j) > 1e-6 else 999.0
+            if s1_n > sig_n + 2.0 and abs(slope_j - SKEW) < 0.02:
+                best_j1_deg = deg
+                break
+        assert best_j1_deg is not None, f"[{spec.name}] failed to orient J1 along South slanted bezel"
+        set_bcu("J1", jx, jy, best_j1_deg)
+
+        # Verify both Ø0.65 mm NPTH locating peg holes clear every F.Cu pad by >= 0.25 mm!
+        from shapely.geometry import Point, Polygon
+
+        fcu_pad_polys = [
+            Polygon([
+                (um(bb.GetLeft()) - OX, um(bb.GetTop()) - OY),
+                (um(bb.GetRight()) - OX, um(bb.GetTop()) - OY),
+                (um(bb.GetRight()) - OX, um(bb.GetBottom()) - OY),
+                (um(bb.GetLeft()) - OX, um(bb.GetBottom()) - OY),
+            ])
+            for f in b.GetFootprints()
+            if f.GetLayer() == pcbnew.F_Cu
+            for p in f.Pads()
+            for bb in [p.GetBoundingBox()]
+        ]
+        for hp in fps["J1"].Pads():
+            if hp.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
+                hx, hy = um(hp.GetPosition().x) - OX, um(hp.GetPosition().y) - OY
+                hpoly = Point(hx, hy).buffer(0.325, 32)
+                min_gap = min(hpoly.distance(pp) for pp in fcu_pad_polys)
+                assert min_gap >= 0.25, f"[{spec.name}] J1 NPTH hole ({hx:.2f},{hy:.2f}) too close to F.Cu pad: {min_gap:.3f} mm"
+
+        pa5 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "A5").GetPosition()
+        pb5 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "B5").GetPosition()
+        set_bcu("R1", (um(pa5.x) - OX) - 1.65 * un[0], (um(pa5.y) - OY) - 1.65 * un[1], 90.0)
+        set_bcu("R2", (um(pb5.x) - OX) - 1.65 * un[0], (um(pb5.y) - OY) - 1.65 * un[1], 90.0)
+
+        # BT1 (Micro-JST 1.25 / MX1.25 right-angle SMT) at East-South outside 20x35 mm LiPo, mating mouth facing West (-X):
+        set_bcu("BT1", 8.40, 20.05, 90.0)
+        bt_p1_x = um(next(p for p in fps["BT1"].Pads() if p.GetNumber() == "1").GetPosition().x) - OX
+        if bt_p1_x < 8.40:
+            set_bcu("BT1", 8.40, 20.05, -90.0)
+
+        # Two flat-face back push buttons (XKB TS-1187A-B-A-B) in NW & SE acute wings, 100% outside 20x35 mm LiPo:
+        set_bcu("SW3", -9.15, -28.65, 90.0)
+        set_bcu("SW4", 9.15, 28.65, 90.0)
+        set_bcu("R44", -7.20, -24.10, 180.0)
+        set_bcu("R45", 5.20, 26.80, 90.0)
+
+        # U8 (XB9901A protection) + R8 + C6 and Q1 + R9..R12 + C7 (VBAT_SENSE) in spacious East corridor above BT1:
+        set_bcu("U8", 10.00, 12.60, 180.0)
+        set_bcu("C6", 10.60, 10.65, 180.0)
+        set_bcu("R8", 10.00, 14.15, 180.0)
+        set_bcu("Q1", 9.20, 7.60, 180.0)
+        set_bcu("R9", 11.10, 7.20, 90.0)
+        set_bcu("R10", 7.30, 7.20, 90.0)
+        set_bcu("R11", 9.20, 9.40, 180.0)
+        set_bcu("R12", 7.30, 9.20, 90.0)
+        set_bcu("C7", 8.00, 10.80, 180.0)
+    else:
+        set_bcu("J1", 0.00, 29.10, SKEW_DEG)  # Flipped on B.Cu: +SKEW_DEG aligns along dy/dx = +0.32!
+        # Verify J1 pad slope matches +0.32; if negated, flip sign!
+        j1_p1 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "1").GetPosition()
+        j1_p6 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "6").GetPosition()
+        slope_j1 = (um(j1_p6.y) - um(j1_p1.y)) / (um(j1_p6.x) - um(j1_p1.x))
+        if abs(slope_j1 - SKEW) > 0.05:
+            set_bcu("J1", 0.00, 29.10, -SKEW_DEG)
+
+        # R1, R2 (5.1k CC1/CC2) right above J1.1/J1.2
+        j1_p1 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "1").GetPosition()
+        j1_p2 = next(p for p in fps["J1"].Pads() if p.GetNumber() == "2").GetPosition()
+        set_bcu("R1", um(j1_p1.x) - OX, um(j1_p1.y) - OY - 2.20, 90.0)
+        set_bcu("R2", um(j1_p2.x) - OX, um(j1_p2.y) - OY - 2.20, 90.0)
+
+        # BT1 in the spacious South-East acute triangle (y_bot(+6.0) = +32.92 mm!), cleanly below R8 (bottom 28.12).
+        set_bcu("BT1", 8.60, 29.85, 180.0)
+
+        # Q1 + R9..R12 + C7 (VBAT_SENSE) compactly grouped in South-West with zero net crossings around Q1.
+        set_bcu("Q1", -5.20, 25.40, 180.0)
+        set_bcu("R9", -3.30, 24.80, 180.0)
+        set_bcu("R10", -7.20, 24.80, 180.0)
+        set_bcu("R11", -5.20, 27.10, 180.0)
+        set_bcu("R12", -7.20, 26.40, 180.0)
+        set_bcu("C7", -3.30, 26.40, 180.0)
 
     # 5. Side-actuated peg-less EVQP7J01P buttons on East & West vertical edges (+-12.50 mm), knobs protruding 0.45 mm.
     set_bcu("SW1", 10.85, 1.50, -90.0)
@@ -311,6 +412,18 @@ def stage_place(spec: VariantSpec):
     sw2_p2 = [um(p.GetPosition().x) - OX for p in fps["SW2"].Pads() if p.GetNumber() == "2"][0]
     if sw2_p2 > sw2_p1:
         set_bcu("SW2", -10.85, -3.50, -90.0)
+
+    if spec.extra_side_buttons:
+        for sref, sy in (("SW5", -22.00), ("SW6", 22.80)):
+            set_bcu(sref, -10.85, sy, 90.0)
+            sw_p1 = [um(p.GetPosition().x) - OX for p in fps[sref].Pads() if p.GetNumber() == "1"][0]
+            sw_p2 = [um(p.GetPosition().x) - OX for p in fps[sref].Pads() if p.GetNumber() == "2"][0]
+            if sw_p2 > sw_p1:
+                set_bcu(sref, -10.85, sy, -90.0)
+        set_bcu("C71", -7.40, -22.20, 180.0)
+        set_bcu("R46", -7.40, -21.00, 180.0)
+        set_bcu("C72", -7.40, 19.80, 180.0)
+        set_bcu("R47", -7.40, 21.00, 180.0)
 
     # 6. U9 (LIS2DW12) + decouplers/pull-ups West of U3 (near U3 West GPIO2/3/10 & +3V3).
     set_bcu("U9", -8.80, 5.20, 180.0)
@@ -337,7 +450,7 @@ def stage_place(spec: VariantSpec):
     for drv in spec.drivers:
         dx0, dy0, drot = drv.bcu_pos
         # Place SW driver clear of C22 & U4; on 6-col p2-132 x=-7.40 centers U2's 3.4 mm EP cleanly between cols -9.25 and -5.55!
-        if dy0 > 10.0 and dx0 < 0:
+        if spec.io_mode != "usb" and dy0 > 10.0 and dx0 < 0:
             dx0, dy0 = (-7.40 if spec.cols == 6 else -8.00), 19.25
         set_bcu(drv.uref, dx0, dy0, drot)
         drv_fixed.add(drv.uref)
@@ -362,7 +475,7 @@ def stage_place(spec: VariantSpec):
         set_bcu(c_pvcc_100n, p5_x - 0.65, dy0 + pvcc_dir * 3.95, 90.0)
         set_bcu(c_pvcc_1u, p5_x + 0.65, dy0 + pvcc_dir * 3.95, 90.0)
         if drv.bulk_ref:
-            bulk_dx = 2.10 if dx0 <= 0 else -2.10
+            bulk_dx = -2.00 if (spec.io_mode == "usb" and dy0 > 10.0 and dx0 < 0) else (2.10 if dx0 <= 0 else -2.10)
             set_bcu(drv.bulk_ref, p5_x + bulk_dx, dy0 + pvcc_dir * 4.40, 90.0)
             drv_fixed.add(drv.bulk_ref)
 
@@ -375,76 +488,167 @@ def stage_place(spec: VariantSpec):
         drv_fixed.update({c_pvcc_1u, c_pvcc_100n, c_vcc_100n, c_vcc_1u, drv.rset_ref})
 
     # 8. Place Test Points in clean open pockets near their nets.
-    tp_targets = [
-        ("TP1", 7.80, 15.80),    # VSYS near C2/U5
-        ("TP2", -5.20, 11.40),   # +3V3 near C4/U6
-        ("TP3", 3.50, 15.80),    # VBAT near C5/U5
-        ("TP4", 5.80, 12.20),    # +1V1 near L1/C18
-        ("TP5", -5.50, -1.50),   # RUN
-        ("TP8", -5.50, -3.00),   # GND adjacent to RUN for easy boot/reset jumper!
-        ("TP6", 4.20, -1.50),    # SWCLK
-        ("TP7", 4.20, -3.00),    # SWDIO
-    ]
+    if spec.io_mode == "usb":
+        tp_targets = [
+            ("TP1", 6.25, 14.30),    # VSYS near C2/U5
+            ("TP2", -6.90, 11.75),   # +3V3 near C4/U6
+            ("TP3", 6.50, 12.10),    # VBAT near U8/C5
+            ("TP4", -5.20, 13.80),   # +1V1 near L1/U6 (keeps East driver throat open!)
+            ("TP5", -5.50, -1.50),   # RUN
+            ("TP8", -5.50, -3.55),   # GND adjacent to RUN for easy boot/reset jumper!
+            ("TP6", 4.20, -1.20),    # SWCLK
+            ("TP7", 4.20, -2.55),    # SWDIO
+        ]
+    else:
+        tp_targets = [
+            ("TP1", 7.80, 15.80),    # VSYS near C2/U5
+            ("TP2", -5.20, 11.40),   # +3V3 near C4/U6
+            ("TP3", 3.50, 15.80),    # VBAT near C5/U5
+            ("TP4", 5.80, 12.20),    # +1V1 near L1/C18
+            ("TP5", -5.50, -1.50),   # RUN
+            ("TP8", -5.50, -3.00),   # GND adjacent to RUN for easy boot/reset jumper!
+            ("TP6", 4.20, -1.50),    # SWCLK
+            ("TP7", 4.20, -3.00),    # SWDIO
+        ]
     for tref, tx, ty in tp_targets:
         set_bcu(tref, tx, ty, 180.0)
 
     # 9. Legalize movable auxiliary passives/TPs against all fixed ICs/decouplers and the parallelogram outline.
-    def cbox_bcu(f):
-        cy = f.GetCourtyard(pcbnew.B_CrtYd)
-        q = cy.BBox() if cy.OutlineCount() else f.GetBoundingBox(False, False)
-        return [um(q.GetLeft()) - OX, um(q.GetTop()) - OY, um(q.GetRight()) - OX, um(q.GetBottom()) - OY]
+    if spec.io_mode == "usb":
+        from shapely.affinity import translate
+        from shapely.geometry import Polygon
+        from shapely.ops import unary_union
+        from shapely.prepared import prep
 
-    movable = [
-        "R1", "R2", "Q1", "R9", "R10", "R11", "R12", "C7",
-        "R18", "R19", "R20", "R21", "R22", "R31", "C35", "R43", "C70",
-        "TP1", "TP2", "TP3", "TP4", "TP5", "TP6", "TP7", "TP8",
-    ]
-    fixed_boxes = {
-        r: cbox_bcu(f)
-        for r, f in fps.items()
-        if f.GetLayer() == pcbnew.B_Cu and r not in movable
-    }
-    margin = 0.06
-    for r in movable:
-        f = fps[r]
-        q = cbox_bcu(f)
-        x0, y0 = um(f.GetPosition().x) - OX, um(f.GetPosition().y) - OY
-        best = None
-        for ring in range(0, 160):
-            rad = ring * 0.10
-            steps = max(1, 16 * ring)
-            for k in range(steps):
-                a = 2.0 * math.pi * k / steps
-                dx, dy = rad * math.cos(a), rad * math.sin(a)
-                bb = [q[0] + dx, q[1] + dy, q[2] + dx, q[3] + dy]
-                if not all(inside_parallelogram(u, v, 0.35) for u in (bb[0], bb[2]) for v in (bb[1], bb[3])):
-                    continue
-                if all(
-                    bb[2] + margin <= c[0] or c[2] + margin <= bb[0] or bb[3] + margin <= c[1] or c[3] + margin <= bb[1]
-                    for c in fixed_boxes.values()
-                ):
-                    best = (dx, dy, bb, rad)
+        def bcu_poly(f):
+            cy = f.GetCourtyard(pcbnew.B_CrtYd)
+            if cy.OutlineCount():
+                polys = []
+                for k in range(cy.OutlineCount()):
+                    o = cy.Outline(k)
+                    pts = [(um(o.CPoint(i).x) - OX, um(o.CPoint(i).y) - OY) for i in range(o.PointCount())]
+                    if len(pts) >= 3:
+                        polys.append(Polygon(pts).buffer(0))
+                if polys:
+                    return unary_union(polys)
+            q = f.GetBoundingBox(False, False)
+            return Polygon([
+                (um(q.GetLeft()) - OX, um(q.GetTop()) - OY),
+                (um(q.GetRight()) - OX, um(q.GetTop()) - OY),
+                (um(q.GetRight()) - OX, um(q.GetBottom()) - OY),
+                (um(q.GetLeft()) - OX, um(q.GetBottom()) - OY),
+            ])
+
+        movable = [
+            "R1", "R2", "R3", "R4", "R5", "R8",
+            "Q1", "R9", "R10", "R11", "R12", "C7",
+            "R18", "R19", "R20", "R21", "R22", "R31", "C35", "R43", "C70", "R44", "R45",
+            "TP1", "TP2", "TP3", "TP4", "TP5", "TP6", "TP7", "TP8",
+        ]
+        if spec.extra_side_buttons:
+            movable.extend(["R46", "C71", "R47", "C72"])
+        fixed_polys = {
+            r: bcu_poly(f)
+            for r, f in fps.items()
+            if f.GetLayer() == pcbnew.B_Cu and r not in movable
+        }
+        p_board = prep(Polygon(poly_vertices(0.32)))
+        obs_union = unary_union([p.buffer(0.06, 4) for p in fixed_polys.values()])
+        for r in movable:
+            f = fps[r]
+            p0 = bcu_poly(f)
+            x0, y0 = um(f.GetPosition().x) - OX, um(f.GetPosition().y) - OY
+            p_obs = prep(obs_union)
+            best = None
+            for ring in range(0, 90):
+                rad = ring * 0.10
+                steps = max(1, 12 * ring)
+                for k in range(steps):
+                    a = 2.0 * math.pi * k / steps
+                    dx, dy = rad * math.cos(a), rad * math.sin(a)
+                    cand = translate(p0, xoff=dx, yoff=dy)
+                    if p_board.contains(cand) and not p_obs.intersects(cand):
+                        best = (dx, dy, cand, rad)
+                        break
+                if best:
                     break
-            if best:
-                break
-        if not best:
-            raise SystemExit(f"[{spec.name}] legalize failed for {r} around ({x0:.2f}, {y0:.2f})")
-        dx, dy, bb, rad = best
-        if rad > 0:
-            f.SetPosition(pcbnew.VECTOR2I(mm(OX + x0 + dx), mm(OY + y0 + dy)))
-            print(f"  legalized {r}: +{rad:.2f} mm -> ({x0 + dx:.2f}, {y0 + dy:.2f})")
-        fixed_boxes[r] = bb
+            if not best:
+                raise SystemExit(f"[{spec.name}] legalize failed for {r} around ({x0:.2f}, {y0:.2f})")
+            dx, dy, cand, rad = best
+            if rad > 0:
+                f.SetPosition(pcbnew.VECTOR2I(mm(OX + x0 + dx), mm(OY + y0 + dy)))
+                print(f"  legalized {r}: +{rad:.2f} mm -> ({x0 + dx:.2f}, {y0 + dy:.2f})")
+            fixed_polys[r] = cand
+            obs_union = obs_union.union(cand.buffer(0.06, 4))
 
-    # Verify 0 B.Cu courtyard overlaps across all non-macro pairs
-    bcu_names = sorted(fixed_boxes.keys())
-    for i, r1 in enumerate(bcu_names):
-        a = fixed_boxes[r1]
-        for r2 in bcu_names[i + 1 :]:
-            if r1 in MACRO_REFS and r2 in MACRO_REFS:
-                continue
-            c = fixed_boxes[r2]
-            if not (a[2] <= c[0] + 0.02 or c[2] <= a[0] + 0.02 or a[3] <= c[1] + 0.02 or c[3] <= a[1] + 0.02):
-                raise SystemExit(f"[{spec.name}] B.Cu courtyard overlap: {r1} {a} vs {r2} {c}")
+        # Verify 0 B.Cu courtyard polygon overlaps across all non-core-macro pairs
+        core_macro = MACRO_REFS - {"U4", "C22", "C4", "U5", "C5", "C2", "C1", "U7", "U8", "C6", "R8", "R3", "R4", "R5"}
+        bcu_names = sorted(fixed_polys.keys())
+        for i, r1 in enumerate(bcu_names):
+            a = fixed_polys[r1]
+            for r2 in bcu_names[i + 1 :]:
+                if r1 in core_macro and r2 in core_macro:
+                    continue
+                c = fixed_polys[r2]
+                if a.intersects(c) and a.intersection(c).area > 1e-4:
+                    raise SystemExit(f"[{spec.name}] B.Cu courtyard overlap: {r1} {a.bounds} vs {r2} {c.bounds}")
+    else:
+        def cbox_bcu(f):
+            cy = f.GetCourtyard(pcbnew.B_CrtYd)
+            q = cy.BBox() if cy.OutlineCount() else f.GetBoundingBox(False, False)
+            return [um(q.GetLeft()) - OX, um(q.GetTop()) - OY, um(q.GetRight()) - OX, um(q.GetBottom()) - OY]
+
+        movable = [
+            "R1", "R2", "Q1", "R9", "R10", "R11", "R12", "C7",
+            "R18", "R19", "R20", "R21", "R22", "R31", "C35", "R43", "C70",
+            "TP1", "TP2", "TP3", "TP4", "TP5", "TP6", "TP7", "TP8",
+        ]
+        fixed_boxes = {
+            r: cbox_bcu(f)
+            for r, f in fps.items()
+            if f.GetLayer() == pcbnew.B_Cu and r not in movable
+        }
+        margin = 0.06
+        for r in movable:
+            f = fps[r]
+            q = cbox_bcu(f)
+            x0, y0 = um(f.GetPosition().x) - OX, um(f.GetPosition().y) - OY
+            best = None
+            for ring in range(0, 160):
+                rad = ring * 0.10
+                steps = max(1, 16 * ring)
+                for k in range(steps):
+                    a = 2.0 * math.pi * k / steps
+                    dx, dy = rad * math.cos(a), rad * math.sin(a)
+                    bb = [q[0] + dx, q[1] + dy, q[2] + dx, q[3] + dy]
+                    if not all(inside_parallelogram(u, v, 0.35) for u in (bb[0], bb[2]) for v in (bb[1], bb[3])):
+                        continue
+                    if all(
+                        bb[2] + margin <= c[0] or c[2] + margin <= bb[0] or bb[3] + margin <= c[1] or c[3] + margin <= bb[1]
+                        for c in fixed_boxes.values()
+                    ):
+                        best = (dx, dy, bb, rad)
+                        break
+                if best:
+                    break
+            if not best:
+                raise SystemExit(f"[{spec.name}] legalize failed for {r} around ({x0:.2f}, {y0:.2f})")
+            dx, dy, bb, rad = best
+            if rad > 0:
+                f.SetPosition(pcbnew.VECTOR2I(mm(OX + x0 + dx), mm(OY + y0 + dy)))
+                print(f"  legalized {r}: +{rad:.2f} mm -> ({x0 + dx:.2f}, {y0 + dy:.2f})")
+            fixed_boxes[r] = bb
+
+        # Verify 0 B.Cu courtyard overlaps across all non-macro pairs
+        bcu_names = sorted(fixed_boxes.keys())
+        for i, r1 in enumerate(bcu_names):
+            a = fixed_boxes[r1]
+            for r2 in bcu_names[i + 1 :]:
+                if r1 in MACRO_REFS and r2 in MACRO_REFS:
+                    continue
+                c = fixed_boxes[r2]
+                if not (a[2] <= c[0] + 0.02 or c[2] <= a[0] + 0.02 or a[3] <= c[1] + 0.02 or c[3] <= a[1] + 0.02):
+                    raise SystemExit(f"[{spec.name}] B.Cu courtyard overlap: {r1} {a} vs {r2} {c}")
 
     # Hide noisy B.Cu silkscreen designators prior to post_silk tidy pass
     for f in b.GetFootprints():
@@ -570,21 +774,43 @@ def stage_zones(spec: VariantSpec):
 
         # Candidate thermal via positions inside EP (at least 0.28 mm inside EP edge so 0.45 mm pad stays inside EP)
         cands = []
-        xv = x0 + 0.30
-        while xv <= x1 - 0.30 + 1e-6:
-            yv = y0 + 0.30
-            while yv <= y1 - 0.30 + 1e-6:
-                cands.append((round(xv, 3), round(yv, 3)))
-                yv += 0.15
-            xv += 0.15
+        if spec.extra_side_buttons:
+            bpaste_id = b.GetLayerID("B.Paste")
+            pboxes_ep = [
+                (um(pb.GetLeft()), um(pb.GetTop()), um(pb.GetRight()), um(pb.GetBottom()))
+                for p in fps[sref].Pads()
+                if p.IsOnLayer(bpaste_id) and not p.IsOnLayer(B_CU)
+                for pb in [p.GetBoundingBox()]
+            ]
+            if sref == "U5":
+                cands = [((x0 + x1) / 2.0, (y0 + y1) / 2.0 - 0.45), ((x0 + x1) / 2.0, (y0 + y1) / 2.0 + 0.45)]
+            else:
+                xv = x0 + 0.25
+                while xv <= x1 - 0.25 + 1e-6:
+                    yv = y0 + 0.25
+                    while yv <= y1 - 0.25 + 1e-6:
+                        if not any(px0 - 0.075 < xv < px1 + 0.075 and py0 - 0.075 < yv < py1 + 0.075 for px0, py0, px1, py1 in pboxes_ep):
+                            cands.append((round(xv, 3), round(yv, 3)))
+                        yv += 0.05
+                    xv += 0.05
+        else:
+            xv = x0 + 0.30
+            while xv <= x1 - 0.30 + 1e-6:
+                yv = y0 + 0.30
+                while yv <= y1 - 0.30 + 1e-6:
+                    cands.append((round(xv, 3), round(yv, 3)))
+                    yv += 0.15
+                xv += 0.15
         cx_ep, cy_ep = (x0 + x1) / 2.0, (y0 + y1) / 2.0
         # Prefer cross-axis points (away from 2x2 paste quadrants at +-0.95, +-0.95)
-        cands.sort(key=lambda q: (min(abs(q[0] - cx_ep), abs(q[1] - cy_ep)), math.hypot(q[0] - cx_ep, q[1] - cy_ep)))
+        if not (spec.extra_side_buttons and sref == "U5"):
+            cands.sort(key=lambda q: (min(abs(q[0] - cx_ep), abs(q[1] - cy_ep)), math.hypot(q[0] - cx_ep, q[1] - cy_ep)))
+        min_sep = 0.65 if spec.extra_side_buttons else 0.70
         got = []
         for qx, qy in cands:
             if len(got) >= want_n:
                 break
-            if fcu_clear(qx, qy) and all(math.hypot(qx - ax, qy - ay) >= 0.70 for ax, ay in got):
+            if fcu_clear(qx, qy) and all(math.hypot(qx - ax, qy - ay) >= min_sep for ax, ay in got):
                 v = pcbnew.PCB_VIA(b)
                 v.SetPosition(pcbnew.VECTOR2I(mm(qx), mm(qy)))
                 v.SetWidth(mm(0.30))
@@ -601,7 +827,7 @@ def stage_zones(spec: VariantSpec):
     # 3. Unbroken In1.Cu (L2) solid GND plane across the entire parallelogram (0.30 mm edge pullback),
     #    with LX cutout under VREG_LX switch node per chips/rp2350.md §6.3.8.1!
     gnd_pts = poly_vertices(inset=0.30)
-    add_zone("plane GND", IN1_CU, "GND", gnd_pts, 0, minw=0.12, clear=0.15)
+    add_zone("plane GND", IN1_CU, "GND", gnd_pts, 0, minw=0.22 if spec.extra_side_buttons else 0.18, clear=0.15)
 
     # (the LX cutout itself is added after the vendor zones below: it follows the VREG_LX copper)
 
@@ -636,6 +862,25 @@ def stage_zones(spec: VariantSpec):
 
     # Named rule areas around U3 & regulator corner
     add_area("U3 ring", B_CU, sq(2.85))
+    if spec.extra_side_buttons:
+        add_area(
+            "U3 band",
+            B_CU,
+            [
+                (ux_rel - 2.94, uy_rel - 2.94),
+                (ux_rel + 2.94, uy_rel - 2.94),
+                (ux_rel + 2.94, uy_rel + 2.94),
+                (ux_rel - 2.94, uy_rel + 2.94),
+                (ux_rel - 2.94, uy_rel),
+                (ux_rel - 2.35, uy_rel),
+                (ux_rel - 2.35, uy_rel + 2.35),
+                (ux_rel + 2.35, uy_rel + 2.35),
+                (ux_rel + 2.35, uy_rel - 2.35),
+                (ux_rel - 2.35, uy_rel - 2.35),
+                (ux_rel - 2.35, uy_rel - 0.002),
+                (ux_rel - 2.94, uy_rel - 0.002),
+            ],
+        )
     add_area(
         "U3 ring vias",
         B_CU,
@@ -748,6 +993,9 @@ def stage_zones(spec: VariantSpec):
         lx_cut = max(lx_cut.geoms, key=lambda g: g.area)
     add_area("LX cutout L2", IN1_CU, [(round(x, 4), round(y, 4)) for x, y in list(lx_cut.exterior.coords)[:-1]],
              tracks=True, pour=True)
+    if spec.extra_side_buttons:
+        add_area("LX cutout L3", IN2_CU, [(round(x, 4), round(y, 4)) for x, y in list(lx_cut.exterior.coords)[:-1]],
+                 tracks=True, pour=True)
 
     # Fill zones first so we place single-point PGND vias squarely inside the actual filled vendor GND pour!
 
@@ -830,19 +1078,26 @@ def stage_models(spec: VariantSpec):
 
     base = "${KIPRJMOD}/../../../3dmodels/"
     model_map = {
-        "LED_XL-1010RGB": (base + "XL-1010RGB-YG.step", 0, 0.0),
-        "LED_XL-1615RGBC": (base + "LED-ARRAY-SMD_4P-L1.6-W1.5-BR_XL-1615RGBC-RF.step", 180, 0.0),
-        "SENSOR_ALS-PT19": (base + "SENSORS-SMD_L1.7-W0.8-H0.6.step", 0, 0.0),
+        "LED_XL-1010RGB": (base + "XL-1010RGB-YG.step", 0, (0.0, 0.0, 0.0)),
+        "LED_XL-1615RGBC": (base + "LED-ARRAY-SMD_4P-L1.6-W1.5-BR_XL-1615RGBC-RF.step", 180, (0.0, 0.0, 0.0)),
+        "SENSOR_ALS-PT19": (base + "SENSORS-SMD_L1.7-W0.8-H0.6.step", 0, (0.0, 0.0, 0.0)),
         "AW20198_QFN-40-1EP_5x5mm_P0.4mm_EP3.4x3.4mm": (
             "${KICAD9_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/TQFN-40-1EP_5x5mm_P0.4mm_EP3.5x3.5mm.step",
             0,
-            0.0,
+            (0.0, 0.0, 0.0),
         ),
-        "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias": (base + "QFN-60_L7.0-W7.0-P0.40-TL-EP3.4.step", 0, 0.0),
-        "L_pol_2016": (base + "IND-SMD_L2.0-W1.6_AOTA-B201610S3R3-101-T.step", 180, 0.0),
-        "SW_Panasonic_EVQP7J": (base + "SW-SMD_EVQP7C01P-L3.6-W3.5-H1.4-P3.6-LS4.7.step", 0, 0.0),
-        "XySemi_DFN-6_1.8x1.4mm": (base + "DFNFC-6_L1.8-W1.4-H0.6-P0.50-BL_XB9901A.step", 0, 0.56),
-        "Texas_X2SON-4_1x1mm_P0.65mm": (base + "X2SON-4_L1.0-W1.0-H0.4-P0.65-TL-EPSLDPRT.step", 270, 0.0),
+        "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias": (base + "QFN-60_L7.0-W7.0-P0.40-TL-EP3.4.step", 0, (0.0, 0.0, 0.0)),
+        "L_pol_2016": (base + "IND-SMD_L2.0-W1.6_AOTA-B201610S3R3-101-T.step", 0 if spec.extra_side_buttons else 180, (0.0, 0.0, 0.0)),
+        "SW_Panasonic_EVQP7J": (base + "SW-SMD_EVQP7C01P-L3.6-W3.5-H1.4-P3.6-LS4.7.step", 0, (0.0, 0.0, 0.0)),
+        "XySemi_DFN-6_1.8x1.4mm": (base + "DFNFC-6_L1.8-W1.4-H0.6-P0.50-BL_XB9901A.step", 0, (0.0, 0.0, 0.56)),
+        "Texas_X2SON-4_1x1mm_P0.65mm": (base + "X2SON-4_L1.0-W1.0-H0.4-P0.65-TL-EPSLDPRT.step", 270, (0.0, 0.0, 0.0)),
+        "USB_C_Receptacle_Hroparts_TYPE-C-31-M-22": (base + "USB-C-SMD_TYPE-C-31-M-22.step", 0, (0.0, -1.06, 1.63)),
+        "Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal": (
+            "${KICAD9_3DMODEL_DIR}/Connector_Molex.3dshapes/Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal.step",
+            0,
+            (0.0, 0.0, 0.0),
+        ),
+        "SW_Push_1P1T_XKB_TS-1187A": (base + "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5.step", 0, (0.0, 0.0, 0.0)),
     }
 
     b = pcbnew.LoadBoard(str(pcb_path))
@@ -850,14 +1105,14 @@ def stage_models(spec: VariantSpec):
     for f in b.GetFootprints():
         name = str(f.GetFPID().GetUniStringLibItemName())
         if name in model_map:
-            fn, rot, zoff = model_map[name]
+            fn, rot, xyz_off = model_map[name]
             ms = f.Models()
             ms.clear()
             m = pcbnew.FP_3DMODEL()
             m.m_Filename = fn
             m.m_Rotation = pcbnew.VECTOR3D(0, 0, rot)
             m.m_Show = True
-            m.m_Offset = pcbnew.VECTOR3D(0, 0, zoff)
+            m.m_Offset = pcbnew.VECTOR3D(*xyz_off)
             ms.push_back(m)
             n += 1
 
@@ -895,16 +1150,16 @@ def stage_post_silk(spec: VariantSpec):
                 f.Remove(gi)
                 keep_alive.append(gi)
 
-    # Obstacles on F.Cu (pads) so F.SilkS web never causes silk_over_copper!
+    # Obstacles on F.Cu (pads & any F.Mask / NPTH openings) so F.SilkS web never causes silk_over_copper!
     # Note: vias are tented on F.Mask so F.SilkS over tented vias is clean, though we also keep clear of F.Cu pads!
     fcu_obs = []
     for f in b.GetFootprints():
-        if f.GetLayer() == pcbnew.F_Cu:
-            if f.GetReference() == "Q2":
-                bb = f.GetBoundingBox(False, False)
-                fcu_obs.append((um(bb.GetLeft()) - OX - 0.35, um(bb.GetTop()) - OY - 0.35, um(bb.GetRight()) - OX + 0.35, um(bb.GetBottom()) - OY + 0.35))
-            else:
-                for p in f.Pads():
+        if f.GetLayer() == pcbnew.F_Cu and f.GetReference() == "Q2":
+            bb = f.GetBoundingBox(False, False)
+            fcu_obs.append((um(bb.GetLeft()) - OX - 0.35, um(bb.GetTop()) - OY - 0.35, um(bb.GetRight()) - OX + 0.35, um(bb.GetBottom()) - OY + 0.35))
+        else:
+            for p in f.Pads():
+                if f.GetLayer() == pcbnew.F_Cu or p.IsOnLayer(pcbnew.F_Mask):
                     bb = p.GetBoundingBox()
                     fcu_obs.append((um(bb.GetLeft()) - OX - 0.25, um(bb.GetTop()) - OY - 0.25, um(bb.GetRight()) - OX + 0.25, um(bb.GetBottom()) - OY + 0.25))
 
@@ -975,21 +1230,391 @@ def stage_post_silk(spec: VariantSpec):
     q2_dot.SetEnd(pcbnew.VECTOR2I(mm(OX + dx_q + 0.15), mm(OY + dy_q)))
     b.Add(q2_dot)
 
-    # Add clean B.SilkS connector & cell labels clear of all B.Mask openings
+    # Add clean B.SilkS connector & cell labels clear of all B.Mask openings (and outside USB/JST/button housings)
     bmask_obs = []
     for f in b.GetFootprints():
-        if f.GetLayer() == pcbnew.B_Cu:
+        for p in f.Pads():
+            if p.IsOnLayer(pcbnew.B_Mask):
+                bb = p.GetBoundingBox()
+                bmask_obs.append((um(bb.GetLeft()) - OX - 0.22, um(bb.GetTop()) - OY - 0.22, um(bb.GetRight()) - OX + 0.22, um(bb.GetBottom()) - OY + 0.22))
+    if spec.io_mode == "usb":
+        for body_ref in ("J1", "BT1", "SW3", "SW4") + (("SW5", "SW6") if spec.extra_side_buttons else ()):
+            if body_ref in fps:
+                bb = fps[body_ref].GetBoundingBox(False, False)
+                bmask_obs.append((um(bb.GetLeft()) - OX - 0.10, um(bb.GetTop()) - OY - 0.10, um(bb.GetRight()) - OX + 0.10, um(bb.GetBottom()) - OY + 0.10))
+
+    if spec.extra_side_buttons:
+        from shapely.affinity import translate
+        from shapely.geometry import Point, Polygon, box
+        from shapely.ops import unary_union
+        from shapely.prepared import prep
+
+        b.GetTitleBlock().SetTitle(spec.name)
+        board_inner = Polygon(poly_vertices(inset=0.25)).buffer(0)
+        obs_geoms = []
+        for f in b.GetFootprints():
             for p in f.Pads():
                 if p.IsOnLayer(pcbnew.B_Mask):
-                    bb = p.GetBoundingBox()
-                    bmask_obs.append((um(bb.GetLeft()) - OX - 0.22, um(bb.GetTop()) - OY - 0.22, um(bb.GetRight()) - OX + 0.22, um(bb.GetBottom()) - OY + 0.22))
+                    o_p = p.GetEffectivePolygon(pcbnew.B_Mask)
+                    if o_p.OutlineCount():
+                        ol = o_p.Outline(0)
+                        pts_p = [(um(ol.CPoint(i).x) - OX, um(ol.CPoint(i).y) - OY) for i in range(ol.PointCount())]
+                        if len(pts_p) >= 3:
+                            obs_geoms.append(Polygon(pts_p).buffer(0.155, 8))
+                if p.HasHole():
+                    hx, hy = um(p.GetPosition().x) - OX, um(p.GetPosition().y) - OY
+                    obs_geoms.append(Point(hx, hy).buffer(um(p.GetDrillSizeX()) / 2.0 + 0.18, 16))
+        for tr in b.GetTracks():
+            if tr.Type() == pcbnew.PCB_VIA_T:
+                vx, vy = um(tr.GetPosition().x) - OX, um(tr.GetPosition().y) - OY
+                obs_geoms.append(Point(vx, vy).buffer(um(tr.GetWidth(pcbnew.F_Cu)) / 2.0 + 0.125, 12))
 
-    def add_b_label(txt: str, tx: float, ty: float, deg: float = 0.0):
+        # Build solid 3D package body hulls AND courtyards FIRST so BOTH Pin-1 dots and text stay visible outside all bodies!
+        body_geoms = []
+        court_polys = {}
+        bcu_courts = {}
+        for rf, fp_ in fps.items():
+            if fp_.IsFlipped():
+                fp_.BuildCourtyardCaches()
+                cy_ = fp_.GetCourtyard(pcbnew.B_CrtYd)
+                if cy_.OutlineCount():
+                    bcu_courts[rf] = cy_
+                    ol_c = cy_.Outline(0)
+                    cpts = [(um(ol_c.CPoint(i).x) - OX, um(ol_c.CPoint(i).y) - OY) for i in range(ol_c.PointCount())]
+                    if len(cpts) >= 3:
+                        court_polys[rf] = Polygon(cpts).buffer(0)
+                if rf == "J1" and "J1" in court_polys:
+                    body_geoms.append(court_polys["J1"].buffer(-0.08))
+                elif not rf.startswith("TP"):
+                    fab_bbs = [gi.GetBoundingBox() for gi in fp_.GraphicalItems() if gi.GetLayer() == pcbnew.B_Fab]
+                    if fab_bbs:
+                        bx0 = max(-12.40, min(um(bb.GetLeft()) - OX for bb in fab_bbs))
+                        by0 = min(um(bb.GetTop()) - OY for bb in fab_bbs)
+                        bx1 = min(12.40, max(um(bb.GetRight()) - OX for bb in fab_bbs))
+                        by1 = max(um(bb.GetBottom()) - OY for bb in fab_bbs)
+                        pad_m = 0.16 if rf.startswith(("U", "SW", "BT", "L", "Y", "Q")) else 0.08
+                        body_geoms.append(box(bx0 - pad_m, by0 - pad_m, bx1 + pad_m, by1 + pad_m))
+
+        b_free_body = board_inner.difference(unary_union(obs_geoms + body_geoms))
+        pfree_body = prep(b_free_body)
+        b_free_nocrt = b_free_body.difference(unary_union(list(court_polys.values()))) if court_polys else b_free_body
+        pfree_nocrt = prep(b_free_nocrt)
+        tp_court_union = unary_union([g.buffer(0.15) for k, g in court_polys.items() if k.startswith("TP")]) if court_polys else Polygon()
+        placed_silk_geoms: list[tuple[str, Polygon]] = []
+
+        def poly_set_to_shapely(ps):
+            geoms = []
+            for k in range(ps.OutlineCount()):
+                ol = ps.Outline(k)
+                ext = [(um(ol.CPoint(i).x) - OX, um(ol.CPoint(i).y) - OY) for i in range(ol.PointCount())]
+                if len(ext) >= 3:
+                    holes = []
+                    for h in range(ps.HoleCount(k)):
+                        hl = ps.Hole(k, h)
+                        hpts = [(um(hl.CPoint(i).x) - OX, um(hl.CPoint(i).y) - OY) for i in range(hl.PointCount())]
+                        if len(hpts) >= 3:
+                            holes.append(hpts)
+                    g = Polygon(ext, holes)
+                    if not g.is_valid:
+                        g = g.buffer(0)
+                    if not g.is_empty:
+                        geoms.append(g)
+            return unary_union(geoms) if geoms else Polygon()
+
+        # 1. Place B.Cu IC/inductor/crystal Pin-1 dots OUTSIDE 3D bodies and clear of all mask/via obstacles!
+        ic_refs = ["U3", "U1", "U2", "U10", "U11", "U4", "U5", "U6", "U7", "U8", "U9", "Q1", "L1", "Y1"]
+        p1_dots = 0
+        for r in ic_refs:
+            if r not in fps:
+                continue
+            pads_dict = {p.GetNumber(): p for p in fps[r].Pads()}
+            p1 = pads_dict.get("1") or pads_dict.get("A1")
+            if p1 is None:
+                continue
+            px0, py0 = um(p1.GetPosition().x) - OX, um(p1.GetPosition().y) - OY
+            p1_half = max(um(p1.GetBoundingBox().GetWidth()), um(p1.GetBoundingBox().GetHeight())) / 2.0
+            fcx, fcy = um(fps[r].GetPosition().x) - OX, um(fps[r].GetPosition().y) - OY
+            other_pads = [
+                (um(op.GetPosition().x) - OX, um(op.GetPosition().y) - OY)
+                for num, op in pads_dict.items()
+                if num not in ("1", "A1") and op.GetPosition() != p1.GetPosition()
+            ]
+            ux_out = (px0 - fcx) / (math.hypot(px0 - fcx, py0 - fcy) or 1.0)
+            uy_out = (py0 - fcy) / (math.hypot(px0 - fcx, py0 - fcy) or 1.0)
+            placed_dot = False
+            max_reach = p1_half + (1.18 if r.startswith(("U", "Q")) else 1.55)
+            for dot_r in (0.14, 0.11, 0.085):
+                dot_cands = []
+                for ix_d in range(-28, 29):
+                    for iy_d in range(-28, 29):
+                        ddx, ddy = ix_d * 0.05, iy_d * 0.05
+                        dist_c = math.hypot(ddx, ddy)
+                        if 0.30 <= dist_c <= max_reach:
+                            out_proj = (ddx * ux_out + ddy * uy_out) / dist_c
+                            dot_cands.append((dist_c - 0.38 * out_proj, px0 + ddx, py0 + ddy))
+                dot_cands.sort(key=lambda item: item[0])
+                for _, dx_b, dy_b in dot_cands:
+                    d1 = math.hypot(dx_b - px0, dy_b - py0)
+                    if any(math.hypot(dx_b - ox, dy_b - oy) <= d1 + 0.008 for ox, oy in other_pads):
+                        continue
+                    dg = Point(dx_b, dy_b).buffer(dot_r + 0.025, 16)
+                    if pfree_body.contains(dg) and all(dg.distance(pg) >= 0.16 for _, pg in placed_silk_geoms):
+                        dot = pcbnew.PCB_SHAPE(b)
+                        dot.SetShape(pcbnew.SHAPE_T_CIRCLE)
+                        dot.SetFilled(True)
+                        dot.SetLayer(pcbnew.B_SilkS)
+                        dot.SetWidth(mm(0.05))
+                        dot.SetCenter(pcbnew.VECTOR2I(mm(OX + dx_b), mm(OY + dy_b)))
+                        dot.SetEnd(pcbnew.VECTOR2I(mm(OX + dx_b + dot_r), mm(OY + dy_b)))
+                        b.Add(dot)
+                        placed_silk_geoms.append((f"dot:{r}", dg))
+                        p1_dots += 1
+                        placed_dot = True
+                        break
+                if placed_dot:
+                    break
+
+        def make_text_template(txt: str, deg: float, sz: float = 0.80):
+            t0 = pcbnew.PCB_TEXT(b)
+            t0.SetText(txt)
+            t0.SetLayer(pcbnew.B_SilkS)
+            t0.SetTextSize(pcbnew.VECTOR2I(mm(sz), mm(sz)))
+            t0.SetTextThickness(mm(0.15))
+            t0.SetMirrored(True)
+            t0.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_CENTER)
+            t0.SetVertJustify(pcbnew.GR_TEXT_V_ALIGN_CENTER)
+            t0.SetPosition(pcbnew.VECTOR2I(mm(OX), mm(OY)))
+            t0.SetTextAngleDegrees(deg)
+            ps0 = pcbnew.SHAPE_POLY_SET()
+            t0.TransformTextToPolySet(ps0, 0, mm(0.006), pcbnew.ERROR_INSIDE)
+            return t0, poly_set_to_shapely(ps0)
+
+        major_refs = [
+            "SW5", "SW6", "SW1", "SW2", "SW3", "SW4", "J1", "BT1",
+            "U3", "U1", "U2", "U4", "U5", "U6", "U7", "U8", "U9",
+            "Y1", "L1", "Q1",
+        ]
+        major_courts = {r: bcu_courts[r] for r in major_refs if r in bcu_courts}
+
+        def place_radial_usb6(
+            txt: str,
+            tx0: float,
+            ty0: float,
+            rad: float,
+            degs=(0.0, 90.0),
+            sz: float = 0.80,
+            must_nearest_ref: str | None = None,
+            must_nearest_major: str | None = None,
+            prefer_nocrt: bool = True,
+            extra_pred=None,
+            min_gap: float = 0.20,
+            tag: str = "lbl",
+        ):
+            free_spaces = [pfree_nocrt, pfree_body] if prefer_nocrt else [pfree_body]
+            for pf in free_spaces:
+                for deg in degs:
+                    t0, g0 = make_text_template(txt, deg, sz)
+                    if g0.is_empty:
+                        continue
+                    cands = []
+                    for ix in range(-121, 122, 2):
+                        xc = ix / 10.0
+                        if abs(xc - tx0) > rad:
+                            continue
+                        for iy in range(-346, 347, 2):
+                            yc = iy / 10.0
+                            dc = math.hypot(xc - tx0, yc - ty0)
+                            if dc <= rad:
+                                cands.append((dc, xc, yc))
+                    cands.sort()
+                    for _, xc, yc in cands:
+                        if extra_pred is not None and not extra_pred(xc, yc):
+                            continue
+                        pt_c = pcbnew.VECTOR2I(mm(OX + xc), mm(OY + yc))
+                        if must_nearest_ref and must_nearest_ref in bcu_courts:
+                            if min(bcu_courts, key=lambda k: bcu_courts[k].SquaredDistance(pt_c)) != must_nearest_ref:
+                                continue
+                        if must_nearest_major and must_nearest_major in major_courts:
+                            if min(major_courts, key=lambda k: major_courts[k].SquaredDistance(pt_c)) != must_nearest_major:
+                                continue
+                            if major_courts[must_nearest_major].SquaredDistance(pt_c) > (3.2 * 1e6) ** 2:
+                                continue
+                        g = translate(g0, xc, yc)
+                        if pf.contains(g) and all(
+                            g.distance(pg) >= (1.10 if (tag == "id" and ptag == "btn") or (tag == "btn" and ptag == "id") else min_gap)
+                            for ptag, pg in placed_silk_geoms
+                        ):
+                            t0.SetPosition(pcbnew.VECTOR2I(mm(OX + xc), mm(OY + yc)))
+                            b.Add(t0)
+                            placed_silk_geoms.append((tag, g))
+                            return True
+            return False
+
+        # 2. Connector polarity & function/rating labels (strictly 0° / 90° only!)
+        bt_p1 = next(p for p in fps["BT1"].Pads() if p.GetNumber() == "1").GetPosition()
+        bt_p2 = next(p for p in fps["BT1"].Pads() if p.GetNumber() == "2").GetPosition()
+        p1x, p1y = um(bt_p1.x) - OX, um(bt_p1.y) - OY  # VBAT (+) at y ~ +20.675
+        p2x, p2y = um(bt_p2.x) - OX, um(bt_p2.y) - OY  # BAT_N (-) at y ~ +19.425
+        place_radial_usb6(
+            "+", p1x + 0.90, p1y + 0.35, 2.4, (0.0,), 0.85,
+            prefer_nocrt=False,
+            extra_pred=lambda xc, yc: yc >= p1y - 0.05 and math.hypot(xc - p1x, yc - p1y) + 0.25 < math.hypot(xc - p2x, yc - p2y),
+            tag="conn",
+        )
+        place_radial_usb6(
+            "-", p2x + 0.90, p2y - 0.35, 2.4, (0.0,), 0.85,
+            prefer_nocrt=False,
+            extra_pred=lambda xc, yc: yc <= p2y + 0.05 and math.hypot(xc - p2x, yc - p2y) + 0.25 < math.hypot(xc - p1x, yc - p1y),
+            tag="conn",
+        )
+        if not place_radial_usb6("BATT 3.7V", 10.60, 16.00, 6.0, (90.0, 0.0), 0.80, must_nearest_ref="BT1", tag="conn"):
+            place_radial_usb6("BATT", 10.60, 16.00, 6.0, (90.0, 0.0), 0.80, must_nearest_ref="BT1", tag="conn")
+
+        bt1_crt = court_polys.get("BT1", Polygon()).buffer(0.20)
+        if not place_radial_usb6(
+            "USB 5V", 0.50, 24.20, 7.5, (0.0, 90.0), 0.80,
+            must_nearest_ref="J1", extra_pred=lambda xc, yc: not bt1_crt.contains(Point(xc, yc)), tag="conn",
+        ):
+            place_radial_usb6(
+                "5V", 0.50, 24.20, 7.5, (0.0, 90.0), 0.80,
+                must_nearest_ref="J1", extra_pred=lambda xc, yc: not bt1_crt.contains(Point(xc, yc)), tag="conn",
+            )
+
+        # 3. All 6 button function labels (clear of TP courtyards!)
+        place_radial_usb6("USER_C", -11.30, -17.60, 6.5, (90.0, 0.0), 0.80, extra_pred=lambda xc, yc: yc <= -15.2, tag="btn")
+        place_radial_usb6("USER_D", -11.30, 18.20, 6.5, (90.0, 0.0), 0.80, extra_pred=lambda xc, yc: yc >= 15.5, tag="btn")
+        place_radial_usb6("PWR", 10.90, 4.90, 5.5, (0.0, 90.0), 0.80, tag="btn")
+        place_radial_usb6(
+            "BOOT", -11.20, -7.20, 6.0, (90.0, 0.0), 0.80,
+            extra_pred=lambda xc, yc: not tp_court_union.contains(Point(xc, yc)), tag="btn",
+        )
+        place_radial_usb6("USER_A", -5.00, -29.60, 6.5, (0.0, 90.0), 0.80, tag="btn")
+        if not place_radial_usb6("USER_B", 10.00, 32.50, 5.5, (0.0, 90.0), 0.80, prefer_nocrt=False, tag="btn"):
+            place_radial_usb6("USR_B", 9.80, 32.80, 5.5, (0.0, 90.0), 0.80, prefer_nocrt=False, tag="btn")
+
+        # 4. Contiguous 3-line repository URL block + required board identity (placed BEFORE optional TP/minor labels!)
+        def place_contiguous_url_usb6() -> bool:
+            u1, u2, u3 = "github.com/", "sequoia-hope/", "round-pendant"
+            def make_url_tpl(txt: str, deg: float):
+                t = pcbnew.PCB_TEXT(b)
+                t.SetText(txt)
+                t.SetLayer(pcbnew.B_SilkS)
+                t.SetTextSize(pcbnew.VECTOR2I(mm(0.68), mm(0.80)))
+                t.SetTextThickness(mm(0.15))
+                t.SetMirrored(True)
+                t.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_CENTER)
+                t.SetVertJustify(pcbnew.GR_TEXT_V_ALIGN_CENTER)
+                t.SetPosition(pcbnew.VECTOR2I(mm(OX), mm(OY)))
+                t.SetTextAngleDegrees(deg)
+                ps0 = pcbnew.SHAPE_POLY_SET()
+                t.TransformTextToPolySet(ps0, 0, mm(0.006), pcbnew.ERROR_INSIDE)
+                return t, poly_set_to_shapely(ps0)
+
+            t1, g1_0 = make_url_tpl(u1, 90.0)
+            t2, g2_0 = make_url_tpl(u2, 90.0)
+            t3, g3_0 = make_url_tpl(u3, 90.0)
+            v1, v2, v3 = [], [], []
+            for ix in range(-115, 116, 2):
+                for iy in range(-280, 281, 5):
+                    xc, yc = round(ix / 10.0, 2), round(iy / 10.0, 2)
+                    for g0, out in ((g1_0, v1), (g2_0, v2), (g3_0, v3)):
+                        g = translate(g0, xc, yc)
+                        if pfree_body.contains(g) and all(
+                            g.distance(pg) >= (1.40 if ptag == "btn" else 0.18) for ptag, pg in placed_silk_geoms
+                        ):
+                            out.append((xc, yc, g))
+            best = None
+            for x1, y1, g1 in v1:
+                for x2, y2, g2 in v2:
+                    if not ((0.95 <= x1 - x2 <= 4.00 and abs(y2 - y1) <= 7.50) or (abs(x1 - x2) <= 0.25 and 7.50 <= y2 - y1 <= 11.50)):
+                        continue
+                    if g1.distance(g2) < 0.22:
+                        continue
+                    for x3, y3, g3 in v3:
+                        if not ((0.95 <= x2 - x3 <= 4.00 and abs(y3 - y2) <= 7.50) or (abs(x2 - x3) <= 0.25 and 8.00 <= y3 - y2 <= 12.00)):
+                            continue
+                        score = abs(x1 - x2) + abs(x2 - x3) + 0.35 * (abs(y2 - y1) + abs(y3 - y2)) - 0.1 * x1
+                        if best is not None and score >= best[0]:
+                            continue
+                        if g2.distance(g3) >= 0.22 and g1.distance(g3) >= 0.22:
+                            best = (score, x1, y1, g1, x2, y2, g2, x3, y3, g3)
+            if best is not None:
+                _, x1, y1, g1, x2, y2, g2, x3, y3, g3 = best
+                t1.SetPosition(pcbnew.VECTOR2I(mm(OX + x1), mm(OY + y1)))
+                t2.SetPosition(pcbnew.VECTOR2I(mm(OX + x2), mm(OY + y2)))
+                t3.SetPosition(pcbnew.VECTOR2I(mm(OX + x3), mm(OY + y3)))
+                b.Add(t1)
+                b.Add(t2)
+                b.Add(t3)
+                placed_silk_geoms.extend([("id", g1), ("id", g2), ("id", g3)])
+                return True
+            return False
+
+        place_contiguous_url_usb6()
+
+        for id_txt, ix0, iy0, idegs in (
+            (spec.name, -8.7, -12.0, (90.0, 0.0)),
+            (f"rev {spec.title_rev}", 11.7, -11.5, (90.0, 0.0)),
+            ("2026-11", -11.5, 6.8, (90.0, 0.0)),
+            ("CERN-OHL-P", 11.7, -4.0, (90.0, 0.0)),
+        ):
+            place_radial_usb6(id_txt, ix0, iy0, 28.0, idegs, 0.80, prefer_nocrt=False, min_gap=0.20, tag="id")
+
+        # 5. Selective major B.Cu designators (ICs, switches, connectors, crystal, inductor; NO passives)
+        des_placed = 0
+        for r in major_refs:
+            if r not in fps:
+                continue
+            fcx = um(fps[r].GetPosition().x) - OX
+            fcy = um(fps[r].GetPosition().y) - OY
+            if place_radial_usb6(r, fcx, fcy, 6.4, (0.0, 90.0), 0.80, must_nearest_major=r, prefer_nocrt=True, tag="des"):
+                des_placed += 1
+
+        # 6. Bare SMD test point net labels (TP1..TP8) + LiPo note
+        tp_net_labels = {
+            "TP1": "VSYS", "TP2": "3V3", "TP3": "VBAT", "TP4": "1V1",
+            "TP5": "RUN", "TP6": "CLK", "TP7": "DIO", "TP8": "GND",
+        }
+        tp_labeled = 0
+        for tpr, tplbl in tp_net_labels.items():
+            if tpr in fps:
+                tpx = um(fps[tpr].GetPosition().x) - OX
+                tpy = um(fps[tpr].GetPosition().y) - OY
+                if place_radial_usb6(tplbl, tpx, tpy, 2.4, (0.0, 90.0), 0.80, prefer_nocrt=False, tag="tp"):
+                    tp_labeled += 1
+
+        place_radial_usb6("LIPO 20x35mm", -1.5, -26.5, 28.0, (0.0, 90.0), 0.80, min_gap=0.22, tag="id")
+
+        # Unlock all copper tracks/vias (0 locked copper), lock non-copper keepouts, outline, front web & mechanical parts
+        for tr in b.GetTracks():
+            tr.SetLocked(False)
+        for z in b.Zones():
+            if z.GetIsRuleArea():
+                z.SetLocked(True)
+        for d in b.GetDrawings():
+            if d.GetLayerName() in ("Edge.Cuts", "F.SilkS"):
+                d.SetLocked(True)
+        for fname, fp in fps.items():
+            if fname in ("J1", "BT1", "SW1", "SW2", "SW3", "SW4", "SW5", "SW6", "Q2") or fname.startswith("D"):
+                fp.SetLocked(True)
+        pcbnew.SaveBoard(str(pcb_path), b)
+        pcb_txt = pcb_path.read_text()
+        if '(copper_finish "HAL SnPb")' in pcb_txt:
+            pcb_path.write_text(pcb_txt.replace('(copper_finish "HAL SnPb")', '(copper_finish "ENIG")'))
+        pro_path.write_bytes(pro_bytes)
+        print(
+            f"[{spec.name}] post_silk saved ({seg_cnt} front web segments, {des_placed}/{len(major_refs)} back designators, "
+            f"{tp_labeled}/8 TP labels, {p1_dots}/12 pin1 dots, 0 locked copper)",
+            flush=True,
+        )
+        os._exit(0)
+
+    def add_b_label(txt: str, tx: float, ty: float, deg: float = 0.0, size_mm: float = 0.85, thick_mm: float = 0.15):
         t = pcbnew.PCB_TEXT(b)
         t.SetText(txt)
         t.SetLayer(pcbnew.B_SilkS)
-        t.SetTextSize(pcbnew.VECTOR2I(mm(0.85), mm(0.85)))
-        t.SetTextThickness(mm(0.15))
+        t.SetTextSize(pcbnew.VECTOR2I(mm(size_mm), mm(size_mm)))
+        t.SetTextThickness(mm(thick_mm))
         t.SetMirrored(True)
         t.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_CENTER)
         t.SetVertJustify(pcbnew.GR_TEXT_V_ALIGN_CENTER)
@@ -997,6 +1622,11 @@ def stage_post_silk(spec: VariantSpec):
         t.SetTextAngleDegrees(deg)
         bb = t.GetBoundingBox()
         bx0, by0, bx1, by1 = um(bb.GetLeft()) - OX, um(bb.GetTop()) - OY, um(bb.GetRight()) - OX, um(bb.GetBottom()) - OY
+        if spec.extra_side_buttons:
+            ps = pcbnew.SHAPE_POLY_SET()
+            t.TransformTextToPolySet(ps, 0, mm(0.005), pcbnew.ERROR_INSIDE)
+            if any(ps.Collide( pcbnew.VECTOR2I(vp), vr ) for vp, vr in via_list + hole_list):
+                return False
         if all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and all(
             inside_parallelogram(u, v, 0.45) for u in (bx0, bx1) for v in (by0, by1)
         ):
@@ -1005,9 +1635,63 @@ def stage_post_silk(spec: VariantSpec):
             return True
         return False
 
-    add_b_label("BT1 +  - 4.2V", 8.20, 31.30, 0.0)
-    add_b_label("USB 5V", 0.00, 30.55, SKEW_DEG)
-    add_b_label("LIPO 20x35mm", 0.00, -24.50, 0.0)
+    if spec.io_mode == "usb":
+        bt_p1 = next(p for p in fps["BT1"].Pads() if p.GetNumber() == "1").GetPosition()
+        bt_p2 = next(p for p in fps["BT1"].Pads() if p.GetNumber() == "2").GetPosition()
+        p1x, p1y = um(bt_p1.x) - OX, um(bt_p1.y) - OY
+        p2x, p2y = um(bt_p2.x) - OX, um(bt_p2.y) - OY
+        for dx_pol in (1.05, 1.20, 0.0):
+            dy_p1 = 0.0 if dx_pol > 0 else (1.05 if p1y > p2y else -1.05)
+            if add_b_label("+", p1x + dx_pol, p1y + dy_p1, 0.0):
+                break
+        for dx_pol in (1.05, 1.20, 0.0):
+            dy_p2 = 0.0 if dx_pol > 0 else (-1.05 if p1y > p2y else 1.05)
+            if add_b_label("-", p2x + dx_pol, p2y + dy_p2, 0.0):
+                break
+        add_b_label("JST 1.25", 8.40, 14.35, 0.0)
+        if spec.extra_side_buttons:
+            # Place J1 label so nearest courtyard is J1 within 6.0 mm (passes silk_check connector-label)
+            bcu_courts = {}
+            for rf, fp_ in fps.items():
+                if fp_.IsFlipped():
+                    fp_.BuildCourtyardCaches()
+                    cy_ = fp_.GetCourtyard(pcbnew.B_CrtYd)
+                    if cy_.OutlineCount():
+                        bcu_courts[rf] = cy_
+            for jx_c, jy_c, jd_c in (
+                (-5.60, 23.00, 0.0), (5.80, 24.40, 0.0), (-5.20, 22.40, SKEW_DEG),
+                (4.80, 24.80, SKEW_DEG), (-3.80, 22.80, SKEW_DEG), (-1.20, 22.10, SKEW_DEG),
+            ):
+                pt_c = pcbnew.VECTOR2I(mm(OX + jx_c), mm(OY + jy_c))
+                nearest_rf = min(bcu_courts, key=lambda k: bcu_courts[k].SquaredDistance(pt_c))
+                if nearest_rf == "J1" and add_b_label("USB-C 5V", jx_c, jy_c, jd_c):
+                    break
+            for ux, uy, udeg in ((-9.20, -18.55, 0.0), (-8.60, -18.80, 0.0), (-5.40, -21.60, 0.0), (-9.60, -18.20, 90.0)):
+                if add_b_label("USER_C", ux, uy, udeg):
+                    break
+            for dx_, dy_, ddeg in ((-8.60, 18.65, 0.0), (-9.20, 18.90, 0.0), (-5.40, 20.40, 0.0), (-9.60, 18.50, 90.0)):
+                if add_b_label("USER_D", dx_, dy_, ddeg):
+                    break
+            for lx, ly in ((0.00, -24.50), (-1.50, -25.20), (0.00, -10.80), (-2.50, -10.50)):
+                if add_b_label("LIPO 20x35mm", lx, ly, 0.0):
+                    break
+            # Board identity (name, rev, date, license) in open via-free B.SilkS strips
+            for id_txt in (f"parallelogram ({spec.name})", f"rev {spec.title_rev} 2026-11 CERN-OHL-P-2.0"):
+                placed_id = False
+                for iy in (-12.50, -11.20, -9.80, -8.40, -7.00, -13.80, -15.20, -25.80, -26.80, 26.80, 28.00):
+                    for ix in (-2.50, -1.50, 0.00, -3.50, 1.50):
+                        if add_b_label(id_txt, ix, iy, 0.0, 0.80, 0.15):
+                            placed_id = True
+                            break
+                    if placed_id:
+                        break
+        else:
+            add_b_label("USB-C", -1.20, 22.10, SKEW_DEG)
+            add_b_label("LIPO 20x35mm", 0.00, -24.50, 0.0)
+    else:
+        add_b_label("BT1 +  - 4.2V", 8.20, 31.30, 0.0)
+        add_b_label("USB 5V", 0.00, 30.55, SKEW_DEG)
+        add_b_label("LIPO 20x35mm", 0.00, -24.50, 0.0)
 
     # Add IC pin-1 dots and visible B.SilkS designators adjacent to major B.Cu parts (clear of B.Mask & edge)
     ic_refs = ["U3", "U1", "U2", "U10", "U11", "U4", "U5", "U6", "U7", "U8", "U9", "Q1"]
@@ -1022,25 +1706,57 @@ def stage_post_silk(spec: VariantSpec):
         fcx, fcy = um(fps[r].GetPosition().x) - OX, um(fps[r].GetPosition().y) - OY
         vx, vy = px0 - fcx, py0 - fcy
         vlen = math.hypot(vx, vy) or 1.0
-        for dist_out in (0.65, 0.85, 1.05):
-            dx_b, dy_b = px0 + (vx / vlen) * dist_out, py0 + (vy / vlen) * dist_out
-            bx0, by0, bx1, by1 = dx_b - 0.16, dy_b - 0.16, dx_b + 0.16, dy_b + 0.16
-            if all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and inside_parallelogram(dx_b, dy_b, 0.45):
-                dot = pcbnew.PCB_SHAPE(b)
-                dot.SetShape(pcbnew.SHAPE_T_CIRCLE)
-                dot.SetFilled(True)
-                dot.SetLayer(pcbnew.B_SilkS)
-                dot.SetWidth(mm(0.05))
-                dot.SetCenter(pcbnew.VECTOR2I(mm(OX + dx_b), mm(OY + dy_b)))
-                dot.SetEnd(pcbnew.VECTOR2I(mm(OX + dx_b + 0.13), mm(OY + dy_b)))
-                b.Add(dot)
-                bmask_obs.append((bx0 - 0.18, by0 - 0.18, bx1 + 0.18, by1 + 0.18))
-                p1_dots += 1
-                break
+        if spec.extra_side_buttons:
+            other_pads = [
+                (um(op.GetPosition().x) - OX, um(op.GetPosition().y) - OY)
+                for op in fps[r].Pads()
+                if op.GetNumber() not in ("1", "A1")
+            ]
+            base_ang = math.atan2(vy, vx)
+            dot_cands = []
+            for dist_out in (0.55, 0.70, 0.85, 1.00, 1.12):
+                for da_deg in (0, -25, 25, -50, 50, -75, 75, -100, 100, -130, 130, 180):
+                    ang = base_ang + math.radians(da_deg)
+                    dot_cands.append((px0 + dist_out * math.cos(ang), py0 + dist_out * math.sin(ang)))
+            for dx_b, dy_b in dot_cands:
+                d1 = math.hypot(dx_b - px0, dy_b - py0)
+                if d1 > 1.18 or any(math.hypot(dx_b - ox, dy_b - oy) <= d1 + 0.02 for ox, oy in other_pads):
+                    continue
+                bx0, by0, bx1, by1 = dx_b - 0.16, dy_b - 0.16, dx_b + 0.16, dy_b + 0.16
+                if all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and inside_parallelogram(dx_b, dy_b, 0.40):
+                    dot = pcbnew.PCB_SHAPE(b)
+                    dot.SetShape(pcbnew.SHAPE_T_CIRCLE)
+                    dot.SetFilled(True)
+                    dot.SetLayer(pcbnew.B_SilkS)
+                    dot.SetWidth(mm(0.05))
+                    dot.SetCenter(pcbnew.VECTOR2I(mm(OX + dx_b), mm(OY + dy_b)))
+                    dot.SetEnd(pcbnew.VECTOR2I(mm(OX + dx_b + 0.13), mm(OY + dy_b)))
+                    b.Add(dot)
+                    bmask_obs.append((bx0 - 0.18, by0 - 0.18, bx1 + 0.18, by1 + 0.18))
+                    p1_dots += 1
+                    break
+        else:
+            for dist_out in (0.65, 0.85, 1.05):
+                dx_b, dy_b = px0 + (vx / vlen) * dist_out, py0 + (vy / vlen) * dist_out
+                bx0, by0, bx1, by1 = dx_b - 0.16, dy_b - 0.16, dx_b + 0.16, dy_b + 0.16
+                if all(bx1 <= a or g <= bx0 or by1 <= e or h <= by0 for a, e, g, h in bmask_obs) and inside_parallelogram(dx_b, dy_b, 0.45):
+                    dot = pcbnew.PCB_SHAPE(b)
+                    dot.SetShape(pcbnew.SHAPE_T_CIRCLE)
+                    dot.SetFilled(True)
+                    dot.SetLayer(pcbnew.B_SilkS)
+                    dot.SetWidth(mm(0.05))
+                    dot.SetCenter(pcbnew.VECTOR2I(mm(OX + dx_b), mm(OY + dy_b)))
+                    dot.SetEnd(pcbnew.VECTOR2I(mm(OX + dx_b + 0.13), mm(OY + dy_b)))
+                    b.Add(dot)
+                    bmask_obs.append((bx0 - 0.18, by0 - 0.18, bx1 + 0.18, by1 + 0.18))
+                    p1_dots += 1
+                    break
 
     major_refs = [
         "U3", "U1", "U2", "U10", "U11", "U4", "U5", "U6", "U7", "U8", "U9",
-        "L1", "Y1", "SW1", "SW2", "J1", "Q1", "R30", "R33", "R50", "R60", "R43",
+        "L1", "Y1", "SW1", "SW2", "SW3", "SW4",
+        *(("SW5", "SW6") if spec.extra_side_buttons else ()),
+        "BT1", "J1", "Q1", "R30", "R33", "R50", "R60", "R43",
     ]
     des_placed = 0
     for r in major_refs:

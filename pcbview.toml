@@ -120,6 +120,13 @@ sch = "hw/parallelogram/p2-132-usb/parallelogram.kicad_sch"
 note = "100% routed & DRC-clean 2-driver 4-layer skewed parallelogram (6 x 22 = 132 XL-1615RGBC-RF LEDs at 3.70 x 2.60 mm = 8.5 LEDs/cm^2) adding South-bezel USB-C (TYPE-C-31-M-22, NPTH bosses steered cleanly between LED alleys), NW/SE wing flat-face TS-1187A user buttons outside the 20 x 35 mm LiPo pocket, and a Micro-JST 1.25 battery header ($13.06/bd BOM, +$0.46 vs wire-pad p2-132). 771/771 connections (0 open), 4,974 tracks, 727 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints; fab files in fab/."
 
 [[boards]]
+id = "parallelogram-p2-132-usb6"
+name = "Parallelogram p2-132-usb6 (132 LEDs, USB-C + JST 1.25 + 6 Buttons)"
+pcb = "hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb"
+sch = "hw/parallelogram/p2-132-usb6/parallelogram.kicad_sch"
+note = "Parent: parallelogram-p2-132-usb. Adds two peg-less Panasonic EVQP7J01P side-actuated switches on the 62 mm West long edge — SW5 (USER_C on RP2350 GPIO9, (-10.85, -22.00) mm) near the North end and SW6 (USER_D on RP2350 GPIO0, (-10.85, +22.80) mm) near the South end — each wired active-low to GND with internal pull-up, 1 kOhm series ESD/clamp resistor (R46/R47), 100 nF debounce capacitor (C71/C72), and B.SilkS USER_C/USER_D labels; everything else including J1 position and rotation stays unchanged (4L ENIG + POFV). 795/795 pad connections (0 open), 4,921 tracks, 729 vias, 0 DRC errors/warnings, 0 copper_audit defects, 0 thin pad joints, plane GND / RP2350 +1V1 ring / +3V3 band each 1 piece, 0 foreign EP vias. $13.25 BOM @10, fab files in fab/."
+
+[[boards]]
 id = "parallelogram-p3-162-usb"
 name = "Parallelogram p3-162-usb (162 LEDs, USB-C) - 34 open"
 pcb = "hw/parallelogram/p3-162-usb/parallelogram.kicad_pcb"
