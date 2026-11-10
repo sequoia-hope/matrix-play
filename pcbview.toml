@@ -192,6 +192,13 @@ sch = "hw/round-pendant/f-usbc/round-pendant.kicad_sch"
 note = "Parent: round-pendant-f. Swaps J1 USB_Pads wire pads for Korean Hroparts TYPE-C-31-M-22 (C530612, 4-SMD-pad shell) on B.Cu at (107.787, 110.926) rot -156.05 deg (SSE rim, 23.95 deg east of South, 8.35 deg non-radial skew) via local southern rip-up & ultraroute re-route: 0 front LEDs moved (236/236 front parts exact; both dia. 0.65 mm NPTH pegs clear F.Cu LED pads by 0.220 mm and >=0.201 mm across all 8 layers), 8 southern B.Cu parts nudged (BT1, U7, U8, C1, C6, R5, R8, TP3), 147/147 locked RP2350 decoupling tracks & all plane/ring piece counts preserved intact (85.6% copper verbatim from F). 0 unconnected, 0 DRC errors/warnings (2 inherited U3 pin 42/43 {slash} parity names), 0 copper_audit routing/strip defects, 0 thin pad joints, 5,555 tracks, 886 vias (+10 vs F), $26.62 BOM @10 (+$0.36 vs F $26.26); fab files in fab/."
 
 [[boards]]
+id = "round-pendant-f-usbc-rtc"
+name = "Round Pendant F-USBC-RTC (235 LEDs, USB-C + Inward JST 1.25 + RTC)"
+pcb = "hw/round-pendant/f-usbc-rtc/round-pendant.kicad_pcb"
+sch = "hw/round-pendant/f-usbc-rtc/round-pendant.kicad_sch"
+note = "Parent: round-pendant-f-usbc. Adds an inward-facing right-angle 1.25 mm battery receptacle (CJT A1251WR-S-2P, C225111) in the SW sector at (89.200, 110.550) rot -28.00 deg facing NNE (+28 deg E of N, 4.88 mm nominal / 4.65 mm min flat plug-insertion runway to U4, 3.20 mm height = 0 mm added stack thickness) and a Seiko Epson RX8130CE:BB I2C Real-Time Clock (C1542426, built-in 32.768 kHz crystal, 0x32 on 400 kHz I2C1, 1.50 uA active on always-on +3V3, POWMAN PWRUP2 wake on GPIO19) in the vacant East pocket at (114.750, 101.200) with C75/C76/R32 and B.Cu rule area RX8130_xtal_end: 0 front LEDs moved (236/236 front parts exact), J1/SW1/SW2/U1..U7/U9..U12 & 147/147 locked RP2350 decoupling tracks & 9/9 zone piece counts preserved intact (83.2% copper verbatim from f-usbc). 0 unconnected, 0 DRC errors/warnings (2 inherited U3 pin 42/43 {slash} parity names), 0 copper_audit routing/strip defects, 0 thin pad joints, 5,883 tracks, 918 vias (+32 vs f-usbc), $27.44 BOM @10 (+$0.82 vs f-usbc); fab files in fab/."
+
+[[boards]]
 id = "round-pendant-e"
 name = "Round Pendant — Sunflower (WLCSP-36)"
 pcb = "hw/round-pendant/e/round-pendant.kicad_pcb"

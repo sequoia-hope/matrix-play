@@ -2,7 +2,7 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 9,
-  "doing": "2026-11-08: Sunflower s2-110-usbc phase gates 0-10 completed (design/gates/sunflower-s2-110-usbc/): Gates 1-3 passed, Gates 0/4/10 awaiting_signoff, Gates 5-9 failed on frozen Rev S3C copper/rules/silk; Bottom-side CPL rotation/centroid bug fixed in scripts/sunflower/export_and_cost.py and hw/sunflower/s2-110-usbc/fab/ re-exported (0 sync/ERC/DRC errors, all 34 LCSC parts in stock incl. L1 at 1,520); stale production/ moved to production-stale-2026-11-07-0137/. Round Pendant F remains the main board.",
+  "doing": "2026-11-09: Round Pendant f-usbc-rtc (Rev FUR) completed, verified, independently audited & exported (hw/round-pendant/f-usbc-rtc/fab/): adds inward-facing 1.25 mm battery socket BT1 (CJT A1251WR-S-2P, C225111) at SW (89.200, 110.550, -28 deg) with 4.88 mm flat NNE plug-insertion runway and Seiko Epson RX8130CE:BB I2C1 Real-Time Clock U13 (C1542426, 1.50 uA on always-on +3V3, POWMAN PWRUP2 wake on GPIO19) in the East pocket with 0 front LEDs moved and 147/147 locked RP2350 tracks intact (5,883 tracks, 918 vias, 0 ERC/DRC/copper_audit/pad_joints/sync errors, $27.44 BOM @10). Gates 4 & 10 await user sign-off.",
   "needs_user": [
     {
       "id": "inductor-preorder",
@@ -75,6 +75,16 @@
         "Keep Variant F wire pads (USB_Pads) or change R4 charge resistor (3.0 kOhm 297 mA vs 4.3/4.7 kOhm) before ordering"
       ],
       "text": "Round Pendant f-usbc Gates 4 & 10 sign-off (design/gates/round-pendant-f-usbc/phase4.md & phase10.md): confirm (1) SSE J1 pose at (107.787, 110.926, -156.05 deg) facing 23.95 deg E of S (8.35 deg non-radial skew, 0 front LEDs moved, two dia. 0.65 mm front mask web apertures with 0.70 mm pegs recessed 0.30 mm below F.Cu, and 4x 2.30x1.80 mm SMD shell hold-down), (2) Kapton + 3.3-3.5 mm rear foam standoff under 35 mm 403535 LiPo and <=0.51 W continuous worn FW thermal ceiling (LEDs blanked while ~CHG == 0), and (3) inherited Global-Sourcing items (C2678907 IS31FL3745, C146233 ALS-PT19 or local C47416518; note L1 C42411119 is restocked at 1,357 pcs) + JLC08101H-1080 8L POFV quote."
+    },
+    {
+      "id": "round-pendant-f-usbc-rtc-release",
+      "kind": "signoff",
+      "gate": 10,
+      "options": [
+        "Approve round-pendant-f-usbc-rtc Phase 4 & 10 release (8L JLC08101H-1080 1.0 mm ENIG + POFV=Yes + DO NOT ULTRASONIC CLEAN, $27.44 BOM @10, inward BT1 A1251WR-S-2P + East U13 RX8130CE:BB, 0 LEDs moved)",
+        "Adjust BT1 angle/location, add coin-cell/supercap RTC backup, or order f-usbc ($26.62) without RTC/socket"
+      ],
+      "text": "Round Pendant f-usbc-rtc Gates 4 & 10 sign-off (design/gates/round-pendant-f-usbc-rtc/phase4.md & phase10.md): confirm (1) inward-facing BT1 (CJT A1251WR-S-2P, C225111) at SW (89.200, 110.550, -28.00 deg, CPL=208.00 deg) facing NNE with 4.88 mm flat plug-insertion runway to U4 (3.20 mm height = 0 mm added stack thickness; verify LiPo plug Red + = BT1.1 '+' with DMM and mate before adhering rear 35 mm LiPo), (2) East U13 (Seiko Epson RX8130CE:BB, C1542426, 0x32 on I2C1) tied to always-on +3V3 (VIO=VDD=VBAT=+3V3, 1.50 uA typ with FOUT=OFF, POWMAN PWRUP2 wake on GPIO19; include DO NOT ULTRASONIC CLEAN in PCBA notes), and (3) inherited SSE J1 pose, Kapton + 3.3-3.5 mm foam standoff, <=0.51 W worn thermal cap, Global-Sourcing C2678907/C146233, and JLC08101H-1080 8L POFV=Yes quote."
     }
   ],
   "checks": {
@@ -167,6 +177,16 @@
       "result": "PASS: 342 symbols <-> 342 footprints <-> 333 BOM/CPL parts ($26.62/bd @10, +$0.36 vs F $26.26; 31/33 BOM codes in local JLC SMT stock incl. C530612 J1 = 2,410 & C42411119 L1 = 1,357); J1 CPL verified at 336.05 deg (0.077 mm EasyEDA pad match); split PTH (886) + NPTH (6) drills & 15 Gerber layers audited",
       "ok": true,
       "gate": 10
+    },
+    "f-usbc-rtc: ERC, DRC & audits": {
+      "result": "PASS: 0 ERC violations across 8 sheets; 0 unconnected, 5,883 tracks, 918 vias (+32 vs f-usbc), 236/236 front parts & 147/147 locked RP2350 tracks & 9/9 zone piece counts intact (83.2% copper verbatim from f-usbc), 0 KiCad DRC errors/warnings (--severity-all; 2 inherited U3 pin 42/43 {slash} parity names), 0 copper_audit routing/strip defects, 0 thin pad joints (1,433 SMD pads), 0 RX8130_xtal_end intrusions, >=0.201 mm 8-layer J1 NPTH clearance",
+      "ok": true,
+      "gate": 7
+    },
+    "f-usbc-rtc: sync, stock, CPL & gerbers": {
+      "result": "PASS: 346 symbols <-> 346 footprints <-> 338 BOM/CPL parts ($27.44/bd @10, +$0.82 vs f-usbc $26.62; 33/35 BOM codes in local JLC SMT stock incl. C1542426 RX8130CE = 2,242, C225111 A1251 = 74,983, C530612 J1 = 2,400, C42411119 L1 = 1,299); CPL verified across all 338 parts (BT1 208.00 deg 0.050 mm, U13 180.00 deg 0.000 mm, J1 336.05 deg 0.077 mm); split PTH (918) + NPTH (6) drills & 15 Gerber layers audited via gerbonara",
+      "ok": true,
+      "gate": 10
     }
   },
   "gates": {
@@ -241,9 +261,42 @@
       "8": { "state": "passed", "stale_because": null },
       "9": { "state": "passed", "stale_because": null },
       "10": { "state": "awaiting_signoff", "stale_because": null }
+    },
+    "round-pendant-f-usbc-rtc": {
+      "dir": "design/gates/round-pendant-f-usbc-rtc",
+      "1": { "state": "passed", "stale_because": null },
+      "2": { "state": "passed", "stale_because": null },
+      "3": { "state": "passed", "stale_because": null },
+      "4": { "state": "awaiting_signoff", "stale_because": null },
+      "5": { "state": "passed", "stale_because": null },
+      "6": { "state": "passed", "stale_because": null },
+      "7": { "state": "passed", "stale_because": null },
+      "8": { "state": "passed", "stale_because": null },
+      "9": { "state": "passed", "stale_because": null },
+      "10": { "state": "awaiting_signoff", "stale_because": null }
     }
   },
   "links": [
+    {
+      "label": "Round Pendant f-usbc-rtc (235 LEDs, 8L, USB-C + Inward JST 1.25 + RTC, $27.44, 0 open, 0 DRC) viewer",
+      "href": "viewer/round-pendant-f-usbc-rtc.html"
+    },
+    {
+      "label": "Round Pendant f-usbc-rtc Phase Gates 1-10 & Release Sign-Off",
+      "href": "design/gates/round-pendant-f-usbc-rtc/phase10.md"
+    },
+    {
+      "label": "Round Pendant f-usbc-rtc Mechanical, Battery Socket & RTC Brief",
+      "href": "design/brief-f-usbc-rtc.md"
+    },
+    {
+      "label": "Round Pendant f-usbc-rtc Bring-Up & RTC Wake Smoke-Test Plan",
+      "href": "design/bringup-f-usbc-rtc.md"
+    },
+    {
+      "label": "Seiko Epson RX8130CE:BB RTC Datasheet Audit (U13)",
+      "href": "design/parts/rtc-rx8130ce.md"
+    },
     {
       "label": "Round Pendant f-usbc (235 LEDs, 8L, SMD USB-C, $26.62, 0 open, 0 DRC) viewer",
       "href": "viewer/round-pendant-f-usbc.html"
@@ -450,5 +503,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-09T15:42:00-08:00"
+  "updated": "2026-11-09T20:50:00-08:00"
 }
