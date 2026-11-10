@@ -4,7 +4,7 @@ Compiled from intensive real-world usage of `ultraroute` (`vendor/ultraroute` @ 
 - **`round-pendant` Variants D & E (8-layer, 2 mm pitch sunflower matrix):** `235` RGB LEDs, `5× IS31FL3745` WLCSP-36, `RP2350A`, `879` vias, **`0` open, `0` DRC errors/warnings**.
 - **`parallelogram` 4-layer low-cost density-limit family (`p1-66` .. `p4-264`, `25 × 70 mm`, `17.75°` skew, `1–4× AW20198QNR` QFN-40 `0.4 mm` pitch with solid `3.4 × 3.4 mm` GND EPs):** `475` to `1,329` connections on JLCPCB 4-layer standard rules (`0.10/0.10 mm` trace/space, `0.30/0.15 mm` via, `--planes In1.Cu`, `--cell 0.025`).
 
-Repro inputs and raw post-router outputs are archived at `/home/sequoia/Software/ultraroute-lab/repro/round-pendant-parallelogram/`, and a copy of this report is placed in `/home/sequoia/Software/ultraroute/docs/research/round-pendant-user-notes-2026-11.md`.
+Repro inputs and raw post-router outputs are archived at `~/Software/ultraroute-lab/repro/round-pendant-parallelogram/`, and a copy of this report is placed in `~/Software/ultraroute/docs/research/round-pendant-user-notes-2026-11.md`.
 
 ---
 
@@ -122,3 +122,22 @@ Repro inputs and raw post-router outputs are archived at `/home/sequoia/Software
 
 **Proposed fix:**
 - For small non-plane copper zones (`outline area < 5 mm²`, e.g. regulator `LX` / `COUT` / `PGND` pours), either treat the zone polygon on its layer as a foreign-net track/via obstacle by default (unless `--allow-zone-cut` is passed), or check post-refill island count / `min_thickness` pinch in `ultraroute`'s outcome report so silently severed reference pours are caught without bespoke `copper_audit.py` checks.
+
+---
+
+### 7. What our post-route cleanup still repairs, by root cause (read against `3de3d83`, 2026-11-09)
+
+`scripts/parallelogram/clean_copper_4l.py` (and the sunflower copy) runs about 20 passes over ultraroute's output. Read against `3de3d83`, nearly all of them repair router defects, and most of the repairs leave artifacts of their own. On `p2-132-usb6` that left **156 closed same-net loops on 30 non-GND nets and 63 segments under 0.01 mm**, which KiCad DRC can't see. Root causes, most impactful first:
+
+1. **Repairs add copper and never take any away.** The router's own repairs (`stages.rs:1263-1305`: the post-repair prune excludes the repair pieces) and our passes 2b, 3, 3b, 5b-5d, 6d and 6f-3 all lay a bridge or spur and keep the original path, so every weld leaves a triangle. *Ask:* a repair replaces the end segment it fixes, then prunes cycles and dangling pieces, repair pieces included.
+2. **Tracks end on, or cross, off-grid vias and pads off-centre.** The route stops on the 0.025 mm grid beside a via's centre, joined only by end-cap overlap, or passes through a same-net via's land with no vertex there. At SMD pads it ends just outside the pad, often at a rounded corner; the router's repair aims at the pad's vertex average (`cleanup.rs:828`). (Our passes 2, 2b, 5.0, 6c, 6d, 6e, 6g.) *Ask:* finish each path with one exact segment to the via centre, or to the nearest point of the pad shrunk by w/2; make a crossed same-net via a vertex of the track.
+3. **The `firmly_linked` exemption lets necks through** (`cleanup.rs:340`; note 2 above). Same-net sibling grazes, via/pad-corner kisses under 0.09 mm, and 2-45° V-notches are only reported (`necks.rs`, the acute-corner check), while KiCad measures the merged copper. (Passes 3b, 5a-5d, 6f-2.) *Ask:* judge necks on the merged outline as KiCad does, and square off acute wedges during search.
+4. **Gaps and joins that aren't split.** Ends 1 µm to w+0.05 mm from another end, or touching a track's body off its centre line, plus same-net crossings with no vertex. The T-split catches only ends within r/2 of the centre line (`cleanup.rs:258`). (Passes 3, 6f-1, 6f-3 cases 1 and 3, the crossing split.) *Ask:* split wherever same-net copper ends on or crosses the track's copper.
+5. **Leftover copper.** Zero-length segments, dangling stubs, collinear overlaps, vias with copper on fewer than two layers, redundant vias. The router's prune covers only copper it laid. (Passes 1, 4, 6b, 6c, 6g.) *Ask:* prune the whole board, adopted copper included, and merge collinear runs on write.
+6. **Pour landings end on a pour's edge** and leave it after refill (6f-3 case 4). *Ask:* end inside the pour by its minimum thickness.
+
+Not router work: the hard-coded zone settings and rule areas (project policy, kept in sync with `.kicad_dru` by hand), and dropping GND vias from U1-U5 paste windows (pass 6g; the router could honour a no-via-in-paste rule area). The cleanup script itself rounds to 0.1 µm (`snap()`) and bridges gaps as small as 1 µm (L218), so some of the sub-10 µm segments are ours. The only per-defect counts on record predate the router's own repairs (variant D, `decisions.md`).
+
+### 8. Vias joined only by a small zone are treated as unconnected (`3de3d83`, 2026-11-09)
+
+On `p2-132-usb6`, U3's four 1V1 ring vias (0.6/0.25, at ±2.15 mm, as in Raspberry Pi's layout) are joined by the `RP2350 ring` zone on B.Cu (priority 3, thermal connection). KiCad DRC counts them as connected. A `--adopt` route laid its own 0.2 mm `+1V1` tracks on In2.Cu between them anyway: `(0.49, 2.15) -> (-1.86, 0.89)` and `(2.44, 0.04) -> (0.49, 2.15)` relative to U3. That duplicated the ring with thin wire and blocked SW2_9 from crossing under the chip, which was left open. We work round it with a locked B.Cu tie through the ring (`scripts/parallelogram/u3_spokes.py`, `RING_TIE`). *Ask:* treat a filled zone as connecting the items it reaches (KiCad's rule, thermal spokes included) before deciding what is open, or report which zone connections it couldn't credit.

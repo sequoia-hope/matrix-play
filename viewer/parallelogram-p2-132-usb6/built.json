@@ -93,13 +93,13 @@
   "thickness": 1.5862,
   "plate": "#c8c8c8",
   "body": "body.svg",
-  "vias": 719,
+  "vias": 724,
   "nets": 138,
   "footprints": 231,
   "front": 133,
   "back": 98,
-  "tracks": 5416,
-  "length_mm": 4343.7,
+  "tracks": 5241,
+  "length_mm": 4352.6,
   "layers": [
    {
     "name": "F.Cu",
@@ -108,8 +108,8 @@
     "file": "f.svg",
     "color": "#C83434",
     "note": "Top copper, 35 \u00b5m (1 oz).",
-    "tracks": 2693,
-    "length_mm": 1544.5,
+    "tracks": 2591,
+    "length_mm": 1532.4,
     "pads": 530,
     "zones": []
    },
@@ -134,8 +134,8 @@
     "file": "in2.svg",
     "color": "#CE7D2C",
     "note": "Inner layer 2 of 2, 15.2 \u00b5m.",
-    "tracks": 1195,
-    "length_mm": 1572.0,
+    "tracks": 1194,
+    "length_mm": 1589.5,
     "pads": 0,
     "zones": []
    },
@@ -146,8 +146,8 @@
     "file": "b.svg",
     "color": "#4D7FC4",
     "note": "Bottom copper, 35 \u00b5m (1 oz).",
-    "tracks": 1528,
-    "length_mm": 1227.2,
+    "tracks": 1456,
+    "length_mm": 1230.7,
     "pads": 403,
     "zones": [
      "+3V3",
@@ -202,8 +202,8 @@
   "board": "parallelogram.kicad_pcb",
   "generated": "2026-11-09",
   "glb": "board.glb",
-  "bytes": 12923084,
-  "kicad_bytes": 39132264,
+  "bytes": 12951264,
+  "kicad_bytes": 39234016,
   "parts": 231,
   "modelled": 223,
   "no_model": [
@@ -235,10 +235,10 @@
    "legacy": 2,
    "found": 0
   },
-  "triangles": 888034,
+  "triangles": 891000,
   "primitives": 1051
  },
- "when": "2026-11-09 07:11",
+ "when": "2026-11-09 23:20",
  "source": {
   "kind": "file",
   "pcb": "hw/parallelogram/p2-132-usb6/parallelogram.kicad_pcb",

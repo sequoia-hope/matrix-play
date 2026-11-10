@@ -2,7 +2,7 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 9,
-  "doing": "2026-11-09: Round Pendant f-usbc-rtc (Rev FUR) completed, verified, independently audited & exported (hw/round-pendant/f-usbc-rtc/fab/): adds inward-facing 1.25 mm battery socket BT1 (CJT A1251WR-S-2P, C225111) at SW (89.200, 110.550, -28 deg) with 4.88 mm flat NNE plug-insertion runway and Seiko Epson RX8130CE:BB I2C1 Real-Time Clock U13 (C1542426, 1.50 uA on always-on +3V3, POWMAN PWRUP2 wake on GPIO19) in the East pocket with 0 front LEDs moved and 147/147 locked RP2350 tracks intact (5,883 tracks, 918 vias, 0 ERC/DRC/copper_audit/pad_joints/sync errors, $27.44 BOM @10). Gates 4 & 10 await user sign-off.",
+  "doing": "2026-11-09: parallelogram p2-132-usb6: U3's 1V1 ring now has the reference spokes (four 0.6/0.25 ring vias, 0.6 mm In2.Cu spokes to DVDD pins 6/23/39 and COUT, pin 23 -> C19 on B.Cu); nearby nets re-routed, PGND's second via restored after independent review; DRC/copper_audit/pad_joints/sync/nets 0, Gate 8 PDN re-run PASS, fab re-exported (BOM/CPL unchanged). Gate 10 still awaits your sign-off. Earlier today: Round Pendant f-usbc-rtc (Rev FUR) completed, verified, independently audited & exported (hw/round-pendant/f-usbc-rtc/fab/): adds inward-facing 1.25 mm battery socket BT1 (CJT A1251WR-S-2P, C225111) at SW (89.200, 110.550, -28 deg) with 4.88 mm flat NNE plug-insertion runway and Seiko Epson RX8130CE:BB I2C1 Real-Time Clock U13 (C1542426, 1.50 uA on always-on +3V3, POWMAN PWRUP2 wake on GPIO19) in the East pocket with 0 front LEDs moved and 147/147 locked RP2350 tracks intact (5,883 tracks, 918 vias, 0 ERC/DRC/copper_audit/pad_joints/sync errors, $27.44 BOM @10). Gates 4 & 10 await user sign-off.",
   "needs_user": [
     {
       "id": "inductor-preorder",
@@ -64,7 +64,7 @@
         "Approve p2-132-usb6 Phase 4 & 10 release (4L JLC04161H-7628, ENIG 1U\", POFV=Yes, $13.26 BOM @10, Option 1 North-facing BT1 + SE bezel-aligned SW4 + West-edge SW5/SW6)",
         "Adjust SE/West button coordinates, LiPo foam thickness, or POWMAN deep-sleep wake allocation before ordering"
       ],
-      "text": "Parallelogram p2-132-usb6 Gates 4 & 10 sign-off (design/gates/parallelogram-p2-132-usb6/phase4.md & phase10.md): confirm (1) Option 1 SE placement — BT1 rotated 90 deg CCW to (+7.97, +23.00, 0 deg) facing -Y North toward LiPo pocket (6.03 mm clear runway to R8, 7.20 mm to U8; Pad 1 + VBAT West, Pad 2 - BAT_N East) + bezel-aligned SW4 at (+8.15, +30.55, 162.26 deg) + West-edge SW5 (-10.85, -22.00, GPIO9) & SW6 (-10.85, +22.80, GPIO0, C71/C72 50V X7R C307331), (2) <=18.0 mm LiPo on 1.0 mm tape OR >=1.8-2.0 mm VHB/foam standoff for a 20x35 mm cell over 1.55 mm max EVQP7J01P housings, (3) >=20 ms FW debounce, GCC <= 0x40 (0.54 W) continuous worn thermal cap + ADC4 foldback, and which 2 of {SW3..SW6} share POWMAN P1.7 wake, and (4) 4L JLC04161H-7628 ENIG 1U\" + POFV=Yes (~$70-$95 4L bare-PCB POFV lot surcharge) & tag parallelogram-p2-132-usb6-revP1U6."
+      "text": "Parallelogram p2-132-usb6 Gates 4 & 10 sign-off (design/gates/parallelogram-p2-132-usb6/phase4.md & phase10.md): confirm (1) Option 1 SE placement \u2014 BT1 rotated 90 deg CCW to (+7.97, +23.00, 0 deg) facing -Y North toward LiPo pocket (6.03 mm clear runway to R8, 7.20 mm to U8; Pad 1 + VBAT West, Pad 2 - BAT_N East) + bezel-aligned SW4 at (+8.15, +30.55, 162.26 deg) + West-edge SW5 (-10.85, -22.00, GPIO9) & SW6 (-10.85, +22.80, GPIO0, C71/C72 50V X7R C307331), (2) <=18.0 mm LiPo on 1.0 mm tape OR >=1.8-2.0 mm VHB/foam standoff for a 20x35 mm cell over 1.55 mm max EVQP7J01P housings, (3) >=20 ms FW debounce, GCC <= 0x40 (0.54 W) continuous worn thermal cap + ADC4 foldback, and which 2 of {SW3..SW6} share POWMAN P1.7 wake, and (4) 4L JLC04161H-7628 ENIG 1U\" + POFV=Yes (~$70-$95 4L bare-PCB POFV lot surcharge) & tag parallelogram-p2-132-usb6-revP1U6."
     },
     {
       "id": "round-pendant-f-usbc-release",
@@ -154,7 +154,7 @@
       "gate": 10
     },
     "s2-110-usbc: gates 0-10": {
-      "result": "Gates 1,2,3 passed; Gates 0,4,10 awaiting_signoff; Gates 5,6,7,8,9 failed on frozen Rev S3C copper/rules/silk + Gate 10 J1 PTH missing B.Paste (COUT 0 spokes, shared CFILT/PGND via, In2.Cu under LX, 4-piece +3V3 band, U4.8 8.56 mm decap, BT1/U8 placement, occluded BT1/J1 silk) — see phase10.md",
+      "result": "Gates 1,2,3 passed; Gates 0,4,10 awaiting_signoff; Gates 5,6,7,8,9 failed on frozen Rev S3C copper/rules/silk + Gate 10 J1 PTH missing B.Paste (COUT 0 spokes, shared CFILT/PGND via, In2.Cu under LX, 4-piece +3V3 band, U4.8 8.56 mm decap, BT1/U8 placement, occluded BT1/J1 silk) \u2014 see phase10.md",
       "ok": false,
       "gate": 10
     },
@@ -230,50 +230,155 @@
   "variant_gates": {
     "sunflower-s2-110-usbc": {
       "dir": "design/gates/sunflower-s2-110-usbc",
-      "0": { "state": "awaiting_signoff", "stale_because": null },
-      "1": { "state": "passed", "stale_because": null },
-      "2": { "state": "passed", "stale_because": null },
-      "3": { "state": "passed", "stale_because": null },
-      "4": { "state": "awaiting_signoff", "stale_because": null },
-      "5": { "state": "failed", "stale_because": null },
-      "6": { "state": "failed", "stale_because": null },
-      "7": { "state": "failed", "stale_because": null },
-      "8": { "state": "failed", "stale_because": null },
-      "9": { "state": "failed", "stale_because": null },
-      "10": { "state": "awaiting_signoff", "stale_because": null }
+      "0": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      },
+      "1": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "2": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "3": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "4": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      },
+      "5": {
+        "state": "failed",
+        "stale_because": null
+      },
+      "6": {
+        "state": "failed",
+        "stale_because": null
+      },
+      "7": {
+        "state": "failed",
+        "stale_because": null
+      },
+      "8": {
+        "state": "failed",
+        "stale_because": null
+      },
+      "9": {
+        "state": "failed",
+        "stale_because": null
+      },
+      "10": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      }
     },
     "parallelogram-p2-132-usb6": {
       "dir": "design/gates/parallelogram-p2-132-usb6",
-      "4": { "state": "awaiting_signoff", "stale_because": null },
-      "5": { "state": "passed", "stale_because": null },
-      "6": { "state": "passed", "stale_because": null },
-      "7": { "state": "passed", "stale_because": null },
-      "8": { "state": "passed", "stale_because": null },
-      "9": { "state": "passed", "stale_because": null },
-      "10": { "state": "awaiting_signoff", "stale_because": null }
+      "4": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      },
+      "5": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "6": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "7": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "8": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "9": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "10": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      }
     },
     "round-pendant-f-usbc": {
       "dir": "design/gates/round-pendant-f-usbc",
-      "4": { "state": "awaiting_signoff", "stale_because": null },
-      "5": { "state": "passed", "stale_because": null },
-      "6": { "state": "passed", "stale_because": null },
-      "7": { "state": "passed", "stale_because": null },
-      "8": { "state": "passed", "stale_because": null },
-      "9": { "state": "passed", "stale_because": null },
-      "10": { "state": "awaiting_signoff", "stale_because": null }
+      "4": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      },
+      "5": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "6": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "7": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "8": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "9": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "10": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      }
     },
     "round-pendant-f-usbc-rtc": {
       "dir": "design/gates/round-pendant-f-usbc-rtc",
-      "1": { "state": "passed", "stale_because": null },
-      "2": { "state": "passed", "stale_because": null },
-      "3": { "state": "passed", "stale_because": null },
-      "4": { "state": "awaiting_signoff", "stale_because": null },
-      "5": { "state": "passed", "stale_because": null },
-      "6": { "state": "passed", "stale_because": null },
-      "7": { "state": "passed", "stale_because": null },
-      "8": { "state": "passed", "stale_because": null },
-      "9": { "state": "passed", "stale_because": null },
-      "10": { "state": "awaiting_signoff", "stale_because": null }
+      "1": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "2": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "3": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "4": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      },
+      "5": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "6": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "7": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "8": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "9": {
+        "state": "passed",
+        "stale_because": null
+      },
+      "10": {
+        "state": "awaiting_signoff",
+        "stale_because": null
+      }
     }
   },
   "links": [
@@ -374,11 +479,11 @@
       "href": "design/study/parallelogram/README.md"
     },
     {
-      "label": "Parallelogram p1-66 (4L, 66x XL-1615 LEDs, $10.61 BOM — 100% routed, 0 DRC) viewer",
+      "label": "Parallelogram p1-66 (4L, 66x XL-1615 LEDs, $10.61 BOM \u2014 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p1-66.html"
     },
     {
-      "label": "Parallelogram p2-132-usb6 (4L, 132x XL-1615 LEDs, USB-C + 6 buttons, $13.26 BOM — 100% routed, 0 DRC) viewer",
+      "label": "Parallelogram p2-132-usb6 (4L, 132x XL-1615 LEDs, USB-C + 6 buttons, $13.26 BOM \u2014 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p2-132-usb6.html"
     },
     {
@@ -394,19 +499,19 @@
       "href": "design/sim/p2-132-usb6/README.md"
     },
     {
-      "label": "Parallelogram p2-132 (4L, 132x XL-1615 LEDs, $12.60 BOM — 100% routed, 0 DRC) viewer",
+      "label": "Parallelogram p2-132 (4L, 132x XL-1615 LEDs, $12.60 BOM \u2014 100% routed, 0 DRC) viewer",
       "href": "viewer/parallelogram-p2-132.html"
     },
     {
-      "label": "Parallelogram p3-162 (4L, 162 LEDs, $15.47 BOM — 96.6% routed) viewer",
+      "label": "Parallelogram p3-162 (4L, 162 LEDs, $15.47 BOM \u2014 96.6% routed) viewer",
       "href": "viewer/parallelogram-p3-162.html"
     },
     {
-      "label": "Parallelogram p3-198 (4L, 198 LEDs, $16.44 BOM — 94.6% routed) viewer",
+      "label": "Parallelogram p3-198 (4L, 198 LEDs, $16.44 BOM \u2014 94.6% routed) viewer",
       "href": "viewer/parallelogram-p3-198.html"
     },
     {
-      "label": "Parallelogram p4-264 (4L, 264 LEDs, $19.03 BOM — 89.5% routed) viewer",
+      "label": "Parallelogram p4-264 (4L, 264 LEDs, $19.03 BOM \u2014 89.5% routed) viewer",
       "href": "viewer/parallelogram-p4-264.html"
     },
     {
@@ -503,5 +608,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-09T20:50:00-08:00"
+  "updated": "2026-11-09T23:09:12-08:00"
 }

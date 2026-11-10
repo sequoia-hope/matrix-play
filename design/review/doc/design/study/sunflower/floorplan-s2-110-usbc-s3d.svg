@@ -200,11 +200,7 @@
   <line x1="-11.200" y1="-4.300" x2="-13.000" y2="-4.300" stroke="#be123c" stroke-width="0.16"/>
   <line x1="-11.200" y1="-2.900" x2="-11.200" y2="-4.300" stroke="#be123c" stroke-width="0.16"/>
   <text x="-12.10" y="-3.28" text-anchor="middle" font-size="0.85" font-weight="bold" fill="#be123c">U8</text>
-  <line x1="3.400" y1="-14.800" x2="3.400" y2="-12.800" stroke="#15803d" stroke-width="0.16"/>
-  <line x1="3.400" y1="-12.800" x2="5.400" y2="-12.800" stroke="#15803d" stroke-width="0.16"/>
-  <line x1="4.900" y1="-14.800" x2="3.400" y2="-14.800" stroke="#15803d" stroke-width="0.16"/>
-  <line x1="5.400" y1="-14.300" x2="4.900" y2="-14.800" stroke="#15803d" stroke-width="0.16"/>
-  <line x1="5.400" y1="-12.800" x2="5.400" y2="-14.300" stroke="#15803d" stroke-width="0.16"/>
+  <polygon points="3.400,-14.800 4.900,-14.800 5.400,-14.300 5.400,-12.800 3.400,-12.800" fill="none" stroke="#15803d" stroke-width="0.16"/>
   <text x="4.40" y="-13.48" text-anchor="middle" font-size="0.85" font-weight="bold" fill="#15803d">U9</text>
   <line x1="-0.400" y1="-0.200" x2="1.600" y2="-0.200" stroke="#0d9488" stroke-width="0.16"/>
   <line x1="-0.400" y1="1.400" x2="-0.400" y2="-0.200" stroke="#0d9488" stroke-width="0.16"/>

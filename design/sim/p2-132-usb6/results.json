@@ -111,8 +111,8 @@
       "i_led_total_mA": 165.0,
       "i_3v3_ldo_mA": 25.0,
       "dv_u6_in_mV": -3.29,
-      "dv_u2_pin5_mV": -17.59,
-      "dv_u1_pin5_mV": -28.96,
+      "dv_u2_pin5_mV": -17.67,
+      "dv_u1_pin5_mV": -29.05,
       "v_u6_in_at_vbat_3p50V_typ": 3.445,
       "v_u6_in_at_vbat_3p50V_worst": 3.426,
       "tps7a0233_25mA_headroom_ok": true
@@ -121,8 +121,8 @@
       "i_led_total_mA": 300.0,
       "i_3v3_ldo_mA": 25.0,
       "dv_u6_in_mV": -4.64,
-      "dv_u2_pin5_mV": -31.78,
-      "dv_u1_pin5_mV": -52.46,
+      "dv_u2_pin5_mV": -31.93,
+      "dv_u1_pin5_mV": -52.62,
       "v_u6_in_on_usb_4p40V": 4.395,
       "v_u6_in_at_vbat_3p50V_typ": 3.406,
       "v_u6_in_at_vbat_3p50V_worst": 3.375,
@@ -132,15 +132,15 @@
       "i_led_total_mA": 656.0,
       "i_3v3_ldo_mA": 25.0,
       "dv_u6_in_mV": -8.19,
-      "dv_u2_pin5_mV": -69.2,
-      "dv_u1_pin5_mV": -114.41
+      "dv_u2_pin5_mV": -69.52,
+      "dv_u1_pin5_mV": -114.77
     },
     "pwm_only_dimming_840mA_peak_hazard_GCC_0xFF": {
       "i_led_total_mA": 840.0,
       "i_3v3_ldo_mA": 25.0,
       "dv_u6_in_mV": -10.02,
-      "dv_u2_pin5_mV": -88.54,
-      "dv_u1_pin5_mV": -146.43,
+      "dv_u2_pin5_mV": -88.95,
+      "dv_u1_pin5_mV": -146.9,
       "v_u6_in_at_vbat_3p50V_worst": 3.17,
       "enters_ldo_dropout_if_gcc_left_0xFF": true
     },
@@ -181,5 +181,5 @@
       "ADC1_LIGHT_oversampling": "16x sample average"
     }
   },
-  "verdict": "PASS (hardware RC suppresses 10 ms ON chatter + crosstalk; >= 20 ms press+release FW debounce covers 18.83 ms slow-corner OFF bounce+rise; VSYS nodal drop = -4.64 mV at U6.4 & -52.46 mV at U1.5 @ 300 mA GCC<=0x74 (V_U6.4=3.375 V worst-case at VBAT=3.50 V); still-air thermal 43.0 C @ 0.54 W continuous worn / 59.8 C U5 Tj charging)"
+  "verdict": "PASS (hardware RC suppresses 10 ms ON chatter + crosstalk; >= 20 ms press+release FW debounce covers 18.83 ms slow-corner OFF bounce+rise; VSYS nodal drop = -4.64 mV at U6.4 & -52.62 mV at U1.5 @ 300 mA GCC<=0x74 (V_U6.4=3.375 V worst-case at VBAT=3.50 V); still-air thermal 43.0 C @ 0.54 W continuous worn / 59.8 C U5 Tj charging)"
 }

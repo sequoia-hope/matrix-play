@@ -37,7 +37,7 @@ Parent plan: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/desi
 Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc-s3d/bringup-map-bottom.png">bringup-map-bottom.png</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/renders/sunflower-s2-110-usbc-s3d/assembly-bottom.png">assembly-bottom.png</a>.</p>
 <blockquote>
 <p>[!IMPORTANT]
-<strong>Perform all Steps 1–7 BEFORE bonding a <code>403535</code> LiPo pouch to <code>B.Cu</code>.</strong> Thirteen of the <code>14</code> bare <code>Ø1.0 mm</code> test pads lie inside the <code>Ø35 mm</code> battery envelope; once bring-up passes, apply <strong><code>0.05 mm</code> Kapton tape</strong> over <code>B.Cu</code> exposed test pads and provide a <strong><code>≥ 2.4 mm</code> insulating foam/carrier standoff</strong> so the pouch clears <code>J1</code> (<code>3.26 mm</code>) and mated <code>BT1</code> (<code>3.40 mm</code>).</p>
+<strong>Perform all Steps 1–7 BEFORE bonding a LiPo pouch to <code>B.Cu</code>.</strong> Thirteen of the <code>14</code> bare <code>Ø1.0 mm</code> test pads lie inside the <code>Ø35 mm</code> battery envelope; once bring-up passes, apply <strong><code>0.05 mm</code> Kapton tape</strong> over <code>B.Cu</code> exposed test pads and provide a <strong><code>≥ 3.50 mm</code> pocketed insulating carrier/spacer</strong> for a <code>Ø35 mm</code> cell (or a <code>≤ 30 mm</code> cell over <code>2.4 mm</code> foam) so the pouch clears <code>J1</code> (<code>3.26 ± 0.15 mm</code>) and mated <code>BT1</code> (<code>3.20–3.40 mm</code>).</p>
 </blockquote>
 <hr />
 <h2>What <code>Rev S3D</code> Simplifies vs <code>Rev S3C</code> During Bring-Up</h2>
@@ -64,7 +64,7 @@ Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design
 <tr>
 <td><code>TP8</code></td>
 <td><code>GND</code></td>
-<td><code>(-16.30, +0.79)</code></td>
+<td><code>(-16.75, +1.15)</code></td>
 <td><code>0.0 Ω</code> (<code>&lt; 0.2 Ω</code> to <code>J1</code> shell)</td>
 <td><code>0.000 V</code> reference</td>
 </tr>
@@ -141,7 +141,7 @@ Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design
 <tr>
 <td><code>TP14</code></td>
 <td><code>/MCU/UART_TX</code></td>
-<td><code>(+10.50, -4.60)</code></td>
+<td><code>(+10.75, -9.75)</code></td>
 <td>High-Z</td>
 <td><code>GPIO24</code> UART1 TX (<code>3.3 V</code> logic)</td>
 </tr>
@@ -155,7 +155,7 @@ Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design
 <tr>
 <td><code>TP16</code></td>
 <td><code>/MCU/GPIO29_TP</code></td>
-<td><code>(+10.75, -9.75)</code></td>
+<td><code>(+10.50, -4.60)</code></td>
 <td>High-Z</td>
 <td><code>GPIO29 / ADC3</code> spare</td>
 </tr>
@@ -165,7 +165,7 @@ Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design
 <h2>2. Unpowered Visual &amp; Ohmmeter Inspection (Step 1)</h2>
 <ol>
 <li><strong>Microscope visual check (<code>B.Cu</code> &amp; <code>F.Cu</code>):</strong>
-   - Confirm <strong><code>J1</code> (<code>TYPE-C-31-M-22</code>)</strong> overhangs the South rim by <code>~0.33 mm</code> with clean fillets on all <code>12</code> rear signal/power pads and all <strong><code>4</code> <code>B.Cu</code> gull-wing SMD shell tabs</strong>.
+   - Confirm <strong><code>J1</code> (<code>TYPE-C-31-M-22</code>)</strong> overhangs the South rim by <code>+0.290 mm</code> on-axis (<code>+0.823 mm</code> axial / <code>+0.801 mm</code> radial at the <code>x = ±4.470 mm</code> shell corners) with clean fillets on all <code>12</code> rear signal/power pads and all <strong><code>4</code> <code>B.Cu</code> gull-wing SMD shell tabs</strong>.
    - Confirm <strong><code>BT1</code></strong> (<code>NW</code> rim) has clean fillets and visible <code>"+"</code> (North/NE pad <code>1</code> = <code>VBAT</code>) and <code>"-"</code> (South/SW pad <code>2</code> = <code>/Power/BAT_N</code>) silkscreen markers outside its body.
    - Confirm <strong><code>L1</code></strong> (<code>3.3 µH</code>) polarity mark faces <strong>West</strong> (<code>+1V1</code> / <code>C18</code> side, pad 1), and all QFNs (<code>U1, U2, U3, U5</code>) sit flat on their paste-free thermal-via pads.</li>
 <li><strong>Cold continuity &amp; resistance checks (<code>&lt; 0.5 V</code> DMM resistance mode on <code>Ø1.0 mm</code> test pads &amp; <code>0402</code> pads only — never probe <code>0.40 mm</code>-pitch QFN pins):</strong>
@@ -192,8 +192,8 @@ Probe map: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design
 <strong>Mandatory firmware rules on <code>s2-110-usbc-s3d</code>:</strong>
 1. <strong><code>GPIO4</code> / <code>GPIO5</code> (<code>I2C0</code>) pad drive = <code>12 mA</code> BEFORE first <code>AW20198</code> write</strong> (<code>VOL ≤ 0.14 V</code> across <code>1 kΩ</code> <code>R21/R22</code>, meeting POR <code>LGC = 0</code> <code>VIL ≤ 0.40 V</code>).
 2. <strong><code>AW20198</code> <code>GCR</code> (<code>0x00</code>, Page 0) = <code>0xB9</code></strong> (<code>LGC = 1</code> bit 3 for <code>3.3 V</code> thresholds, <code>SWSEL = 1011</code> for <code>SW1..SW11</code>, <code>CHIPEN = 1</code>).
-3. <strong>ADC &amp; sleep pad hygiene:</strong> Set <code>OD = 1, IE = 0, PDE = 0, PUE = 0</code> on <code>GPIO26</code> (<code>ADC0</code>) and <code>GPIO27</code> (<code>ADC1</code>), clear <code>PDE = 0, PUE = 0, IE = 0</code> on unused/strapped GPIOs (<code>GPIO0, 7..9, 14..23</code>, erratum <code>RP2350-E9</code>), drive <code>GPIO6</code> (<code>LED_SDB</code>) actively low/high, and wait <strong><code>≥ 30 ms</code> (<code>6 τ</code>)</strong> after asserting <code>GPIO28 = 1</code> (<code>VBAT_EN</code>) before sampling <code>ADC0</code>.
-4. <strong>Active <code>ADC4</code> thermal cap:</strong> Cap continuous full-white <strong><code>GCC ≤ 105</code></strong> on pouch-backed battery (<code>R_th ≈ 35 K/W → ≤ 48 °C</code> skin / <code>&lt; 60 °C</code> LiPo / <code>&lt; 70 °C</code> <code>EVQP7J01P</code>) and <strong><code>GCC ≤ 9</code> CC (<code>0</code> at low-bat CC, <code>≤ 24</code> CV taper)</strong> whenever <strong><code>(GPIO13 ~{PGOOD} == 0) || (GPIO12 ~{CHG} == 0)</code></strong> (<code>≤ 45 °C</code> LiPo charge limit with fixed <code>10 kΩ</code> <code>TS</code>). <em>(Note: <code>4</code>-bit Quad-SPI <code>0xEB</code> XIP up to <code>75 MHz</code> is fully supported in hardware on <code>Rev S3D</code> thanks to <code>C22</code> at <code>U4.8</code>.)</em></p>
+3. <strong>ADC &amp; sleep pad hygiene:</strong> Set <code>OD = 1, IE = 0, PDE = 0, PUE = 0</code> on <code>GPIO26</code> (<code>ADC0</code>) and <code>GPIO27</code> (<code>ADC1</code>), clear <code>PDE = 0, PUE = 0, IE = 0</code> on unused/strapped/test-pad GPIOs (<code>GPIO0, 7..9, 14..25, 29</code>, erratum <code>RP2350-E9</code>), drive <code>GPIO6</code> (<code>LED_SDB</code>) actively low/high, and wait <strong><code>≥ 30 ms</code> (<code>6 τ</code>)</strong> after asserting <code>GPIO28 = 1</code> (<code>VBAT_EN</code>) before sampling <code>ADC0</code>.
+4. <strong>Active <code>ADC4</code> thermal cap (<code>intent</code> <code>R19</code>):</strong> Perform 1-point room-temp <code>ADC4</code> trim at cold boot (<code>rp2350.pdf</code> §12.4.6); cap continuous full-white <strong><code>GCC ≤ 105</code></strong> on pouch-backed battery (<code>R_th ≈ 35 K/W → ≤ 48 °C</code> skin / <code>&lt; 55 °C</code> <code>ADC4</code> / <code>&lt; 60 °C</code> LiPo / <code>&lt; 70 °C</code> <code>EVQP7J01P</code>), <strong><code>GCC ≤ 85</code></strong> on post-charge USB (<code>~{PGOOD} == 0 &amp;&amp; ~{CHG} == 1</code>, disallowing <code>GCC = 216</code> bursts), and <strong><code>GCC ≤ 9</code> CC (<code>≤ 24</code> CV taper)</strong> whenever <strong><code>GPIO12 ~{CHG} == 0</code></strong> (<code>≥ 1 s</code> debounce, <code>0–25 °C</code> charge ambient for <code>≤ 45 °C</code> LiPo charge limit with fixed <code>10 kΩ</code> <code>TS</code>). <em>(Note: <code>4</code>-bit Quad-SPI <code>0xEB</code> XIP up to <code>75 MHz</code> is fully supported in hardware on <code>Rev S3D</code> thanks to <code>C22</code> at <code>U4.8</code>.)</em></p>
 </blockquote>
 <h3>Smoke-Test Checklist</h3>
 <ol>
