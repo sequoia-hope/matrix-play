@@ -1,0 +1,234 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Mechanical and Layout Brief — Round Pendant Variant f-usbc-rtc (Rev FUR)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc-rtc.md'>design/brief-f-usbc-rtc.md</a></p><h1>Mechanical and Layout Brief — Round Pendant Variant <code>f-usbc-rtc</code> (<code>Rev FUR</code>)</h1>
+<p>Parent board: <strong>Variant <code>f-usbc</code></strong> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/round-pendant.kicad_pcb">hw/round-pendant/f-usbc/round-pendant.kicad_pcb</a>, brief <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">design/brief-f-usbc.md</a>, stackup <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/stackup.md">design/stackup.md</a>).
+Variant folder: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc-rtc">hw/round-pendant/f-usbc-rtc/</a>.</p>
+<p>This document records every Phase 4 mechanical and layout brief item (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/.claude/skills/pcb-design/references/intent-and-brief.md">intent-and-brief.md</a>) for <code>round-pendant-f-usbc-rtc</code> (<code>Rev FUR</code>), which builds directly on <code>round-pendant-f-usbc</code> (<code>J1</code> full-SMT 16-pin USB-C <code>TYPE-C-31-M-22</code>) by:
+1. Replacing the unpopulated <code>BT1</code> wire-solder pads (<code>round_pendant:BatteryPads</code>) with an <strong>inward-facing right-angle SMT <code>1.25 mm</code> PicoBlade / MX1.25 battery receptacle</strong> (<strong>CJT <code>A1251WR-S-2P</code></strong>, <code>C225111</code>) in the SW sector with <strong><code>4.88 mm</code> nominal (<code>4.65 mm</code> min to <code>U4</code>, <code>5.85 mm</code> to <code>C22</code>) unobstructed NNE plug-insertion runway</strong> and <strong><code>0 mm</code> added stack height</strong> (<code>3.20 mm</code> housing matches <code>J1</code>'s <code>3.16–3.26 mm</code> shell).
+2. Adding an ultra-low-power <strong>Seiko Epson <code>RX8130CE:BB</code> (<code>C1542426</code>)</strong> Real-Time Clock module (<code>3.2 × 2.5 × 1.0 mm</code> <code>SMD-10P</code>, built-in <code>32.768 kHz</code> crystal, <code>1.5 µA</code> active on always-on <code>+3V3</code>, <code>POWMAN</code> alarm/timer wake on <code>U3</code> Pin <code>31</code> <code>GPIO19</code>) in the vacant East <code>B.Cu</code> pocket (<code>0</code> existing parts displaced there), while keeping <strong>all <code>235</code> front LEDs (<code>D1..D235</code>), <code>Q2</code>, <code>J1</code>, <code>SW1</code>, <code>SW2</code>, <code>U1..U7</code>, <code>U9..U12</code>, and all <code>147</code> locked <code>RP2350</code> decoupling tracks <code>100%</code> untouched</strong>.</p>
+<hr />
+<h2>1. Board Outline &amp; Size</h2>
+<ul>
+<li><strong>Outline:</strong> Circle, <strong><code>Ø38.000 mm</code></strong> (<code>center = (100.000, 100.000) mm</code>, <code>radius = 19.000 mm</code>), unchanged from <code>f-usbc</code> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §1).</li>
+<li><strong>Copper-to-edge rule:</strong> <code>0.200 mm</code> minimum (<code>round-pendant.kicad_pro</code>):</li>
+<li><strong><code>J1</code> (<code>TYPE-C-31-M-22</code>):</strong> Unchanged at <code>(107.787, 110.926, -156.05°)</code>; closest <code>S1</code> SMD pad corner sits <code>0.440–0.530 mm</code> inside <code>Edge.Cuts</code>.</li>
+<li><strong><code>BT1</code> (<code>CJT A1251WR-S-2P</code>, <code>C225111</code>):</strong> Seated at <strong><code>(89.200, 110.550) mm</code>, <code>KiCad B.Cu rot = -28.00°</code></strong> (<code>CPL = 208.00°</code>). Outermost <code>B.Cu</code> pad corner (<code>West MP</code> <code>2.10 × 3.00 mm</code> pad at <code>(86.631, 108.618) mm</code>) reaches <code>r_max = 17.345 mm</code> (<strong><code>1.655 mm</code> inside <code>Edge.Cuts</code></strong>); outermost rear signal pin corner (<code>Pin 1 VBAT</code> at <code>(87.523, 112.376) mm</code>) reaches <code>r_max = 18.210 mm</code> (<strong><code>0.790 mm</code> inside <code>Edge.Cuts</code></strong>); housing courtyard stays <strong><code>≥ 0.65 mm</code> inside <code>Ø38.000 mm</code></strong> (<code>0</code> rim overhang!).</li>
+<li><strong>East RTC block (<code>U13</code>, <code>C75</code>, <code>C76</code>, <code>R32</code>):</strong> Outermost routed copper (<code>CS5_1</code> via at <code>(118.493, 101.614) mm</code>, <code>0.312 mm</code> inside <code>Edge.Cuts</code>; <code>C75.2</code> <code>GND</code> via at <code>(118.504, 101.208) mm</code>, <code>0.332 mm</code>; <code>C76.2</code> <code>GND</code> via at <code>(118.376, 102.411) mm</code>, <code>0.337 mm</code>) maintains <strong><code>≥ 0.312 mm</code> margin inside <code>Edge.Cuts</code></strong> (<code>&gt; 1.56×</code> the <code>0.200 mm</code> DRC minimum).</li>
+</ul>
+<h2>2. Mounting, Bezel &amp; Inward Battery Plug Insertion Runway</h2>
+<ul>
+<li><strong>Mounting holes:</strong> <code>0</code> (<code>6</code> total NPTH locating holes unchanged from <code>f-usbc</code>: <code>2× Ø0.650 mm</code> for <code>J1</code>, <code>4× Ø0.700 mm</code> for <code>SW1/SW2</code>; <code>BT1</code> <code>A1251WR-S-2P</code> is pure 4-pad SMT with <code>0</code> locating pegs).</li>
+<li><strong>Rim geometry:</strong> Identical to <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §2 (<code>J1</code> SSE <code>23.95°</code> E of S, <code>SW1</code> NE, <code>SW2</code> NW, <code>Q2</code> N; <code>BT1</code> is completely recessed inside the SW rim with <code>0.00 mm</code> perimeter projection, so no enclosure wall cutout is needed for <code>BT1</code>).</li>
+<li><strong>Inward-facing <code>BT1</code> plug mating &amp; withdrawal geometry (<code>cjt-a1251.pdf</code> p. 1, p. 3):</strong></li>
+<li>Why SW <code>(89.200, 110.550, -28.00°)</code> instead of due South <code>(100.0, 117.1, 0°)</code>: at due South, WLCSP-36 driver <code>U2</code> <code>(96.5, 112.0)</code> and <code>U7</code> <code>(100.1, 112.4)</code> sit <code>&lt; 0.5 mm</code> north of the <code>6.15 mm</code> connector depth, leaving zero room to insert or withdraw a <code>1.25 mm</code> plug.</li>
+<li>At <code>(89.200, 110.550, -28.00°)</code>, <code>BT1</code>'s mating mouth center sits at <strong><code>(90.421, 108.254) mm</code></strong> facing <strong>inward NNE (<code>+28.00°</code> East of North)</strong> between <code>U1</code>/<code>C31</code> (to the NW) and <code>U4</code>/<code>U2</code> (to the East):<ul>
+<li>Per <code>cjt-a1251.pdf</code> pp. 1, 3, the <code>A1251H-2P</code> crimp housing (<code>width B = 4.25 ± 0.25 mm</code>, <code>length = 4.00 ± 0.25 mm</code>; mated wafer + plug = <code>5.80 mm</code> -&gt; <code>1.60 mm</code> seated protrusion + <code>2.40–2.60 mm</code> unlatch withdrawal = <code>4.00–4.20 mm</code> flat clearance needed) has <strong><code>4.884 mm</code> nominal (<code>4.649 mm</code> at <code>4.50 mm</code> max plug width) flat runway</strong> before its SE corner reaches <code>0.80 mm</code>-tall <code>U4</code> (<code>5.845 mm</code> to <code>C22</code>), giving <strong><code>+0.88 mm</code> nominal (<code>+0.40 mm</code> worst-case) flat insertion/withdrawal margin</strong> (and unlimited <code>+Z</code> lift over <code>U4</code> when mated before adhering the rear <code>35 mm</code> LiPo).</li>
+<li>Flexible <code>28–30 AWG</code> silicone LiPo leads exit the seated plug at <code>z ≈ 1.60 mm</code> above <code>B.Cu</code> (well above <code>0.80 mm</code>-tall <code>U4</code> WSON-8 and <code>0.55 mm</code> <code>0402</code> passives) and curl gently under the rear <code>35 mm</code> LiPo cell, which rests flush over <code>BT1</code>'s <code>3.20 mm</code> flat thermoplastic top (<code>0 mm</code> added stack thickness beyond <code>J1</code>'s <code>3.16–3.26 mm</code> USB-C shell).</li>
+</ul>
+</li>
+</ul>
+<h2>3. Connectors, Controls &amp; New RTC Block (<code>B.Cu</code> &amp; <code>F.Cu</code>)</h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Part / MPN (<code>LCSC</code>)</th>
+<th>KiCad <code>(X, Y)</code> (<code>mm</code>), Rot</th>
+<th>Facing / Function</th>
+<th>Mechanical &amp; Datasheet Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>J1</code></td>
+<td>Hroparts <code>TYPE-C-31-M-22</code> (<code>C530612</code>)</td>
+<td><code>(107.787, 110.926)</code>, <code>-156.05°</code></td>
+<td>Outward SSE (<code>5 V</code> USB-C)</td>
+<td>Unchanged from <code>f-usbc</code> (<code>4× 2.30 × 1.80 mm</code> <code>S1</code> SMD pads + <code>2× Ø0.65 mm</code> NPTHs).</td>
+</tr>
+<tr>
+<td><code>BT1</code></td>
+<td>CJT <code>A1251WR-S-2P</code> (<code>C225111</code>, <code>1.25 mm</code> 2P RA SMT)</td>
+<td><code>(89.200, 110.550)</code>, <code>-28.00°</code></td>
+<td>Inward NNE (<code>+28°</code> E of N), <code>3.7 V</code> LiPo</td>
+<td><code>Pin 1</code> (<code>VBAT</code>, <code>+</code>) at <code>(87.523, 112.376)</code>, <code>Pin 2</code> (<code>BAT_N</code>, <code>-</code>) at <code>(88.627, 112.963)</code>, <code>2× MP</code> (<code>2.10 × 3.00 mm</code> <code>GND</code> mechanical tabs) at <code>(86.631, 108.618)</code> &amp; <code>(92.238, 111.599)</code> (<code>12.60 mm²</code> <code>MP</code> + <code>2.56 mm²</code> signal = <code>15.16 mm²</code> <code>B.Cu</code> solder area; <code>3.20 mm</code> height).</td>
+</tr>
+<tr>
+<td><code>U13</code></td>
+<td>Seiko Epson <code>RX8130CE:BB</code> (<code>C1542426</code>, <code>I2C</code> RTC)</td>
+<td><code>(114.750, 101.200)</code>, <code>0.00°</code></td>
+<td>East <code>B.Cu</code> pocket (<code>0x32</code> on <code>I2C1</code>, wake -&gt; <code>GPIO19</code>)</td>
+<td><code>3.2 × 2.5 × 1.0 mm</code> ceramic <code>SMD-10P</code> (<code>1.00 mm</code> height &lt;&lt; <code>3.20 mm</code> <code>J1</code>/<code>BT1</code>). <code>B.Cu</code> rule area <strong><code>RX8130_xtal_end</code></strong> (<code>X ∈ [114.30, 115.20], Y ∈ [102.30, 103.05] mm</code>, <code>no_tracks, no_vias, no_pour</code>) keeps <code>B.Cu</code> copper strictly clear of the Pin <code>1–10</code> <code>*1</code> crystal inspection short side (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/rtc-rx8130ce.md">rtc-rx8130ce.md</a> §4, <code>ETM50E-10</code> Fig. 9 p. 11).</td>
+</tr>
+<tr>
+<td><code>SW1</code>, <code>SW2</code></td>
+<td>Panasonic <code>EVQP7C01P</code> (<code>C388883</code>)</td>
+<td><code>(116.198, 93.701, -68.75°)</code> / <code>(83.858, 93.723, +68.75°)</code></td>
+<td>Outward NE (<code>USER</code>) / NW (<code>BOOT</code>)</td>
+<td>Unchanged from Variant F / <code>f-usbc</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>4. Assembly Sides &amp; Reflow Order</h2>
+<ul>
+<li><strong>Double-sided SMT (<code>0</code> PTH solder joints, <code>100%</code> turnkey PCBA including <code>BT1</code> &amp; <code>U13</code>):</strong></li>
+<li><strong><code>F.Cu</code> (Pass 1, <code>≤ 250 °C</code> peak):</strong> <code>235× XL-1010RGB-YG</code> (<code>C965834</code>) + <code>1× ALS-PT19</code> (<code>Q2</code>, <code>C146233</code>).</li>
+<li><strong><code>B.Cu</code> (Pass 2, <code>≤ 250 °C</code> peak):</strong> All <code>13</code> ICs (incl. <code>U13</code> <code>RX8130CE:BB</code>, rated <code>260 °C</code> max / <code>2</code> reflows per <code>ETM50E-10</code> §6.1 Fig. 12 p. 12), passives, <code>SW1/SW2</code>, <code>J1</code>, and <code>BT1</code> (<code>A1251WR-S-2P</code> PA9T high-temp nylon housing, <code>260 °C</code> reflow rated per <code>cjt-a1251.pdf</code> p. 1) — eliminating manual battery-lead soldering onto bare PCB pads!</li>
+</ul>
+<h2>5. Layer Count &amp; Stackup (<code>8</code> Layers, <code>1.00 mm</code> <code>JLC08101H-1080</code>, <code>ENIG</code>, POFV)</h2>
+<p>Identical to <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §5 and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/stackup.md">stackup.md</a> §2 (<code>JLC08101H-1080</code>, <code>1.00 mm</code>, <code>1 oz</code> outer / <code>0.5 oz</code> inner, <code>In2.Cu = plane GND</code>, <code>In5.Cu = plane VSYS + plane 3V3</code>, <code>ENIG 1U"</code>, <code>POFV = Yes</code>).</p>
+<h2>6. Density Philosophy</h2>
+<p>Identical to <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §6 (<code>0402</code> passives, <code>0603</code> bulk MLCCs, <code>0.09/0.09 mm</code> trace/space, <code>0.25/0.15 mm</code> standard vias + <code>0.30/0.15 mm</code> power vias + <code>3</code> inherited <code>0.20/0.10 mm</code> vias inside <code>U3</code> <code>+3V3</code> band, POFV).</p>
+<h2>7. Floorplan &amp; Delta vs Parent <code>f-usbc</code></h2>
+<p>All <code>236</code> front parts (<code>D1..D235</code> + <code>Q2</code>), <code>J1</code>, <code>U1..U7</code>, <code>U9..U12</code>, <code>SW1</code>, <code>SW2</code>, <code>L1</code>, <code>Y1</code>, <code>TP1, TP2, TP4..TP8</code>, and all <code>147</code> locked <code>RP2350</code> decoupling tracks are <strong>100% unchanged</strong> from <code>f-usbc</code>. Only <code>15</code> SW/South <code>B.Cu</code> parts shift locally to open <code>BT1</code>'s pocket + <code>4</code> new RTC parts (<code>U13, C75, C76, R32</code>) populate the vacant East <code>B.Cu</code> pocket:</p>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Function</th>
+<th>Parent <code>f-usbc</code> <code>(X, Y, Rot)</code></th>
+<th>Variant <code>f-usbc-rtc</code> <code>(X, Y, Rot)</code></th>
+<th>Placement Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BT1</code></td>
+<td><code>A1251WR-S-2P</code> (<code>1.25 mm</code> 2P RA SMT)</td>
+<td><code>(100.000, 117.100, 180°)</code> (<code>BatteryPads</code>)</td>
+<td><code>(89.200, 110.550, -28.00°)</code></td>
+<td>Inward NNE mouth (<code>+28°</code> E of N) with <code>4.88 mm</code> nominal (<code>4.65 mm</code> min) flat plug runway to <code>U4</code></td>
+</tr>
+<tr>
+<td><code>U8</code></td>
+<td><code>XB9901A</code> LiPo protection</td>
+<td><code>(96.400, 116.400, -90°)</code></td>
+<td><code>(91.500, 114.800, -90.00°)</code></td>
+<td>Immediately SE of <code>BT1.2</code> (<code>BAT_N</code>) with <code>2× 0.30/0.15 mm</code> <code>GND</code> vias</td>
+</tr>
+<tr>
+<td><code>C6</code></td>
+<td><code>100 nF</code> <code>U8</code> decoupler</td>
+<td><code>(94.500, 116.600, 180°)</code></td>
+<td><code>(89.900, 114.300, -90.00°)</code></td>
+<td><code>1.11 mm</code> pad-to-pad from <code>U8.6</code> (<code>VDD</code>)</td>
+</tr>
+<tr>
+<td><code>R8</code></td>
+<td><code>100 Ω</code> <code>U8</code> <code>VDD</code> series R</td>
+<td><code>(99.700, 115.000, 180°)</code></td>
+<td><code>(97.000, 115.500, 180.00°)</code></td>
+<td>Short <code>VBAT</code> feed into <code>U8.6</code>/<code>C6.1</code></td>
+</tr>
+<tr>
+<td><code>C40, C43</code></td>
+<td><code>U2</code> <code>VSYS</code> decouplers</td>
+<td><code>(93.95, 111.80) / (93.20, 109.60)</code></td>
+<td><code>(93.75, 114.55, -90°) / (94.25, 112.00, -90°)</code></td>
+<td><code>2.55 / 3.10 mm</code> from <code>U2.A3 / U2.F5</code> (<code>VSYS</code> plane vias adjacent), clearing <code>BT1</code> &amp; <code>U2</code> fanout</td>
+</tr>
+<tr>
+<td><code>TP3</code></td>
+<td><code>VBAT</code> <code>Ø1.0 mm</code> test pad</td>
+<td><code>(104.000, 117.500, 180°)</code></td>
+<td><code>(95.250, 116.750, 180.00°)</code></td>
+<td>Open South-SW test pad east of <code>U8</code></td>
+</tr>
+<tr>
+<td><code>Q1, R9..R12, C7</code></td>
+<td>Switched <code>VBAT_SENSE</code> divider</td>
+<td>SW <code>(90.2..93.5, 112.4..115.0)</code></td>
+<td>South <code>(97.5..101.5, 114.5..118.0)</code></td>
+<td>Relocated cleanly into vacated 6-o'clock South pocket (<code>BT1</code>'s old <code>f-usbc</code> site)</td>
+</tr>
+<tr>
+<td><code>R1, R2</code></td>
+<td><code>5.1 kΩ</code> <code>CC1/CC2</code> pull-downs</td>
+<td><code>(93.90, 115.57) / (91.75, 115.49)</code></td>
+<td><code>(102.50, 116.75, -90°) / (104.00, 117.00, 180°)</code></td>
+<td>Moved closer to <code>J1</code> in South-SSE pocket</td>
+</tr>
+<tr>
+<td><strong><code>U13</code></strong></td>
+<td><strong><code>RX8130CE:BB</code> I2C RTC (<code>0x32</code>)</strong></td>
+<td><em>(new)</em></td>
+<td><strong><code>(114.750, 101.200, 0.00°)</code></strong></td>
+<td>Vacant East pocket between <code>U12</code> and <code>SW1</code> (<code>RX8130_xtal_end</code> <code>B.Cu</code> rule area enforced; <code>0</code> <code>U12</code> fanout vias disturbed)</td>
+</tr>
+<tr>
+<td><strong><code>C75</code></strong></td>
+<td><strong><code>100 nF</code> <code>U13.8</code> (<code>+3V3</code>) decoupler</strong></td>
+<td><em>(new)</em></td>
+<td><strong><code>(117.550, 101.050, 0.00°)</code></strong></td>
+<td><strong><code>1.23 mm</code></strong> straight east of <code>U13.8</code> (<code>VDD</code>)</td>
+</tr>
+<tr>
+<td><strong><code>C76</code></strong></td>
+<td><strong><code>1 µF</code> <code>U13.9</code> (<code>RTC_VOUT</code>) cap</strong></td>
+<td><em>(new)</em></td>
+<td><strong><code>(117.550, 102.050, 0.00°)</code></strong></td>
+<td><strong><code>1.23 mm</code></strong> straight east of <code>U13.9</code> (<code>VOUT</code>)</td>
+</tr>
+<tr>
+<td><strong><code>R32</code></strong></td>
+<td><strong><code>100 kΩ</code> <code>RTC_INT</code> pull-up</strong></td>
+<td><em>(new)</em></td>
+<td><strong><code>(114.750, 98.350, 0.00°)</code></strong></td>
+<td>Directly north of <code>U13.6</code> (<code>~IRQ</code>) feeding <code>U3.31</code> (<code>GPIO19</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>8. Thermal Management &amp; Deep-Sleep Wake Budget</h2>
+<ul>
+<li><strong>Thermal envelope:</strong> Identical to <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §8 (<code>θ_BA ≈ 32.4 °C/W</code> free-air / <code>49.5 °C/W</code> worn -&gt; <strong><code>≤ 0.51 W</code> continuous wearable ceiling</strong>, LED blanking while <code>~CHG == 0</code>, closed-loop <code>ADC4</code> foldback at <code>42 °C</code> charge / <code>47 °C</code> wear; <code>U13</code> adds <code>4.95 µW</code>, i.e., <code>0.0002 °C</code>).</li>
+<li><strong>Dormant + RTC timed-wake current:</strong> With <code>RX8130CE</code> <code>FOUT</code> disabled (<code>1Ch[7:6] = 11b</code>, <code>I_DD = 1.50 µA</code> typ on <code>+3V3</code> from <code>U6</code> <code>TPS7A0233</code> <code>I_q = 25 nA</code>) and <code>R32 = 100 kΩ</code> idle (<code>0 nA</code> with <code>GPIO19</code> <code>PUE=0, PDE=0</code>), total dormant pendant battery draw is <strong><code>~201 µA</code> (<code>&lt; 250 µA</code> budget; <code>+0.75%</code> delta for full hardware calendar/alarm wake)</strong>.</li>
+</ul>
+<h2>9. Art Zone (<code>F.SilkS</code> Clipped Voronoi Seed Web)</h2>
+<p>Identical to <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc.md">brief-f-usbc.md</a> §9 (<code>100%</code> unchanged front art, clipped inside <code>R ≤ 18.720 mm</code> and outside all <code>6</code> NPTHs, <code>(subtractmaskfromsilk yes)</code>).</p>
+<h2>10. Silkscreen Policy (<code>designators = "selective"</code>, <code>0° / 270° [90° CCW]</code> Only)</h2>
+<ul>
+<li><strong>Front (<code>F.SilkS</code>):</strong> Identical to <code>f-usbc</code> (Voronoi web + <code>Q2</code> pin-1 dot, <code>0</code> text designators).</li>
+<li><strong>Back (<code>B.SilkS</code>):</strong> <code>0</code> <code>[silk-over-via]</code>, <code>0</code> <code>[under-part]</code>, <code>0</code> <code>[association]</code>, <code>0</code> <code>[rotation]</code>, <code>0</code> <code>B.Cu</code> <code>[pin1]</code>, <code>0</code> DRC silk errors, <code>0.80 × 0.80 mm</code> / <code>0.15 mm</code> stroke, strictly <strong>2 reading orientations (<code>0°</code> and <code>270°</code> bottom-to-top)</strong>:</li>
+<li><strong>Board identity:</strong> <code>'rev FUR'</code> + <code>'2026-11'</code> (<code>'round-pendant'</code> / URL / <code>'CERN-OHL-P-2.0'</code> waived in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</li>
+<li><strong>Connector &amp; switch labels (<code>0%</code> 3D occlusion):</strong> <code>'5V'</code> near <code>J1</code>, <code>'+'</code> near <code>BT1.1</code> (<code>VBAT</code>) and <code>'-'</code> near <code>BT1.2</code> (<code>BAT_N</code>) (with <code>1.25 mm</code> LiPo harness polarity verification highlighted in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/bringup-f-usbc-rtc.md">bringup-f-usbc-rtc.md</a>), <code>'USER'</code> near <code>SW1</code>, <code>'BOOT'</code> near <code>SW2</code>.</li>
+<li><strong>Pin-1 indicators (<code>14/14</code> polarized <code>B.Cu</code> ICs/transistors incl. <code>U13</code>, <code>OD = 0.30 mm</code>):</strong> <code>U1..U13, Q1</code> placed strictly outside <code>B.CrtYd</code> &amp; 3D bodies.</li>
+<li><strong>Selective designators + <code>346/346</code> collision-free <code>4:1</code> A4 assembly maps</strong> (<a href="renders/round-pendant-f-usbc-rtc/assembly-top.pdf">assembly-top.pdf</a>, <a href="renders/round-pendant-f-usbc-rtc/assembly-bottom.pdf">assembly-bottom.pdf</a>).</li>
+</ul>
+<h2>11. Keepouts, Rule Areas &amp; Rear LiPo Stackup</h2>
+<ul>
+<li>Inherited <code>RP2350</code> <code>+1V1</code> ring and <code>L1</code>/<code>VREG_LX</code> rule areas + new <strong><code>RX8130_xtal_end</code></strong> <code>B.Cu</code> rule area (<code>[114.30..115.20, 102.30..103.05] mm</code>), <code>Edge.Cuts</code>, and fixed footprints (<code>D1..D235, Q2, SW1, SW2, BT1, J1</code>) are <strong>locked</strong> in <code>round-pendant.kicad_pcb</code>.</li>
+<li><strong>Rear <code>35 mm</code> LiPo (<code>403535</code> / <code>GRP5435035</code> fitted with <code>2P 1.25 mm</code> <code>A1251H-2P</code> / PicoBlade plug):</strong> Mate the <code>1.25 mm</code> battery plug into <code>BT1</code> first (after verifying red <code>+</code> aligns with <code>BT1.1</code> <code>'+'</code>!), apply <code>0.05 mm</code> Kapton tape over <code>TP1..TP8</code>, and seat the cell on a <code>3.3–3.5 mm</code> foam ring/spacer flush with <code>J1</code> (<code>3.26 mm</code>) and <code>BT1</code> (<code>3.20 mm</code>).</li>
+</ul>
+<h2>12. Test, Debug &amp; Bring-Up Provisions</h2>
+<p>All <code>8</code> <code>Ø1.0 mm</code> <code>B.Cu</code> test pads (<code>TP1..TP8</code>) are preserved and accessible (<code>TP3 VBAT</code> at <code>(95.250, 116.750)</code>). Full bring-up, <code>BT1</code> harness polarity check, <code>RX8130CE</code> <code>I2C1</code> (<code>0x32</code>) init, and <code>POWMAN</code> <code>GPIO19</code> alarm-wake test procedure: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/bringup-f-usbc-rtc.md">design/bringup-f-usbc-rtc.md</a>.</p></div></body></html>

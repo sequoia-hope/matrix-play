@@ -1,0 +1,57 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 2: schematic (round-pendant-f-usbc-rtc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc-rtc/phase2.md'>design/gates/round-pendant-f-usbc-rtc/phase2.md</a></p><h1>Gate 2: schematic (<code>round-pendant-f-usbc-rtc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Parent schematic baseline: <strong>Variant <code>f-usbc</code></strong> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/round-pendant.kicad_sch">hw/round-pendant/f-usbc/round-pendant.kicad_sch</a>) and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase2.md">design/gates/phase2.md</a>.
+Variant schematic: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc-rtc/round-pendant.kicad_sch">hw/round-pendant/f-usbc-rtc/round-pendant.kicad_sch</a>, rendered PDF: <a href="../../renders/round-pendant-f-usbc-rtc/schematic.pdf">schematic.pdf</a>.</p>
+<hr />
+<h2>Checklist (<code>references/schematic-style.md</code>)</h2>
+<ul>
+<li>[x] <strong>ERC passes with <code>--severity-all</code> (<code>0</code> violations across all <code>8</code> sheets):</strong>
+  <code>text
+  Found 0 violations
+  ERC sheets: 8 violations: 0</code></li>
+<li>[x] <strong>Custom functional symbols &amp; exact footprint pin maps (<code>power.kicad_sch</code> &amp; <code>mcu.kicad_sch</code>):</strong></li>
+<li><strong><code>BT1</code> (<code>power.kicad_sch</code>):</strong> Swapped from <code>round_pendant:BatteryPads</code> (<code>in_bom=no</code>) to <code>round_pendant:JST_1P25_2P_MP</code> (<code>A1251WR-S-2P</code>, <code>C225111</code>, <code>in_bom=yes</code>, footprint <code>round_pendant:Molex_PicoBlade_53261-0271_1x02-1MP_P1.25mm_Horizontal</code>). Pin <code>1</code> = <code>VBAT</code>, Pin <code>2</code> = <code>BAT_N</code>, mounting tabs <code>MP</code> = <code>GND</code> (matching <code>p2-132-usb6</code> and <code>s2-110-usbc</code>).</li>
+<li><strong><code>U13</code> (<code>mcu.kicad_sch</code>, <code>REAL-TIME CLOCK (WAKE)</code> functional block):</strong> Custom functional symbol <code>round_pendant:RX8130CE</code> (<code>RX8130CE:BB</code>, <code>C1542426</code>, footprint <code>round_pendant:Seiko_Epson_RX8130CE_3.2x2.5mm_P0.7mm</code>):<ul>
+<li>Top power pins: Pin <code>1</code> (<code>VIO</code>), Pin <code>8</code> (<code>VDD</code>), and Pin <code>10</code> (<code>VBAT</code>) tied to always-on <code>+3V3</code> per Seiko Epson Application Manual <code>ETM50E-10</code> §4.2 Circuit EX7 (<code>VBAT</code> never floated; <code>INIEN = 0, CHGEN = 0</code> in firmware), decoupled by <strong><code>C75</code></strong> (<code>100 nF 16 V X7R</code>, <code>C1525</code>, <code>Decouples=U13.8</code>).</li>
+<li>Left bus inputs: Pin <code>2</code> (<code>SCL</code> -&gt; <code>ACC_SCL</code>, <code>U3</code> Pin <code>5</code> <code>GPIO3</code>) and Pin <code>3</code> (<code>SDA</code> -&gt; <code>ACC_SDA</code>, <code>U3</code> Pin <code>4</code> <code>GPIO2</code>) on <code>I2C1</code> (<code>400 kHz</code> Fast-Mode max per <code>ETM50E-10</code> Table 7, sharing <code>R19/R20 = 4.7 kΩ</code> pull-ups with <code>U9</code> <code>LIS2DW12</code> @ <code>0x19</code>; <code>RX8130CE</code> @ <code>0x32</code>).</li>
+<li>Right outputs: Pin <code>6</code> (<code>~{IRQ}</code> -&gt; <code>RTC_INT</code> -&gt; <code>U3</code> Pin <code>31</code> <code>GPIO19</code> <code>POWMAN</code> <code>PWRUP2</code> wake input) pulled up to <code>+3V3</code> via <strong><code>R32</code></strong> (<code>100 kΩ 1%</code>, <code>C25741</code>, immune to <code>RP2350-E9</code> with <code>PUE=0, PDE=0</code>); Pin <code>9</code> (<code>VOUT</code> -&gt; local label <code>RTC_VOUT</code>) stabilized by <strong><code>C76</code></strong> (<code>1 µF 10 V X5R</code>, <code>C52923</code>, <code>Decouples=U13.9</code>); Pin <code>4</code> (<code>FOUT</code>) and Pin <code>5</code> (<code>~{RST}</code>) marked <code>no_connect</code> (<code>Open</code> per <code>ETM50E-10</code> Table 1 Note p. 8; firmware sets <code>FSEL1:0 = 11b</code> at init to disable the default <code>32.768 kHz</code> <code>FOUT</code> driver and drop <code>I_DD</code> from <code>3.5 µA</code> to <code>1.5 µA</code> typ).</li>
+<li>Bottom ground: Pin <code>7</code> (<code>GND</code>).</li>
+</ul>
+</li>
+<li>[x] <strong>All component fields complete (<code>Value</code>, <code>Footprint</code>, <code>MPN</code>, <code>Manufacturer</code>, <code>LCSC</code>, <code>Decouples</code>):</strong> <code>346</code> schematic symbols (<code>338</code> <code>in_bom=yes</code> assembled parts with valid LCSC codes + <code>TP1..TP8</code> <code>in_bom=no</code>).</li>
+<li>[x] <strong><code>schematic_style_check.py</code> verified (<code>0</code> new errors or warnings):</strong> Only the <code>5</code> inherited LED matrix-sheet <code>grid</code> items (waived in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>) and <code>9</code> stacked-pin decoupler notes (all carrying explicit <code>Decouples</code> fields, verified by <code>placement_check.py</code>).</li>
+<li>[x] <strong>Visual inspection of rendered sheets (<code>power.kicad_sch</code> p. 2 &amp; <code>mcu.kicad_sch</code> p. 3 in <a href="../../renders/round-pendant-f-usbc-rtc/schematic.pdf">schematic.pdf</a>):</strong> Clean left-to-right signal flow, power top / ground bottom, dashed functional box with <code>0x32</code> / <code>FSEL=11b</code> / <code>INIEN=0, CHGEN=0</code> bring-up note, zero overlapping text or crossed wires.</li>
+</ul></div></body></html>

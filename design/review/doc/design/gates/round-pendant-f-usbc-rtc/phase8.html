@@ -1,0 +1,152 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 8: simulation and signal integrity (round-pendant-f-usbc-rtc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc-rtc/phase8.md'>design/gates/round-pendant-f-usbc-rtc/phase8.md</a></p><h1>Gate 8: simulation and signal integrity (<code>round-pendant-f-usbc-rtc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Source net-class table: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/nets-f-usbc-rtc.csv">design/nets-f-usbc-rtc.csv</a>; SI/PDN/ESD/I2C1/RTC/crosstalk/thermal audit script: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/scripts/variant_fusbc_rtc/si_audit.py">scripts/variant_fusbc_rtc/si_audit.py</a>; dispositions: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">design/decisions.md</a> (<code>2026-11-09</code>).</p>
+<hr />
+<h2>Checklist (<code>references/simulation.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>Trigger list generated from <code>design/nets-f-usbc-rtc.csv</code>:</strong> Complete table in §1 below covering USB 2.0 Full-Speed SI &amp; impedance, <code>U7</code> <code>±8 kV</code> ESD return loop, exact nodal DC IR drop (including <code>0.15 mm</code> via barrels at <code>25 °C / 60 °C</code> and <code>2 × 20 mΩ</code> CJT <code>A1251WR-S-2P</code> socket contact resistance), <code>400 kHz</code> <code>I2C1</code> bus (<code>U9</code> + <code>U13 RX8130CE:BB</code>) capacitance &amp; rise time, <code>/MCU/RTC_INT</code> deep-sleep wake noise immunity &amp; <code>/MCU/RTC_VOUT</code> internal LDO stability, <code>SE_HS</code> QSPI, <code>12 MHz</code> crystal, <code>VREG_LX</code>, aggressor/victim crosstalk, whole-board thermal <code>θ_BA</code>, and dormant + RTC alarm wake battery budget.</li>
+<li>[x] <strong>Each triggered item has a quantitative calculation/script result or justified engineering disposition:</strong> Full first-principles calculations and verbatim <code>si_audit.py</code> output in §1–§2 below.</li>
+<li>[x] <strong>Expanded aggressor / victim coupling scan (<code>si_audit.py</code> §5) run and findings resolved:</strong> Scans all <code>SWx_y</code>, <code>CSx_y</code>, <code>I2C_SCL/SDA</code>, <code>VREG_LX</code>, <code>QSPI_*</code>, <code>USB_*</code>, and <code>CLOCK</code> aggressors via Shapely <code>unary_union</code> without angle filtering (<code>10</code> <code>RTC_INT</code> pairs + <code>11</code> southern pairs + <code>23</code> inherited northern/matrix pairs evaluated and quantitatively dispositioned below).</li>
+<li>[x] <strong>Design refinements fed back &amp; re-verified across Gates 4–10:</strong> Added 2nd parallel <code>0.30/0.15 mm</code> <code>VBAT</code> via <code>(94.518, 116.839)</code> alongside <code>(95.618, 117.089)</code> near <code>TP3.1</code>/<code>R8.2</code>, kept <code>RX8130_xtal_end</code> <code>100%</code> clear of <code>B.Cu</code> copper (<code>0</code> intrusions), and verified <code>0</code> DRC errors across all gates.</li>
+</ul>
+<hr />
+<h2>1. Trigger Matrix from <code>design/nets-f-usbc-rtc.csv</code></h2>
+<div class=tbl><table>
+<thead>
+<tr>
+<th>Class / Net Group</th>
+<th>Changed vs <code>f-usbc</code>?</th>
+<th>Trigger Condition (<code>references/simulation.md</code>)</th>
+<th>Quantitative Analysis / Disposition (<code>si_audit.py</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>I2C</code> (<code>400 kHz</code> Fast-Mode): <code>/MCU/ACC_SCL</code>, <code>/MCU/ACC_SDA</code></strong></td>
+<td><strong>Yes (extended east to <code>U13.2/3</code> <code>RX8130CE:BB</code>)</strong></td>
+<td><code>400 kHz</code> I2C Fast-Mode (<code>C_bus ≤ 400 pF</code>, <code>t_r(30–70%)</code> / <code>t_r(10–90%) ≤ 300 ns</code>, address non-collision)</td>
+<td><strong>PASS (<code>si_audit.py</code> §4):</strong> <code>U9</code> (<code>LIS2DW12TR</code> @ <code>0x19</code>) + <code>U13</code> (<code>RX8130CE:BB</code> @ <code>0x32</code>, fixed 7-bit address) have zero address collision. Total copper: <code>ACC_SCL = 57.78 mm</code> (<code>5</code> vias, <strong><code>C_bus = 18.5 pF</code></strong>), <code>ACC_SDA = 35.31 mm</code> (<code>4</code> vias, <strong><code>C_bus = 16.4 pF</code></strong>) <code>&lt;&lt; 400 pF</code>. With existing <code>R19 = R20 = 4.7 kΩ</code> to <code>+3V3</code>: <strong><code>t_r(30–70%) = 73.6 ns</code></strong>, <strong><code>t_r(10–90%) = 191.2 ns &lt; 300 ns</code></strong> Fast-Mode limit (<code>I_OL = 0.70 mA &lt;&lt; 3 mA</code>).</td>
+</tr>
+<tr>
+<td><strong><code>SIGNAL_WAKE</code> &amp; RTC LDO: <code>/MCU/RTC_INT</code>, <code>/MCU/RTC_VOUT</code></strong></td>
+<td><strong>NEW (<code>U13.6 -&gt; U3.31 GPIO19</code>, <code>U13.9 -&gt; C76</code>)</strong></td>
+<td>Open-drain <code>POWMAN</code> <code>PWRUP2</code> deep-sleep wake noise immunity (<code>R32 = 100 kΩ</code>); <code>RX8130CE</code> internal backup-switch/oscillator node <code>VOUT</code> (<code>C76 = 1.0 µF</code>)</td>
+<td><strong>PASS (<code>si_audit.py</code> §4–§5):</strong> <code>RTC_VOUT</code> is a <code>1.24 mm</code>, <strong><code>0</code>-via</strong> local <code>B.Cu</code> link directly to <code>C76</code> (<code>1.0 µF</code> 10 V X5R, <code>1.23 mm</code> pad-to-pad, <strong><code>0</code> aggressor couplings</strong>). <code>RTC_INT</code> (<code>24.10 mm</code>, <code>2</code> vias, <code>B.Cu</code>/<code>In3.Cu</code> over solid <code>In2.Cu GND</code>) has <code>10</code> active-display crossings/parallels (<code>1.03–4.11 mm</code>). <strong>During <code>POWMAN</code> deep sleep</strong>, all <code>5</code> LED drivers (<code>SW*</code>/<code>CS*</code>) and <code>I2C0</code> (<code>I2C_SCL</code>) are <strong>shutdown (<code>0 Hz</code>, <code>0 V/ns</code>) -&gt; <code>0.00 V</code> coupled wake noise (<code>0</code> false wakeups)</strong>. During active display, <code>C_m ≈ 0.08–0.28 pF</code> into <code>C_line ≈ 4.5 pF</code> produces <code>&lt; 0.21 V</code> <code>&lt; 50 ns</code> spikes (<code>&lt;&lt; 1.32 V</code> <code>RP2350</code> CMOS <code>3.3 V - V_IH</code> margin), and firmware verifies <code>RX8130CE</code> <code>Flag (0x1D)</code> <code>AF/TF</code> on wake.</td>
+</tr>
+<tr>
+<td><strong><code>POWER</code>: <code>VBUS</code>, <code>VBAT</code>, <code>/Power/BAT_N</code>, <code>U8 -&gt; GND</code>, <code>VSYS</code>, <code>+3V3</code>, <code>+1V1</code></strong></td>
+<td><strong>Yes (<code>BT1</code> CJT <code>A1251WR-S-2P</code> SW + <code>U8</code>/<code>Q1</code> re-routed)</strong></td>
+<td>Exact nodal DC resistance &amp; IR drop at <code>25 °C / 60 °C</code> (incl. <code>0.15 mm</code> via barrels + <code>2 × 20 mΩ</code> <code>BT1</code> mated contact resistance)</td>
+<td><strong>PASS (<code>si_audit.py</code> §3):</strong> <code>VBUS (J1-&gt;U5.13)</code> = <strong><code>3.90 / 4.44 mΩ</code></strong> (<code>2.22 mV @ 500 mA</code>, <code>0</code> vias); <code>VBAT (BT1.1-&gt;U5.2/3)</code> = <strong><code>83.23 / 94.68 mΩ</code></strong> (<code>32.19 mV @ 340 mA</code>, <code>8</code> vias incl. dual parallel <code>0.30/0.15 mm</code> vias at <code>TP3.1</code>/<code>R8.2</code>); <code>BAT_N (BT1.2-&gt;U8.4/5)</code> = <strong><code>3.82 / 4.34 mΩ</code></strong> (<code>1.48 mV @ 340 mA</code>, <code>0</code> vias); <code>U8.1..3 -&gt; In2.Cu GND</code> = <strong><code>0.76 / 0.86 mΩ</code></strong> (<code>0.29 mV @ 340 mA</code>, dual <code>0.30/0.15 mm</code> vias). <strong>Full PCB + <code>2 × 20 mΩ</code> <code>BT1</code> contact loop @ <code>60 °C</code> = <code>139.88 mΩ</code> -&gt; <code>47.56 mV @ 340 mA</code> (<code>41.55 mV @ 297 mA</code> charge)</strong> — <code>&lt; 1.3%</code> of <code>3.7 V</code> cell voltage and <code>&lt;&lt; 1.0 A</code> CJT <code>A1251</code> rating.</td>
+</tr>
+<tr>
+<td><strong><code>DIFF_HS</code> (<code>USB 2.0 FS</code>) &amp; <code>U7</code> <code>±8 kV</code> ESD Clamp</strong></td>
+<td>Unchanged from <code>f-usbc</code></td>
+<td><code>12 Mbit/s</code> FS skew, stub &amp; pre-clamp layer check</td>
+<td><strong>PASS (<code>si_audit.py</code> §1–§2):</strong> Identical to <code>f-usbc</code>: Orient. A <code>|skew| = 2.64 mm (~17.5 ps)</code>, Orient. B <code>|skew| = 3.74 mm (~24.7 ps)</code>, unmated stub <code>7.76–8.86 mm</code>, <code>USB_DM_C on F.Cu = False</code>, dual <code>U7.2</code> <code>GND</code> vias <code>(102.470, 110.730)</code> &amp; <code>(102.126, 110.639)</code> + <code>R14/R15 = 27 Ω</code>.</td>
+</tr>
+<tr>
+<td><strong><code>SE_HS</code> (<code>QSPI</code>), <code>CLOCK</code> (<code>12 MHz</code> <code>Y1</code>), <code>SWITCH</code> (<code>VREG_LX</code>)</strong></td>
+<td>No (<code>100%</code> verbatim from <code>f-usbc</code>)</td>
+<td><code>≤ 66 MHz</code> QSPI, <code>0</code>-via <code>12 MHz</code> crystal, <code>RP2350</code> <code>1.1 V</code> buck</td>
+<td><strong>Unchanged from <code>f-usbc</code>:</strong> <code>147/147</code> locked RP2350 decoupling/LDO/FB tracks and <code>9/9</code> zone piece counts preserved intact.</td>
+</tr>
+<tr>
+<td><strong>Whole-Board Thermal &amp; Dormant + RTC Sleep Power</strong></td>
+<td><strong>Extended with <code>U13</code> <code>RX8130CE:BB</code> sleep audit</strong></td>
+<td><code>&lt; 50 °C</code> worn skin limit, <code>&lt; 45 °C</code> LiPo charge limit, <code>&lt; 250 µA</code> sleep budget (<code>intent.md</code>)</td>
+<td><strong>PASS (<code>si_audit.py</code> §6):</strong> <code>θ_BA = 32.4 °C/W</code> free-air / <code>49.5 °C/W</code> worn (<code>P_cont,max = 0.51 W</code> continuous worn ceiling, LEDs blanked on <code>~CHG == 0</code>, <code>ADC4</code> foldback at <code>42 °C</code> / <code>47 °C</code>). With <code>FOUT</code> disabled (<code>FSEL1:0 = 11b</code> on boot), <code>U13</code> <code>RX8130CE:BB</code> draws <strong><code>1.50 µA</code> typ</strong> (<code>4.95 µW @ 3.3 V</code>, <code>+0.0002 °C</code>), bringing <strong>total dormant + hardware RTC alarm wake battery draw to <code>~201 µA</code> (<code>&lt; 250 µA</code> target, <code>~83 days</code> standby on <code>400 mAh</code>)</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>2. Verbatim <code>si_audit.py</code> Output &amp; Crosstalk Dispositions</h2>
+<pre><code class="language-text">=== 1. USB 2.0 FULL-SPEED (12 Mbit/s) POINT-TO-POINT SI &amp; IMPEDANCE ===
+  /Power/USB_DP_C   : total_copper= 11.94 mm, 0 vias, layers=['B.Cu']
+  /Power/USB_DM_C   : total_copper= 18.01 mm, 3 vias, layers=['B.Cu', 'In6.Cu']
+  USB_DP            : total_copper= 14.95 mm, 0 vias, layers=['B.Cu']
+  USB_DM            : total_copper= 13.52 mm, 0 vias, layers=['B.Cu']
+  /MCU/USB_DP_MCU   : total_copper=  5.28 mm, 2 vias, layers=['In4.Cu']
+  /MCU/USB_DM_MCU   : total_copper=  5.94 mm, 2 vias, layers=['B.Cu', 'In4.Cu']
+  Orient. A (A6/A7) : DP=30.09 mm, DM=27.44 mm -&gt; |skew|=2.64 mm (~17.5 ps), unmated DM stub=8.86 mm
+  Orient. B (B6/B7) : DP=32.28 mm, DM=28.54 mm -&gt; |skew|=3.74 mm (~24.7 ps), unmated DM stub=7.76 mm
+  Pre-ESD F.Cu check: USB_DM_C on F.Cu = False (layers=['B.Cu', 'In6.Cu'])
+
+=== 2. U7 (USBLC6-2P6) ESD GROUND-RETURN LOOP ===
+  U7.2 GND via #1 at (102.470, 110.730): center-path=3.90 mm (dist to J1.S1 2.3x1.8mm pad=0.000 mm)
+  U7.2 GND via #2 at (102.126, 110.639): center-path=4.06 mm (dist to J1.S1 2.3x1.8mm pad=0.216 mm)
+
+=== 3. EXACT NODAL DC RESISTANCE &amp; IR DROP (25 C / 60 C, incl. 0.15 mm via barrels + 20 mOhm BT1 contact) ===
+  VBUS (J1-&gt;U5.13)        : R_25C= 3.90 mOhm, R_60C= 4.44 mOhm -&gt; Vdrop= 2.22 mV @ 500 mA (dual-row USB500)
+  VBAT (BT1.1-&gt;U5.2/3)    : R_25C=83.23 mOhm, R_60C=94.68 mOhm -&gt; Vdrop=32.19 mV @ 340 mA (340 mA max cont; 8 vias on VBAT)
+  BAT_N (BT1.2-&gt;U8.4/5)   : R_25C= 3.82 mOhm, R_60C= 4.34 mOhm -&gt; Vdrop= 1.48 mV @ 340 mA (340 mA max cont; 0 vias on BAT_N)
+  U8.1..3 -&gt; In2.Cu GND   : R_25C= 0.76 mOhm, R_60C= 0.86 mOhm -&gt; Vdrop= 0.29 mV @ 340 mA (dual 0.30/0.15 GND vias into solid In2.Cu)
+  Total PCB + 2x20mOhm BT1 contact loop @ 60 C: 139.88 mOhm -&gt; 47.56 mV @ 340 mA (41.55 mV @ 297 mA charge)
+
+=== 4. I2C1 (400 kHz, U9 + U13 RX8130CE) &amp; RTC_INT WAKE TIMING / NOISE AUDIT ===
+  /MCU/ACC_SCL      : total_copper= 57.78 mm, 5 vias, layers=['B.Cu', 'In1.Cu', 'In3.Cu', 'In6.Cu']
+  /MCU/ACC_SDA      : total_copper= 35.31 mm, 4 vias, layers=['B.Cu', 'In3.Cu', 'In4.Cu', 'In6.Cu']
+  /MCU/RTC_INT      : total_copper= 24.10 mm, 2 vias, layers=['B.Cu', 'In3.Cu']
+  /MCU/RTC_VOUT     : total_copper=  1.24 mm, 0 vias, layers=['B.Cu']
+  I2C1 C_bus: SCL=18.5 pF, SDA=16.4 pF (&lt;&lt; 400 pF max)
+  I2C1 rise time (R19/R20 = 4.7 kOhm): t_r(30-70%)=73.6 ns, t_r(10-90%)=191.2 ns (&lt; 300 ns Fast-Mode 400 kHz limit)
+
+=== 5. FULL AGGRESSOR / VICTIM COUPLING AUDIT (spacing &lt;= 0.45 mm, overlap &gt;= 1.00 mm) ===
+  RTC victim couplings (RTC_INT / RTC_VOUT, &gt;=1.0 mm within 0.45 mm): 10
+    /Driver 4 and matrix/CS4_1 (LED_PWM, In4.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.33 mm, min_d=0.000 mm, Y=[91.7,91.9]
+    /Driver 4 and matrix/CS4_12 (LED_PWM, In3.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=3.83 mm, min_d=0.191 mm, Y=[88.5,91.8]
+    /Driver 4 and matrix/CS4_12 (LED_PWM, In4.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.50 mm, min_d=0.000 mm, Y=[88.5,88.9]
+    /Driver 4 and matrix/CS4_13 (LED_PWM, In4.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.22 mm, min_d=0.000 mm, Y=[90.6,91.9]
+    /Driver 4 and matrix/CS4_2 (LED_PWM, In3.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.83 mm, min_d=0.225 mm, Y=[91.7,91.9]
+    /Driver 4 and matrix/SW4_1 (LED_SCAN, In4.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.03 mm, min_d=0.000 mm, Y=[90.2,90.9]
+    /Driver 4 and matrix/SW4_5 (LED_SCAN, In4.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.37 mm, min_d=0.000 mm, Y=[91.9,91.9]
+    /Driver 4 and matrix/SW4_6 (LED_SCAN, In4.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, In3.Cu): len=1.06 mm, min_d=0.000 mm, Y=[92.2,93.2]
+    /Driver 5 and matrix/CS5_7 (LED_PWM, In6.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, B.Cu): len=1.84 mm, min_d=0.284 mm, Y=[96.4,98.0]
+    I2C_SCL (I2C_1MHZ, In6.Cu) &lt;-&gt; /MCU/RTC_INT (SIGNAL_WAKE, B.Cu): len=4.11 mm, min_d=0.000 mm, Y=[96.0,99.7]
+  Southern sector victim couplings (&gt;=1.0 mm within 0.45 mm): 11
+  Inherited northern/matrix couplings (&gt;=1.0 mm within 0.45 mm): 23 total
+
+=== 6. WHOLE-BOARD THERMAL &amp; DEEP-SLEEP WAKE POWER ===
+  Whole-board theta_BA: free-air = 32.4 C/W, worn (w/ rear 35 mm LiPo) = 49.5 C/W -&gt; P_cont,max = 0.51 W
+  U13 RX8130CE:BB active current (FOUT=OFF, FSEL=11b): 1.50 uA typ (4.95 uW @ 3.3 V -&gt; +0.0002 C)
+  Total dormant + hardware RTC alarm wake battery draw: ~201 uA (&lt; 250 uA sleep budget)
+</code></pre>
+<h3>Quantitative Dispositions of Aggressor / Victim Couplings (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>)</h3>
+<ol>
+<li><strong><code>/MCU/RTC_INT</code> (<code>R32 = 100 kΩ</code>) ↔ <code>CS4_*</code> / <code>SW4_*</code> / <code>I2C_SCL</code> (<code>10</code> pairs):</strong> In <code>POWMAN</code> dormant sleep (when <code>RTC_INT</code> acts as the asynchronous <code>PWRUP2</code> wake input), all <code>IS31FL3745</code> drivers and <code>I2C0</code> are <strong>completely quiescent (<code>0 V/ns</code>)</strong>, giving <strong><code>0.00 V</code> coupled noise</strong> (<code>0</code> false wakeups). When awake, <code>RTC_INT</code> is referenced <code>76 µm</code> above solid <code>In2.Cu GND</code> (<code>In3.Cu</code>), limiting coupled pulses to <code>&lt; 0.21 V</code> (<code>&lt;&lt; 1.32 V</code> noise margin), and firmware reads <code>RX8130CE</code> <code>Flag (0x1D)</code> to confirm <code>AF</code>/<code>TF</code>.</li>
+<li><strong>Southern <code>VBAT_SENSE</code> (<code>8</code> pairs vs <code>CS2_*</code>/<code>SW2_*</code>/<code>SW5_8</code>):</strong> <code>VBAT_SENSE</code> is hardware-filtered by <code>C7 = 100 nF</code> (<code>R1||R2 = 50 kΩ</code>, <code>f_c = 31.8 Hz</code>), driven low (<code>0 V</code>) whenever <code>VBAT_EN == 0</code>, and firmware averages <code>16×</code> <code>ADC0</code> samples with <code>0.0 mV</code> DC shift.</li>
+<li><strong><code>Net-(U5-ISET)</code> (<code>R4 = 3.0 kΩ</code> ↔ <code>SW2_4</code>, <code>1.26 mm</code> across <code>170 µm</code> core) &amp; <code>Net-(U2-RSET)</code> (<code>R33 = 30 kΩ</code> ↔ <code>I2C_SCL</code>/<code>CS2_7</code>):</strong> <code>&lt; 25 ns</code> transient edge currents (<code>&lt; 0.005%</code> average charge-current error; <code>0%</code> duty during static LED display).</li>
+</ol></div></body></html>

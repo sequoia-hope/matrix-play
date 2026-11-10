@@ -1,0 +1,88 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 1: architecture and datasheet audit (round-pendant-f-usbc-rtc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc-rtc/phase1.md'>design/gates/round-pendant-f-usbc-rtc/phase1.md</a></p><h1>Gate 1: architecture and datasheet audit (<code>round-pendant-f-usbc-rtc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Parent variant: <code>round-pendant-f-usbc</code> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase4.md">phase4.md</a>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase10.md">phase10.md</a>); unchanged parent requirements &amp; audits in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase0.md">phase0.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase1.md">phase1.md</a>.
+New / updated part audits:
+- <code>U13</code> (<code>Seiko Epson RX8130CE:BB</code> I²C RTC with built-in <code>32.768 kHz</code> crystal): <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/rtc-rx8130ce.md">design/parts/rtc-rx8130ce.md</a>
+- <code>BT1</code> (<code>CJT A1251WR-S-2P</code> / <code>Molex 53261-0271</code> right-angle <code>1.25 mm</code> 2P SMT battery header): <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/parallelogram-io.md">design/parts/parallelogram-io.md</a> §2</p>
+<hr />
+<h2>1. Architecture &amp; Block Diagram (<code>round-pendant-f-usbc-rtc</code>)</h2>
+<pre><code class="language-mermaid">flowchart LR
+  J1[&quot;J1 USB-C (TYPE-C-31-M-22)&quot;] --&gt; ESD[&quot;U7 USBLC6-2P6 ESD&quot;]
+  J1 -- &quot;VBUS 5 V&quot; --&gt; CH[&quot;U5 BQ24073 Charger &amp; Power Path&quot;]
+  BT1[&quot;BT1 A1251WR-S-2P (1.25 mm Inward SMT)&quot;] --&gt; PROT[&quot;U8 XB9901A Protection&quot;] --&gt; CH
+  CH -- &quot;VSYS 3.0-4.5 V&quot; --&gt; LDO[&quot;U6 TPS7A0233 (+3V3 Always-On, 25 nA Iq)&quot;]
+  CH -- &quot;VSYS&quot; --&gt; DRV[&quot;U1,U2,U10,U11,U12 (5x IS31FL3745 WLCSP-36)&quot;]
+  LDO -- &quot;+3V3&quot; --&gt; MCU[&quot;U3 RP2350A&quot;]
+  LDO -- &quot;+3V3&quot; --&gt; FL[&quot;U4 W25Q128JVPIQ&quot;]
+  LDO -- &quot;+3V3&quot; --&gt; ACC[&quot;U9 LIS2DW12 (0x19)&quot;]
+  LDO -- &quot;+3V3 (VDD=VIO=VBAT)&quot; --&gt; RTC[&quot;U13 RX8130CE:BB RTC (0x32, 32.768 kHz inside)&quot;]
+  ESD -- &quot;USB D+/D-&quot; --&gt; MCU
+  MCU -- &quot;QSPI&quot; --&gt; FL
+  Y1[&quot;Y1 12 MHz&quot;] --&gt; MCU
+  MCU -- &quot;I2C0 1 MHz + LED_SDB&quot; --&gt; DRV
+  MCU -- &quot;I2C1 400 kHz (GPIO2/3, 4.7 kOhm)&quot; --&gt; ACC
+  MCU -- &quot;I2C1 400 kHz (GPIO2/3, 4.7 kOhm)&quot; --&gt; RTC
+  ACC -- &quot;ACC_INT (GPIO10 PWRUP)&quot; --&gt; MCU
+  RTC -- &quot;RTC_INT /IRQ (GPIO19 PWRUP, 100 kOhm)&quot; --&gt; MCU
+  SW1[&quot;SW1 USER/WAKE (GPIO11 PWRUP)&quot;] --&gt; MCU
+  SW2[&quot;SW2 BOOTSEL&quot;] --&gt; MCU
+  Q2[&quot;Q2 ALS-PT19 (GPIO1 -&gt; ADC1)&quot;] --&gt; MCU
+  CH -- &quot;Switched VBAT_SENSE (GPIO14 -&gt; Q1 -&gt; ADC0)&quot; --&gt; MCU
+  DRV -- &quot;45 SW, 90 CS&quot; --&gt; LEDS[&quot;235x XL-1010RGB-YG LEDs (Top)&quot;]
+</code></pre>
+<h3>GPIO &amp; Bus Delta vs. <code>round-pendant-f-usbc</code></h3>
+<ul>
+<li><strong><code>I2C1</code> (<code>GPIO2 = ACC_SDA</code>, <code>GPIO3 = ACC_SCL</code>, <code>4.7 kΩ</code> pull-ups <code>R19/R20</code>):</strong> Now shared between <code>U9</code> (<code>LIS2DW12</code> @ <code>0x19</code>) and <code>U13</code> (<code>RX8130CE:BB</code> @ <code>0x32</code>). Keeping <code>U13</code> off <code>1 MHz</code> <code>I2C0</code> preserves full <code>1 MHz</code> LED matrix bandwidth while respecting <code>RX8130CE</code>'s <code>400 kHz</code> Fast-Mode ceiling (<code>t_r,10-90% = 185.9 ns &lt; 300 ns</code>).</li>
+<li><strong><code>GPIO19</code> (<code>U3</code> Pin 31, <code>RTC_INT</code>):</strong> Active-low <code>/IRQ</code> open-drain alarm/wakeup-timer output from <code>U13</code> Pin 6, pulled to <code>+3V3</code> by external <code>R32 = 100 kΩ</code> (<code>0.00 nA</code> idle leakage; <code>RP2350</code> internal pulls disabled <code>PUE=0, PDE=0</code> to avoid <code>RP2350-E9</code>; drives <code>POWMAN</code> <code>PWRUP2</code> deep-sleep wake).</li>
+</ul>
+<hr />
+<h2>2. Checklist (<code>references/datasheet-audit.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>Block diagram exists and every block maps to parts:</strong> Mermaid diagram above (<code>Power</code>, <code>MCU</code> incl. <code>Accelerometer</code> + <code>Real-Time Clock</code> + <code>ALS</code>, <code>Driver 1..5</code>).</li>
+<li>[x] <strong>Every non-trivial part has an audit file with datasheet in <code>datasheets/</code>:</strong> <code>rx8130ce.pdf</code> + <code>rx8130ce-app-manual.pdf</code> (<code>ETM50E-10</code>) audited in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/rtc-rx8130ce.md">rtc-rx8130ce.md</a>; <code>cjt-a1251.pdf</code> + <code>molex-53261-0271.pdf</code> audited in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/parallelogram-io.md">parallelogram-io.md</a> §2.</li>
+<li>[x] <strong>Every abs max checked against worst case from <code>intent.md</code>:</strong> <code>RX8130CE</code> <code>-0.3..+6.5 V</code> vs <code>+3.366 V</code> max (<code>1.93×</code> margin), <code>T_reflow ≤ +260 °C</code> vs <code>≤ 250 °C</code> (<code>B.Cu</code>) / <code>≤ 245 °C</code> (<code>F.Cu</code>); <code>A1251WR-S-2P</code> <code>1.0 A / 125 V</code> vs <code>0.34 A / 4.25 V</code> (<code>2.94×</code> current margin).</li>
+<li>[x] <strong>Every chosen value has a shown calculation:</strong> <code>I_DD = 1.50 µA</code> (<code>FSEL1:0 = 11b</code>), <code>I2C1</code> <code>t_r = 185.9 ns &lt; 300 ns</code> (<code>C_bus ≈ 18 pF</code>, <code>4.7 kΩ</code>), <code>R32 = 100 kΩ</code> (<code>0 nA</code> idle, <code>33 µA</code> during <code>7.57 ms</code> pulse), room/worn frequency drift (<code>+5 ± 23 ppm</code>, <code>-2.24 ppm</code> @ <code>+33 °C</code>).</li>
+<li>[x] <strong>MLCC derating checked:</strong> <code>C75</code> (<code>100 nF 16 V X7R</code> <code>C1525</code> @ <code>3.3 V</code> -&gt; <code>~84 nF</code> eff) and <code>C76</code> (<code>1.0 µF 10 V X5R</code> <code>C52923</code> @ <code>3.3 V</code> -&gt; <code>~0.68 µF</code> eff vs <code>0.1 µF</code> single-rail Circuit EX7 requirement).</li>
+<li>[x] <strong>Every footprint matches the exact package suffix of the MPN:</strong> <code>RX8130CE:BB</code> (<code>CE</code> <code>3.2 × 2.5 × 1.0 mm</code> 10-pad ceramic LCC, non-uniform <code>±1.55 / ±0.70 / 0.00 mm</code> row spacing verified against <code>ETM50E-10</code> Fig. 9 &amp; EasyEDA <code>C1542426</code>); <code>A1251WR-S-2P</code> (<code>1.25 mm</code> 90° SMT wafer verified against <code>cjt-a1251.pdf</code> p. 5).</li>
+<li>[x] <strong>Sourcing confirmed with <code>jlc_parts.py show</code> output and date; no new part flagged:</strong>
+  <code>text
+  C1542426 RX8130CE:BB (EPSON, SMD-10P): extended, JLC stock 2242, lifecycle normal, checked 2026-11-09
+  C225111 A1251WR-S-2P (CJT(Changjiang Connectors), SMD,P=1.25mm,Surface Mount,Right Angle): extended, JLC stock 74989, lifecycle normal, checked 2026-11-09
+  C1525 CL05B104KO5NNNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 33472164, lifecycle normal, checked 2026-11-09
+  C52923 CL05A105KA5NQNC (Samsung Electro-Mechanics, 0402): basic, JLC stock 11367807, lifecycle normal, checked 2026-11-09
+  C25741 0402WGF1003TCE (UNI-ROYAL, 0402): basic, JLC stock 8563379, lifecycle normal, checked 2026-11-09</code></li>
+<li>[x] <strong>Every datasheet listed in <code>design/datasheets/sources.csv</code>:</strong> <code>cjt-a1251.pdf,C225111</code>, <code>rx8130ce.pdf,C1542426</code>, <code>rx8130ce-app-manual.pdf,https://download.epsondevice.com/td/pdf/app/RX8130CE_en.pdf</code>.</li>
+</ul></div></body></html>

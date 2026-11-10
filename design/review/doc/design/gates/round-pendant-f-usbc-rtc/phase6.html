@@ -1,0 +1,126 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 6: placement (round-pendant-f-usbc-rtc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc-rtc/phase6.md'>design/gates/round-pendant-f-usbc-rtc/phase6.md</a></p><h1>Gate 6: placement (<code>round-pendant-f-usbc-rtc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Parent placement baselines: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc/phase6.md">design/gates/round-pendant-f-usbc/phase6.md</a> and <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/phase6.md">design/gates/phase6.md</a>.
+Variant brief: <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc-rtc.md">design/brief-f-usbc-rtc.md</a>.</p>
+<hr />
+<h2>Checklist (<code>references/placement.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>Fixed items match <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/brief-f-usbc-rtc.md">brief-f-usbc-rtc.md</a> and are locked:</strong> <code>Ø38.000 mm</code> <code>Edge.Cuts</code> circle, all <code>7</code> keepout rule areas (incl. <strong><code>RX8130_xtal_end</code></strong>), and all <code>240</code> fixed footprints (<code>D1..D235</code> + <code>Q2</code> at <code>0.0000 mm / 0.00°</code> delta from <code>f-usbc</code>, <code>SW1</code>, <code>SW2</code>, <code>J1</code> at <code>(107.787, 110.926, -156.05°)</code>, and <code>BT1</code> <code>A1251WR-S-2P</code> at <code>(89.200, 110.550, -28.00°)</code>) are <strong>locked</strong> in <code>round-pendant.kicad_pcb</code> (<code>U1..U7</code>, <code>U9..U12</code>, <code>L1</code>, <code>Y1</code> also <code>0.0000 mm / 0.00°</code> delta from <code>f-usbc</code>).</li>
+<li>[x] <strong>Placement check passes (<code>placement_check.py</code>):</strong> <strong><code>PASS: 0 errors, 0 warnings</code></strong> (verbatim output below), <code>0</code> <code>courtyards_overlap</code> in KiCad DRC, <code>sync_check.py</code> <strong><code>PASS: 0 errors, 0 warnings</code></strong>, and <code>kicad-cli sch erc --severity-all</code> <strong><code>0</code> violations across <code>8</code> sheets</strong>.</li>
+<li>[x] <strong>Datasheet layout guidelines followed per part:</strong></li>
+<li><strong><code>BT1</code> (<code>CJT A1251WR-S-2P</code>, <code>C225111</code>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/parallelogram-io.md">parallelogram-io.md</a> §2 &amp; <code>cjt-a1251.pdf</code>):</strong> Seated at SW <code>(89.200, 110.550, -28.00°)</code> facing inward NNE (<code>+28°</code> E of N) with <strong><code>4.88 mm</code> nominal (<code>4.65 mm</code> min to <code>U4</code>, <code>5.85 mm</code> to <code>C22</code>) flat plug-insertion runway</strong> (<code>&gt; 4.00 ± 0.25 mm</code> <code>A1251H-2P</code> plug length), <code>12.60 mm²</code> <code>GND</code>-tied <code>MP</code> mechanical solder tabs (<code>1</code> via per tab; <code>13</code> under-body vias capped planar via <code>POFV = Yes</code> + <code>100%</code> LPI <code>B.Mask</code> tenting), and <code>3.20 mm</code> housing height matching <code>J1</code>.</li>
+<li><strong><code>U8</code> (<code>XB9901A</code>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/battery.md">battery.md</a>) + <code>C6</code> + <code>R8</code>:</strong> <code>U8</code> sits immediately SE of <code>BT1.2</code> at <code>(91.500, 114.800, -90.00°)</code> with <code>C6</code> (<code>100 nF</code>) at <strong><code>1.11 mm</code></strong> pad-to-pad from <code>U8.6</code> (<code>VDD</code>) and <code>2× 0.30/0.15 mm</code> parallel <code>GND</code> vias at <code>(92.440, 114.800)</code> &amp; <code>(92.411, 114.428)</code>.</li>
+<li><strong><code>U13</code> (<code>Seiko Epson RX8130CE:BB</code>, <code>C1542426</code>, <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/parts/rtc-rx8130ce.md">rtc-rx8130ce.md</a> &amp; <code>ETM50E-10</code>):</strong> Seated in the vacant East pocket at <code>(114.750, 101.200, 0.00°)</code> (<code>0</code> existing parts moved; <code>0</code> <code>U12</code> WLCSP fanout vias disturbed):<ul>
+<li><code>C75</code> (<code>100 nF</code> <code>+3V3</code> decoupler) sits <strong><code>1.23 mm</code></strong> straight east of <code>U13.8</code> (<code>VDD</code>).</li>
+<li><code>C76</code> (<code>1 µF</code> <code>RTC_VOUT</code> stabilization cap) sits <strong><code>1.23 mm</code></strong> straight east of <code>U13.9</code> (<code>VOUT</code>).</li>
+<li><code>R32</code> (<code>100 kΩ</code> <code>RTC_INT</code> pull-up) sits directly north at <code>(114.750, 98.350, 0.00°)</code>.</li>
+<li>Locked <code>B.Cu</code> rule area <strong><code>RX8130_xtal_end</code></strong> (<code>[114.30..115.20, 102.30..103.05] mm</code>, <code>no_tracks, no_vias, no_pour</code>) keeps <code>B.Cu</code> copper strictly clear of <code>U13</code>'s Pin <code>1–10</code> <code>*1</code> crystal inspection short side (<code>ETM50E-10</code> Fig. 9 p. 11).</li>
+</ul>
+</li>
+<li><strong><code>Q1, R9..R12, C7</code> (<code>VBAT_SENSE</code> divider) &amp; <code>R1, R2</code> (<code>CC1/CC2</code> <code>5.1 kΩ</code>):</strong> Grouped cleanly in the vacated 6-o'clock South pocket (<code>R1, R2</code> moved closer to <code>J1</code>).</li>
+<li><strong>Unchanged northern/central/USB-C blocks (<code>U3 RP2350A</code>, <code>Y1</code>, <code>L1</code>, <code>U4</code>, <code>U5</code>, <code>U6</code>, <code>U7</code>, <code>U9</code>, <code>J1</code>, <code>U1/U2/U10/U11/U12</code>):</strong> <code>100%</code> identical to <code>f-usbc</code> (<code>147/147</code> locked RP2350 decoupling tracks preserved verbatim).</li>
+<li>[x] <strong>Rule areas &amp; solid EPs verified:</strong> <code>U3.61</code> (<code>11.56 mm²</code>, <code>9</code> <code>GND</code> vias, <code>0</code> foreign vias), <code>U5.17</code> (<code>2.89 mm²</code>, <code>2</code> <code>GND</code> vias, <code>0</code> foreign vias), <code>RP2350 ring</code> (<code>1</code> piece), <code>L1</code> cutouts, and <code>RX8130_xtal_end</code> (<code>0</code> intrusions) verified.</li>
+<li>[x] <strong>Visual review on 2D/3D renders &amp; PCB viewer:</strong> <a href="../../renders/round-pendant-f-usbc-rtc/top.png">top.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/bottom.png">bottom.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/3d-top.png">3d-top.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/3d-bottom.png">3d-bottom.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/assembly-bottom.png">assembly-bottom.png</a>, and <code>viewer/round-pendant-f-usbc-rtc.html</code>.</li>
+</ul>
+<hr />
+<h2>1. Verbatim Placement, Sync &amp; ERC Check Outputs</h2>
+<h3>A. <code>placement_check.py hw/round-pendant/f-usbc-rtc</code></h3>
+<pre><code class="language-text">placement_check: hw/round-pendant/f-usbc-rtc/round-pendant.kicad_pcb
+  Y1 pad 1 (Net-(U3-XIN)) is 5.8 mm from its IC pin
+  Y1 pad 3 (Net-(C24-Pad1)) is 3.9 mm from its IC pin
+  ratsnest (MST, all nets except GND): 3168 mm over 215 nets
+
+  decoupler -&gt; pin, pad centre to pad centre
+    C1    -&gt; U5.13   VBUS        1.78 mm
+    C10   -&gt; U3.20   +3V3        2.40 mm
+    C11   -&gt; U3.30   +3V3        1.60 mm
+    C12   -&gt; U3.38   +3V3        1.87 mm
+    C13   -&gt; U3.53   +3V3        3.10 mm
+    C14   -&gt; U3.44   +3V3        1.69 mm
+    C16   -&gt; U3.49   +3V3        1.17 mm
+    C17   -&gt; U3.46   /MCU/VREG_AVDD  2.83 mm
+    C18   -&gt; U3.50   +1V1        2.13 mm
+    C19   -&gt; U3.23   +1V1        1.63 mm
+    C2    -&gt; U5.10   VSYS        2.82 mm
+    C20   -&gt; U3.6    +1V1        1.60 mm
+    C21   -&gt; U3.39   +1V1        1.69 mm
+    C22   -&gt; U4.8    +3V3        5.51 mm
+    C25   -&gt; U9.9    +3V3        1.72 mm
+    C26   -&gt; U9.9    +3V3        2.08 mm
+    C27   -&gt; U9.10   +3V3        3.51 mm
+    C3    -&gt; U6.4    VSYS        1.82 mm
+    C30   -&gt; U1.A3   VSYS        3.42 mm
+    C31   -&gt; U1.A3   VSYS        2.36 mm
+    C32   -&gt; U1.A3   VSYS        1.37 mm
+    C33   -&gt; U1.F5   VSYS        1.53 mm
+    C34   -&gt; U1.F5   VSYS        2.46 mm
+    C4    -&gt; U6.1    +3V3        1.08 mm
+    C40   -&gt; U2.A3   VSYS        2.55 mm
+    C41   -&gt; U2.A3   VSYS        2.22 mm
+    C42   -&gt; U2.A3   VSYS        1.26 mm
+    C43   -&gt; U2.F5   VSYS        3.10 mm
+    C44   -&gt; U2.F5   VSYS        1.23 mm
+    C5    -&gt; U5.2    VBAT        3.27 mm
+    C51   -&gt; U10.A3  VSYS        2.36 mm
+    C52   -&gt; U10.A3  VSYS        1.37 mm
+    C53   -&gt; U10.F5  VSYS        1.53 mm
+    C54   -&gt; U10.F5  VSYS        2.46 mm
+    C6    -&gt; U8.6    Net-(U8-VDD)  1.11 mm
+    C61   -&gt; U11.A3  VSYS        2.36 mm
+    C62   -&gt; U11.A3  VSYS        1.37 mm
+    C63   -&gt; U11.F5  VSYS        1.53 mm
+    C64   -&gt; U11.F5  VSYS        2.42 mm
+    C71   -&gt; U12.A3  VSYS        2.36 mm
+    C72   -&gt; U12.A3  VSYS        1.37 mm
+    C73   -&gt; U12.F5  VSYS        1.53 mm
+    C74   -&gt; U12.F5  VSYS        2.46 mm
+    C75   -&gt; U13.8   +3V3        1.23 mm
+    C76   -&gt; U13.9   /MCU/RTC_VOUT  1.23 mm
+    C8    -&gt; U3.1    +3V3        1.60 mm
+    C9    -&gt; U3.11   +3V3        1.60 mm
+
+  PASS: 0 errors, 0 warnings
+</code></pre>
+<h3>B. <code>sync_check.py</code> &amp; <code>kicad-cli sch erc --severity-all</code></h3>
+<pre><code class="language-text">sync_check: hw/round-pendant/f-usbc-rtc
+  schematic round-pendant.kicad_sch: 346 symbols (0 excluded from board)
+  board round-pendant.kicad_pcb: 346 footprints (0 board-only)
+  338 parts to build; required fields: LCSC
+  PASS: 0 errors, 0 warnings
+
+Found 0 violations
+ERC sheets: 8 violations: 0
+</code></pre></div></body></html>

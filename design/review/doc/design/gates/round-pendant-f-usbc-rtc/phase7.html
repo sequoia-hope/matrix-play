@@ -1,0 +1,128 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width, initial-scale=1'><title>Gate 7: routing (round-pendant-f-usbc-rtc)</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e2e5ea;--fg:#14171c;--muted:#5b6472;
+--accent:#2f6feb;--warn:#a86814;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1015;--card:#161b22;--line:#262d38;
+--fg:#e6eaf0;--muted:#8c96a6;--accent:#5b9bff;--warn:#dfa543;--chip:#202632}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+-webkit-text-size-adjust:100%;overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+a{color:var(--accent)}
+h1{font-size:1.45rem;margin:.4rem 0 .2rem}
+h2{font-size:1.2rem;margin:1.4rem 0 .4rem}
+h3{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.muted{color:var(--muted);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:.9rem 1rem;margin:1rem 0}
+.card h2{margin-top:.2rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:.05rem .6rem;
+font-size:.8rem;margin-right:.3rem}
+.chip.warn{color:var(--warn);font-weight:600}
+.links a{display:inline-block;margin:.25rem .9rem .25rem 0}
+.decide{border-left:3px solid var(--warn);padding-left:.8rem;margin:.8rem 0}
+img{max-width:100%;height:auto;border-radius:8px;background:#fff}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6rem 0}
+table{border-collapse:collapse;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:.3rem .45rem;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+background:var(--chip);border-radius:4px;padding:0 .2em}
+pre{overflow-x:auto;background:var(--chip);padding:.6rem;border-radius:8px;font-size:.8rem}
+pre code{background:none;padding:0}
+ul,ol{padding-left:1.3rem}
+nav.top{font-size:.92rem;margin-bottom:.5rem}
+</style></head><body><div class=wrap><nav class=top><a href='../../../../../../index.html'>&larr; Main page</a> &middot; <a href='../../../../../../design/review/index.html'>Needs your review</a></nav><p class=muted>Source: <a href='https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc-rtc/phase7.md'>design/gates/round-pendant-f-usbc-rtc/phase7.md</a></p><h1>Gate 7: routing (<code>round-pendant-f-usbc-rtc</code>)</h1>
+<p>Status: <strong>passed</strong>
+Parent board baseline compared against: <strong><code>round-pendant-f-usbc</code></strong> (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/hw/round-pendant/f-usbc/round-pendant.kicad_pcb">hw/round-pendant/f-usbc/round-pendant.kicad_pcb</a>), with routing &amp; keepout dispositions in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">design/decisions.md</a> (<code>2026-11-09</code>).</p>
+<hr />
+<h2>Checklist (<code>references/routing.md</code> §Gate checklist)</h2>
+<ul>
+<li>[x] <strong>DRC <code>0</code> errors, <code>0</code> warnings, <code>0</code> unrouted (<code>kicad-cli pcb drc --severity-all --schematic-parity</code>):</strong> <strong><code>Found 0 violations</code>, <code>Found 0 unconnected items</code></strong> (verbatim output below).</li>
+<li>[x] <strong>Schematic parity:</strong> <code>0</code> functional differences — only the <strong>2 inherited Variant E/F <code>U3</code> pin 42/43 <code>{slash}</code> name mismatches</strong> on unconnected pins (<code>GPIO28/ADC2</code> vs <code>GPIO28{slash}ADC2</code>, <code>GPIO29/ADC3</code> vs <code>GPIO29{slash}ADC3</code>), explicitly named below and never hidden (<a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/decisions.md">decisions.md</a>).</li>
+<li>[x] <strong><code>pad_joints_fixed.py</code> passes (no SMD pad joint under <code>0.09 mm</code> fab minimum):</strong> <strong><code>PASS: 0 thin pad joints</code></strong> across all <code>1,433</code> net-assigned SMD pads (<code>+17</code> vs <code>f-usbc</code>'s <code>1,416</code>: <code>BT1</code> adds <code>+3</code> net-assigned SMD pads [<code>2</code> signal + <code>2</code> <code>GND</code> <code>MP</code> vs <code>1</code> net-assigned pad in <code>f-usbc</code>'s unpopulated <code>BatteryPads</code>], <code>U13</code> adds <code>+8</code> net-assigned SMD pads [<code>Pins 4 [FOUT] &amp; 5 [~RST]</code> are <code>NC</code>], <code>C75/C76</code> add <code>+4</code>, and <code>R32</code> adds <code>+2</code>).</li>
+<li>[x] <strong><code>copper_audit.py</code> passes all routing &amp; strip-zone checks:</strong> <code>tracks=5883 vias=918 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(&lt;86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(&lt;40um)=229 strip_zones=0 zone_intrusions=2</code> (<code>0</code> routing/strip defects; <code>2</code> inherited <code>B.Cu</code> vendor-zone intrusions <code>vendor +1V1</code> and <code>vendor GND</code> from Variant E/F, identical to <code>f-usbc</code>).</li>
+<li>[x] <strong>Current capacity, via-count &amp; RTC crystal keepout checks pass:</strong></li>
+<li><strong><code>VBUS</code> (<code>500 mA</code> max):</strong> <strong><code>0</code> vias</strong> on the <code>500 mA</code> <code>J1 -&gt; C1 -&gt; U5.13</code> <code>0.25 mm</code> <code>1 oz</code> <code>B.Cu</code> charger path (<code>R_25C = 3.90 mΩ</code>, <code>R_60C = 4.44 mΩ</code>, <code>Vdrop = 2.22 mV @ 500 mA</code>, <code>&gt; 900 mA</code> IPC-2221 1 oz outer ampacity); <code>2× 0.30/0.15 mm</code> vias sit only on the <code>U7.5</code> TVS clamp branch.</li>
+<li><strong><code>VBAT</code> (<code>340 mA</code> max cont / <code>297 mA</code> charge / <code>1.0 A</code> brief transient):</strong> Routed on <code>0.30 mm</code> <code>1 oz</code> <code>B.Cu</code> + plane-cooled <code>0.30 mm</code> <code>0.5 oz</code> <code>In3.Cu</code>/<code>In4.Cu</code> with <strong><code>8</code> <code>VBAT</code> vias</strong> including <strong><code>2×</code> parallel <code>0.30/0.15 mm</code> vias</strong> at <code>(95.618, 117.089)</code> &amp; <code>(94.518, 116.839)</code> near <code>TP3.1</code>/<code>R8.2</code> (<code>R_25C = 83.23 mΩ</code>, <code>R_60C = 94.68 mΩ</code>, <code>Vdrop = 32.19 mV @ 340 mA</code>; total battery loop incl. <code>BAT_N</code>, <code>U8 -&gt; GND</code>, and <code>2 × 20 mΩ</code> CJT <code>A1251WR-S-2P</code> contact resistance = <strong><code>139.88 mΩ</code> @ <code>60 °C</code></strong> -&gt; <code>47.56 mV @ 340 mA</code> / <code>41.55 mV @ 297 mA</code> charge). Plane-cooled <code>0.30 mm</code> <code>0.5 oz</code> <code>In3.Cu</code>/<code>In4.Cu</code> (<code>0.076–0.170 mm</code> from solid <code>In2.Cu GND</code> and <code>In5.Cu VSYS</code>) exceeds <strong><code>0.80 A</code> IPC-2152 internal ampacity</strong> (<code>&gt; 2.3×</code> continuous demand).</li>
+<li><strong><code>/Power/BAT_N</code> &amp; <code>U8.1..3 -&gt; GND</code> (<code>340 mA</code> cont):</strong> <code>/Power/BAT_N</code> has <strong><code>0</code> vias</strong> (<code>0.30 mm</code> <code>1 oz</code> <code>B.Cu</code> directly from <code>BT1.2</code> to <code>U8.4/5</code>, <code>R_25C = 3.82 mΩ</code>, <code>R_60C = 4.34 mΩ</code>, <code>1.48 mV @ 340 mA</code>), and <code>U8.1..3</code> exits into <strong><code>2×</code> parallel <code>0.30/0.15 mm</code> <code>GND</code> vias</strong> (<code>R_25C = 0.76 mΩ</code>, <code>R_60C = 0.86 mΩ</code>, <code>0.29 mV @ 340 mA</code>) directly into solid <code>In2.Cu GND</code>.</li>
+<li><strong><code>U7.2 -&gt; GND</code> (USB ESD return) &amp; <code>/Power/USB_DM_C</code>:</strong> Preserved verbatim from <code>f-usbc</code> (<code>2×</code> parallel <code>GND</code> vias <code>(102.470, 110.730)</code> inside <code>J1.S1</code> NW &amp; <code>(102.126, 110.639)</code>, and <strong><code>0</code> <code>F.Cu</code> segments</strong> on <code>/Power/USB_DM_C</code>).</li>
+<li><strong><code>U13</code> (<code>RX8130CE:BB</code>) <code>*1</code> crystal inspection keepout (<code>RX8130_xtal_end</code>):</strong> <strong><code>0</code> <code>B.Cu</code> tracks, vias, or pours</strong> inside <code>[114.30..115.20, 102.30..103.05] mm</code> (<code>no_tracks, no_vias, no_pour</code>), keeping <code>B.Cu</code> strictly clear of the <code>*1</code> internal-crystal inspection pads on the Pin <code>1–10</code> South short side (<code>rx8130ce.pdf</code> p. 1 &amp; <code>ETM50E-10</code> Fig. 9 p. 11) while <code>/MCU/ACC_SCL</code> (<code>U13.2</code>), <code>/MCU/ACC_SDA</code> (<code>U13.3</code>), and <code>/MCU/RTC_INT</code> (<code>U13.6</code>) escape cleanly north/west.</li>
+<li><strong><code>VSYS</code> (<code>~340 mA</code> board total), <code>+3V3</code> (<code>~40 mA</code> + <code>1.5 µA</code> RTC), &amp; <code>GND</code>:</strong> solid unbroken <code>In5.Cu</code> (<code>592.880 mm²</code> <code>VSYS</code>, <code>215.625 mm²</code> <code>+3V3</code>) and <code>In2.Cu</code> (<code>840.356 mm²</code> <code>GND</code>) planes (<code>1</code> whole piece each).</li>
+<li>[x] <strong>Plane integrity &amp; locked-PDN preservation check (<code>compare_with_parent.py</code>):</strong></li>
+<li><strong><code>236/236</code> front parts (<code>D1..D235</code> + <code>Q2</code>) at <code>0.0000 mm / 0.00°</code> delta.</strong></li>
+<li><strong><code>147/147</code> locked RP2350 decoupling/DVDD/LDO/FB tracks survived 100% intact.</strong></li>
+<li><strong><code>0</code> split pieces (<code>dPcs = +0</code>) across all 9 copper zones</strong> vs <code>f-usbc</code> (<code>In2.Cu plane GND = 1 pc</code>, <code>In5.Cu plane VSYS = 1 pc</code>, <code>In5.Cu plane 3V3 = 1 pc</code>, <code>B.Cu RP2350 ring = 1 pc</code>, <code>B.Cu RP2350 band = 6 pcs</code>).</li>
+<li><strong><code>83.2%</code> (<code>5,362 / 6,441</code>)</strong> of <code>f-usbc</code>'s copper items preserved verbatim; total vias = <strong><code>918</code></strong> (<code>+32</code> vs <code>f-usbc</code>'s <code>886</code>).</li>
+<li><strong><code>J1</code> NPTH 8-layer clearances:</strong> <strong><code>≥ 0.201 mm</code> across all 8 layers</strong> (<code>NPTH #1</code> min <code>0.201 mm</code> to <code>In2/In5</code> planes, <code>0.203 mm</code> on <code>In1.Cu</code>, <code>0.220 mm</code> to <code>D234.4</code>; <code>NPTH #2</code> min <code>0.201 mm</code> to <code>In2/In5</code> planes, <code>0.210 mm</code> on <code>F.Cu</code>).</li>
+<li>[x] <strong>Every warning explained:</strong> <code>0</code> DRC warnings; <code>nets_check.py --routed</code> <code>197</code> warnings (<code>+2</code> vs <code>f-usbc</code>: <code>RTC_INT</code> <code>1</code> via -&gt; <code>2</code> vias and <code>RTC_VOUT</code> short local <code>1.24 mm</code> <code>B.Cu</code> decap link) explained in <a href="https://github.com/sequoia-hope/matrix-play/blob/main/design/gates/round-pendant-f-usbc-rtc/phase5.md">phase5.md</a>.</li>
+<li>[x] <strong>Per-layer copper renders reviewed (<code>8</code> layers):</strong> <a href="../../renders/round-pendant-f-usbc-rtc/F.Cu.png">F.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/In1.Cu.png">In1.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/In2.Cu.png">In2.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/In3.Cu.png">In3.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/In4.Cu.png">In4.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/In5.Cu.png">In5.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/In6.Cu.png">In6.Cu.png</a>, <a href="../../renders/round-pendant-f-usbc-rtc/B.Cu.png">B.Cu.png</a>.</li>
+<li>[x] <strong>PCB view regenerated with copper viewer:</strong> <a href="https://github.com/sequoia-hope/matrix-play/blob/main/viewer/round-pendant-f-usbc-rtc.html">viewer/round-pendant-f-usbc-rtc.html</a>.</li>
+</ul>
+<hr />
+<h2>1. Verbatim Routing Verification Outputs</h2>
+<h3>A. Strict KiCad DRC (<code>kicad-cli pcb drc --severity-all --schematic-parity</code>)</h3>
+<pre><code class="language-text">Found 0 violations
+Found 0 unconnected items
+Found 2 schematic parity issues
+DRC violations: 0 unconnected: 0 parity: 2
+  - Pad net (unconnected-(U3-GPIO28/ADC2-Pad42)) doesn't match net given by schematic (unconnected-(U3-GPIO28{slash}ADC2-Pad42)).
+  - Pad net (unconnected-(U3-GPIO29/ADC3-Pad43)) doesn't match net given by schematic (unconnected-(U3-GPIO29{slash}ADC3-Pad43)).
+</code></pre>
+<h3>B. <code>copper_audit.py</code> &amp; <code>pad_joints_fixed.py</code></h3>
+<pre><code class="language-text">hw/round-pendant/f-usbc-rtc/round-pendant.kicad_pcb: tracks=5883 vias=918 | dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(&lt;86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(&lt;40um)=229 strip_zones=0 zone_intrusions=2
+
+pad_joints: round-pendant.kicad_pcb: 1433 SMD pads, joints under 0.09 mm:
+
+  PASS: 0 thin pad joints
+</code></pre>
+<h3>C. <code>compare_with_parent.py</code> (Footprint Parity, Locked Tracks, Track/Via Delta, Zone Piece Counts, <code>RX8130_xtal_end</code> &amp; NPTH Clearances)</h3>
+<pre><code class="language-text">=== 1. FOOTPRINT PARITY (f-usbc-rtc vs f-usbc) ===
+  Front parts unchanged: 236/236 (235 LEDs + Q2, max delta 0.0000 mm / 0.00 deg)
+  Back parts moved/swapped: 15 (BT1, C40, C43, C6, C7, Q1, R1, R10, R11, R12, R2, R8, R9, TP3, U8)
+  New back parts added: 4 (C75, C76, R32, U13)
+
+=== 2. LOCKED RP2350 DECOUPLING TRACKS ===
+  Survived intact: 147/147 (locked=147/147)
+
+=== 3. COPPER TRACKS &amp; VIAS (F-USBC vs F-USBC-RTC) ===
+  Board F-USBC    :  886 vias, 5555 track segs ( 4465.80 mm)
+  Board F-USBC-RTC:  918 vias, 5883 track segs ( 4639.94 mm)
+  Delta           :  +32 vias, +328 track segs ( +174.14 mm)
+  Identical copper items preserved verbatim from F-USBC: 5362/6441 (83.2%)
+
+=== 4. ZONE PIECE COUNTS &amp; FILLED AREAS (F-USBC vs F-USBC-RTC) ===
+  Idx Zone Name          Net              Layer   | P pcs    P mm^2 | R pcs    R mm^2 | dPcs    dArea
+  ------------------------------------------------------------------------------------------------
+    0 vendor +1V1        +1V1             B.Cu    |     1     2.280 |     1     2.280 |   +0   +0.000
+    2 vendor /MCU/VREG_LX /MCU/VREG_LX     B.Cu    |     1     2.296 |     1     2.296 |   +0   +0.000
+    4 vendor +3V3        +3V3             B.Cu    |     1     0.597 |     1     0.597 |   +0   +0.000
+    5 RP2350 band        +3V3             B.Cu    |     6     7.529 |     6     7.529 |   +0   +0.000
+    6 RP2350 ring        +1V1             B.Cu    |     1     6.437 |     1     6.437 |   +0   +0.000
+    9 vendor GND         GND              B.Cu    |     1     1.633 |     1     1.633 |   +0   +0.000
+   11 plane GND          GND              In2.Cu  |     1   847.497 |     1   840.356 |   +0   -7.141
+   13 plane 3V3          +3V3             In5.Cu  |     1   215.756 |     1   215.625 |   +0   -0.132
+   14 plane VSYS         VSYS             In5.Cu  |     1   600.368 |     1   592.880 |   +0   -7.487
+
+=== 5. RX8130_xtal_end B.Cu KEEPOUT AUDIT ===
+  B.Cu tracks/vias intruding RX8130_xtal_end [114.30..115.20, 102.30..103.05]: 0 (MUST BE 0)
+
+=== 6. J1 NPTH 8-LAYER CLEARANCE AUDIT ===
+  NPTH #1: center=(109.953, 108.684) mm, drill=0.65 mm (r=0.325 mm)
+    F.Cu  : min clearance = 0.220 mm  -&gt; Pad D234.4 (/Driver 5 and matrix/CS5_16)
+    B.Cu  : min clearance = 0.247 mm  -&gt; Pad J1.A1B12 (GND)
+    In1.Cu: min clearance = 0.203 mm  -&gt; Track (/Driver 5 and matrix/CS5_16)
+    In2.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane GND' (GND)
+    In3.Cu: min clearance = 0.261 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.242,108.689) [cu]
+    In4.Cu: min clearance = 0.261 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.242,108.689) [cu]
+    In5.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane VSYS' (VSYS)
+    In6.Cu: min clearance = 0.261 mm  -&gt; Via (/Driver 5 and matrix/CS5_16) @(109.242,108.689) [cu]
+  NPTH #2: center=(104.671, 111.030) mm, drill=0.65 mm (r=0.325 mm)
+    F.Cu  : min clearance = 0.210 mm  -&gt; Track (/Driver 2 and matrix/SW2_3)
+    B.Cu  : min clearance = 0.247 mm  -&gt; Pad J1.B1A12 (GND)
+    In1.Cu: min clearance = 0.435 mm  -&gt; Via (/Driver 2 and matrix/SW2_3) @(104.717,111.914) [cu]
+    In2.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane GND' (GND)
+    In3.Cu: min clearance = 0.258 mm  -&gt; Track (/Driver 2 and matrix/CS2_7)
+    In4.Cu: min clearance = 0.307 mm  -&gt; Track (/Power/CC2)
+    In5.Cu: min clearance = 0.201 mm  -&gt; Zone 'plane VSYS' (VSYS)
+    In6.Cu: min clearance = 0.297 mm  -&gt; Track (/Power/USB_DM_C)
+</code></pre></div></body></html>

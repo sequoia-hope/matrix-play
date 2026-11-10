@@ -1,0 +1,37 @@
+{
+ "board": "round-pendant.kicad_pcb",
+ "generated": "2026-11-09",
+ "glb": "board.glb",
+ "bytes": 14373492,
+ "kicad_bytes": 43744112,
+ "parts": 346,
+ "modelled": 338,
+ "no_model": [
+  "TP1",
+  "TP2",
+  "TP3",
+  "TP4",
+  "TP5",
+  "TP6",
+  "TP7",
+  "TP8"
+ ],
+ "missing": [],
+ "empty": [],
+ "substituted": [],
+ "resolved": [
+  "C16",
+  "C18"
+ ],
+ "flattened": [],
+ "boxed": [],
+ "why": {},
+ "missing_models": [],
+ "boxes": [],
+ "resolved_how": {
+  "legacy": 2,
+  "found": 0
+ },
+ "triangles": 843632,
+ "primitives": 4916
+}
