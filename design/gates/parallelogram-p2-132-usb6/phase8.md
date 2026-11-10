@@ -67,3 +67,16 @@ Status: **passed**
 | `M1–M3` | MAJOR | Still-air + rear-LiPo-insulated wearable convection (`θ_BA ≈ 33.3 °C/W`) and upstream battery-path resistance (`BT1 + BAT_N + U8 + VBAT + U5 BATFET` + `3 mΩ` vias, plus `840 mA` PWM-only peak pulse if `GCC = 0xFF`) needed explicit physics in `sim_buttons.py`. | **Fixed**: Added `33.3 °C/W` still-air thermal budget (`0.541 W` / `165 mA` `GCC <= 0x40` continuous worn ceiling -> **`43.0 °C < 45 °C`**; `ADC4` closed-loop foldback on `0.95 W` bursts) and full `273.8 / 370.3 mΩ` battery-path + `3 mΩ` via nodal solve (`V(U6.4) = 3.375 V >= 3.355 V` worst-case at `VBAT = 3.50 V` with analog `GCC <= 0x74`; mandatory analog `GCC` scaling in `bringup.md` §4). |
 
 **Independent Fresh-Context Re-Review Verdict:** **VERDICT: PASS** (all prior `B1`, `B2`, and `M1–M3` findings verified resolved).
+
+---
+
+## Addendum 2026-11-09: re-run after the U3 1V1 spoke re-route
+
+`python3 design/sim/p2-132-usb6/sim_buttons.py` was re-run on the re-routed board; VSYS, VBAT and +3V3 copper changed near U3. Differences from the previous `results.json` (all others identical):
+```
+wearable_budget_300mA_GCC_0x74: dv_u2_pin5 -31.78 -> -31.93 mV, dv_u1_pin5 -52.46 -> -52.62 mV (dv_u6_in unchanged -4.64 mV)
+worn_continuous_165mA:          dv_u2_pin5 -17.59 -> -17.67 mV, dv_u1_pin5 -28.96 -> -29.05 mV
+unthrottled_656mA:              dv_u2_pin5 -69.20 -> -69.52 mV, dv_u1_pin5 -114.41 -> -114.77 mV
+pwm_peak_840mA:                 dv_u2_pin5 -88.54 -> -88.95 mV, dv_u1_pin5 -146.43 -> -146.90 mV
+```
+Verdict unchanged: **PASS** (V_U6.4 = 3.375 V worst case at VBAT = 3.50 V). Status stays **passed**.

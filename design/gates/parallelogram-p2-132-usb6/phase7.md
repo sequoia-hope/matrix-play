@@ -122,3 +122,36 @@ Reviewer independently verified `0` DRC errors/warnings/unconnected/parity, `0` 
 | `B2` | BLOCKER | Autorouted `VSYS` tree (`0.16–0.30 mm` across `B.Cu`/`In2.Cu`) + upstream battery series path (`BT1 + BAT_N + U8 + VBAT + U5 BATFET`) must be solved nodally to prove `+3V3` LDO headroom. | **Quantified & Verified in `design/sim/p2-132-usb6/sim_buttons.py` (`solve_vsys_nodal_pdn`) + Logged in `decisions.md`**: Full nodal solver including `3.0 mΩ` via barrels and `273.8 mΩ` typ / `370.3 mΩ` worst-case battery path gives **`ΔV_VSYS(U6.4) = -4.64 mV`**, **`ΔV(U2.5) = -31.78 mV`**, and **`ΔV(U1.5) = -52.46 mV`** at `300 mA` (`GCC <= 0x74`), keeping `V(U6.4) = 4.395 V` on USB and **`3.406 V` typ / `3.375 V` worst >= `3.355 V`** (`TPS7A0233` `V_OUT + V_DO,max(25 mA)`) at **`V_BAT = 3.50 V`** (`0` LDO dropout). Firmware scales brightness via analog `GCC` (`<= 0x40` continuous worn, `<= 0x74` burst, `<= 0x44` charging; never PWM-only at `GCC = 0xFF`) and folds back below `V_BAT = 3.50 V`. |
 | `M1–M4` | MAJOR | Autorouted `B.Cu`/`In2.Cu` detours on decap return paths (`C11` `2.99 mm`, `C41` `2.67 mm`) and `19.67 mm` uncoupled `USB_DP`/`USB_DM` (`0.10 mm` QFN/USBLC6 escape neckdowns, `2–3` layer-change vias). | **Disputed in `decisions.md` & Verified in Gate 8**: Inherited 4L `ultraroute` topology shared with `p2-132-usb`; `USB 2.0` FS (`12 Mb/s`, `t_r >= 4 ns`, `t_pd = 0.105 ns << 4 ns`, `l_crit = 125–303 mm`) is `< 0.16 × l_crit` (lumped regime, **`0.038 mm = 0.25 ps` skew**), `U3.30` shares the `11.12 mm²` `RP2350 band` with `7` parallel `100 nF` caps (`U2.5` has parallel `C42` at `1.41 mm`), and `AW20198` `SRCR = 0x07` + `PADS_QSPI.SLEWFAST = 0` bound switching di/dt (`bringup.md` §4). |
 | `m1–m2` | MINOR | Single `GND` vias on `SW5.2`/`SW6.2` and `27.24 mm` routed length on `/MCU/USER_C`. | **Verified in Gate 8**: Each `0.30/0.15 mm` via (`L ≈ 0.6 nH`) ties `SW5.2`/`SW6.2` straight into `1,310 mm²` `In1.Cu` `plane GND`, and `C71 = 100 nF` (`50 V` X7R) shunts `/MCU/USER_C` (`0.019 mV` crosstalk). |
+
+---
+
+## Addendum 2026-11-09: U3 1V1 spokes (re-route around U3), re-verified
+
+**Why:** the user found that U3's 1V1 ring lacked the reference design's links to the DVDD pins. Pins 6, 23 and 39 reached the ring only through 0.3/0.15 in-pad vias and 0.2 mm In2.Cu/F.Cu wires, and the reference's W and E spokes were missing. `decisions.md` 2026-11-09 has the full record.
+
+**What changed** (`scripts/parallelogram/u3_spokes.py`, plots in `design/renders/parallelogram-p2-132-usb6/u3-1v1/{before,after}.png`):
+- Four 0.6/0.25 ring vias at the mirrored reference positions; E moved to (2.15, −0.60) because LED pad D102.3 sits above the reference spot.
+- 0.6 mm In2.Cu spokes to the in-pad vias of pins 6, 23 and 39, and to a 0.6/0.25 via in the COUT zone at (0.50, 5.00).
+- A 0.2 mm B.Cu trace from pin 23 to C19, replacing the F.Cu detour.
+- An open 0.25 mm B.Cu tie through the ring, for ultraroute's connectivity (`design/ultraroute-requests.md` note 8).
+- 25 conflicting items on 12 nets stripped and re-laid by `ultraroute --adopt` (0 open). One SW2_4 via moved off the corner of D114.2 (it had made a 0.027 mm neck).
+- The user's 0.048 mm SW1_8 stub removed, then `clean_copper_4l.py`.
+
+**Independent review** (fresh context, Fable):
+- **M1 (MAJOR), fixed:** ultraroute's via pass had dropped PGND's second plane via at (2.87, 4.84). Restored as 0.3/0.15; `u3_spokes.py lock` now keeps PGND vias locked.
+- **m1, declined:** a second 0.6/0.25 COUT via has no free spot between R14.2 (USB_DM) and LED pad D104.1 above it. The single via has a 0.61 mm fill chord.
+- **m2, noted:** foreign In2.Cu segments under U3's pad ring went from 8 to 18. They sit behind the In1.Cu GND plane, and the ring/EP DRC rules cover B.Cu only; this is unchanged policy.
+- **m3, by design:** this gate requires 0 locked copper (`verify_variant.py` unlocks everything), so the spokes are reproduced by `u3_spokes.py`, not by lock flags.
+- The reviewer confirmed unchanged: VREG_FB path, LX cutouts L2/L3, CIN/COUT/L1 side, CFILT via, USB/XTAL/QSPI routes, and 0 new vias in exposed pads.
+
+**Checks re-run on the final board** (`verify_variant.py p2-132-usb6`):
+```
+tracks=5241 vias=724 locked_copper=0 non_ep_via_in_pad=127
+zones: RP2350 band 1 piece 10.91 mm2 | RP2350 ring 1 piece 8.61 mm2 | plane GND 1 piece 1307.05 mm2
+solid_eps: U1/U2/U3/U5 foreign_vias=0
+drc_errors=0 drc_warnings=0 drc_unconnected=0   (kicad-cli pcb drc --severity-all --schematic-parity: 0 violations, 0 unconnected, 0 parity)
+copper_audit rc=0: dangling=0 cap_gap=0 mid_graze/stubs=0 off_via=0 morph_necks(<86um)=0 acute_slivers=0 collinear_dups=0 micro_segs(<40um)=152 strip_zones=0 zone_intrusions=0
+pad_joints rc=0 (PASS: 0 thin pad joints) | sync_check rc=0 | nets_check --rules --routed rc=0
+```
+
+Same-net closed track loops (non-GND): 156 before, 60 after. Status stays **passed**.

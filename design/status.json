@@ -2,7 +2,7 @@
   "schema": 1,
   "board": "round-pendant",
   "phase": 9,
-  "doing": "2026-11-09: Round Pendant f-usbc-rtc (Rev FUR) completed, verified, independently audited & exported (hw/round-pendant/f-usbc-rtc/fab/): adds inward-facing 1.25 mm battery socket BT1 (CJT A1251WR-S-2P, C225111) at SW (89.200, 110.550, -28 deg) with 4.88 mm flat NNE plug-insertion runway and Seiko Epson RX8130CE:BB I2C1 Real-Time Clock U13 (C1542426, 1.50 uA on always-on +3V3, POWMAN PWRUP2 wake on GPIO19) in the East pocket with 0 front LEDs moved and 147/147 locked RP2350 tracks intact (5,883 tracks, 918 vias, 0 ERC/DRC/copper_audit/pad_joints/sync errors, $27.44 BOM @10). Gates 4 & 10 await user sign-off.",
+  "doing": "2026-11-09: parallelogram p2-132-usb6: U3's 1V1 ring now has the reference spokes (four 0.6/0.25 ring vias, 0.6 mm In2.Cu spokes to DVDD pins 6/23/39 and COUT, pin 23 -> C19 on B.Cu); nearby nets re-routed, PGND's second via restored after independent review; DRC/copper_audit/pad_joints/sync/nets 0, Gate 8 PDN re-run PASS, fab re-exported (BOM/CPL unchanged). Gate 10 still awaits your sign-off. Earlier today: Round Pendant f-usbc-rtc (Rev FUR) completed, verified, independently audited & exported (hw/round-pendant/f-usbc-rtc/fab/): adds inward-facing 1.25 mm battery socket BT1 (CJT A1251WR-S-2P, C225111) at SW (89.200, 110.550, -28 deg) with 4.88 mm flat NNE plug-insertion runway and Seiko Epson RX8130CE:BB I2C1 Real-Time Clock U13 (C1542426, 1.50 uA on always-on +3V3, POWMAN PWRUP2 wake on GPIO19) in the East pocket with 0 front LEDs moved and 147/147 locked RP2350 tracks intact (5,883 tracks, 918 vias, 0 ERC/DRC/copper_audit/pad_joints/sync errors, $27.44 BOM @10). Gates 4 & 10 await user sign-off.",
   "needs_user": [
     {
       "id": "inductor-preorder",
@@ -503,5 +503,5 @@
     }
   ],
   "apps": {},
-  "updated": "2026-11-09T20:50:00-08:00"
+  "updated": "2026-11-09T23:09:12-08:00"
 }

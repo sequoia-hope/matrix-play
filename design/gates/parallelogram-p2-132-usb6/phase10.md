@@ -138,3 +138,9 @@ gerber_render: hw/parallelogram/p2-132-usb6/fab/gerbers (board parallelogram)
 2. **Confirm CPL orientation for rotated `BT1`, bezel-aligned `SW4`, and West-edge switches `SW5`/`SW6`:**
    - Verified in Mirrored-Bottom `cpl-overlay.png` and `3d-bottom.png`: **`BT1`** (`107.970, -123.200`, `Rot = 180.00°`, mouth facing straight `-Y` North with `6.03 mm` clear runway, `+` West / `-` East — verify off-the-shelf LiPo harness polarity with DMM before plugging in!), **`SW4`** (`108.150, -130.550`, `Rot = 17.74°` parallel to `J1`), and **`SW5`/`SW6`** (`88.825, -78.000 / -122.800`, `Rot = 90.00°`, `0.45 mm` rest overhang / `0.25 mm` proud at full `0.20 mm` stroke).
 3. **Confirm git release tag (`parallelogram-p2-132-usb6-revP1U6`) upon user sign-off.**
+
+---
+
+## Addendum 2026-11-09: fab outputs re-exported after the U3 1V1 spoke re-route
+
+Gerbers and drill files were regenerated (`export_and_cost.py --export p2-132-usb6`) from the board re-verified in `phase7.md`'s addendum, and the renders were regenerated (`render.py`). `bom-jlcpcb.csv` (41 lines) and `cpl-jlcpcb.csv` (223 parts) came out byte-identical, since no part moved. Inductor L1 (AOTA-B201610S3R3-101-T, C42411119) has 1,299 in JLCPCB assembly stock as of 2026-11-09. Still **awaiting_signoff**: the user's choice at this gate is unchanged.
